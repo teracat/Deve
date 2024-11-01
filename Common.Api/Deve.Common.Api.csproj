@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Auth\Deve.Auth.csproj" />
+    <ProjectReference Include="..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\Core\Deve.Core.csproj" />
+    <ProjectReference Include="..\Log\NetCore\Deve.Log.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common.Api\Deve.Common.Api.csproj" />
+    <ProjectReference Include="..\..\Common.Sdk\Deve.Common.Sdk.csproj" />
+    <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\..\External\Sdk\Deve.External.Sdk.csproj" />
+    <ProjectReference Include="..\Common\Deve.Internal.Common.csproj" />
+  </ItemGroup>
+
+</Project>

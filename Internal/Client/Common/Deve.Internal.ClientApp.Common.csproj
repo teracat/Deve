@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\..\..\Log\Log4net\Deve.Log.Log4net.csproj" />
+    <ProjectReference Include="..\..\..\Log\NLog\Deve.Log.NLog.csproj" />
+    <ProjectReference Include="..\..\Common\Deve.Internal.Common.csproj" />
+  </ItemGroup>
+
+</Project>
