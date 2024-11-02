@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jordi Badia Santaulària",
+  "classifications": [ "Common", "API", "Console", "C#" ],
+  "identity": "Deve.Template",
+  "name": ".NET DEVEloper Template",
+  "shortName": "deve",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Deve",  // Nom que es reemplaçarà
+  "preferNameDirectory": true
+}
