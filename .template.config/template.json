@@ -9,6 +9,6 @@
     "language": "C#",
     "type": "project"
   },
-  "sourceName": "Deve",  // Nom que es reemplaçarà
+  "sourceName": "Deve",
   "preferNameDirectory": true
 }
