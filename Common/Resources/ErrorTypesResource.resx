@@ -135,4 +135,10 @@
   <data name="DuplicatedValue" xml:space="preserve">
     <value>Duplicated value</value>
   </data>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>Not allowed</value>
+  </data>
+  <data name="aaa" xml:space="preserve">
+    <value />
+  </data>
 </root>

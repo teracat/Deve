@@ -21,7 +21,7 @@ namespace Deve.Core
         protected override async Task<Result> CheckRequired(State data)
         {
             var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                               .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.CountryId));
+                               .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name), new Field(data.CountryId));
             if (resultBuilder.HasErrors)
                 return resultBuilder.ToResult();
 

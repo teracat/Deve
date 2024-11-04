@@ -23,7 +23,7 @@ namespace Deve.Core
             return Task.Run(() =>
             {
                 return ResultBuilder.Create(Core.Options.LangCode)
-                       .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.Username), new Field(data.PasswordHash))
+                       .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name), new Field(data.Username), new Field(data.PasswordHash))
                        .ToResult();
             });
         }
@@ -43,6 +43,19 @@ namespace Deve.Core
 
                 return Utils.ResultOk();
             });
+        }
+
+        protected override async Task<Result> CheckDelete(long id)
+        {
+            var result = await base.CheckDelete(id);
+            if (!result.Success)
+                return result;
+
+            //A User can't delete its own user
+            if (Core.UserIdentity is not null && Core.UserIdentity.Id == id)
+                return Utils.ResultError(Core.Options.LangCode, ResultErrorType.NotAllowed, nameof(id));
+
+            return Utils.ResultOk();
         }
         #endregion
     }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Deve.Resources {
+namespace Deve.Common.Resources {
     using System;
     
     
@@ -61,6 +61,15 @@ namespace Deve.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string aaa {
+            get {
+                return ResourceManager.GetString("aaa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicated value.
         /// </summary>
         internal static string DuplicatedValue {
@@ -84,6 +93,15 @@ namespace Deve.Resources {
         internal static string MissingRequiredField {
             get {
                 return ResourceManager.GetString("MissingRequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not allowed.
+        /// </summary>
+        internal static string NotAllowed {
+            get {
+                return ResourceManager.GetString("NotAllowed", resourceCulture);
             }
         }
         

@@ -75,14 +75,27 @@ namespace Deve.Core
             if (errorBuilder.HasErrors)
                 return errorBuilder.ToResult();
 
+            var result = await CheckDelete(id);
+            if (!result.Success)
+                return result;
+
             //Remove
             return await DataAll.Delete(id);
         }
         #endregion
 
-        #region Helper Abstract Methods
+        #region Helper Methods
         protected abstract Task<Result> CheckRequired(Model data);
         protected abstract Task<Result> CheckAdd(Model data, IList<ModelList> list);
+        protected virtual Task<Result> CheckDelete(long id)
+        {
+            return Task.Run(() =>
+            {
+                return ResultBuilder.Create(Core.Options.LangCode)
+                                    .CheckNotNullOrEmpty(new Field(id))
+                                    .ToResult();
+            });
+        }
         #endregion
     }
 }

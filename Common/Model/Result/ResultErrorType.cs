@@ -8,5 +8,6 @@
         InvalidId = 3,
         NotFound = 4,
         DuplicatedValue = 5,
+        NotAllowed = 6,
     }
 }

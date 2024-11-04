@@ -135,4 +135,7 @@
   <data name="DuplicatedValue" xml:space="preserve">
     <value>Valor duplicat</value>
   </data>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>No permès</value>
+  </data>
 </root>
