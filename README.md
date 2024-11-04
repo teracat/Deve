@@ -57,11 +57,17 @@ In the Client applications, you should use the IData interface as the connector 
 - External/Api
 - External/Sdk (Internal will be used directly in your internal clients, it doesn't need to be deployed)
 
+## Documentation
+
+You can read the project documentation in the Wiki section (still working on it):
+
+https://github.com/teracat/Deve/wiki
+
 ## Still working on
 
 - Tests
 - Client samples
-- Documentation
+- Wiki
 
 ## Contributing
 
