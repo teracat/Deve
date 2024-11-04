@@ -22,7 +22,7 @@ namespace Deve.Core
         {
             return await Task.Run(() =>
             {
-                return ResultBuilder.Create()
+                return ResultBuilder.Create(Core.Options.LangCode)
                        .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.IsoCode))
                        .ToResult();
             });

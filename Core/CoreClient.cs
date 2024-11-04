@@ -20,7 +20,7 @@ namespace Deve.Core
         #region CoreBaseAll Implementation
         protected override async Task<Result> CheckRequired(Client data)
         {
-            var resultBuilder = ResultBuilder.Create()
+            var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
                                 .CheckNotNullOrEmpty(new Field(data.Name));
 
             //Check Valid CityId

@@ -1,9 +1,14 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Deve.Localize;
+using System.Runtime.CompilerServices;
 
 namespace Deve
 {
     public class ResultBuilder
     {
+        #region Fields
+        private string _langCode;
+        #endregion
+
         #region Properties
         public List<ResultError> Errors { get; private set; } = [];
 
@@ -11,9 +16,16 @@ namespace Deve
         #endregion
 
         #region Static Method
-        public static ResultBuilder Create()
+        public static ResultBuilder Create(string langCode = Constants.DefaultLangCode)
         {
-            return new ResultBuilder();
+            return new ResultBuilder(langCode);
+        }
+        #endregion
+
+        #region Constructor
+        public ResultBuilder(string langCode = Constants.DefaultLangCode)
+        {
+            _langCode = langCode;
         }
         #endregion
 
@@ -26,7 +38,7 @@ namespace Deve
 
         public ResultBuilder Add(ResultErrorType type, string? fieldName = null, string? description = null)
         {
-            Errors.Add(new ResultError(type, fieldName, description));
+            Errors.Add(new ResultError(type, fieldName, description ?? ErrorLocalizeFactory.Get().Localize(type, _langCode)));
             return this;
         }
 
@@ -47,7 +59,7 @@ namespace Deve
         public ResultBuilder CheckNotNullOrEmpty(params Field[] fields)
         {
             if (Utils.FindNullOrWhiteSpace(out var found, fields))
-                AddRange(Utils.FoundFieldsToErrors(ResultErrorType.MissingRequiredField, found));
+                AddRange(Utils.FoundFieldsToErrors(_langCode, ResultErrorType.MissingRequiredField, found));
             return this;
         }
         #endregion

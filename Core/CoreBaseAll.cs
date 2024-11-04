@@ -70,7 +70,7 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
-            var errorBuilder = ResultBuilder.Create()
+            var errorBuilder = ResultBuilder.Create(Core.Options.LangCode)
                                .CheckNotNullOrEmpty(new Field(id));
             if (errorBuilder.HasErrors)
                 return errorBuilder.ToResult();

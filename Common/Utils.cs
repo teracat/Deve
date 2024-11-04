@@ -37,9 +37,9 @@ namespace Deve
             return false;
         }
 
-        public static IList<ResultError> FoundFieldsToErrors(ResultErrorType errorType, List<Field> list)
+        public static IList<ResultError> FoundFieldsToErrors(string langCode, ResultErrorType errorType, List<Field> list)
         {
-            return list.Select(x => new ResultError(errorType, x.Name))
+            return list.Select(x => new ResultError(errorType, x.Name, ErrorLocalizeFactory.Get().Localize(errorType, langCode)))
                        .ToList();
         }
 
