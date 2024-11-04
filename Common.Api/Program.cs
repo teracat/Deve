@@ -1,4 +1,5 @@
 using System.Globalization;
+using Deve.Common.Api;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 
@@ -28,7 +29,12 @@ namespace Deve.Api
                 config.DefaultRequestCulture = new RequestCulture(Constants.DefaultLangCode);
             });
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                //Comment next line if you don't want to alter the Status Code
+                options.Filters.Add<ResultResponseFilter>();
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
