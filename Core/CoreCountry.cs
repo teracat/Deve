@@ -18,28 +18,32 @@ namespace Deve.Core
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override async Task<Result> CheckRequired(Country data, CheckRequiredActionType action)
+        protected override async Task<Result> CheckRequired(Country data, ChecksActionType action)
         {
             return await Task.Run(() =>
             {
                 var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
                                                  .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.IsoCode));
 
-                if (action == CheckRequiredActionType.Update)
+                if (action == ChecksActionType.Update)
                     resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
 
                 return resultBuilder.ToResult();
             });
         }
 
-        protected override Task<Result> CheckAdd(Country data, IList<Country> list)
+        protected override Task<Result> CheckDuplicated(Country data, IList<Country> list, ChecksActionType action)
         {
             return Task.Run(() =>
             {
-                if (data.Id > 0 && list.Any(x => x.Id == data.Id))
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Id));
+                if (action == ChecksActionType.Add)
+                {
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    if (resCheckId is not null)
+                        return resCheckId;
+                }
 
-                if (list.Any(x => x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
+                if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
 
                 return Utils.ResultOk();

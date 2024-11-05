@@ -18,12 +18,12 @@ namespace Deve.Core
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override async Task<Result> CheckRequired(State data, CheckRequiredActionType action)
+        protected override async Task<Result> CheckRequired(State data, ChecksActionType action)
         {
             var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
                                              .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.CountryId));
 
-            if (action == CheckRequiredActionType.Update)
+            if (action == ChecksActionType.Update)
                 resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
 
             //Check Valid CountryId
@@ -42,14 +42,18 @@ namespace Deve.Core
             return resultBuilder.ToResult();
         }
 
-        protected override Task<Result> CheckAdd(State data, IList<State> list)
+        protected override Task<Result> CheckDuplicated(State data, IList<State> list, ChecksActionType action)
         {
             return Task.Run(() =>
             {
-                if (data.Id > 0 && list.Any(x => x.Id == data.Id))
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Id));
+                if (action == ChecksActionType.Add)
+                {
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    if (resCheckId is not null)
+                        return resCheckId;
+                }
 
-                if (list.Any(x => x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
+                if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
 
                 return Utils.ResultOk();
