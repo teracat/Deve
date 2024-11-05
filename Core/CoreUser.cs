@@ -18,26 +18,40 @@ namespace Deve.Core
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override Task<Result> CheckRequired(User data)
+        protected override Task<Result> CheckRequired(User data, ChecksActionType action)
         {
             return Task.Run(() =>
             {
-                return ResultBuilder.Create(Core.Options.LangCode)
-                       .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name), new Field(data.Username), new Field(data.PasswordHash))
-                       .ToResult();
+                var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+                                                 .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.Username), new Field(data.PasswordHash));
+
+                if (action == ChecksActionType.Update)
+                    resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+
+                return resultBuilder.ToResult();
             });
         }
 
-        protected override Task<Result> CheckAdd(User data, IList<User> list)
+        protected override Task<Result> CheckDuplicated(User data, IList<User> list, ChecksActionType action)
         {
             return Task.Run(() =>
             {
-                if (list.Any(x => x.Id == data.Id))
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Id));
+                if (action == ChecksActionType.Add)
+                {
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    if (resCheckId is not null)
+                        return resCheckId;
+                }
+
+                if (!string.IsNullOrWhiteSpace(data.Username))
+                {
+                    if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Username) && x.Username.Equals(data.Username, StringComparison.InvariantCultureIgnoreCase)))
+                        return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Username));
+                }
 
                 if (!string.IsNullOrWhiteSpace(data.Email))
                 {
-                    if (list.Any(x => !string.IsNullOrWhiteSpace(x.Email) && x.Email.Equals(data.Email, StringComparison.InvariantCultureIgnoreCase)))
+                    if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Email) && x.Email.Equals(data.Email, StringComparison.InvariantCultureIgnoreCase)))
                         return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Email));
                 }
 

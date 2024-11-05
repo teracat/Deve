@@ -28,7 +28,7 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
-            var result = await CheckRequired(data);
+            var result = await CheckRequired(data, ChecksActionType.Add);
             if (!result.Success)
                 return result;
 
@@ -40,7 +40,7 @@ namespace Deve.Core
             if (resList.Data is null)
                 return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unknown);
 
-            var resChecksAdd = await CheckAdd(data, resList.Data);
+            var resChecksAdd = await CheckDuplicated(data, resList.Data, ChecksActionType.Add);
             if (!resChecksAdd.Success)
                 return resChecksAdd;
 
@@ -55,9 +55,21 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
-            var result = await CheckRequired(data);
+            var result = await CheckRequired(data, ChecksActionType.Update);
             if (!result.Success)
                 return result;
+
+            //Check duplicated
+            var resList = await DataAll.Get();
+            if (!resList.Success)
+                return resList;
+
+            if (resList.Data is null)
+                return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unknown);
+
+            var resChecksAdd = await CheckDuplicated(data, resList.Data, ChecksActionType.Update);
+            if (!resChecksAdd.Success)
+                return resChecksAdd;
 
             //Update
             return await DataAll.Update(data);
@@ -71,7 +83,7 @@ namespace Deve.Core
 
             //Some basic checks
             var errorBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                               .CheckNotNullOrEmpty(new Field(id));
+                                            .CheckNotNullOrEmpty(new Field(id));
             if (errorBuilder.HasErrors)
                 return errorBuilder.ToResult();
 
@@ -85,8 +97,8 @@ namespace Deve.Core
         #endregion
 
         #region Helper Methods
-        protected abstract Task<Result> CheckRequired(Model data);
-        protected abstract Task<Result> CheckAdd(Model data, IList<ModelList> list);
+        protected abstract Task<Result> CheckRequired(Model data, ChecksActionType action);
+        protected abstract Task<Result> CheckDuplicated(Model data, IList<ModelList> list, ChecksActionType action);
         protected virtual Task<Result> CheckDelete(long id)
         {
             return Task.Run(() =>
