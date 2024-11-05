@@ -28,7 +28,7 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
-            var result = await CheckRequired(data);
+            var result = await CheckRequired(data, CheckRequiredActionType.Add);
             if (!result.Success)
                 return result;
 
@@ -55,7 +55,7 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
-            var result = await CheckRequired(data);
+            var result = await CheckRequired(data, CheckRequiredActionType.Update);
             if (!result.Success)
                 return result;
 
@@ -71,7 +71,7 @@ namespace Deve.Core
 
             //Some basic checks
             var errorBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                               .CheckNotNullOrEmpty(new Field(id));
+                                            .CheckNotNullOrEmpty(new Field(id));
             if (errorBuilder.HasErrors)
                 return errorBuilder.ToResult();
 
@@ -85,7 +85,7 @@ namespace Deve.Core
         #endregion
 
         #region Helper Methods
-        protected abstract Task<Result> CheckRequired(Model data);
+        protected abstract Task<Result> CheckRequired(Model data, CheckRequiredActionType action);
         protected abstract Task<Result> CheckAdd(Model data, IList<ModelList> list);
         protected virtual Task<Result> CheckDelete(long id)
         {

@@ -18,13 +18,17 @@ namespace Deve.Core
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override async Task<Result> CheckRequired(Country data)
+        protected override async Task<Result> CheckRequired(Country data, CheckRequiredActionType action)
         {
             return await Task.Run(() =>
             {
-                return ResultBuilder.Create(Core.Options.LangCode)
-                       .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name), new Field(data.IsoCode))
-                       .ToResult();
+                var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+                                                 .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.IsoCode));
+
+                if (action == CheckRequiredActionType.Update)
+                    resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+
+                return resultBuilder.ToResult();
             });
         }
 
@@ -32,7 +36,7 @@ namespace Deve.Core
         {
             return Task.Run(() =>
             {
-                if (list.Any(x => x.Id == data.Id))
+                if (data.Id > 0 && list.Any(x => x.Id == data.Id))
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Id));
 
                 if (list.Any(x => x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))

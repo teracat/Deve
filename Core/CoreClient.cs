@@ -18,10 +18,13 @@ namespace Deve.Core
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override async Task<Result> CheckRequired(Client data)
+        protected override async Task<Result> CheckRequired(Client data, CheckRequiredActionType action)
         {
             var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                                .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name));
+                                .CheckNotNullOrEmpty(new Field(data.Name));
+
+            if (action == CheckRequiredActionType.Update)
+                resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
 
             //Check Valid CityId
             City? city = null;
@@ -68,7 +71,7 @@ namespace Deve.Core
         {
             return Task.Run(() =>
             {
-                if (list.Any(x => x.Id == data.Id))
+                if (data.Id > 0 && list.Any(x => x.Id == data.Id))
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Id));
 
                 if (list.Any(x => x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
