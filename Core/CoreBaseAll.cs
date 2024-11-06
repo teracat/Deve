@@ -21,28 +21,28 @@ namespace Deve.Core
         #endregion
 
         #region IDataAll Methods
-        public virtual async Task<Result> Add(Model data)
+        public virtual async Task<ResultGet<ModelId>> Add(Model data)
         {
             var resPerm = await CheckPermission(PermissionType.Add);
             if (!resPerm.Success)
-                return Utils.ResultGetError<Model>(resPerm);
+                return Utils.ResultGetError<ModelId>(resPerm);
 
             //Some basic checks
-            var result = await CheckRequired(data, ChecksActionType.Add);
-            if (!result.Success)
-                return result;
+            var resRequired = await CheckRequired(data, ChecksActionType.Add);
+            if (!resRequired.Success)
+                return Utils.ResultGetError<ModelId>(resRequired);
 
             //Check duplicated
             var resList = await DataAll.Get();
             if (!resList.Success)
-                return resList;
+                return Utils.ResultGetError<ModelId>(resList);
 
             if (resList.Data is null)
-                return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unknown);
+                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.Unknown);
 
-            var resChecksAdd = await CheckDuplicated(data, resList.Data, ChecksActionType.Add);
-            if (!resChecksAdd.Success)
-                return resChecksAdd;
+            var resDuplicated = await CheckDuplicated(data, resList.Data, ChecksActionType.Add);
+            if (!resDuplicated.Success)
+                return Utils.ResultGetError<ModelId>(resDuplicated);
 
             //Add
             return await DataAll.Add(data);

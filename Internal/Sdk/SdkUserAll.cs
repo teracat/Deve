@@ -1,6 +1,4 @@
-﻿using Deve.External.Sdk;
-
-namespace Deve.Internal.Sdk
+﻿namespace Deve.Internal.Sdk
 {
     internal class SdkUserAll : SdkBaseAll<User, User, CriteriaUser>
     {

@@ -12,7 +12,7 @@ namespace Deve.DataSource
         #endregion
 
         #region IDataAll
-        public abstract Task<Result> Add(Model data);
+        public abstract Task<ResultGet<ModelId>> Add(Model data);
         public abstract Task<Result> Update(Model data);
         public abstract Task<Result> Delete(long id);
         #endregion

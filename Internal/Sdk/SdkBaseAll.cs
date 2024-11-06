@@ -12,9 +12,9 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IDataAll Methods
-        public async Task<Result> Add(Model data)
+        public async Task<ResultGet<ModelId>> Add(Model data)
         {
-            return await Post(Path, RequestAuthType.Default, data);
+            return await PostWithResult<ModelId>(Path, RequestAuthType.Default, data);
         }
 
         public async Task<Result> Update(Model data)

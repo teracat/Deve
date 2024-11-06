@@ -98,6 +98,12 @@ namespace Deve.Sdk
             return await Execute(apiRequest);
         }
 
+        protected async Task<ResultGet<ResultType>> PostWithResult<ResultType>(string? path, RequestAuthType authType, object? requestObj = null)
+        {
+            var apiRequest = new RequestBuilder(path, HttpMethod.Post, authType, Sdk.UserToken, requestObj);
+            return await ExecuteWithResult<ResultType>(apiRequest);
+        }
+
         protected async Task<Result> Put(string? path, RequestAuthType authType, object? requestObj = null)
         {
             var apiRequest = new RequestBuilder(path, HttpMethod.Put, authType, Sdk.UserToken, requestObj);
@@ -112,31 +118,36 @@ namespace Deve.Sdk
 
         private async Task<Result> Execute(RequestBuilder apiRequest)
         {
+            return new Result(await ExecuteWithResult<object>(apiRequest));
+        }
+
+        private async Task<ResultGet<ResultType>> ExecuteWithResult<ResultType>(RequestBuilder apiRequest)
+        {
             try
             {
                 using (var request = apiRequest.Build())
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
-                        return Utils.ResultError(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
                     if (!response.IsSuccessStatusCode)
-                        return Utils.ResultError(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
                     string content = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrWhiteSpace(content))
-                        return Utils.ResultError(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
-                    var res = JsonSerializer.Deserialize<Result>(content, SerializerOptions);
+                    var res = JsonSerializer.Deserialize<ResultGet<ResultType>>(content, SerializerOptions);
                     if (res is null)
-                        return Utils.ResultError(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
                     return res;
                 }
             }
             catch (Exception ex)
             {
-                return Utils.ResultError(ResultErrorType.Unknown, null, ex.Message);
+                return Utils.ResultGetError<ResultType>(ResultErrorType.Unknown, null, ex.Message);
             }
         }
         #endregion
