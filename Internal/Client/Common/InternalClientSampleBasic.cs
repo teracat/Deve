@@ -1,10 +1,11 @@
 ﻿namespace Deve.Internal.ClientApp
 {
     /// <summary>
-    /// It's exactly the same implementation as Deve.External.ClientApp.SdkClientSample.
+    /// It's the same implementation as Deve.External.ClientApp.SdkClientSample.
     /// The differences are the referenced project and the class used as the implementation of IData.
     /// You have to take into account the differences between External.IData and Internal.IData.
     /// Here we are using the Internal.IData, so we have access to the Full Client implementation and Stats.
+    /// In the Internal implementation we have full access to manage the data, so there are samples to Add a Country and to Delete it.
     /// </summary>
     public class InternalClientSampleBasic
     {
@@ -31,13 +32,17 @@
             Log.Providers.AddDebug();
 #endif
 
-            ShowClients().Wait();   //It will fail because it's not authenticated
+            //ShowClients().Wait();   //It will fail because it's not authenticated
             DoLogin().Wait();
-            ShowCountries().Wait();
+            /*ShowCountries().Wait();
             ShowClients().Wait();
-            ShowClientStats().Wait();
-            AddCountry().Wait();
+            ShowClientStats().Wait();*/
+            var newCountryId = AddCountry().Result;
+            if (newCountryId > 0)
+                ShowCountry(newCountryId).Wait();
             ShowCountries().Wait();
+            if (newCountryId > 0)
+                DeleteCountry(newCountryId).Wait();
         }
 
         private void LogCharacters(char character, int count)
@@ -185,7 +190,7 @@ Expires: {loginRes.Data.Expires}");
             }
         }
 
-        private async Task AddCountry()
+        private async Task<long> AddCountry()
         {
             LogTitle("Add Country");
 
@@ -207,25 +212,61 @@ Expires: {loginRes.Data.Expires}");
                 else
                 {
                     LogResult($"New country created with Id={addCountryRes.Data.Id}");
-
-                    var countryRes = await _data.Countries.Get(addCountryRes.Data.Id);
-                    if (!countryRes.Success)
-                    {
-                        LogError(countryRes);
-                    }
-                    else if (countryRes.Data is null)
-                    {
-                        LogResult("GetCountry: No result!");
-                    }
-                    else
-                    {
-                        LogResult($"New country data: Id={countryRes.Data.Id}\nName={countryRes.Data.Name}\nIsoCode={countryRes.Data.IsoCode}");
-                    }
+                    return addCountryRes.Data.Id;
                 }
             }
             catch (Exception ex)
             {
                 LogResult("AddCountry => " + ex.Message);
+            }
+            return 0;
+        }
+
+        private async Task ShowCountry(long id)
+        {
+            LogTitle("Show Country: " + id);
+
+            try
+            {
+                var countryRes = await _data.Countries.Get(id);
+                if (!countryRes.Success)
+                {
+                    LogError(countryRes);
+                }
+                else if (countryRes.Data is null)
+                {
+                    LogResult("GetCountry: No result!");
+                }
+                else
+                {
+                    LogResult($"Id={countryRes.Data.Id}\nName={countryRes.Data.Name}\nIsoCode={countryRes.Data.IsoCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogResult("ShowCountry => " + ex.Message);
+            }
+        }
+
+        private async Task DeleteCountry(long id)
+        {
+            LogTitle("Delete Country: " + id);
+
+            try
+            {
+                var delCountryRes = await _data.Countries.Delete(id);
+                if (!delCountryRes.Success)
+                {
+                    LogError(delCountryRes);
+                }
+                else
+                {
+                    LogResult($"Country deleted");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogResult("DeleteCountry => " + ex.Message);
             }
         }
     }

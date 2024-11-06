@@ -63,9 +63,7 @@ namespace Deve.Sdk
         {
             try
             {
-                var apiRequest = new RequestBuilder(path, HttpMethod.Get, authType, Sdk.UserToken);
-                if (id.HasValue)
-                    apiRequest.Add(nameof(CriteriaId.Id), id);
+                var apiRequest = new RequestBuilder(path + (id.HasValue ? id.Value.ToString() : string.Empty), HttpMethod.Get, authType, Sdk.UserToken);
                 using (var request = apiRequest.Build())
                 {
                     var response = await _sdk.Client.SendAsync(request);

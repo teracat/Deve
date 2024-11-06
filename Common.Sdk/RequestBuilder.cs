@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
+using System.Linq;
 using System.Collections.Specialized;
 using System.Net.Http.Headers;
+using System.Web;
 
 namespace Deve.Sdk
 {
@@ -95,7 +97,7 @@ namespace Deve.Sdk
             if (_collection.Count == 0)
                 return string.Empty;
 
-            return "?" + _collection.ToString();
+            return "?" + string.Join("&", _collection.AllKeys.Select(key => key + "=" + HttpUtility.UrlEncode(_collection[key])));
         }
 
         private string ToJson()
