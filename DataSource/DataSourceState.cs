@@ -98,13 +98,13 @@
             });
         }
 
-        public override Task<Result> Add(State state)
+        public override Task<ResultGet<ModelId>> Add(State state)
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
                 Data.States.Add(state);
 
-                return Utils.ResultOk();
+                return Utils.ResultGetOk((ModelId)state);
             });
         }
 

@@ -120,12 +120,12 @@
             });
         }
 
-        public override Task<Result> Add(City city)
+        public override Task<ResultGet<ModelId>> Add(City city)
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
                 Data.Cities.Add(city);
-                return Utils.ResultOk();
+                return Utils.ResultGetOk((ModelId)city);
             });
         }
 

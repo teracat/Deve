@@ -36,6 +36,8 @@
             ShowCountries().Wait();
             ShowClients().Wait();
             ShowClientStats().Wait();
+            AddCountry().Wait();
+            ShowCountries().Wait();
         }
 
         private void LogCharacters(char character, int count)
@@ -180,6 +182,50 @@ Expires: {loginRes.Data.Expires}");
             catch (Exception ex)
             {
                 LogResult("ShowClientStats => " + ex.Message);
+            }
+        }
+
+        private async Task AddCountry()
+        {
+            LogTitle("Add Country");
+
+            try
+            {
+                var addCountryRes = await _data.Countries.Add(new Country()
+                {
+                    IsoCode = "AD",
+                    Name = "Andorra",
+                });
+                if (!addCountryRes.Success)
+                {
+                    LogError(addCountryRes);
+                }
+                else if (addCountryRes.Data is null)
+                {
+                    LogResult("No result!");
+                }
+                else
+                {
+                    LogResult($"New country created with Id={addCountryRes.Data.Id}");
+
+                    var countryRes = await _data.Countries.Get(addCountryRes.Data.Id);
+                    if (!countryRes.Success)
+                    {
+                        LogError(countryRes);
+                    }
+                    else if (countryRes.Data is null)
+                    {
+                        LogResult("GetCountry: No result!");
+                    }
+                    else
+                    {
+                        LogResult($"New country data: Id={countryRes.Data.Id}\nName={countryRes.Data.Name}\nIsoCode={countryRes.Data.IsoCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogResult("AddCountry => " + ex.Message);
             }
         }
     }

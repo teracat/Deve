@@ -82,13 +82,13 @@
             });
         }
 
-        public override Task<Result> Add(Country country)
+        public override Task<ResultGet<ModelId>> Add(Country country)
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
                 Data.Countries.Add(country);
 
-                return Utils.ResultOk();
+                return Utils.ResultGetOk((ModelId)country);
             });
         }
 

@@ -60,13 +60,13 @@ namespace Deve.DataSource
             });
         }
 
-        public override Task<Result> Add(Client client)
+        public override Task<ResultGet<ModelId>> Add(Client client)
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
                 Data.Clients.Add(client);
 
-                return Utils.ResultOk();
+                return Utils.ResultGetOk((ModelId)client);
             });
         }
 

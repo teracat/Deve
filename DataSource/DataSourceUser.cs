@@ -112,12 +112,12 @@ namespace Deve.DataSource
             });
         }
 
-        public override Task<Result> Add(User user)
+        public override Task<ResultGet<ModelId>> Add(User user)
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
                 Data.Users.Add(user);
-                return Utils.ResultOk();
+                return Utils.ResultGetOk((ModelId)user);
             });
         }
 
