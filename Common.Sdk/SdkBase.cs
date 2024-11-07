@@ -38,9 +38,6 @@ namespace Deve.Sdk
                     if (response is null)
                         return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
-                    if (!response.IsSuccessStatusCode)
-                        return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-
                     string content = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrWhiteSpace(content))
                         return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
@@ -67,9 +64,6 @@ namespace Deve.Sdk
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
-                        return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-
-                    if (!response.IsSuccessStatusCode)
                         return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
                     string content = await response.Content.ReadAsStringAsync();
@@ -126,9 +120,6 @@ namespace Deve.Sdk
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
-                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-
-                    if (!response.IsSuccessStatusCode)
                         return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
                     string content = await response.Content.ReadAsStringAsync();

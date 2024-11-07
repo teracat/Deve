@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Deve.Common.Api
 {
+    /// <summary>
+    /// Parse the custom Result and change the response StatusCode to match it.
+    /// </summary>
     public class ResultResponseFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
