@@ -2,11 +2,11 @@
 
 namespace Deve.Internal.Sdk
 {
-    internal abstract class SdkBaseAll<ModelList, Model, Criteria> : External.Sdk.SdkBaseGet<ModelList, Model, Criteria, ISdk>, IDataAll<ModelList, Model, Criteria>
+    internal class SdkBaseAll<ModelList, Model, Criteria> : External.Sdk.SdkBaseGet<ModelList, Model, Criteria, ISdk>, IDataAll<ModelList, Model, Criteria>
     {
         #region Constructor
-        public SdkBaseAll(ISdk sdk)
-            : base(sdk)
+        public SdkBaseAll(string path, ISdk sdk)
+            : base(path, sdk)
         {
         }
         #endregion

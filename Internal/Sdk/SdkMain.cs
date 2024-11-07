@@ -9,13 +9,13 @@ namespace Deve.Internal.Sdk
     internal class SdkMain : SdkMainBase, ISdk
     {
         #region Fields
-        private SdkCountryAll? _sdkCountry;
-        private SdkStateAll? _sdkState;
-        private SdkCityAll? _sdkCity;
+        private SdkBaseAll<Country, Country, CriteriaCountry>? _sdkCountry;
+        private SdkBaseAll<State, State, CriteriaState>? _sdkState;
+        private SdkBaseAll<City, City, CriteriaCity>? _sdkCity;
         private SdkClientAll? _sdkClient;
-        private SdkUserAll? _sdkUser;
+        private SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>? _sdkUser;
         private SdkStats? _sdkStats;
-        private SdkClientBasicGet? _sdkClientBasicGet;
+        private SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>? _sdkClientBasicGet;
         #endregion
 
         #region Properties
@@ -42,17 +42,17 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IData
-        public IDataAll<Country, Country, CriteriaCountry> Countries => _sdkCountry ??= new SdkCountryAll(this);
+        public IDataAll<Country, Country, CriteriaCountry> Countries => _sdkCountry ??= new SdkBaseAll<Country, Country, CriteriaCountry>(ApiConstants.ApiPathCountry, this);
 
-        public IDataAll<State, State, CriteriaState> States => _sdkState ??= new SdkStateAll(this);
+        public IDataAll<State, State, CriteriaState> States => _sdkState ??= new SdkBaseAll<State, State, CriteriaState>(ApiConstants.ApiPathState, this);
 
-        public IDataAll<City, City, CriteriaCity> Cities => _sdkCity ??= new SdkCityAll(this);
+        public IDataAll<City, City, CriteriaCity> Cities => _sdkCity ??= new SdkBaseAll<City, City, CriteriaCity>(ApiConstants.ApiPathCity, this);
 
         public IDataClient Clients => _sdkClient ??= new SdkClientAll(this);
 
-        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkClientBasicGet(this, ApiConstants.ApiPathClientBasic);
+        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.ApiPathClientBasic, this);
 
-        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkUserAll(this);
+        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>(ApiConstants.ApiPathUser, this);
 
         public IDataStats Stats => _sdkStats ??= new SdkStats(this);
         #endregion

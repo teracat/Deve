@@ -4,10 +4,6 @@ namespace Deve.Sdk
 {
     internal class SdkAuth : SdkBase<ISdkCommon>, IAuthenticate
     {
-        #region Properties
-        protected override string Path => ApiConstants.ApiPathAuth;
-        #endregion
-
         #region Constructor
         public SdkAuth(ISdkCommon sdk)
             : base(sdk)
@@ -23,7 +19,7 @@ namespace Deve.Sdk
                 var queryBuidler = new UriQuery();
                 queryBuidler.AddParameter("username", credentials.Username);
                 queryBuidler.AddParameter("password", credentials.Password);
-                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(Path + ApiConstants.ApiMethodLogin + queryBuidler.ToQueryString(), SerializerOptions);
+                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.ApiPathAuth + ApiConstants.ApiMethodLogin + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
@@ -42,7 +38,7 @@ namespace Deve.Sdk
             {
                 var queryBuidler = new UriQuery();
                 queryBuidler.AddParameter("token", token);
-                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(Path + ApiConstants.ApiMethodRefreshToken + queryBuidler.ToQueryString(), SerializerOptions);
+                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.ApiPathAuth + ApiConstants.ApiMethodRefreshToken + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
                 return res;

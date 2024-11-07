@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Deve.Sdk
 {
-    internal abstract class SdkBase<SdkType> where SdkType: ISdkCommon
+    internal class SdkBase<SdkType> where SdkType: ISdkCommon
     {
         #region Atributes
         private readonly SdkType _sdk;
@@ -11,7 +11,6 @@ namespace Deve.Sdk
 
         #region Properties
         protected SdkType Sdk => _sdk;
-        protected abstract string Path { get; }
         public JsonSerializerOptions SerializerOptions { get; set; } = new()
         {
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,

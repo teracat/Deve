@@ -32,11 +32,11 @@
             Log.Providers.AddDebug();
 #endif
 
-            //ShowClients().Wait();   //It will fail because it's not authenticated
+            ShowClients().Wait();   //It will fail because it's not authenticated
             DoLogin().Wait();
-            /*ShowCountries().Wait();
+            ShowCountries().Wait();
             ShowClients().Wait();
-            ShowClientStats().Wait();*/
+            ShowClientStats().Wait();
             var newCountryId = AddCountry().Result;
             if (newCountryId > 0)
                 ShowCountry(newCountryId).Wait();

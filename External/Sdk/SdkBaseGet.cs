@@ -2,12 +2,21 @@
 
 namespace Deve.External.Sdk
 {
-    internal abstract class SdkBaseGet<ModelList, Model, Criteria, SdkType> : SdkBase<SdkType>, IDataGet<ModelList, Model, Criteria> where SdkType : ISdkCommon
+    internal class SdkBaseGet<ModelList, Model, Criteria, SdkType> : SdkBase<SdkType>, IDataGet<ModelList, Model, Criteria> where SdkType : ISdkCommon
     {
+        #region Atributes
+        private readonly string _path;
+        #endregion
+
+        #region Properties
+        protected string Path => _path;
+        #endregion
+
         #region Constructor
-        public SdkBaseGet(SdkType sdk)
+        public SdkBaseGet(string path, SdkType sdk)
             : base(sdk)
         {
+            _path = path;
         }
         #endregion
 

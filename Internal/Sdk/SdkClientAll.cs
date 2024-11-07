@@ -4,13 +4,9 @@ namespace Deve.Internal.Sdk
 {
     internal class SdkClientAll : SdkBaseAll<Client, Client, CriteriaClient>, IDataClient
     {
-        #region Properties
-        protected override string Path => ApiConstants.ApiPathClient;
-        #endregion
-
         #region Constructor
         public SdkClientAll(ISdk sdk)
-            : base(sdk)
+            : base(ApiConstants.ApiPathClient, sdk)
         {
         }
         #endregion

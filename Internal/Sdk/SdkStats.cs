@@ -4,10 +4,6 @@ namespace Deve.Internal.Sdk
 {
     internal class SdkStats : SdkBase<ISdk>, IDataStats
     {
-        #region Properties
-        protected override string Path => ApiConstants.ApiPathStats;
-        #endregion
-
         #region Constructor
         public SdkStats(ISdk sdk)
             : base(sdk)
@@ -18,7 +14,7 @@ namespace Deve.Internal.Sdk
         #region IDataStats
         public async Task<ResultGet<ClientStats>> GetClientStats()
         {
-            return await Get<ClientStats>(Path + ApiConstants.ApiMethodGetClientStats, RequestAuthType.Default);
+            return await Get<ClientStats>(ApiConstants.ApiPathStats + ApiConstants.ApiMethodGetClientStats, RequestAuthType.Default);
         }
         #endregion
     }
