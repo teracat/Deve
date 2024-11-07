@@ -15,7 +15,7 @@ namespace Deve.Internal.Api
         #endregion
 
         #region Methods
-        [HttpGet(Name = ApiConstants.ApiMethodGetClientStats)]
+        [HttpGet(), Route(ApiConstants.ApiMethodGetClientStats)]
         public async Task<ResultGet<ClientStats>> GetClientStats()
         {
             return await Core.Stats.GetClientStats();
