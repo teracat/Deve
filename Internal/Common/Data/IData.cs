@@ -10,7 +10,7 @@
         IDataAll<City, City, CriteriaCity> Cities { get; }
         IDataClient Clients { get; }
         External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic { get; }
-        IDataAll<User, User, CriteriaUser> Users { get; }
+        IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users { get; }
         IDataStats Stats { get; }
     }
 }

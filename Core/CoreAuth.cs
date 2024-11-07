@@ -12,7 +12,7 @@
         #region IAuthenticate
         public async Task<ResultGet<UserToken>> Login(UserCredentials userCredentials)
         {
-            var res = await Auth.LoginUser(userCredentials);
+            var res = await Core.Auth.LoginUser(userCredentials);
             if (!res.Success)
                 return Utils.ResultGetError<UserToken>(res);
             
@@ -27,7 +27,7 @@
 
         public Task<ResultGet<UserToken>> RefreshToken(string token)
         {
-            return Auth.RefreshToken(token);
+            return Core.Auth.RefreshToken(token);
         }
         #endregion
     }

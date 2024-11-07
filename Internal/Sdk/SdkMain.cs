@@ -52,7 +52,7 @@ namespace Deve.Internal.Sdk
 
         public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkClientBasicGet(this, ApiConstants.ApiPathClientBasic);
 
-        public IDataAll<User, User, CriteriaUser> Users => _sdkUser ??= new SdkUserAll(this);
+        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkUserAll(this);
 
         public IDataStats Stats => _sdkStats ??= new SdkStats(this);
         #endregion

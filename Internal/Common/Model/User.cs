@@ -1,17 +1,19 @@
 ﻿namespace Deve
 {
-    public class User : ModelId
+    /// <summary>
+    /// User with the password hash.
+    /// </summary>
+    public class User : UserBase
     {
-        public string Name { get; set; } = string.Empty;
-        public bool IsActive { get; set; } = true;
-
-        public string Username { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
 
-        public DateTime Joined { get; set; } = DateTime.Today;
+        public User()
+        {
+        }
 
-        public Role Role { get; set; } = Role.User;
-        public string? Email { get; set; }
-        public DateTime? Birthday { get; set; }
+        public User(UserBase other)
+            : base(other)
+        {
+        }
     }
 }

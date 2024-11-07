@@ -1,6 +1,6 @@
 ﻿namespace Deve.Internal.Sdk
 {
-    internal class SdkUserAll : SdkBaseAll<User, User, CriteriaUser>
+    internal class SdkUserAll : SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         #region Properties
         protected override string Path => ApiConstants.ApiPathUser;

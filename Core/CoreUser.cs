@@ -3,10 +3,14 @@ using Deve.Internal;
 
 namespace Deve.Core
 {
-    internal class CoreUser : CoreBaseAll<User, User, CriteriaUser>, IDataAll<User, User, CriteriaUser>
+    internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>, IDataAll<UserBase, UserPlainPassword, CriteriaUser>
     {
+        #region Fields
+        private DataSourceWrapperUser _wrapperUser;
+        #endregion
+
         #region CoreBaseAll Abstract Properties
-        protected override IDataAll<User, User, CriteriaUser> DataAll => Source.Users;
+        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => _wrapperUser;
         protected override PermissionDataType DataType => PermissionDataType.User;
         #endregion
 
@@ -14,25 +18,34 @@ namespace Deve.Core
         public CoreUser(CoreMain core)
             : base(core)
         {
+            _wrapperUser = new DataSourceWrapperUser(core);
         }
         #endregion
 
         #region CoreBaseAll Implementation
-        protected override Task<Result> CheckRequired(User data, ChecksActionType action)
+        protected override Task<Result> CheckRequired(UserPlainPassword data, ChecksActionType action)
         {
             return Task.Run(() =>
             {
                 var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                                                 .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.Username), new Field(data.PasswordHash));
+                                                 .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.Username));
 
-                if (action == ChecksActionType.Update)
-                    resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                switch (action)
+                {
+                    case ChecksActionType.Add:
+                        resultBuilder.CheckNotNullOrEmpty(new Field(data.Password));
+                        break;
+                    
+                    case ChecksActionType.Update:
+                        resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                        break;
+                }
 
                 return resultBuilder.ToResult();
             });
         }
 
-        protected override Task<Result> CheckDuplicated(User data, IList<User> list, ChecksActionType action)
+        protected override Task<Result> CheckDuplicated(UserPlainPassword data, IList<UserBase> list, ChecksActionType action)
         {
             return Task.Run(() =>
             {

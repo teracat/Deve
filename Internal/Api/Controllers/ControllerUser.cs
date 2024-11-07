@@ -5,9 +5,9 @@ namespace Deve.Internal.Api
 {
     [ApiController]
     [Route(ApiConstants.ApiPathUser)]
-    public class ControllerUser : ControllerBaseAll<User, User, CriteriaUser>
+    public class ControllerUser : ControllerBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
-        protected override IDataAll<User, User, CriteriaUser> DataAll => Core.Users;
+        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
 
         public ControllerUser(IHttpContextAccessor contextAccessor)
             : base(contextAccessor)

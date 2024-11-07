@@ -12,7 +12,6 @@ namespace Deve.Core
         #region Properties
         protected CoreMain Core { get; }
         protected IDataSource Source => Core.DataSource;
-        protected IAuth Auth => _auth ??= AuthFactory.Get(Source, Core.Options);
         #endregion
 
         #region Constructor
@@ -25,7 +24,7 @@ namespace Deve.Core
         #region Methods
         protected async virtual Task<Result> CheckPermission(PermissionType type, PermissionDataType dataType)
         {
-            var permissionResult = await Auth.IsGranted(Core.UserIdentity, type, dataType);
+            var permissionResult = await Core.Auth.IsGranted(Core.UserIdentity, type, dataType);
             switch (permissionResult)
             {
                 case PermissionResult.Granted:

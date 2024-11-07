@@ -13,6 +13,7 @@ namespace Deve.Core
         private bool _isSharedInstance;
         private readonly IDataSource _dataSource;
         private DataOptions _options;
+        private IAuth _auth;
 
         private UserIdentity? _userIdentity;
         private User? _user;
@@ -32,6 +33,11 @@ namespace Deve.Core
         /// Source to get the data.
         /// </summary>
         public IDataSource DataSource => _dataSource;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAuth Auth => _auth;
 
         /// <summary>
         /// Global options.
@@ -103,7 +109,7 @@ namespace Deve.Core
         public IDataAll<State, State, CriteriaState> States => _coreState ??= new CoreState(this);
         public IDataAll<City, City, CriteriaCity> Cities => _coreCity ??= new CoreCity(this);
         public IDataClient Clients => _coreClient ??= new CoreClient(this);
-        public IDataAll<User, User, CriteriaUser> Users => _coreUser ??= new CoreUser(this);
+        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _coreUser ??= new CoreUser(this);
         public IDataStats Stats => _coreStats ??= new CoreStats(this);
 
         public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _coreClientBasic ??= new CoreClientBasic(this);
@@ -115,6 +121,7 @@ namespace Deve.Core
             _isSharedInstance = isSharedInstance;
             _dataSource = dataSource ?? DataSourceFactory.Get();
             _options = options ?? new DataOptions();
+            _auth = AuthFactory.Get(_dataSource, _options);
         }
         #endregion
     }
