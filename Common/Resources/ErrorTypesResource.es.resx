@@ -138,4 +138,7 @@
   <data name="NotAllowed" xml:space="preserve">
     <value>No permitido</value>
   </data>
+  <data name="TooManyAttempts" xml:space="preserve">
+    <value>Demasiados intentos</value>
+  </data>
 </root>

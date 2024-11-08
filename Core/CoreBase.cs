@@ -5,10 +5,6 @@ namespace Deve.Core
 {
     internal abstract class CoreBase
     {
-        #region Fields
-        private IAuth? _auth;
-        #endregion
-
         #region Properties
         protected CoreMain Core { get; }
         protected IDataSource Source => Core.DataSource;

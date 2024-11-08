@@ -12,6 +12,10 @@
         #region IAuthenticate
         public async Task<ResultGet<UserToken>> Login(UserCredentials userCredentials)
         {
+            var resShield = await Core.Shield.Protect(Core.Options);
+            if (!resShield.Success)
+                return Utils.ResultGetError<UserToken>(resShield);
+
             var res = await Core.Auth.LoginUser(userCredentials);
             if (!res.Success)
                 return Utils.ResultGetError<UserToken>(res);
@@ -25,9 +29,13 @@
             return Utils.ResultGetOk(res.Data.UserToken);
         }
 
-        public Task<ResultGet<UserToken>> RefreshToken(string token)
+        public async Task<ResultGet<UserToken>> RefreshToken(string token)
         {
-            return Core.Auth.RefreshToken(token);
+            var resShield = await Core.Shield.Protect(Core.Options);
+            if (!resShield.Success)
+                return Utils.ResultGetError<UserToken>(resShield);
+
+            return await Core.Auth.RefreshToken(token);
         }
         #endregion
     }
