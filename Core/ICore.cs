@@ -1,6 +1,7 @@
 ﻿using Deve.Auth;
 using Deve.DataSource;
 using Deve.Internal;
+using Deve.Core.Shield;
 
 namespace Deve.Core
 {
@@ -9,5 +10,6 @@ namespace Deve.Core
         IDataSource DataSource { get; }
         UserIdentity? UserIdentity { get; set; }
         User? User { get; set; }
+        IShield Shield { get; }
     }
 }

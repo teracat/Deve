@@ -1,7 +1,8 @@
 using System.Globalization;
-using Deve.Common.Api;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
+using Deve.Common.Api;
 
 namespace Deve.Api
 {
@@ -20,6 +21,7 @@ namespace Deve.Api
 
             // Add services to the container.
 
+            // Languages
             builder.Services.Configure<RequestLocalizationOptions>(config =>
             {
                 var cultures = Constants.AvailableLanguages
@@ -29,6 +31,21 @@ namespace Deve.Api
                 config.DefaultRequestCulture = new RequestCulture(Constants.DefaultLangCode);
             });
 
+            // Rate Limiter: you might need to change the configuration
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                // Allow a maximum of 20 requests every minute
+                // More info: https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-8.0
+                options.AddFixedWindowLimiter("fixed", options =>
+                {
+                    options.PermitLimit = 20;
+                    options.Window = TimeSpan.FromMinutes(1);
+                });
+            });
+
+            // Controllers
             builder.Services.AddControllers(options =>
             {
                 //Comment next line if you don't want to alter the Status Code
@@ -70,7 +87,11 @@ namespace Deve.Api
                 options.OperationFilter<AcceptLanguageHeaderParameter>();
                 options.CustomSchemaIds(i => i.FullName);
             });
+
+            // Inject HttpContextAccessor to the Controllers constructor
             builder.Services.AddHttpContextAccessor();
+
+            // Authentication
             builder.Services.AddAuthentication((o) =>
             {
                 o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthDefaultScheme, ApiConstants.ApiAuthDefaultScheme);
@@ -78,30 +99,47 @@ namespace Deve.Api
                 o.DefaultChallengeScheme = ApiConstants.ApiAuthDefaultScheme;
             });
 
+            // Logging
             builder.Logging.AddDebug();
             builder.Logging.AddConsole();
 
+            // Build
             var app = builder.Build();
 
+            // Request Localization
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 ApplyCurrentCultureToResponseHeaders = true,
             });
 
-            // Configure the HTTP request pipeline.
+            // Swagger
+            // If you want to publish the Swagger, remove this condition
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+            // Redirect HTTP requests to HTTPS
             app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
 
-            //Add NetCore Log Provider
+            // Add custom Middlewares
+            app.UseMiddleware<TooManyRequestsMiddleware>();
+
+            // Rate Limiter
+            app.UseRateLimiter();
+
+            // Authorization
+            app.UseAuthorization();
+
+            // Map the controllers and require Rate Limiting using the policy name used before
+            app.MapControllers()
+               .RequireRateLimiting("fixed");
+
+            // Add NetCore Log Provider
             Log.Providers.AddNetCore(app.Logger);
 
+            // Run
             app.Run();
         }
     }

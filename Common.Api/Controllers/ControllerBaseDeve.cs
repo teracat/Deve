@@ -17,7 +17,10 @@ namespace Deve.Api
         public ControllerBaseDeve(IHttpContextAccessor contextAccessor)
         {
             string? langCode = UtilsApi.GetLangCodeFromRequest(contextAccessor.HttpContext?.Request);   //IRequestCultureFeature seems to not take into account available languages to set the culture
-            var options = new DataOptions();
+            var options = new DataOptions()
+            {
+                OriginId = contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? string.Empty
+            };
             if (!string.IsNullOrWhiteSpace(langCode))
                 options.LangCode = langCode;
 
