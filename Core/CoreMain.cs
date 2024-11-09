@@ -1,6 +1,7 @@
 ﻿using Deve.Auth;
 using Deve.DataSource;
 using Deve.Internal;
+using Deve.Core.Shield;
 
 namespace Deve.Core
 {
@@ -128,7 +129,7 @@ namespace Deve.Core
             _dataSource = dataSource ?? DataSourceFactory.Get();
             _options = options ?? new DataOptions();
             _auth = AuthFactory.Get(_dataSource, _options);
-            _shield = new Shield();
+            _shield = new ShieldMain();
         }
         #endregion
     }

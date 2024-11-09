@@ -1,4 +1,5 @@
-﻿using Deve.Api;
+﻿using System.Net;
+using Deve.Api;
 
 namespace Deve.Common.Api
 {
@@ -18,7 +19,7 @@ namespace Deve.Common.Api
         {
             await _next(context);
 
-            if (context.Response.StatusCode == StatusCodes.Status429TooManyRequests)
+            if (context.Response.StatusCode == (int)HttpStatusCode.TooManyRequests)
             {
                 string langCode = UtilsApi.GetLangCodeFromRequest(context.Request) ?? Constants.DefaultLangCode;
 

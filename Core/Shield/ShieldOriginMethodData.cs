@@ -1,12 +1,12 @@
-﻿namespace Deve.Core
+﻿namespace Deve.Core.Shield
 {
     /// <summary>
-    /// Information of the shield method accessed by a device.
+    /// Status information about a method for an origin.
     /// </summary>
-    internal class ShieldItem
+    internal class ShieldOriginMethodData
     {
         /// <summary>
-        /// Status of the Lock for the method.
+        /// The current status of the method for the origin.
         /// </summary>
         public ShieldLockStatus Status { get; set; } = ShieldLockStatus.Unlocked;
 

@@ -24,7 +24,7 @@ namespace Deve.Common.Api
                     switch (error.Type)
                     {
                         case ResultErrorType.Unauthorized:
-                            response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            response.StatusCode =  (int)HttpStatusCode.Unauthorized;
                             break;
                         case ResultErrorType.MissingRequiredField:
                         case ResultErrorType.DuplicatedValue:
@@ -32,6 +32,9 @@ namespace Deve.Common.Api
                         case ResultErrorType.InvalidId:
                         case ResultErrorType.NotAllowed:
                             response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case ResultErrorType.Locked:
+                            response.StatusCode = (int)HttpStatusCode.Locked;
                             break;
                         case ResultErrorType.Unknown:
                             response.StatusCode = (int)HttpStatusCode.InternalServerError;

@@ -10,5 +10,6 @@
         DuplicatedValue = 5,
         NotAllowed = 6,
         TooManyAttempts = 7,
+        Locked = 8,
     }
 }

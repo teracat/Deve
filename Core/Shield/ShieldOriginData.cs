@@ -1,12 +1,12 @@
-﻿namespace Deve.Core
+﻿namespace Deve.Core.Shield
 {
     /// <summary>
-    /// Status of origin.
+    /// Status information about an origin.
     /// </summary>
-    internal class ShieldOrigin
+    internal class ShieldOriginData
     {
         /// <summary>
-        /// The current status of the origin id.
+        /// The current status of the origin.
         /// </summary>
         public ShieldLockStatus Status { get; set; } = ShieldLockStatus.Unlocked;
 

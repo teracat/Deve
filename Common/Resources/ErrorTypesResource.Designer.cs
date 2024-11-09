@@ -61,15 +61,6 @@ namespace Deve.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string aaa {
-            get {
-                return ResourceManager.GetString("aaa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Duplicated value.
         /// </summary>
         internal static string DuplicatedValue {
@@ -84,6 +75,15 @@ namespace Deve.Common.Resources {
         internal static string InvalidId {
             get {
                 return ResourceManager.GetString("InvalidId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked, retry in {0} seconds.
+        /// </summary>
+        internal static string Locked {
+            get {
+                return ResourceManager.GetString("Locked", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace Deve.Common.Resources {
         internal static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many attempts.
+        /// </summary>
+        internal static string TooManyAttempts {
+            get {
+                return ResourceManager.GetString("TooManyAttempts", resourceCulture);
             }
         }
         

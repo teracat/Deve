@@ -141,4 +141,7 @@
   <data name="TooManyAttempts" xml:space="preserve">
     <value>Too many attempts</value>
   </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Locked, retry in {0} seconds</value>
+  </data>
 </root>

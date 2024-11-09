@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Deve.Core
+namespace Deve.Core.Shield
 {
     public interface IShield
     {

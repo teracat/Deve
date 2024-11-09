@@ -1,4 +1,4 @@
-﻿namespace Deve.Core
+﻿namespace Deve.Core.Shield
 {
     internal enum ShieldMaxAttemptsLockType
     {

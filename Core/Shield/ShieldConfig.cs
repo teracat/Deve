@@ -1,4 +1,4 @@
-﻿namespace Deve.Core
+﻿namespace Deve.Core.Shield
 {
     /// <summary>
     /// Used to define Shield Config for some method that need some value different from the defaults.
@@ -10,10 +10,12 @@
         {
             //CoreAuth.Login Shield Config
             {
-                Shield.BuildConfigKey(nameof(CoreAuth), nameof(CoreAuth.Login)),
+                ShieldMain.BuildConfigKey(nameof(CoreAuth), nameof(CoreAuth.Login)),
                 new ShieldItemConfig()
                 {
                     MaxInvalidAttempts = 3,
+                    LockSeconds = 600,
+                    MaxAttemptsLockType = ShieldMaxAttemptsLockType.Origin,
                 }
             }
         };
