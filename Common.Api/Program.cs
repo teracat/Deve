@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
 using Deve.Common.Api;
-using System.Threading.RateLimiting;
 
 namespace Deve.Api
 {
