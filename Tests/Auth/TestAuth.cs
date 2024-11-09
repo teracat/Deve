@@ -14,7 +14,9 @@ namespace Deve.Tests.Auth
         public async Task Login_CredentialsNull_ReturnFalse()
         {
             var auth = AuthFactory.Get();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var result = await auth.Login(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.False(result.Success, "Login with Null UserCredentials should return false");
         }
@@ -61,7 +63,9 @@ namespace Deve.Tests.Auth
         public async Task RefreshToken_Null_ReturnFalse()
         {
             var auth = AuthFactory.Get();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var result = await auth.RefreshToken(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.False(result.Success, "RefreshToken with Null token should return false");
         }

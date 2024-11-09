@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using Deve.Auth;
-using System.Security.Cryptography;
 
 namespace Deve.Tests.Auth
 {
@@ -14,7 +13,9 @@ namespace Deve.Tests.Auth
         {
             var auth = AuthFactory.Get();
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var hash = auth.Hash.Calc(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.Null(hash);
         }
