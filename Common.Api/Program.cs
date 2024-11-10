@@ -1,8 +1,7 @@
+using System.Net;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
-using Deve.Common.Api;
 
 namespace Deve.Api
 {
@@ -31,18 +30,11 @@ namespace Deve.Api
                 config.DefaultRequestCulture = new RequestCulture(Constants.DefaultLangCode);
             });
 
-            // Rate Limiter: you might need to change the configuration
+            // Rate Limiter: you might need to change the configurations in RateLimiterHelper
             builder.Services.AddRateLimiter(options =>
             {
-                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-
-                // Allow a maximum of 20 requests every minute
-                // More info: https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-8.0
-                options.AddFixedWindowLimiter("fixed", options =>
-                {
-                    options.PermitLimit = 20;
-                    options.Window = TimeSpan.FromMinutes(1);
-                });
+                options.GlobalLimiter = RateLimiterHelper.CreateRateLimiter();
+                options.RejectionStatusCode = (int)HttpStatusCode.TooManyRequests;
             });
 
             // Controllers
@@ -132,9 +124,8 @@ namespace Deve.Api
             // Authorization
             app.UseAuthorization();
 
-            // Map the controllers and require Rate Limiting using the policy name used before
-            app.MapControllers()
-               .RequireRateLimiting("fixed");
+            // Map the controllers
+            app.MapControllers();
 
             // Add NetCore Log Provider
             Log.Providers.AddNetCore(app.Logger);

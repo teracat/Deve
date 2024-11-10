@@ -11,6 +11,11 @@
         public long Id { get; set; }
 
         /// <summary>
+        /// Username of the user.
+        /// </summary>
+        public string UserName {get;set;}
+
+        /// <summary>
         /// Role of the user (to check permissions)
         /// </summary>
         public Role Role { get; set; }
@@ -22,6 +27,7 @@
         {
             Id = 0;
             Role = Role.User;
+            UserName = string.Empty;
         }
 
         /// <summary>
@@ -32,6 +38,7 @@
         {
             Id = user.Id;
             Role = user.Role;
+            UserName = user.Username;
         }
     }
 }

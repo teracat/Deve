@@ -9,9 +9,10 @@ namespace Deve.Auth
         {
             List<Claim> claims = [
                 new Claim(AuthConstants.UserClaimRole, RoleConverter.ToString(tokenData.Subject.Role)),
-                new Claim(AuthConstants.UserClaimId, tokenData.Subject.Id.ToString())
+                new Claim(AuthConstants.UserClaimId, tokenData.Subject.Id.ToString()),
+                new Claim(AuthConstants.UserClaimName, tokenData.Subject.UserName.ToString()),
             ];
-            var identity = new ClaimsIdentity(claims, scheme);
+            var identity = new ClaimsIdentity(claims, scheme, AuthConstants.UserClaimName, AuthConstants.UserClaimRole);
             return new GenericPrincipal(identity, null);
         }
 
@@ -29,22 +30,24 @@ namespace Deve.Auth
         public static UserIdentity? ToUserIdentity(ClaimsPrincipal identity)
         {
             var idStr = GetClaimValue(identity, AuthConstants.UserClaimId);
+            var username = GetClaimValue(identity, AuthConstants.UserClaimName);
             var role = GetClaimValue(identity, AuthConstants.UserClaimRole);
-            if (Utils.SomeIsNullOrWhiteSpace(idStr, role) || !long.TryParse(idStr, out long id))
+            if (Utils.SomeIsNullOrWhiteSpace(idStr, username, role) || !long.TryParse(idStr, out long id))
                 return null;
 
             return new UserIdentity()
             {
                 Id = id,
+                UserName = username,
                 Role = RoleConverter.ToRole(role)
             };
         }
 
-        private static string? GetClaimValue(ClaimsPrincipal identity, string claimName)
+        private static string GetClaimValue(ClaimsPrincipal identity, string claimName)
         {
             return identity.Claims
                            .FirstOrDefault(x => x.Type == claimName)?
-                           .Value;
+                           .Value ?? string.Empty;
         }
     }
 }
