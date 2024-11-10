@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Deve.Common.Api
+namespace Deve.Api
 {
     /// <summary>
     /// Parse the custom Result and change the response StatusCode to match it.
