@@ -33,13 +33,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Auth", "Auth\Deve.Auth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Api", "Common.Api\Deve.Common.Api.csproj", "{22900C5B-DDF3-4C5D-A720-B5284FB941A7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Log", "Log", "{2A52D688-96F9-4C04-945E-5B6E3920B29E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extra", "Extra", "{2A52D688-96F9-4C04-945E-5B6E3920B29E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Log\NLog\Deve.Log.NLog.csproj", "{4CF9B145-5C24-4916-8A2C-837593C563F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Extra\Log.NLog\Deve.Log.NLog.csproj", "{4CF9B145-5C24-4916-8A2C-837593C563F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.Log4net", "Log\Log4net\Deve.Log.Log4net.csproj", "{9B2ACF6E-9D58-4943-A846-802C47DF8F8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.Log4net", "Extra\Log.Log4net\Deve.Log.Log4net.csproj", "{9B2ACF6E-9D58-4943-A846-802C47DF8F8A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NetCore", "Log\NetCore\Deve.Log.NetCore.csproj", "{AAC5C119-6CCF-4E30-B37F-C6B5BDF5C89F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NetCore", "Extra\Log.NetCore\Deve.Log.NetCore.csproj", "{AAC5C119-6CCF-4E30-B37F-C6B5BDF5C89F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.External.ClientApp.Sdk.Common", "External\Client\Sdk.Common\Deve.External.ClientApp.Sdk.Common.csproj", "{4CD0703C-0AA8-4169-BB57-C10949D650DD}"
 EndProject
@@ -55,7 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Internal.ClientApp.Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Internal.ClientApp.Sdk.Console", "Internal\Client\Sdk.Console\Deve.Internal.ClientApp.Sdk.Console.csproj", "{0C594DFF-B810-4D20-A037-B101FA87454D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Common.Sdk", "Common.Sdk\Deve.Common.Sdk.csproj", "{952D8F06-8B27-405F-9385-46BA53D145F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Sdk", "Common.Sdk\Deve.Common.Sdk.csproj", "{952D8F06-8B27-405F-9385-46BA53D145F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Auth.Jwt", "Extra\Auth.Jwt\Deve.Auth.Jwt.csproj", "{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,10 @@ Global
 		{952D8F06-8B27-405F-9385-46BA53D145F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952D8F06-8B27-405F-9385-46BA53D145F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952D8F06-8B27-405F-9385-46BA53D145F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +183,7 @@ Global
 		{96CAF602-E24E-44F6-8591-914012EC7295} = {CEBE374A-E4B9-45BA-BB62-DC94A665121A}
 		{33D1B393-A639-4FEC-B24F-F172350A80B8} = {EEB7CEAD-5900-4BB7-991F-20C10F600DD8}
 		{0C594DFF-B810-4D20-A037-B101FA87454D} = {EEB7CEAD-5900-4BB7-991F-20C10F600DD8}
+		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111} = {2A52D688-96F9-4C04-945E-5B6E3920B29E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8157CD2-E584-4372-9A7B-B73C837733A5}

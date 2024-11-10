@@ -5,14 +5,19 @@ namespace Deve.Auth
 {
     public static class UserConverter
     {
-        public static ClaimsPrincipal ToClaimsPrincipal(string scheme, TokenData tokenData)
+        public static ClaimsIdentity ToClaimsIdentity(string scheme, TokenData tokenData)
         {
             List<Claim> claims = [
                 new Claim(AuthConstants.UserClaimRole, RoleConverter.ToString(tokenData.Subject.Role)),
                 new Claim(AuthConstants.UserClaimId, tokenData.Subject.Id.ToString()),
                 new Claim(AuthConstants.UserClaimName, tokenData.Subject.UserName.ToString()),
             ];
-            var identity = new ClaimsIdentity(claims, scheme, AuthConstants.UserClaimName, AuthConstants.UserClaimRole);
+            return new ClaimsIdentity(claims, scheme, AuthConstants.UserClaimName, AuthConstants.UserClaimRole);
+        }
+
+        public static ClaimsPrincipal ToClaimsPrincipal(string scheme, TokenData tokenData)
+        {
+            var identity = ToClaimsIdentity(scheme, tokenData);
             return new GenericPrincipal(identity, null);
         }
 

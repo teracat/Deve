@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\..\..\Log\NetCore\Deve.Log.NetCore.csproj" />
+    <ProjectReference Include="..\..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
     <ProjectReference Include="..\Sdk.Common\Deve.External.ClientApp.Sdk.Common.csproj" />
   </ItemGroup>
 </Project>

@@ -34,21 +34,24 @@ namespace Deve.Api
                     if (!string.IsNullOrWhiteSpace(langCode))
                         options.LangCode = langCode;
 
-                    if (!Request.Headers.ContainsKey("Authorization"))
+                    if (!Request.Headers.TryGetValue("Authorization", out Microsoft.Extensions.Primitives.StringValues authorizationHeader))
                         return GetResultUnauthorized(options.LangCode);
 
-                    string? authorizationHeader = Request.Headers["Authorization"];
-                    if (string.IsNullOrEmpty(authorizationHeader))
-                        return AuthenticateResult.NoResult();
-
-                    if (!authorizationHeader.StartsWith(ApiConstants.ApiAuthDefaultScheme, StringComparison.OrdinalIgnoreCase))
+                    string? authHeaderString = authorizationHeader;
+                    if (string.IsNullOrWhiteSpace(authHeaderString))
                         return GetResultUnauthorized(options.LangCode);
 
-                    string token = authorizationHeader.Substring(ApiConstants.ApiAuthDefaultScheme.Length).Trim();
-                    if (string.IsNullOrEmpty(token))
+                    var parts = authHeaderString.Split(' ');
+                    if (parts.Length != 2)
                         return GetResultUnauthorized(options.LangCode);
 
-                    return ValidateToken(token, options);
+                    string scheme = parts[0] ?? string.Empty;
+                    string token = parts[1] ?? string.Empty;
+
+                    if (Utils.SomeIsNullOrWhiteSpace(scheme, token))
+                        return GetResultUnauthorized(options.LangCode);
+
+                    return ValidateToken(scheme, token, options);
                 }
                 catch (Exception ex)
                 {
@@ -60,14 +63,14 @@ namespace Deve.Api
         #endregion
 
         #region Methods
-        private AuthenticateResult ValidateToken(string token, DataOptions options)
+        private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
-            var auth = AuthFactory.Get(null, options);
-            var res = auth.TokenManager.ValidateToken(token, out var tokenData);
+            var tokenManager = TokenManagerFactory.Get(scheme);
+            var res = tokenManager.ValidateToken(token, out var tokenData);
             if (res == TokenParseResult.Valid && tokenData is not null)
             {
-                var principal = UserConverter.ToClaimsPrincipal(Scheme.Name, tokenData);
-                var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                var principal = UserConverter.ToClaimsPrincipal(scheme, tokenData);
+                var ticket = new AuthenticationTicket(principal, scheme);
                 return AuthenticateResult.Success(ticket);
             }
             return GetResultUnauthorized(options.LangCode);

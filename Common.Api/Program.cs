@@ -2,6 +2,8 @@ using System.Net;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
+using Deve.Auth;
+using Deve.Auth.Jwt;
 
 namespace Deve.Api
 {
@@ -84,9 +86,15 @@ namespace Deve.Api
             builder.Services.AddHttpContextAccessor();
 
             // Authentication
+            // We register the TokenManagerJwt so we can use it as the Default Scheme
+            // If you don't want to use Jwt, you can remove it and remove the referenced projecte Deve.Auth.Jwt
+            TokenManagerFactory.TokenManagers.AddJwt(ApiConstants.ApiAuthDefaultScheme);
             builder.Services.AddAuthentication((o) =>
             {
+                //You can allow multiple Schemes
                 o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthDefaultScheme, ApiConstants.ApiAuthDefaultScheme);
+                //o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthCryptAesScheme, ApiConstants.ApiAuthCryptAesScheme);
+
                 o.DefaultAuthenticateScheme = ApiConstants.ApiAuthDefaultScheme;
                 o.DefaultChallengeScheme = ApiConstants.ApiAuthDefaultScheme;
             });

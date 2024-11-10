@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Internal.ClientApp.Sdk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Internal.Common", "Internal\Common\Deve.Internal.Common.csproj", "{7DC4296C-8470-4309-B557-59E2405221A7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Log", "Log", "{66B806F6-6293-447A-BE10-9931F243F758}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extra", "Extra", "{66B806F6-6293-447A-BE10-9931F243F758}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.Log4net", "Log\Log4net\Deve.Log.Log4net.csproj", "{689C1119-AF45-4D8F-91A5-2803D73F6159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.Log4net", "Extra\Log.Log4net\Deve.Log.Log4net.csproj", "{689C1119-AF45-4D8F-91A5-2803D73F6159}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Log\NLog\Deve.Log.NLog.csproj", "{30FC12D4-FCD3-472E-A85E-6AB1D6B01045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Extra\Log.NLog\Deve.Log.NLog.csproj", "{30FC12D4-FCD3-472E-A85E-6AB1D6B01045}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Sdk", "Common.Sdk\Deve.Common.Sdk.csproj", "{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}"
 EndProject

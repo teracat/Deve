@@ -2,16 +2,18 @@
 
 namespace Deve.Auth
 {
-    internal class TokenManager : ITokenManager
+    internal class TokenManagerCrypt : ITokenManager
     {
+        private readonly string _scheme;
         private readonly ICrypt _crypt;
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions()
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = false,
         };
 
-        public TokenManager(ICrypt crypt)
+        public TokenManagerCrypt(string scheme, ICrypt crypt)
         {
+            _scheme = scheme;
             _crypt = crypt;
         }
 
