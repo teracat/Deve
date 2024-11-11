@@ -70,7 +70,7 @@ namespace Deve.Tests.Auth
 
             var result = tokenManager.ValidateToken(GetExpiredToken(), out _);
 
-            Assert.Equal(TokenParseResult.NotValid, result);
+            Assert.Equal(TokenParseResult.Expired, result);
         }
 
         [Fact]
