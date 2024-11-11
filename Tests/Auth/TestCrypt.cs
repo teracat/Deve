@@ -39,6 +39,7 @@ namespace Deve.Tests.Auth
             var encrypted = auth.Crypt.Encrypt("Original Text");
             System.Diagnostics.Debug.WriteLine(encrypted);
 
+            //You should change this value when you have changed the Crypt implementation or the keys used to encrypt/decrypt.
             Assert.Equal("yX0oNH+mCQ0P+vP2Qe9Tug==", encrypted);
         }
 
@@ -77,6 +78,7 @@ namespace Deve.Tests.Auth
         {
             var auth = AuthFactory.Get();
 
+            //You should change this value when you have changed the Crypt implementation or the keys used to encrypt/decrypt.
             var decrypted = auth.Crypt.Decrypt("yX0oNH+mCQ0P+vP2Qe9Tug==");
 
             Assert.Equal("Original Text", decrypted);
