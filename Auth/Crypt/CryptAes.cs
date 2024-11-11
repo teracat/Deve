@@ -13,8 +13,8 @@ namespace Deve.Auth
 
         public CryptAes()
         {
-            key = Encoding.UTF8.GetBytes(AuthConstants.CryptKey);
-            iv = Encoding.UTF8.GetBytes(AuthConstants.CryptIV);
+            key = Encoding.UTF8.GetBytes(AuthConstants.CryptAesKey);
+            iv = Encoding.UTF8.GetBytes(AuthConstants.CryptAesIV);
         }
 
         public string Encrypt(string text)

@@ -87,14 +87,11 @@ namespace Deve.Api
 
             // Authentication
             // We register the TokenManagerJwt so we can use it as the Default Scheme
-            // If you don't want to use Jwt, you can remove it and remove the referenced projecte Deve.Auth.Jwt
+            // If you don't want to use Jwt, you can remove the next line and remove the referenced projecte Deve.Auth.Jwt
             TokenManagerFactory.TokenManagers.AddJwt(ApiConstants.ApiAuthDefaultScheme);
             builder.Services.AddAuthentication((o) =>
             {
-                //You can allow multiple Schemes
                 o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthDefaultScheme, ApiConstants.ApiAuthDefaultScheme);
-                //o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthCryptAesScheme, ApiConstants.ApiAuthCryptAesScheme);
-
                 o.DefaultAuthenticateScheme = ApiConstants.ApiAuthDefaultScheme;
                 o.DefaultChallengeScheme = ApiConstants.ApiAuthDefaultScheme;
             });
@@ -123,7 +120,7 @@ namespace Deve.Api
             // Redirect HTTP requests to HTTPS
             app.UseHttpsRedirection();
 
-            // Add custom Middlewares
+            // Add TooManyRequestsMiddleware
             app.UseMiddleware<TooManyRequestsMiddleware>();
 
             // Rate Limiter

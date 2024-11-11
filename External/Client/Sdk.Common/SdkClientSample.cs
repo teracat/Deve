@@ -78,7 +78,6 @@ namespace Deve.External.ClientApp
                     LogResult($@"Name: {loginRes.Data.Subject.Name}
 Username: {loginRes.Data.Subject.Username}
 Joined: {loginRes.Data.Subject.Joined.ToShortDateString()}
-Role: {loginRes.Data.Subject.Role}
 Token: {loginRes.Data.Token}
 Created: {loginRes.Data.Created}
 Expires: {loginRes.Data.Expires}");

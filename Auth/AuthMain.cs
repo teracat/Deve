@@ -51,10 +51,10 @@ namespace Deve.Auth
         #endregion
 
         #region IAuth
-        public async Task<ResultGet<UserAndUserToken>> LoginUser(UserCredentials userCredentials)
+        public async Task<ResultGet<User>> LoginUser(UserCredentials userCredentials)
         {
             if (userCredentials is null || Utils.SomeIsNullOrWhiteSpace(userCredentials.Username, userCredentials.Password))
-                return Utils.ResultGetError<UserAndUserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
 
             var passwordHash = Hash.Calc(userCredentials.Password);
             var resUsers = await DataSource.Users.Get(new CriteriaUser()
@@ -64,15 +64,13 @@ namespace Deve.Auth
                 OnlyActive = CriteriaActiveType.OnlyActive,
             });
             if (!resUsers.Success)
-                return Utils.ResultGetError<UserAndUserToken>(resUsers);
+                return Utils.ResultGetError<User>(resUsers);
 
             var user = resUsers.Data.FirstOrDefault();
             if (user is null)
-                return Utils.ResultGetError<UserAndUserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
 
-            var userToken = TokenManager.CreateToken(user);
-
-            return Utils.ResultGetOk(new UserAndUserToken(user, userToken));
+            return Utils.ResultGetOk(user);
         }
 
         public Task<PermissionResult> IsGranted(UserIdentity? user, PermissionType type, PermissionDataType dataType)
@@ -117,25 +115,25 @@ namespace Deve.Auth
             if (resLogin.Data is null)
                 return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
 
-            return Utils.ResultGetOk(resLogin.Data.UserToken);
+            var userToken = TokenManager.CreateToken(resLogin.Data);
+            return Utils.ResultGetOk(userToken);
         }
 
         public Task<ResultGet<UserToken>> RefreshToken(string token)
         {
             return Task.Run(async () =>
             {
-                var validateRes = TokenManager.ValidateToken(token, out var tokenData);
-                if (validateRes != TokenParseResult.Valid || tokenData is null)
+                var validateRes = TokenManager.ValidateToken(token, out var userIdentity);
+                if (validateRes != TokenParseResult.Valid || userIdentity is null)
                     return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
 
-                var resUsers = await DataSource.Users.Get(tokenData.Subject.Id);
+                var resUsers = await DataSource.Users.Get(userIdentity.Id);
                 if (!resUsers.Success || resUsers.Data is null)
                     return Utils.ResultGetError<UserToken>(resUsers);
 
                 if (!resUsers.Data.IsActive)
                     return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
 
-                var newTokenData = new TokenData(tokenData, DateTime.UtcNow.AddHours(AuthConstants.TokenExpiresInHours));
                 var newUserToken = TokenManager.CreateToken(resUsers.Data);
                 return Utils.ResultGetOk(newUserToken);
             });

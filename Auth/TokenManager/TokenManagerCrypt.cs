@@ -29,21 +29,23 @@ namespace Deve.Auth
             return new UserToken(subject, expires, token, ApiConstants.ApiAuthDefaultScheme);
         }
 
-        public TokenParseResult ValidateToken(string token, out TokenData? tokenData)
+        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
-            tokenData = null;
+            userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
                 return TokenParseResult.NotValid;
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
-                tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
+                var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
                 if (tokenData is null)
                     return TokenParseResult.NotValid;
 
                 if (tokenData.Expires < DateTime.UtcNow)
                     return TokenParseResult.Expired;
+
+                userIdentity = tokenData.Subject;
 
                 return TokenParseResult.Valid;
             }

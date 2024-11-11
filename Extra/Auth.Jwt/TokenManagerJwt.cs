@@ -39,17 +39,14 @@ namespace Deve.Auth.Jwt
             ArgumentNullException.ThrowIfNull(user);
 
             var expires = DateTime.UtcNow.AddHours(AuthConstants.TokenExpiresInHours);
-            var tokenData = new TokenData(user, expires);
             var subject = UserConverter.ToUserSubject(user);
-            var identity = UserConverter.ToClaimsIdentity(_scheme, tokenData);
-            var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
-
-            identity.AddClaim(new System.Security.Claims.Claim(AuthConstants.UserClaimContent, content));
+            var userIdentity = new UserIdentity(user);
+            var claimsIdentity = UserConverter.ToClaimsIdentity(_scheme, userIdentity);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = identity,
+                Subject = claimsIdentity,
                 Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_signingKeyBytes), SecurityAlgorithms.HmacSha256Signature),
                 EncryptingCredentials = new EncryptingCredentials(new SymmetricSecurityKey(_encryptionKeyBytes), SecurityAlgorithms.Aes256KW, SecurityAlgorithms.Aes256CbcHmacSha512)
@@ -61,9 +58,9 @@ namespace Deve.Auth.Jwt
             return new UserToken(subject, expires, token, _scheme);
         }
 
-        public TokenParseResult ValidateToken(string token, out TokenData? tokenData)
+        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
-            tokenData = null;
+            userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
                 return TokenParseResult.NotValid;
 
@@ -79,21 +76,11 @@ namespace Deve.Auth.Jwt
                     ValidateAudience = false
                 };
 
-                SecurityToken validatedToken;
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 if (principal is null)
                     return TokenParseResult.NotValid;
 
-                var content = principal.Claims.FirstOrDefault(c => c.Type == AuthConstants.UserClaimContent)?.Value;
-                if (string.IsNullOrEmpty(content))
-                    return TokenParseResult.NotValid;
-
-                tokenData = JsonSerializer.Deserialize<TokenData>(content, _jsonSerializerOptions);
-                if (tokenData is null)
-                    return TokenParseResult.NotValid;
-
-                if (tokenData.Expires < DateTime.UtcNow)
-                    return TokenParseResult.Expired;
+                userIdentity = UserConverter.ToUserIdentity(principal);
 
                 return TokenParseResult.Valid;
             }

@@ -4,9 +4,6 @@
     {
         public static TokenManagers TokenManagers { get; private set; } = new TokenManagers();
 
-        public static ITokenManager Get(string scheme = ApiConstants.ApiAuthDefaultScheme)
-        {
-            return TokenManagers.Get(scheme);
-        }
+        public static ITokenManager Get(string scheme = ApiConstants.ApiAuthDefaultScheme) => TokenManagers.Get(scheme);
     }
 }

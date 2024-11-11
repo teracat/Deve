@@ -3,6 +3,6 @@
     public interface ITokenManager
     {
         UserToken CreateToken(User user);
-        TokenParseResult ValidateToken(string token, out TokenData? tokenData);
+        TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity);
     }
 }

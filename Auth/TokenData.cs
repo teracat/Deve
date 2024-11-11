@@ -1,7 +1,7 @@
 ﻿namespace Deve.Auth
 {
     /// <summary>
-    /// Information that includes the token.
+    /// Information that includes the token (used in TokenManagerCrypt).
     /// </summary>
     public class TokenData
     {

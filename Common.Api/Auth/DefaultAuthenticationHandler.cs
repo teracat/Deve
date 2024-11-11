@@ -66,10 +66,10 @@ namespace Deve.Api
         private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
             var tokenManager = TokenManagerFactory.Get(scheme);
-            var res = tokenManager.ValidateToken(token, out var tokenData);
-            if (res == TokenParseResult.Valid && tokenData is not null)
+            var res = tokenManager.ValidateToken(token, out var userIdentity);
+            if (res == TokenParseResult.Valid && userIdentity is not null)
             {
-                var principal = UserConverter.ToClaimsPrincipal(scheme, tokenData);
+                var principal = UserConverter.ToClaimsPrincipal(scheme, userIdentity);
                 var ticket = new AuthenticationTicket(principal, scheme);
                 return AuthenticateResult.Success(ticket);
             }

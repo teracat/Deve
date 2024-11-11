@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// Class included in the Login response with some public user information.
+    /// When changed, you should also change the UserConverter. method.
     /// </summary>
     public class UserSubject
     {
@@ -21,11 +22,6 @@
         public DateTime Joined { get; set; }
 
         /// <summary>
-        /// User role.
-        /// </summary>
-        public Role Role { get; set; }
-
-        /// <summary>
         /// Create instance with the default values.
         /// </summary>
         public UserSubject()
@@ -33,7 +29,6 @@
             Name = string.Empty;
             Username = string.Empty;
             Joined = DateTime.Now;
-            Role = Role.User;
         }
 
         /// <summary>
@@ -45,7 +40,6 @@
             Name = other.Name;
             Username = other.Username;
             Joined = other.Joined;
-            Role = other.Role;
         }
     }
 }

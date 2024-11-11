@@ -22,8 +22,14 @@
             if (_tokenManagers.TryGetValue(scheme, out ITokenManager? tokenManager))
                 return tokenManager;
             
-            //Return the Default TokenManager
-            return new TokenManagerCrypt(scheme, new CryptAes());
+            switch (scheme)
+            {
+                case ApiConstants.ApiAuthCryptAesScheme:
+                case ApiConstants.ApiAuthDefaultScheme:
+                default:
+                    //Return the Default TokenManager
+                    return new TokenManagerCrypt(scheme, new CryptAes());
+            }
         }
     }
 }
