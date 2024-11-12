@@ -19,7 +19,7 @@ namespace Deve.Sdk
                 var queryBuidler = new UriQuery();
                 queryBuidler.AddParameter("username", credentials.Username);
                 queryBuidler.AddParameter("password", credentials.Password);
-                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.ApiPathAuth + ApiConstants.ApiMethodLogin + queryBuidler.ToQueryString(), SerializerOptions);
+                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.PathAuth + ApiConstants.MethodLogin + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
 
@@ -38,7 +38,7 @@ namespace Deve.Sdk
             {
                 var queryBuidler = new UriQuery();
                 queryBuidler.AddParameter("token", token);
-                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.ApiPathAuth + ApiConstants.ApiMethodRefreshToken + queryBuidler.ToQueryString(), SerializerOptions);
+                var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
                 return res;

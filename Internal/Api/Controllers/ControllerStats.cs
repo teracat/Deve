@@ -4,7 +4,7 @@ using Deve.Api;
 namespace Deve.Internal.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathStats)]
+    [Route(ApiConstants.PathStats)]
     public class ControllerStats : ControllerBaseAuth
     {
         #region Constructor
@@ -15,7 +15,7 @@ namespace Deve.Internal.Api
         #endregion
 
         #region Methods
-        [HttpGet(), Route(ApiConstants.ApiMethodGetClientStats)]
+        [HttpGet(), Route(ApiConstants.MethodGetClientStats)]
         public async Task<ResultGet<ClientStats>> GetClientStats()
         {
             return await Core.Stats.GetClientStats();

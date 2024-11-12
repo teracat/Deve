@@ -42,17 +42,17 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IData
-        public IDataAll<Country, Country, CriteriaCountry> Countries => _sdkCountry ??= new SdkBaseAll<Country, Country, CriteriaCountry>(ApiConstants.ApiPathCountry, this);
+        public IDataAll<Country, Country, CriteriaCountry> Countries => _sdkCountry ??= new SdkBaseAll<Country, Country, CriteriaCountry>(ApiConstants.PathCountry, this);
 
-        public IDataAll<State, State, CriteriaState> States => _sdkState ??= new SdkBaseAll<State, State, CriteriaState>(ApiConstants.ApiPathState, this);
+        public IDataAll<State, State, CriteriaState> States => _sdkState ??= new SdkBaseAll<State, State, CriteriaState>(ApiConstants.PathState, this);
 
-        public IDataAll<City, City, CriteriaCity> Cities => _sdkCity ??= new SdkBaseAll<City, City, CriteriaCity>(ApiConstants.ApiPathCity, this);
+        public IDataAll<City, City, CriteriaCity> Cities => _sdkCity ??= new SdkBaseAll<City, City, CriteriaCity>(ApiConstants.PathCity, this);
 
         public IDataClient Clients => _sdkClient ??= new SdkClientAll(this);
 
-        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.ApiPathClientBasic, this);
+        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.PathClientBasic, this);
 
-        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>(ApiConstants.ApiPathUser, this);
+        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>(ApiConstants.PathUser, this);
 
         public IDataStats Stats => _sdkStats ??= new SdkStats(this);
         #endregion

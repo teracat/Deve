@@ -28,7 +28,7 @@ namespace Deve.Auth.Jwt
             _encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionSecretKey);
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.ApiAuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 

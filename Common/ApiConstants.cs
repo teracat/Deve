@@ -14,27 +14,27 @@
         #endregion
 
         #region Auth
-        public const string ApiAuthDefaultScheme    = "Bearer";
+        public const string AuthDefaultScheme    = "Bearer";
         #endregion
 
         #region Paths
-        public const string ApiBasePath             = "/";
+        public const string BasePath             = "/";
 
-        public const string ApiPathAuth             = ApiBasePath + "Auth/";
-        public const string ApiPathCountry          = ApiBasePath + "Country/";
-        public const string ApiPathState            = ApiBasePath + "State/";
-        public const string ApiPathCity             = ApiBasePath + "City/";
-        public const string ApiPathClient           = ApiBasePath + "Client/";
-        public const string ApiPathClientBasic      = ApiBasePath + "ClientBasic/";
-        public const string ApiPathUser             = ApiBasePath + "User/";
-        public const string ApiPathStats            = ApiBasePath + "Stats/";
+        public const string PathAuth             = BasePath + "Auth/";
+        public const string PathCountry          = BasePath + "Country/";
+        public const string PathState            = BasePath + "State/";
+        public const string PathCity             = BasePath + "City/";
+        public const string PathClient           = BasePath + "Client/";
+        public const string PathClientBasic      = BasePath + "ClientBasic/";
+        public const string PathUser             = BasePath + "User/";
+        public const string PathStats            = BasePath + "Stats/";
         #endregion
 
         #region Methods
-        public const string ApiMethodLogin          = "Login";
-        public const string ApiMethodRefreshToken   = "RefreshToken";
-        public const string ApiMethodGetClientStats = "GetClientStats";
-        public const string ApiMethodUpdateStatus   = "UpdateStatus";
+        public const string MethodLogin          = "Login";
+        public const string MethodRefreshToken   = "RefreshToken";
+        public const string MethodGetClientStats = "GetClientStats";
+        public const string MethodUpdateStatus   = "UpdateStatus";
         #endregion
     }
 }

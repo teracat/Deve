@@ -14,7 +14,7 @@ namespace Deve.Internal.Sdk
         #region IDataStats
         public async Task<ResultGet<ClientStats>> GetClientStats()
         {
-            return await Get<ClientStats>(ApiConstants.ApiPathStats + ApiConstants.ApiMethodGetClientStats, RequestAuthType.Default);
+            return await Get<ClientStats>(ApiConstants.PathStats + ApiConstants.MethodGetClientStats, RequestAuthType.Default);
         }
         #endregion
     }

@@ -22,14 +22,14 @@
         /// </summary>
         /// <param name="scheme">The sheme to get the ITokenManager.</param>
         /// <returns>The ITokenManager implementation associated to the scheme or the default TokenManager if none is defined.</returns>
-        public static ITokenManager Get(string scheme = ApiConstants.ApiAuthDefaultScheme)
+        public static ITokenManager Get(string scheme = ApiConstants.AuthDefaultScheme)
         {
             if (_tokenManagers.TryGetValue(scheme, out ITokenManager? tokenManager))
                 return tokenManager;
 
             switch (scheme)
             {
-                case ApiConstants.ApiAuthDefaultScheme:
+                case ApiConstants.AuthDefaultScheme:
                 default:
                     //Return the default TokenManager
                     return new TokenManagerCrypt(new CryptAes());

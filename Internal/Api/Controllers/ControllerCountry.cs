@@ -4,7 +4,7 @@ using Deve.Api;
 namespace Deve.Internal.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathCountry)]
+    [Route(ApiConstants.PathCountry)]
     public class ControllerCountry : ControllerBaseAll<Country, Country, CriteriaCountry>
     {
         protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Core.Countries;

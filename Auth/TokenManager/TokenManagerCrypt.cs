@@ -15,7 +15,7 @@ namespace Deve.Auth
             _crypt = crypt;
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.ApiAuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -24,7 +24,7 @@ namespace Deve.Auth
             var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
             var token = _crypt.Encrypt(content);
             var subject = UserConverter.ToUserSubject(user);
-            return new UserToken(subject, expires, token, ApiConstants.ApiAuthDefaultScheme);
+            return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
