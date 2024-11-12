@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// User information used internally (can contain private information).
+    /// When new properties are needed, you should also change the UserConverter methods.
     /// </summary>
     public class UserIdentity
     {
@@ -13,7 +14,7 @@
         /// <summary>
         /// Username of the user.
         /// </summary>
-        public string UserName {get;set;}
+        public string Username {get;set;}
 
         /// <summary>
         /// Role of the user (to check permissions)
@@ -27,7 +28,7 @@
         {
             Id = 0;
             Role = Role.User;
-            UserName = string.Empty;
+            Username = string.Empty;
         }
 
         /// <summary>
@@ -38,7 +39,7 @@
         {
             Id = user.Id;
             Role = user.Role;
-            UserName = user.Username;
+            Username = user.Username;
         }
     }
 }

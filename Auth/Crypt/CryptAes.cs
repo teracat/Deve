@@ -1,21 +1,20 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Deve.Auth
 {
     /// <summary>
     /// Encryption/decryption. You should use your own implementation or, at least, change the Key & IV used to encrypt/decrypt (see AutConstants).
     /// </summary>
-    internal class Crypt : ICrypt
+    internal class CryptAes : ICrypt
     {
         private readonly byte[] key;
         private readonly byte[] iv;
 
-        public Crypt()
+        public CryptAes()
         {
-            key = Encoding.UTF8.GetBytes(AuthConstants.CryptKey);
-            iv = Encoding.UTF8.GetBytes(AuthConstants.CryptIV);
+            key = Encoding.UTF8.GetBytes(AuthConstants.CryptAesKey);
+            iv = Encoding.UTF8.GetBytes(AuthConstants.CryptAesIV);
         }
 
         public string Encrypt(string text)

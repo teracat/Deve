@@ -5,7 +5,7 @@ using Deve.External;
 namespace Deve.Internal.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathClientBasic)]
+    [Route(ApiConstants.PathClientBasic)]
     public class ControllerClientBasic : ControllerBaseGet<ClientBasic, External.Client, CriteriaClientBasic>
     {
         protected override IDataGet<ClientBasic, External.Client, CriteriaClientBasic> DataGet => Core.ClientsBasic;

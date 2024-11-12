@@ -26,11 +26,12 @@
             
             if (res.Data is null)
                 return Utils.ResultGetError<UserToken>(Core.Options.LangCode, ResultErrorType.Unauthorized);
-            
-            if (res.Success && Core.IsSharedInstance)
-                Core.User = res.Data.User;
 
-            return Utils.ResultGetOk(res.Data.UserToken);
+            if (res.Success && Core.IsSharedInstance)
+                Core.User = res.Data;
+
+            UserToken userToken = Core.Auth.TokenManager.CreateToken(res.Data);
+            return Utils.ResultGetOk(userToken);
         }
 
         public async Task<ResultGet<UserToken>> RefreshToken(string token)

@@ -4,7 +4,7 @@ using Deve.Api;
 namespace Deve.External.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathState)]
+    [Route(ApiConstants.PathState)]
     public class ControllerState : ControllerBaseGet<State, State, CriteriaState>
     {
         protected override IDataGet<State, State, CriteriaState> DataGet => Core.States;

@@ -4,7 +4,7 @@ using Deve.Api;
 namespace Deve.External.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathCountry)]
+    [Route(ApiConstants.PathCountry)]
     public class ControllerCountry : ControllerBaseGet<Country, Country, CriteriaCountry>
     {
         protected override IDataGet<Country, Country, CriteriaCountry> DataGet => Core.Countries;

@@ -6,7 +6,7 @@ namespace Deve.Internal.Sdk
     {
         #region Constructor
         public SdkClientAll(ISdk sdk)
-            : base(ApiConstants.ApiPathClient, sdk)
+            : base(ApiConstants.PathClient, sdk)
         {
         }
         #endregion

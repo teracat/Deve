@@ -2,6 +2,8 @@ using System.Net;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
+using Deve.Auth;
+using Deve.Auth.Jwt;
 
 namespace Deve.Api
 {
@@ -49,15 +51,15 @@ namespace Deve.Api
             builder.Services.AddSwaggerGen(options =>
             {
                 //options.SwaggerDoc("v1", new OpenApiInfo { Title = "Deve.Api", Version = "v1" });
-                options.AddSecurityDefinition(ApiConstants.ApiAuthDefaultScheme, new OpenApiSecurityScheme
+                options.AddSecurityDefinition(ApiConstants.AuthDefaultScheme, new OpenApiSecurityScheme
                 {
-                    Description = @$"Authorization header using the {ApiConstants.ApiAuthDefaultScheme} scheme.
-                      Enter '{ApiConstants.ApiAuthDefaultScheme}' [space] and then your token in the text input below.
-                      Example: '{ApiConstants.ApiAuthDefaultScheme} xxxxxxxxxx'",
+                    Description = @$"Authorization header using the {ApiConstants.AuthDefaultScheme} scheme.
+                      Enter '{ApiConstants.AuthDefaultScheme}' [space] and then your token in the text input below.
+                      Example: '{ApiConstants.AuthDefaultScheme} xxxxxxxxxx'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = ApiConstants.ApiAuthDefaultScheme
+                    Scheme = ApiConstants.AuthDefaultScheme
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
@@ -67,10 +69,10 @@ namespace Deve.Api
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = ApiConstants.ApiAuthDefaultScheme
+                                Id = ApiConstants.AuthDefaultScheme
                             },
-                            Scheme = ApiConstants.ApiAuthDefaultScheme,
-                            Name = ApiConstants.ApiAuthDefaultScheme,
+                            Scheme = ApiConstants.AuthDefaultScheme,
+                            Name = ApiConstants.AuthDefaultScheme,
                             In = ParameterLocation.Header,
                         },
                         new List<string>()
@@ -84,11 +86,15 @@ namespace Deve.Api
             builder.Services.AddHttpContextAccessor();
 
             // Authentication
+            // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the class TokenManagerJwt)
+            // If you don't want to use Jwt, you can remove the next line and remove the referenced projecte Deve.Auth.Jwt
+            // If none is defined here, the default TokenManagerCrypt will be used (you should change the keys used to encrypt in AuthConstants)
+            TokenManagerFactory.Set(ApiConstants.AuthDefaultScheme, new TokenManagerJwt());
             builder.Services.AddAuthentication((o) =>
             {
-                o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.ApiAuthDefaultScheme, ApiConstants.ApiAuthDefaultScheme);
-                o.DefaultAuthenticateScheme = ApiConstants.ApiAuthDefaultScheme;
-                o.DefaultChallengeScheme = ApiConstants.ApiAuthDefaultScheme;
+                o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.AuthDefaultScheme, ApiConstants.AuthDefaultScheme);
+                o.DefaultAuthenticateScheme = ApiConstants.AuthDefaultScheme;
+                o.DefaultChallengeScheme = ApiConstants.AuthDefaultScheme;
             });
 
             // Logging
@@ -115,7 +121,7 @@ namespace Deve.Api
             // Redirect HTTP requests to HTTPS
             app.UseHttpsRedirection();
 
-            // Add custom Middlewares
+            // Add TooManyRequestsMiddleware
             app.UseMiddleware<TooManyRequestsMiddleware>();
 
             // Rate Limiter

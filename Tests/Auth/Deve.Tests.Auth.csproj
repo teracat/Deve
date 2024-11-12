@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
   </ItemGroup>
 
 </Project>

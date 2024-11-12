@@ -5,32 +5,27 @@ namespace Deve.Auth
 {
     public static class UserConverter
     {
-        public static ClaimsPrincipal ToClaimsPrincipal(string scheme, TokenData tokenData)
+        public static ClaimsIdentity ToClaimsIdentity(string scheme, UserIdentity userIdentity)
         {
-            List<Claim> claims = [
-                new Claim(AuthConstants.UserClaimRole, RoleConverter.ToString(tokenData.Subject.Role)),
-                new Claim(AuthConstants.UserClaimId, tokenData.Subject.Id.ToString()),
-                new Claim(AuthConstants.UserClaimName, tokenData.Subject.UserName.ToString()),
+            List<Claim> claims =
+            [
+                new Claim(AuthConstants.UserClaimRole, RoleConverter.ToString(userIdentity.Role)),
+                new Claim(AuthConstants.UserClaimId, userIdentity.Id.ToString()),
+                new Claim(AuthConstants.UserClaimUsername, userIdentity.Username.ToString()),
             ];
-            var identity = new ClaimsIdentity(claims, scheme, AuthConstants.UserClaimName, AuthConstants.UserClaimRole);
-            return new GenericPrincipal(identity, null);
+            return new ClaimsIdentity(claims, scheme, AuthConstants.UserClaimUsername, AuthConstants.UserClaimRole);
         }
 
-        public static UserSubject ToUserSubject(User user)
+        public static ClaimsPrincipal ToClaimsPrincipal(string scheme, UserIdentity userIdentity)
         {
-            return new UserSubject()
-            {
-                Name = user.Name,
-                Username = user.Username,
-                Joined = user.Joined,
-                Role = user.Role,
-            };
+            var identity = ToClaimsIdentity(scheme, userIdentity);
+            return new GenericPrincipal(identity, null);
         }
 
         public static UserIdentity? ToUserIdentity(ClaimsPrincipal identity)
         {
             var idStr = GetClaimValue(identity, AuthConstants.UserClaimId);
-            var username = GetClaimValue(identity, AuthConstants.UserClaimName);
+            var username = GetClaimValue(identity, AuthConstants.UserClaimUsername);
             var role = GetClaimValue(identity, AuthConstants.UserClaimRole);
             if (Utils.SomeIsNullOrWhiteSpace(idStr, username, role) || !long.TryParse(idStr, out long id))
                 return null;
@@ -38,7 +33,7 @@ namespace Deve.Auth
             return new UserIdentity()
             {
                 Id = id,
-                UserName = username,
+                Username = username,
                 Role = RoleConverter.ToRole(role)
             };
         }
@@ -48,6 +43,16 @@ namespace Deve.Auth
             return identity.Claims
                            .FirstOrDefault(x => x.Type == claimName)?
                            .Value ?? string.Empty;
+        }
+
+        public static UserSubject ToUserSubject(User user)
+        {
+            return new UserSubject()
+            {
+                Name = user.Name,
+                Username = user.Username,
+                Joined = user.Joined,
+            };
         }
     }
 }

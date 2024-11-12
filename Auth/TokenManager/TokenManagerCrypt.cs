@@ -2,20 +2,23 @@
 
 namespace Deve.Auth
 {
-    internal class TokenManager : ITokenManager
+    /// <summary>
+    /// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
+    /// </summary>
+    internal class TokenManagerCrypt : ITokenManager
     {
         private readonly ICrypt _crypt;
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions()
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = false,
         };
 
-        public TokenManager(ICrypt crypt)
+        public TokenManagerCrypt(ICrypt crypt)
         {
             _crypt = crypt;
         }
 
-        public UserToken CreateToken(User user)
+        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -24,24 +27,26 @@ namespace Deve.Auth
             var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
             var token = _crypt.Encrypt(content);
             var subject = UserConverter.ToUserSubject(user);
-            return new UserToken(subject, expires, token, ApiConstants.ApiAuthDefaultScheme);
+            return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
-        public TokenParseResult ValidateToken(string token, out TokenData? tokenData)
+        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
-            tokenData = null;
+            userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
                 return TokenParseResult.NotValid;
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
-                tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
+                var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
                 if (tokenData is null)
                     return TokenParseResult.NotValid;
 
                 if (tokenData.Expires < DateTime.UtcNow)
                     return TokenParseResult.Expired;
+
+                userIdentity = tokenData.Subject;
 
                 return TokenParseResult.Valid;
             }

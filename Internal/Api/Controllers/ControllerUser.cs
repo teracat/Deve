@@ -4,7 +4,7 @@ using Deve.Api;
 namespace Deve.Internal.Api
 {
     [ApiController]
-    [Route(ApiConstants.ApiPathUser)]
+    [Route(ApiConstants.PathUser)]
     public class ControllerUser : ControllerBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
