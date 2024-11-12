@@ -27,8 +27,8 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 - **/Core**: Contains business logic.
 - **/DataSource**: Contains data access logic (from database, files, or any other data source).
 - **/External**: Projects for external use (external parties). See next section.
+- **/Extra**: Projects that use additional nugget packages like Log Providers that can be included in your projects to use other Log providers (NLog, log4net or NetCore system). In the Common there are some basic Log Providers (Console, Debug and Trace). There is also the Auth.Jwt to use JWT tokens.
 - **/Internal**: Projects for internal use.
-- **/Log**: Extra Log Providers that can be included in your projects to use other Log providers (NLog, log4net or NetCore system). In the Common there are some basic Log Providers (Console, Debug and Trace).
 - **/Tests**: Tests on the other projects.
 
 ## Internal vs External
