@@ -1,5 +1,5 @@
-﻿using Deve.Auth.Jwt;
-using Deve.Auth;
+﻿using Deve.Auth;
+using Deve.Auth.Jwt;
 
 namespace Deve.Tests.Auth
 {
@@ -10,6 +10,6 @@ namespace Deve.Tests.Auth
     {
         protected override ITokenManager CreateTokenManager() => new TokenManagerJwt();
 
-        protected override string GetExpiredToken() => "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiSldUIiwiY3R5IjoiSldUIn0.rUpEl5eE-zpdw_c7I1Qrt0yGA0qQdvHAl9nZ7HQupUMUYaH6ZTdgV_RfX5I7TeOSPEYQAd73UOxgheelTycJj-A0DHN1aU7S.jJLRWAqjjejvbX5pBf_N3w.h9VDs2Ai8v0LAR1NxDUvlu-Zb8swwFCdDJxi_ZEeMjH6dt-YJ2-aBSsXezCVGyi6bmuz-9p30JmiR5BR_q8TQ0EXPbAXJXX2SRWVV6fh9EHE9iZHlAesVAC7Sux2P8oo01J_ASELQA9P0uzLFDA2OJypmVogtq7FEOXr1yMTlRCNZua9f7R2OsWyAOKowhM9LfxWZLDnlBE3gxd2o_bHm622SNgIwWleH_3yu50T1Qxp0Rb93Ozkf9E0v_lKmgr-ighVfsxCoS16sX218oSBj8jl-ZOt2ki5gexqPxj-8uY.MoiQXEPOfFycZkKFgwgAVuVuWFr0lkBQsKqBxxl3CtI";
+        protected override string GetExpiredToken() => "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiSldUIiwiY3R5IjoiSldUIn0.NNvfJlOsjd7QAu1PT_pAf_3IgXbMFFuIyXFuxWEdbtmVZQ1Ps9T2sIMkHR7rkQjJndz-Z93s5RJkfxagIHOMjSCykGjK9ctk.0vO2AZ9lEPwIsv3NjpkPBQ.lUGt4nU0hm0XOhzU4_u1T8HNxg7BZ8LvLVhkJ3mrwaY4JQDh53xcEh-FfRRWYeuUZ-vMVFGwKs8qmsqHagM9wikf4p-EfD1HwwK05FmB7-YD_9fmo-5ShZHJyd9Pmpwu11kJ7wHKyBcdwEuYLa3E6A4rZRiZH--EupdIJanO2C8tBCb9AB5Et_XrzO8oBKPbJVnl37daqnXFllYcVehTLfSqSDqZF9-ebIkdLHhyM62W0FQeNI35ps-rt5y8-jHQ30GDPmrNHBlp1H3SFw1SD3UDVghDzyNpk00UPfw8GK8.5NOvQb3k6gUAjDPvqr0z27iR1dEAIIZJUzbMRSLIC9M";
     }
 }
