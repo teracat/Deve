@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Deve.Auth.Jwt
 {
-    internal class TokenManagerJwt : ITokenManager
+    public class TokenManagerJwt : ITokenManager
     {
         /// <summary>
         /// The SigningSecretKey is used to ensure the integrity and authenticity of the token.
@@ -19,29 +19,23 @@ namespace Deve.Auth.Jwt
         /// </summary>
         private const string EncryptionSecretKey = "76b86004136b421a85fa646b73b29f6d";  //Must be 32 bytes
 
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
-        {
-            WriteIndented = false,
-        };
-        private readonly string _scheme;
         private readonly byte[] _signingKeyBytes;
         private readonly byte[] _encryptionKeyBytes;
 
-        public TokenManagerJwt(string scheme)
+        public TokenManagerJwt()
         {
-            _scheme = scheme;
             _signingKeyBytes = Encoding.ASCII.GetBytes(SigningSecretKey);
             _encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionSecretKey);
         }
 
-        public UserToken CreateToken(User user)
+        public UserToken CreateToken(User user, string scheme = ApiConstants.ApiAuthDefaultScheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
             var expires = DateTime.UtcNow.AddHours(AuthConstants.TokenExpiresInHours);
             var subject = UserConverter.ToUserSubject(user);
             var userIdentity = new UserIdentity(user);
-            var claimsIdentity = UserConverter.ToClaimsIdentity(_scheme, userIdentity);
+            var claimsIdentity = UserConverter.ToClaimsIdentity(scheme, userIdentity);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -55,7 +49,7 @@ namespace Deve.Auth.Jwt
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
 
-            return new UserToken(subject, expires, token, _scheme);
+            return new UserToken(subject, expires, token, scheme);
         }
 
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
@@ -92,29 +86,6 @@ namespace Deve.Auth.Jwt
             {
                 Log.Error(ex);
                 return TokenParseResult.NotValid;
-            }
-        }
-    }
-
-    public static class TokenManagerJwtExtension
-    {
-        private static TokenManagerJwt? _instance;
-
-        public static void AddJwt(this TokenManagers tokenManagers, string scheme)
-        {
-            if (_instance is null)
-            {
-                _instance = new TokenManagerJwt(scheme);
-                tokenManagers.Add(scheme, _instance);
-            }
-        }
-
-        public static void RemoveJwt(this TokenManagers tokenManagers, string scheme)
-        {
-            if (_instance is not null)
-            {
-                tokenManagers.Remove(scheme);
-                _instance = null;
             }
         }
     }

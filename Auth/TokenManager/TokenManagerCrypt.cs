@@ -4,20 +4,18 @@ namespace Deve.Auth
 {
     internal class TokenManagerCrypt : ITokenManager
     {
-        private readonly string _scheme;
         private readonly ICrypt _crypt;
         private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = false,
         };
 
-        public TokenManagerCrypt(string scheme, ICrypt crypt)
+        public TokenManagerCrypt(ICrypt crypt)
         {
-            _scheme = scheme;
             _crypt = crypt;
         }
 
-        public UserToken CreateToken(User user)
+        public UserToken CreateToken(User user, string scheme = ApiConstants.ApiAuthDefaultScheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 

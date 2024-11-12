@@ -15,7 +15,6 @@
 
         #region Auth
         public const string ApiAuthDefaultScheme    = "Bearer";
-        public const string ApiAuthCryptAesScheme   = "Custom"; //Custom implementation using AES algorithm
         #endregion
 
         #region Paths
