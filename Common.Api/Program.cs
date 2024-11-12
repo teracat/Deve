@@ -86,9 +86,9 @@ namespace Deve.Api
             builder.Services.AddHttpContextAccessor();
 
             // Authentication
-            // We register the TokenManagerJwt so we can use it as the Default Scheme
+            // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the class TokenManagerJwt)
             // If you don't want to use Jwt, you can remove the next line and remove the referenced projecte Deve.Auth.Jwt
-            TokenManagerFactory.Set(ApiConstants.ApiAuthDefaultScheme, new TokenManagerJwt());
+            // If none is defined here, the default TokenManagerCrypt will be used (you should change the keys used to encrypt in AuthConstants)
             TokenManagerFactory.Set(ApiConstants.AuthDefaultScheme, new TokenManagerJwt());
             builder.Services.AddAuthentication((o) =>
             {

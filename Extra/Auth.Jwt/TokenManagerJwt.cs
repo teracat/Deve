@@ -1,23 +1,26 @@
 ﻿using System.Text;
-using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Deve.Auth.Jwt
 {
+    /// <summary>
+    /// Class used to create and validate tokens using JWT (JSON Web Tokens).
+    /// The token is encrypted to protect its data.
+    /// </summary>
     public class TokenManagerJwt : ITokenManager
     {
         /// <summary>
         /// The SigningSecretKey is used to ensure the integrity and authenticity of the token.
-        /// You shoud change this value for your own key.
+        /// IMPORTANT: You shoud change this value for your own key.
         /// </summary>
-        private const string SigningSecretKey = "73be27f9ce1e4ae7899977c09feb6aef";  //Must be 32 bytes
+        private const string SigningSecretKey = "73b€27f9ce1e4@e789.977cO9feB6ae!";  //Must be 32 bytes
 
         /// <summary>
         /// The EncryptionSecretKey is used to protect the confidentiality of the token's data.
-        /// You shoud also change this value for your own key (different from the previous key).
+        /// IMPORTANT: You shoud also change this value for your own key (different from the previous key).
         /// </summary>
-        private const string EncryptionSecretKey = "76b86004136b421a85fa646b73b29f6d";  //Must be 32 bytes
+        private const string EncryptionSecretKey = "7Gb86@04136b42!a85fa646b73b29f-d";  //Must be 32 bytes
 
         private readonly byte[] _signingKeyBytes;
         private readonly byte[] _encryptionKeyBytes;

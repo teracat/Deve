@@ -2,6 +2,9 @@
 
 namespace Deve.Auth
 {
+    /// <summary>
+    /// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
+    /// </summary>
     internal class TokenManagerCrypt : ITokenManager
     {
         private readonly ICrypt _crypt;
