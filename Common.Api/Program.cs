@@ -111,8 +111,8 @@ namespace Deve.Api
             });
 
             // Swagger
-            // If you want to publish the Swagger, remove this condition
-            if (app.Environment.IsDevelopment())
+            // If you don't want to publish the Swagger, uncomment this condition
+            //if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
