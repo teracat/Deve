@@ -19,11 +19,18 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [Client Embedded vs Sdk](https://github.com/teracat/Deve/wiki#client-embedded-vs-sdk)
   - [Publishable Projects](https://github.com/teracat/Deve/wiki#publishable-projects)
 - [Installation](https://github.com/teracat/Deve/wiki/Installation)
-- [API](https://github.com/teracat/Deve/wiki/API)
-  - [Credentials](https://github.com/teracat/Deve/wiki/API#credentials)
-  - [Projects](https://github.com/teracat/Deve/wiki/API#projects)
-  - [Authentication](https://github.com/teracat/Deve/wiki/API#authentication)
-  - [Use cases](https://github.com/teracat/Deve/wiki/API#use-cases)
+- [APIs](https://github.com/teracat/Deve/wiki/APIs)
+  - [Credentials](https://github.com/teracat/Deve/wiki/APIs#credentials)
+  - [Projects](https://github.com/teracat/Deve/wiki/APIs#projects)
+  - [RateLimiter](https://github.com/teracat/Deve/wiki/APIs#ratelimiter)
+  - [StatusCode](https://github.com/teracat/Deve/wiki/APIs#statuscode)
+  - [Authentication](https://github.com/teracat/Deve/wiki/APIs#authentication)
+  - [Use cases](https://github.com/teracat/Deve/wiki/APIs#use-cases)
+- [Auth](https://github.com/teracat/Deve/wiki/Auth)
+  - [ITokenManager](https://github.com/teracat/Deve/wiki/Auth#itokenmanager)
+  - [ICrypt](https://github.com/teracat/Deve/wiki/Auth#icrypt)
+  - [IHash](https://github.com/teracat/Deve/wiki/Auth#ihash)
+  - [IAuth](https://github.com/teracat/Deve/wiki/Auth#iauth)
 
 ## Still working on
 
