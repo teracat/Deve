@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Deve.Api;
 
 namespace Deve.Api
 {
