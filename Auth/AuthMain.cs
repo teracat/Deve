@@ -26,7 +26,7 @@ namespace Deve.Auth
         {
             _options = options ?? new DataOptions();
             DataSource = dataSource ?? DataSourceFactory.Get(_options);
-            Hash = new Hash();
+            Hash = new HashSha512();
             Crypt = new CryptAes();
             TokenManager = TokenManagerFactory.Get();
         }
