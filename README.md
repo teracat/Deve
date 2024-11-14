@@ -32,6 +32,8 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
 - [APIs](https://github.com/teracat/Deve/wiki/APIs)
   - [Credentials](https://github.com/teracat/Deve/wiki/APIs#credentials)
   - [Projects](https://github.com/teracat/Deve/wiki/APIs#projects)
+  - [Core](https://github.com/teracat/Deve/wiki/APIs#core)
+  - [User](https://github.com/teracat/Deve/wiki/APIs#user)
   - [RateLimiter](https://github.com/teracat/Deve/wiki/APIs#ratelimiter)
   - [StatusCode](https://github.com/teracat/Deve/wiki/APIs#statuscode)
   - [Authentication](https://github.com/teracat/Deve/wiki/APIs#authentication)
@@ -41,6 +43,11 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [ICrypt](https://github.com/teracat/Deve/wiki/Auth#icrypt)
   - [IHash](https://github.com/teracat/Deve/wiki/Auth#ihash)
   - [IAuth](https://github.com/teracat/Deve/wiki/Auth#iauth)
+- [Core](https://github.com/teracat/Deve/wiki/Core)
+  - [CoreMain](https://github.com/teracat/Deve/wiki/Core#coremain)
+  - [CoreBaseGet](https://github.com/teracat/Deve/wiki/Core#corebaseget)
+  - [CoreBaseAll](https://github.com/teracat/Deve/wiki/Core#corebaseall)
+  - [Shield](https://github.com/teracat/Deve/wiki/Core#shield)
 
 ## Still working on
 
