@@ -3,7 +3,7 @@ using Deve.Internal;
 
 namespace Deve.Core
 {
-    internal class CoreCountry : CoreBaseAll<Country, Country, CriteriaCountry>, IDataAll<Country, Country, CriteriaCountry>
+    internal class CoreCountry : CoreBaseAll<Country, Country, CriteriaCountry>
     {
         #region CoreBaseAll Abstract Properties
         protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Source.Countries;

@@ -3,7 +3,7 @@ using Deve.Internal;
 
 namespace Deve.Core
 {
-    internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>, IDataAll<UserBase, UserPlainPassword, CriteriaUser>
+    internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         #region Fields
         private DataSourceWrapperUser _wrapperUser;
