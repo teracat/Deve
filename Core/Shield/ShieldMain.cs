@@ -56,7 +56,7 @@ namespace Deve.Core.Shield
         #region Constructor
         public ShieldMain()
         {
-            _timer = new Timer(new TimerCallback(CleanOldData), null, TimeSpan.FromSeconds(CleanEveryMinutes), TimeSpan.FromSeconds(CleanEveryMinutes));
+            _timer = new Timer(new TimerCallback(CleanOldData), null, TimeSpan.FromMinutes(CleanEveryMinutes), TimeSpan.FromMinutes(CleanEveryMinutes));
         }
         #endregion
 
@@ -93,14 +93,14 @@ namespace Deve.Core.Shield
         {
             foreach (var origin in _origins)
             {
-                if ((DateTimeOffset.UtcNow - origin.Value.LastAttempt).TotalSeconds >= RemoveAfterMinutesLastAttempt)
+                if ((DateTimeOffset.UtcNow - origin.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
                     _origins.Remove(origin.Key);
                 }
             }
             foreach (var originMethod in _originsMethods)
             {
-                if ((DateTimeOffset.UtcNow - originMethod.Value.LastAttempt).TotalSeconds >= RemoveAfterMinutesLastAttempt)
+                if ((DateTimeOffset.UtcNow - originMethod.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
                     _originsMethods.Remove(originMethod.Key);
                 }
