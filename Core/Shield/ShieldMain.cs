@@ -5,9 +5,24 @@ namespace Deve.Core.Shield
 {
     internal class ShieldMain : IShield
     {
-        #region Static Fields
-        private static readonly Dictionary<string, ShieldOriginData> _origins = [];  //Key: originId
-        private static readonly Dictionary<string, ShieldOriginMethodData> _originsMethods = [];  //Key: originId-methodKey
+        #region Constants
+        /// <summary>
+        /// Executes the clean process every X minutes specified here.
+        /// </summary>
+        private const int CleanEveryMinutes = 5;
+
+        /// <summary>
+        /// If the last attempt was made before the minutes specified here, it will be removed from memory.
+        /// Take into account to set a value big enough to keep the locks active.
+        /// The lock of the Login method lasts 5 minutes, so it can be removed after 15 minuts from the last call.
+        /// </summary>
+        private const int RemoveAfterMinutesLastAttempt = 15;
+        #endregion
+
+        #region Fields
+        private readonly Dictionary<string, ShieldOriginData> _origins = [];  //Key: originId
+        private readonly Dictionary<string, ShieldOriginMethodData> _originsMethods = [];  //Key: originId-methodKey
+        private Timer _timer;  //Used to remove old data in _origins and _originsMethods
         #endregion
 
         #region Static Methods
@@ -20,9 +35,9 @@ namespace Deve.Core.Shield
             return category + "-" + method;
         }
 
-        public static string BuildItemKey(string originId, string category, string method)
+        public static string BuildOriginMethodKey(string originId, string category, string method)
         {
-            return BuildConfigKey(category, method) + "-" + originId;
+            return originId + "-" + BuildConfigKey(category, method);
         }
 
         private static ShieldItemConfig GetItemConfig(string category, string method)
@@ -36,8 +51,17 @@ namespace Deve.Core.Shield
                 config = new ShieldItemConfig();
             return config;
         }
+        #endregion
 
-        private static ShieldOriginData GetOriginData(string originId)
+        #region Constructor
+        public ShieldMain()
+        {
+            _timer = new Timer(new TimerCallback(CleanOldData), null, TimeSpan.FromSeconds(CleanEveryMinutes), TimeSpan.FromSeconds(CleanEveryMinutes));
+        }
+        #endregion
+
+        #region Methods
+        private ShieldOriginData GetOriginData(string originId)
         {
             ShieldOriginData originata;
             if (_origins.TryGetValue(originId, out ShieldOriginData? existingOrigin))
@@ -50,25 +74,37 @@ namespace Deve.Core.Shield
             return originata;
         }
 
-        private static ShieldOriginMethodData GetOriginMethodData(string originId, string category, string method)
+        private ShieldOriginMethodData GetOriginMethodData(string originId, string category, string method)
         {
-            string itemKey = BuildItemKey(originId, category, method);
+            string itemKey = BuildOriginMethodKey(originId, category, method);
 
             ShieldOriginMethodData methodData;
-            if (_originsMethods.TryGetValue(originId, out ShieldOriginMethodData? existingItem))
+            if (_originsMethods.TryGetValue(itemKey, out ShieldOriginMethodData? existingItem))
                 methodData = existingItem;
             else
             {
                 methodData = new ShieldOriginMethodData();
-                _originsMethods.Add(originId, methodData);
+                _originsMethods.Add(itemKey, methodData);
             }
             return methodData;
         }
-        #endregion
 
-        #region Constructor
-        public ShieldMain()
+        private void CleanOldData(object? state)
         {
+            foreach (var origin in _origins)
+            {
+                if ((DateTimeOffset.UtcNow - origin.Value.LastAttempt).TotalSeconds >= RemoveAfterMinutesLastAttempt)
+                {
+                    _origins.Remove(origin.Key);
+                }
+            }
+            foreach (var originMethod in _originsMethods)
+            {
+                if ((DateTimeOffset.UtcNow - originMethod.Value.LastAttempt).TotalSeconds >= RemoveAfterMinutesLastAttempt)
+                {
+                    _originsMethods.Remove(originMethod.Key);
+                }
+            }
         }
         #endregion
 

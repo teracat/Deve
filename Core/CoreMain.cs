@@ -10,12 +10,15 @@ namespace Deve.Core
     /// </summary>
     internal class CoreMain : ICore
     {
+        #region Static Fields
+        private static readonly IShield _shield = new ShieldMain();
+        #endregion
+
         #region Fields
         private bool _isSharedInstance;
         private DataOptions _options;
         private readonly IDataSource _dataSource;
         private readonly IAuth _auth;
-        private readonly IShield _shield;
 
         private UserIdentity? _userIdentity;
         private User? _user;
@@ -129,7 +132,6 @@ namespace Deve.Core
             _dataSource = dataSource ?? DataSourceFactory.Get();
             _options = options ?? new DataOptions();
             _auth = AuthFactory.Get(_dataSource, _options);
-            _shield = new ShieldMain();
         }
         #endregion
     }
