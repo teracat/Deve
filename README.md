@@ -72,11 +72,10 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
 
 - Tests
 - Client samples
-- Wiki
 
 ## Contributing
 
-If you find any errors or something that could be improved, please let me know.
+If you find any errors or something that could be improved, please let me know by opening an [Issue](https://github.com/teracat/Deve/issues).
 
 ## License
 
