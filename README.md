@@ -75,7 +75,7 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
 
 ## Contributing
 
-If you find any errors or something that could be improved, please let me know by opening an [Issue](https://github.com/teracat/Deve/issues).
+If you find any errors or something that could be improved, please let me know by opening a new [Issue](https://github.com/teracat/Deve/issues) or [Discussion](https://github.com/teracat/Deve/discussions).
 
 ## License
 
