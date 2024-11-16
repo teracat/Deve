@@ -12,11 +12,11 @@ namespace Deve.Api
         public static void Main(string[] args)
         {
             //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
-            /*var config = new DataSourceConfig()
+            /*var config = new DataSource.DataSourceConfig()
             {
                 ConnectionString = ""
             };
-            DataSourceFactory.SetConfig(config);*/
+            DataSource.DataSourceFactory.SetConfig(config);*/
 
             var builder = WebApplication.CreateBuilder(args);
 
