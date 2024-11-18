@@ -1,6 +1,5 @@
-﻿using Xunit;
+﻿using System.Security.Cryptography;
 using Deve.Auth;
-using System.Security.Cryptography;
 
 namespace Deve.Tests.Auth
 {

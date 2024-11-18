@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
 </Project>

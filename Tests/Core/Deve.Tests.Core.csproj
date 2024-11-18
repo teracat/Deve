@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\Core\Deve.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.DataSource;
 
 namespace Deve.Tests.Auth
