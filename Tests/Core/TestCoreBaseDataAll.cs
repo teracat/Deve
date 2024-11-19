@@ -1,165 +1,89 @@
+using Deve.Core;
+using Deve.External;
 using Deve.Internal;
 
 namespace Deve.Tests.Core
 {
     /// <summary>
     /// DataAll methods tests.
-    /// The ExecuteValidLogin is executed in every test to avoid permissions errors.
+    /// The ExecuteValidLogin is used to avoid permissions errors.
     /// </summary>
-    public abstract class TestCoreBaseDataAll<ModelList, Model, Criteria> : TestCoreBase where Model: ModelId
+    public abstract class TestCoreBaseDataAll<ModelList, Model, Criteria> : TestCoreBaseDataGet<ModelList, Model, Criteria> where Model: ModelId
     {
-        protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }
-
-        protected virtual long ValidId => 1;
-        protected virtual long InvalidId => 999999;
+        #region Abstract Methods
+        protected abstract IDataAll<ModelList, Model, Criteria> GetDataAll(ICore core);
 
         protected abstract Model CreateInvalidDataToAdd();
+        protected abstract Model CreateInvalidDataToUpdate();
         protected abstract Model CreateValidDataToAdd();
-
-        #region GetList
-        [Fact]
-        public async Task GetList_CriteriaNull_ReturnNotNull()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(default(Criteria?));
-
-            Assert.NotNull(res);
-        }
-
-        [Fact]
-        public async Task GetList_CriteriaNull_ReturnSuccess()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(default(Criteria?));
-
-            Assert.True(res.Success);
-        }
-
-        [Fact]
-        public async Task GetList_CriteriaNull_ReturnDataType()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(default(Criteria?));
-
-            Assert.IsAssignableFrom<IList<Country>>(res.Data);
-        }
-
-        [Fact]
-        public async Task GetList_CriteriaNull_ReturnNotEmpty()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(default(Criteria?));
-
-            Assert.NotEmpty(res.Data);
-        }
-
-        [Fact]
-        public async Task GetList_CriteriaNull_ReturnFirstItemNotNull()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(default(Criteria?));
-
-            Assert.NotNull(res.Data.FirstOrDefault());
-        }
+        protected abstract Model CreateValidDataToUpdate();
         #endregion
 
-        #region Get
-        [Fact]
-        public async Task Get_Zero_ReturnResultNotNull()
-        {
-            await ExecuteValidLogin();
+        #region Properties
+        protected virtual long ValidIdDelete => 2;  //Should be different from the ValidId defined in TestCoreBaseDataGet and different from the Id used for Update methods
+        #endregion
 
-            var res = await DataAll.Get(0);
-
-            Assert.NotNull(res);
-        }
-
-        [Fact]
-        public async Task Get_Zero_ReturnNotSuccess()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(0);
-
-            Assert.False(res.Success);
-        }
-
-        [Fact]
-        public async Task Get_Zero_ReturnDataNull()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(0);
-
-            Assert.Null(res.Data);
-        }
-
-        [Fact]
-        public async Task Get_InvalidId_ReturnNotSuccess()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(InvalidId);
-
-            Assert.False(res.Success);
-        }
-
-        [Fact]
-        public async Task Get_ValidId_ReturnResultNotNull()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(ValidId);
-
-            Assert.NotNull(res);
-        }
-
-        [Fact]
-        public async Task Get_ValidId_ReturnSuccess()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(ValidId);
-
-            Assert.True(res.Success);
-        }
-
-        [Fact]
-        public async Task Get_ValidId_ReturnDataNotNull()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(ValidId);
-
-            Assert.NotNull(res.Data);
-        }
-
-        [Fact]
-        public async Task Get_ValidId_ReturnDataIdMatch()
-        {
-            await ExecuteValidLogin();
-
-            var res = await DataAll.Get(ValidId);
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            Assert.Equal(ValidId, res.Data.Id);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        }
+        #region Override Methods
+        protected override IDataGet<ModelList, Model, Criteria> GetDataGet(ICore core) => GetDataAll(core);
         #endregion
 
         #region Add
         [Fact]
+        public async Task Add_NoAuthValidData_ReturnNotSuccess()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToAdd();
+
+            var res = await dataAll.Add(data);
+
+            Assert.False(res.Success);
+        }
+
+        [Fact]
+        public async Task Add_NoAuthValidData_ReturnErrorNotNull()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToAdd();
+
+            var res = await dataAll.Add(data);
+
+            Assert.NotNull(res.Errors);
+        }
+
+        [Fact]
+        public async Task Add_NoAuthValidData_ReturnErrorNotEmpty()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToAdd();
+
+            var res = await dataAll.Add(data);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Add_NoAuthValidData_ReturnErrorType()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToAdd();
+
+            var res = await dataAll.Add(data);
+
+            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+        }
+
+        [Fact]
         public async Task Add_Null_ReturnNotSuccess()
         {
-            await ExecuteValidLogin();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var res = await DataAll.Add(null);
+            var res = await dataAll.Add(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.False(res.Success);
@@ -168,10 +92,11 @@ namespace Deve.Tests.Core
         [Fact]
         public async Task Add_InvalidData_ReturnNotSuccess()
         {
-            await ExecuteValidLogin();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
             var data = CreateInvalidDataToAdd();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Add(data);
 
             Assert.False(res.Success);
         }
@@ -179,10 +104,11 @@ namespace Deve.Tests.Core
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsNotNull()
         {
-            await ExecuteValidLogin();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
             var data = CreateInvalidDataToAdd();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Add(data);
 
             Assert.NotNull(res.Errors);
         }
@@ -190,10 +116,11 @@ namespace Deve.Tests.Core
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsType()
         {
-            await ExecuteValidLogin();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
             var data = CreateInvalidDataToAdd();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Add(data);
 
             Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
@@ -201,32 +128,247 @@ namespace Deve.Tests.Core
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsNotEmpty()
         {
-            await ExecuteValidLogin();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
             var data = CreateInvalidDataToAdd();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Add(data);
 
             Assert.NotEmpty(res.Errors);
         }
 
         [Fact]
-        public async Task Add_InvalidData_ReturnFirstErrorNotNull()
+        public async Task Add_ValidData_ReturnSuccess()
         {
-            await ExecuteValidLogin();
-            var data = CreateInvalidDataToAdd();
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToAdd();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Add(data);
 
-            Assert.NotNull(res.Errors.FirstOrDefault());
+            Assert.True(res.Success);
+        }
+        #endregion
+
+        #region Update
+        [Fact]
+        public async Task Update_NoAuthValidData_ReturnNotSuccess()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.False(res.Success);
         }
 
         [Fact]
-        public async Task Add_ValidData_ReturnSuccess()
+        public async Task Update_NoAuthValidData_ReturnErrorNotNull()
         {
-            await ExecuteValidLogin();
-            var data = CreateValidDataToAdd();
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToUpdate();
 
-            var res = await DataAll.Add(data);
+            var res = await dataAll.Update(data);
+
+            Assert.NotNull(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_NoAuthValidData_ReturnErrorNotEmpty()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_NoAuthValidData_ReturnErrorType()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_Null_ReturnNotSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            var res = await dataAll.Update(null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+
+            Assert.False(res.Success);
+        }
+
+        [Fact]
+        public async Task Update_InvalidData_ReturnNotSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateInvalidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.False(res.Success);
+        }
+
+        [Fact]
+        public async Task Update_InvalidData_ReturnErrorsNotNull()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateInvalidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.NotNull(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_InvalidData_ReturnErrorsType()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateInvalidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_InvalidData_ReturnErrorsNotEmpty()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateInvalidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Update_ValidData_ReturnSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+            var data = CreateValidDataToUpdate();
+
+            var res = await dataAll.Update(data);
+
+            Assert.True(res.Success);
+        }
+        #endregion
+
+        #region Delete
+        [Fact]
+        public async Task Delete_NoAuthValidData_ReturnNotSuccess()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(ValidIdDelete);
+
+            Assert.False(res.Success);
+        }
+
+        [Fact]
+        public async Task Delete_NoAuthValidData_ReturnErrorNotNull()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(ValidIdDelete);
+
+            Assert.NotNull(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_NoAuthValidData_ReturnErrorNotEmpty()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(ValidIdDelete);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_NoAuthValidData_ReturnErrorType()
+        {
+            var core = CreateCore();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(ValidIdDelete);
+
+            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_Zero_ReturnNotSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(0);
+
+            Assert.False(res.Success);
+        }
+
+        [Fact]
+        public async Task Delete_Zero_ReturnErrorsNotNull()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(0);
+
+            Assert.NotNull(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_Zero_ReturnErrorsType()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(0);
+
+            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_Zero_ReturnErrorsNotEmpty()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(0);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_ValidData_ReturnSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(ValidIdDelete);
 
             Assert.True(res.Success);
         }

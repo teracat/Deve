@@ -14,17 +14,17 @@ namespace Deve.DataSource
         //States
         public static readonly List<State> States =
         [
-            new State() { Id = 1, Name = "Barcelona", CountryId = 1, Country = "España"},
-            new State() { Id = 2, Name = "Washington", CountryId = 2, Country = "USA"},
+            new State() { Id = 1, Name = "Barcelona", CountryId = 1, Country = "España" },
+            new State() { Id = 2, Name = "Washington", CountryId = 2, Country = "USA" },
         ];
 
         //Cities
         public static readonly List<City> Cities =
         [
-            new City() { Id = 1, Name = "Santpedor", StateId = 1, State = "Barcelona", CountryId = 1, Country = "España"},
-            new City() { Id = 2, Name = "Barcelona", StateId = 1, State = "Barcelona", CountryId = 1, Country = "España"},
-            new City() { Id = 3, Name = "Washington DC", StateId = 2, State = "Washington", CountryId = 2, Country = "USA"},
-            new City() { Id = 4, Name = "Redmond", StateId = 2, State = "Washington", CountryId = 2, Country = "USA"},
+            new City() { Id = 1, Name = "Santpedor", StateId = 1, State = "Barcelona", CountryId = 1, Country = "España" },
+            new City() { Id = 2, Name = "Barcelona", StateId = 1, State = "Barcelona", CountryId = 1, Country = "España" },
+            new City() { Id = 3, Name = "Washington DC", StateId = 2, State = "Washington", CountryId = 2, Country = "USA" },
+            new City() { Id = 4, Name = "Redmond", StateId = 2, State = "Washington", CountryId = 2, Country = "USA" },
         ];
 
         //Clients

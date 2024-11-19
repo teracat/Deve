@@ -1,23 +1,29 @@
+using Deve.Core;
 using Deve.Internal;
 
 namespace Deve.Tests.Core
 {
     public class TestCoreCountry : TestCoreBaseDataAll<Country, Country, CriteriaCountry>
     {
-        protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Core.Countries;
+        #region Overrides
+        protected override IDataAll<Country, Country, CriteriaCountry> GetDataAll(ICore core) => core.Countries;
 
-        protected override Country CreateInvalidDataToAdd()
-        {
-            return new Country();
-        }
+        protected override Country CreateInvalidDataToAdd() => new();
 
-        protected override Country CreateValidDataToAdd()
+        protected override Country CreateInvalidDataToUpdate() => new();
+
+        protected override Country CreateValidDataToAdd() => new()
         {
-            return new Country()
-            {
-                Name = "Tests Country",
-                IsoCode = "TE",
-            };
-        }
+            Name = "Tests Country",
+            IsoCode = "TE",
+        };
+
+        protected override Country CreateValidDataToUpdate() => new()
+        {
+            Id = 1,
+            Name = "España",
+            IsoCode = "ES"
+        };
+        #endregion
     }
 }

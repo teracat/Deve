@@ -17,7 +17,7 @@ namespace Deve.Tests.Auth
             var result = await auth.Login(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-            Assert.False(result.Success, "Login with Null UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.Login(new UserCredentials());
 
-            Assert.False(result.Success, "Login with Default UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.Login(new UserCredentials(string.Empty, string.Empty));
 
-            Assert.False(result.Success, "Login with Empty UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.Login(new UserCredentials("aa", "bb"));
 
-            Assert.False(result.Success, "Login with Not Valid UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.Login(new UserCredentials("teracat", "teracat"));
 
-            Assert.True(result.Success, "Login with Valid UserCredentials should return true");
+            Assert.True(result.Success);
         }
         #endregion
 
@@ -66,7 +66,7 @@ namespace Deve.Tests.Auth
             var result = await auth.RefreshToken(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-            Assert.False(result.Success, "RefreshToken with Null token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.RefreshToken(string.Empty);
 
-            Assert.False(result.Success, "RefreshToken with Empty token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.RefreshToken("aa");
 
-            Assert.False(result.Success, "RefreshToken with Not Valid token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Deve.Tests.Auth
             var auth = AuthFactory.Get();
             var result = await auth.RefreshToken("P83hovvDJI9+6LMyV9Tv/MCBELipU06iTIqm9IqsTTMNjLPaYmSvarlIxOst+2ZId4dHPK2xkqKD1hQL6Iy3gf7DEg8y+3N2K4REL2A0FVA=");
 
-            Assert.False(result.Success, "RefreshToken with Expired token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Deve.Tests.Auth
             var tokenData = auth.TokenManager.CreateToken(usersRes.Data.First());
             var result = await auth.RefreshToken(tokenData.Token);
 
-            Assert.True(result.Success, "RefreshToken with Valid token should return true");
+            Assert.True(result.Success);
         }
         #endregion
 
@@ -132,7 +132,7 @@ namespace Deve.Tests.Auth
 
             var result = await auth.IsGranted(null, PermissionType.GetList, PermissionDataType.State);
 
-            Assert.True(result == PermissionResult.Granted, "IsGranted with null User for GetList on State should return Granted");
+            Assert.True(result == PermissionResult.Granted);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace Deve.Tests.Auth
 
             var result = await auth.IsGranted(userIdentity, PermissionType.GetList, PermissionDataType.State);
 
-            Assert.True(result == PermissionResult.Granted, "IsGranted with User role for GetList on State should return Granted");
+            Assert.True(result == PermissionResult.Granted);
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace Deve.Tests.Auth
 
             var result = await auth.IsGranted(userIdentity, PermissionType.GetList, PermissionDataType.State);
 
-            Assert.True(result == PermissionResult.Granted, "IsGranted with User role for GetList on State should return Granted");
+            Assert.True(result == PermissionResult.Granted);
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace Deve.Tests.Auth
 
             var result = await auth.IsGranted(userIdentity, PermissionType.Add, PermissionDataType.State);
 
-            Assert.True(result == PermissionResult.NotGranted, "IsGranted with User role for Add on State should return NotGranted");
+            Assert.True(result == PermissionResult.NotGranted);
         }
 
         [Fact]
@@ -192,7 +192,7 @@ namespace Deve.Tests.Auth
 
             var result = await auth.IsGranted(userIdentity, PermissionType.Add, PermissionDataType.State);
 
-            Assert.True(result == PermissionResult.Granted, "IsGranted with Admin role for Add on State should return Granted");
+            Assert.True(result == PermissionResult.Granted);
         }
         #endregion
     }

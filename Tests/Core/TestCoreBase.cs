@@ -1,3 +1,5 @@
+using Deve.Core;
+
 namespace Deve.Tests.Core
 {
     public abstract class TestCoreBase
@@ -5,26 +7,25 @@ namespace Deve.Tests.Core
         public const string ValidUsername = "teracat";
         public const string ValidPassword = "teracat";
 
-        protected Deve.Core.ICore Core
+        protected ICore CreateCore()
         {
-            get
+            //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
+            //It should use an instance for Testing purposes only
+            /*var config = new Deve.DataSource.DataSourceConfig()
             {
-                //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
-                //It should use an instance for Testing purposes only
-                /*var config = new Deve.DataSource.DataSourceConfig()
-                {
-                    ConnectionString = ""
-                };
-                Deve.DataSource.DataSourceFactory.SetConfig(config);*/
+                ConnectionString = ""
+            };
+            Deve.DataSource.DataSourceFactory.SetConfig(config);*/
 
-                //IsSharedInstance is set to true so the Login stores the User authenticated to avoid permissions errors
-                return Deve.Core.CoreFactory.Get(true);
-            }
+            //IsSharedInstance is set to true so the Login stores the User authenticated to avoid permissions errors
+            return new CoreMain(true);
         }
 
-        protected async Task<ResultGet<UserToken>> ExecuteValidLogin()
+        protected async Task<ICore> CreateCoreAndExecuteValidLogin()
         {
-            return await Core.Authenticate.Login(new UserCredentials(ValidUsername, ValidPassword));
+            ICore core = CreateCore();
+            await core.Authenticate.Login(new UserCredentials(ValidUsername, ValidPassword));
+            return core;
         }
     }
 }
