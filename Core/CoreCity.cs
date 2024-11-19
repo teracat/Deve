@@ -21,7 +21,7 @@ namespace Deve.Core
         protected override async Task<Result> CheckRequired(City data, ChecksActionType action)
         {
             var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
-                                .CheckNotNullOrEmpty(new Field(data.Id), new Field(data.Name), new Field(data.StateId), new Field(data.CountryId));
+                                .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.StateId), new Field(data.CountryId));
 
             if (action == ChecksActionType.Update)
                 resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
