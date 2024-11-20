@@ -33,6 +33,9 @@ namespace Deve.Core
             if (!resPerm.Success)
                 return Utils.ResultGetError<Model>(resPerm);
 
+            if (id <= 0)
+                return Utils.ResultGetError<Model>(Core.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(id));
+
             return await DataGet.Get(id);
         }
         #endregion

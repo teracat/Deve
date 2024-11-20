@@ -87,9 +87,6 @@
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
-                if (id <= 0)
-                    return Utils.ResultGetError<State>(DataSourceMain.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(State.Id));
-
                 var state = Data.States.FirstOrDefault(x => x.Id == id);
                 if (state is null)
                     return Utils.ResultGetError<State>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
