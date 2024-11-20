@@ -162,6 +162,7 @@ namespace Deve.Tests.Core
             var res = await dataGet.Get(ValidId);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
+            Assert.NotNull(res.Data);
             Assert.Equal(ValidId, res.Data.Id);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }

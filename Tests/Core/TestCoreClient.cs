@@ -21,31 +21,31 @@ namespace Deve.Tests.Core
             TaxName = "Tests Client Corporation",
             Location = new Location()
             {
-                CityId = 4,
-                City = "Redmond",
-                CountryId = 2,
-                Country = "USA",
-                StateId = 2,
-                State = "Washington",
+                CityId = 1,
+                City = "Santedor",
+                CountryId = 1,
+                Country = "España",
+                StateId = 1,
+                State = "Barcelona",
             }
         };
 
         protected override Client CreateValidDataToUpdate() => new()
         {
-            Id = 2,
-            Name = "Microsoft",
-            TradeName = "Microsoft",
-            Balance = 1500,
+            Id = 1,
+            Name = "Jordi Badia",
+            TradeName = "Teracat",
+            Balance = 50,
             Status = ClientStatus.Active,
-            TaxName = "Microsoft Corporation",
+            TaxName = "Jordi Badia Santaulària",
             Location = new Location()
             {
-                CityId = 4,
-                City = "Redmond",
-                CountryId = 2,
-                Country = "USA",
-                StateId = 2,
-                State = "Washington",
+                CityId = 1,
+                City = "Santedor",
+                CountryId = 1,
+                Country = "España",
+                StateId = 1,
+                State = "Barcelona",
             }
         };
         #endregion

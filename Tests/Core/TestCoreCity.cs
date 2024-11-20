@@ -23,8 +23,8 @@ namespace Deve.Tests.Core
 
         protected override City CreateValidDataToUpdate() => new()
         {
-            Id = 2,
-            Name = "Barcelona",
+            Id = 1,
+            Name = "Santpedor",
             StateId = 1,
             State = "Barcelona",
             CountryId = 1,

@@ -21,10 +21,10 @@ namespace Deve.Tests.Core
 
         protected override State CreateValidDataToUpdate() => new()
         {
-            Id = 2,
-            Name = "Washington",
-            CountryId = 2,
-            Country = "USA",
+            Id = 1,
+            Name = "Barcelona",
+            CountryId = 1,
+            Country = "España",
         };
         #endregion
     }

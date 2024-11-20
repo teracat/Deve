@@ -22,15 +22,16 @@ namespace Deve.Tests.Core
             Password = "Tests",
         };
 
+        // We update the user "teracat" which is used to authenticate tests, so we must keep it Active and with the Role Admin so the others tests don't fail
         protected override UserPlainPassword CreateValidDataToUpdate() => new()
         {
-            Id = 2,
-            Role = Role.User,
-            Name = "Dan Brown",
-            Username = "dan.brown",
-            IsActive = false,
+            Id = 1,
+            Role = Role.Admin,
+            Name = "Jordi Badia",
+            Username = "teracat",
+            Email = "jordib@teracat.com",
+            IsActive = true,
             Joined = new DateTime(2024, 9, 19),
-            Password = "tests",
         };
         #endregion
     }

@@ -20,9 +20,9 @@ namespace Deve.Tests.Core
 
         protected override Country CreateValidDataToUpdate() => new()
         {
-            Id = 2,
-            Name = "USA",
-            IsoCode = "US",
+            Id = 1,
+            Name = "España",
+            IsoCode = "ES",
         };
         #endregion
     }
