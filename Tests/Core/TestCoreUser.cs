@@ -24,14 +24,13 @@ namespace Deve.Tests.Core
 
         protected override UserPlainPassword CreateValidDataToUpdate() => new()
         {
-            Id = 1,
-            Role = Role.Admin,
-            Name = "Jordi Badia",
-            Username = "teracat",
-            Email = "jordib@teracat.com",
-            IsActive = true,
+            Id = 2,
+            Role = Role.User,
+            Name = "Dan Brown",
+            Username = "dan.brown",
+            IsActive = false,
             Joined = new DateTime(2024, 9, 19),
-            Password = "tests"
+            Password = "tests",
         };
         #endregion
     }

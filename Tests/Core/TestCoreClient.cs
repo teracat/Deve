@@ -32,20 +32,20 @@ namespace Deve.Tests.Core
 
         protected override Client CreateValidDataToUpdate() => new()
         {
-            Id = 1,
-            Name = "Jordi Badia",
-            TradeName = "Teracat",
-            Balance = 55,
+            Id = 2,
+            Name = "Microsoft",
+            TradeName = "Microsoft",
+            Balance = 1500,
             Status = ClientStatus.Active,
-            TaxName = "Jordi Badia Santaulària",
+            TaxName = "Microsoft Corporation",
             Location = new Location()
             {
-                CityId = 1,
-                City = "Santedor",
-                CountryId = 1,
-                Country = "España",
-                StateId = 1,
-                State = "Barcelona",
+                CityId = 4,
+                City = "Redmond",
+                CountryId = 2,
+                Country = "USA",
+                StateId = 2,
+                State = "Washington",
             }
         };
         #endregion

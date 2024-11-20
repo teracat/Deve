@@ -15,20 +15,20 @@ namespace Deve.Tests.Core
         protected override City CreateValidDataToAdd() => new()
         {
             Name = "Tests City",
-            StateId = 2,
-            State = "Washington",
-            CountryId = 2,
-            Country = "USA",
+            StateId = 1,
+            State = "Barcelona",
+            CountryId = 1,
+            Country = "España",
         };
 
         protected override City CreateValidDataToUpdate() => new()
         {
-            Id = 3,
-            Name = "Washington DC",
-            StateId = 2,
-            State = "Washington",
-            CountryId = 2,
-            Country = "USA"
+            Id = 2,
+            Name = "Barcelona",
+            StateId = 1,
+            State = "Barcelona",
+            CountryId = 1,
+            Country = "España",
         };
         #endregion
     }

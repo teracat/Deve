@@ -20,7 +20,12 @@ namespace Deve.Tests.Core
         #endregion
 
         #region Properties
-        protected virtual long ValidIdDelete => 2;  //Should be different from the ValidId defined in TestCoreBaseDataGet and different from the Id used for Update methods
+        /// <summary>
+        /// Id used in the Delete methods tests as a valid Id to be deleted.
+        /// Should be different from the ValidId defined in TestCoreBaseDataGet and different from the Id used for Update methods.
+        /// This Id should not be used in the data used to Add or Update in other tests.
+        /// </summary>
+        protected virtual long ValidIdDelete => 3;
         #endregion
 
         #region Override Methods
@@ -146,7 +151,7 @@ namespace Deve.Tests.Core
 
             var res = await dataAll.Add(data);
 
-            Assert.True(res.Success);
+            Assert.True(res.Success, res.Errors?.FirstOrDefault()?.Description);
         }
         #endregion
 
@@ -269,7 +274,7 @@ namespace Deve.Tests.Core
 
             var res = await dataAll.Update(data);
 
-            Assert.True(res.Success);
+            Assert.True(res.Success, res.Errors?.FirstOrDefault()?.Description);
         }
         #endregion
 
