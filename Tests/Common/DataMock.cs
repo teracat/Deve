@@ -1,6 +1,6 @@
 ﻿using Deve.Internal;
 
-namespace Deve.Tests.Common
+namespace Deve.Tests
 {
     /// <summary>
     /// Data used in the DataSourceMock.

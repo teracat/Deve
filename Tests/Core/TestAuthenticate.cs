@@ -1,7 +1,4 @@
-﻿using Deve.Auth;
-using Deve.DataSource;
-
-namespace Deve.Tests.Core
+﻿namespace Deve.Tests.Core
 {
     /// <summary>
     /// Authenticate Tests.

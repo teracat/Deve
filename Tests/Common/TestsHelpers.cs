@@ -1,7 +1,7 @@
 ﻿using Deve.Auth;
 using Deve.DataSource;
 
-namespace Deve.Tests.Common
+namespace Deve.Tests
 {
     public static class TestsHelpers
     {

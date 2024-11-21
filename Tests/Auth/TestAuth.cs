@@ -1,5 +1,4 @@
 ﻿using Deve.Auth;
-using Deve.Tests.Common;
 
 namespace Deve.Tests.Auth
 {

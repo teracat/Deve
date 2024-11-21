@@ -1,6 +1,4 @@
-﻿using Deve.Tests.Common;
-
-namespace Deve.Tests.Auth
+﻿namespace Deve.Tests.Auth
 {
     /// <summary>
     /// Hash Tests.

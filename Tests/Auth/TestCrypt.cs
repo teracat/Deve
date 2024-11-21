@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography;
-using Deve.Tests.Common;
 
 namespace Deve.Tests.Auth
 {

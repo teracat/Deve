@@ -2,9 +2,9 @@
 using Deve.DataSource;
 using Deve.Internal;
 
-namespace Deve.Tests.Common
+namespace Deve.Tests
 {
-    public class DataSourceMock : Mock<IDataSource>
+    internal class DataSourceMock : Mock<IDataSource>
     {
         public DataSourceMock()
         {
