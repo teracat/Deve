@@ -1,4 +1,4 @@
-﻿using Deve.Auth;
+﻿using Deve.Tests.Common;
 
 namespace Deve.Tests.Auth
 {
@@ -10,7 +10,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Calc_Null_ReturnsNull()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var hash = auth.Hash.Calc(null);
@@ -22,7 +22,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Calc_Empty_ReturnsEmpty()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
             var hash = auth.Hash.Calc(string.Empty);
 
@@ -32,7 +32,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Calc_Valid_Equal()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
             
             var hash = auth.Hash.Calc("Original Text");
             System.Diagnostics.Debug.WriteLine(hash);

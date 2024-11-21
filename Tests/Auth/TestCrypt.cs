@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using Deve.Auth;
+using Deve.Tests.Common;
 
 namespace Deve.Tests.Auth
 {
@@ -11,7 +11,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Encrypt_Null_ReturnsNull()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var encrypted = auth.Crypt.Encrypt(null);
@@ -23,7 +23,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Encrypt_Empty_ReturnsEmpty()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
             var encrypted = auth.Crypt.Encrypt(string.Empty);
 
@@ -33,7 +33,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Encrypt_Valid_Equal()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
             
             var encrypted = auth.Crypt.Encrypt("Original Text");
             System.Diagnostics.Debug.WriteLine(encrypted);
@@ -45,7 +45,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_Null_ReturnsNull()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var decrypted = auth.Crypt.Decrypt(null);
@@ -57,7 +57,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_Empty_ReturnsEmpty()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
             var decrypted = auth.Crypt.Decrypt(string.Empty);
 
@@ -67,7 +67,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_NotValid_ThrowsException()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
             Assert.Throws<CryptographicException>(() => auth.Crypt.Decrypt("aaaa"));
         }
@@ -75,7 +75,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_Valid_Equal()
         {
-            var auth = AuthFactory.Get();
+            var auth = TestsHelpers.CreateAuth();
 
             //You should change this value when you have changed the Crypt implementation or the keys used to encrypt/decrypt.
             var decrypted = auth.Crypt.Decrypt("yX0oNH+mCQ0P+vP2Qe9Tug==");

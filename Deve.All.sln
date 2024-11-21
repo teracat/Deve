@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Sdk", "Common.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Auth.Jwt", "Extra\Auth.Jwt\Deve.Auth.Jwt.csproj", "{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Tests.Common", "Tests\Common\Deve.Tests.Common.csproj", "{FDC225CF-E078-4797-A3AE-7BA8E33BB798}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,10 @@ Global
 		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC225CF-E078-4797-A3AE-7BA8E33BB798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC225CF-E078-4797-A3AE-7BA8E33BB798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC225CF-E078-4797-A3AE-7BA8E33BB798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC225CF-E078-4797-A3AE-7BA8E33BB798}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +190,7 @@ Global
 		{33D1B393-A639-4FEC-B24F-F172350A80B8} = {EEB7CEAD-5900-4BB7-991F-20C10F600DD8}
 		{0C594DFF-B810-4D20-A037-B101FA87454D} = {EEB7CEAD-5900-4BB7-991F-20C10F600DD8}
 		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111} = {2A52D688-96F9-4C04-945E-5B6E3920B29E}
+		{FDC225CF-E078-4797-A3AE-7BA8E33BB798} = {CEBE374A-E4B9-45BA-BB62-DC94A665121A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8157CD2-E584-4372-9A7B-B73C837733A5}
