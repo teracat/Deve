@@ -44,7 +44,18 @@ namespace Deve.Tests.Auth
         public async Task Login_CredentialsNotValid_ReturnFalse()
         {
             var auth = TestsHelpers.CreateAuth();
+
             var result = await auth.Login(new UserCredentials("aa", "bb"));
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Login_CredentialsInactiveUser_ReturnFalse()
+        {
+            var auth = TestsHelpers.CreateAuth();
+
+            var result = await auth.Login(new UserCredentials(TestsHelpers.UserUsernameInactive, TestsHelpers.UserPasswordInactive));
 
             Assert.False(result.Success);
         }
@@ -53,7 +64,8 @@ namespace Deve.Tests.Auth
         public async Task Login_CredentialsValid_ReturnTrue()
         {
             var auth = TestsHelpers.CreateAuth();
-            var result = await auth.Login(new UserCredentials(TestsHelpers.ValidUsername, TestsHelpers.ValidPassword));
+
+            var result = await auth.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
 
             Assert.True(result.Success);
         }
@@ -105,9 +117,8 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
-            var ds = TestsHelpers.CreateDataSource();
+            var ds = TestsHelpers.CreateDataSourceMock();
             var auth = TestsHelpers.CreateAuth(ds);
-
             var usersRes = await ds.Users.Get(new Internal.CriteriaUser()
             {
                 OnlyActive = CriteriaActiveType.OnlyActive

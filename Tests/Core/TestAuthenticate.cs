@@ -48,11 +48,21 @@
         }
 
         [Fact]
+        public async Task Login_CredentialsInactive_ReturnFalse()
+        {
+            var core = CreateCore();
+
+            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameInactive, TestsHelpers.UserPasswordInactive));
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
         public async Task Login_CredentialsValid_ReturnTrue()
         {
             var core = CreateCore();
 
-            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.ValidUsername, TestsHelpers.ValidPassword));
+            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
 
             Assert.True(result.Success);
         }

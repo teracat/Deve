@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using Deve.Auth;
 using Deve.Auth.Jwt;
 using Deve.DataSource;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Api
 {
@@ -88,7 +87,7 @@ namespace Deve.Api
             builder.Services.AddHttpContextAccessor();
 
             // Inject IDataSourceFactory to the Controllers constructor
-            builder.Services.AddSingleton<IDataSourceFactory, DataSourceFactory>();
+            builder.Services.AddSingleton<IDataSourceBuilder, DataSourceBuilderFactory>();
 
             // Authentication
             // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the class TokenManagerJwt)

@@ -7,8 +7,8 @@ namespace Deve.Api
     public class ControllerBaseAuth : ControllerBaseDeve
     {
         #region Constructor
-        public ControllerBaseAuth(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerBaseAuth(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
             Core.UserIdentity = CreateUserIdentity(contextAccessor?.HttpContext?.User);
         }

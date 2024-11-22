@@ -10,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Core.Countries;
 
-        public ControllerCountry(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerCountry(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

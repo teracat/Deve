@@ -46,11 +46,21 @@ namespace Deve.Tests.Api.Internal
         }
 
         [Fact]
+        public async Task Login_InactiveUserCredentials_NotSuccessStatusCode()
+        {
+            var client = CreateClient();
+
+            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsHelpers.UserUsernameInactive}&password={TestsHelpers.UserPasswordInactive}");
+
+            Assert.False(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
         public async Task Login_ValidCredentials_SuccessStatusCode()
         {
             var client = CreateClient();
 
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsHelpers.ValidUsername}&password={TestsHelpers.ValidPassword}");
+            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsHelpers.UserUsernameValid}&password={TestsHelpers.UserPasswordValid}");
 
             Assert.True(response.IsSuccessStatusCode);
         }

@@ -7,13 +7,13 @@ namespace Deve.Tests.Core
         protected ICore CreateCore()
         {
             //IsSharedInstance is set to true so the Login stores the User authenticated to avoid permissions errors
-            return new CoreMain(true, TestsHelpers.CreateDataSource());
+            return new CoreMain(true, TestsHelpers.CreateDataSourceMock());
         }
 
         protected async Task<ICore> CreateCoreAndExecuteValidLogin()
         {
             ICore core = CreateCore();
-            await core.Authenticate.Login(new UserCredentials(TestsHelpers.ValidUsername, TestsHelpers.ValidPassword));
+            await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
             return core;
         }
     }

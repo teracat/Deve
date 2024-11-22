@@ -10,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<Client, Client, CriteriaClient> DataAll => Core.Clients;
 
-        public ControllerClient(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerClient(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
 

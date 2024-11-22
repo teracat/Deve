@@ -2,7 +2,7 @@ using Deve.DataSource;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Deve.Tests.Api.Internal
+namespace Deve.Tests.Api
 {
     /// <summary>
     /// Api tests base class.
@@ -17,7 +17,7 @@ namespace Deve.Tests.Api.Internal
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.AddSingleton<IDataSourceFactory, DataSourceMockFactory>();
+                    services.AddSingleton<IDataSourceBuilder, DataSourceBuilderMock>();
                 });
             });
         }

@@ -10,8 +10,8 @@ namespace Deve.External.Api
     {
         protected override IDataGet<Country, Country, CriteriaCountry> DataGet => Core.Countries;
 
-        public ControllerCountry(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerCountry(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

@@ -7,8 +7,8 @@ namespace Deve.Api
     [Route(ApiConstants.PathAuth)]
     public class ControllerAuth : ControllerBaseDeve
     {
-        public ControllerAuth(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerAuth(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
 

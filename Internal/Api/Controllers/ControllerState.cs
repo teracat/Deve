@@ -10,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<State, State, CriteriaState> DataAll => Core.States;
 
-        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
-            : base(contextAccessor, dataSourceFactory)
+        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }
