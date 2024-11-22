@@ -9,7 +9,6 @@ namespace Deve.DataSource
         [
             new Country() { Id = 1, Name = "España", IsoCode = "ES" },
             new Country() { Id = 2, Name = "USA", IsoCode = "US" },
-            new Country() { Id = 3, Name = "France", IsoCode = "FR" },
         ];
 
         //States
@@ -17,7 +16,6 @@ namespace Deve.DataSource
         [
             new State() { Id = 1, Name = "Barcelona", CountryId = 1, Country = "España" },
             new State() { Id = 2, Name = "Washington", CountryId = 2, Country = "USA" },
-            new State() { Id = 3, Name = "Madrid", CountryId = 1, Country = "España" },
         ];
 
         //Cities
@@ -50,15 +48,6 @@ namespace Deve.DataSource
                 StateId = 2,
                 State = "Washington",
             }},
-            new Client() { Id = 3, Name = "Fake Company", TradeName = "Fake", Balance = 500, Status = ClientStatus.Active, TaxName = "Fake Corporation", Location = new Location()
-            {
-                CityId = 1,
-                City = "Santedor",
-                CountryId = 1,
-                Country = "España",
-                StateId = 1,
-                State = "Barcelona",
-            }},
         ];
 
         //Users
@@ -66,7 +55,6 @@ namespace Deve.DataSource
         [
             new User() { Id = 1, Role = Role.Admin, Name = "Jordi Badia", Username = "teracat", Email = "jordib@teracat.com", IsActive = true, Joined = new DateTime(2024, 9, 19), PasswordHash = "Rke4hgrN46Zgzeivca85NdtghI7CL3yFtbzoLTxHe0HYsEUscTRH8TtJw1Si6z+/krDvdzSBoCLWs55slzOV3Q==" },
             new User() { Id = 2, Role = Role.User, Name = "Dan Brown", Username = "dan.brown",  IsActive = false, Joined = new DateTime(2024, 9, 19), PasswordHash = "9jn9NVRbBwRdo0/+5c63F6pO77Jzc8Der3nH8vyDiHjunLrFefqlkbf55TF7SS+LhCrDj20bt77LxPetqLaYWA==" },
-            new User() { Id = 3, Role = Role.User, Name = "Fake User", Username = "fake",  IsActive = false, Joined = new DateTime(2024, 11, 19), PasswordHash = "9jn9NVRbBwRdo0/+5c63F6pO77Jzc8Der3nH8vyDiHjunLrFefqlkbf55TF7SS+LhCrDj20bt77LxPetqLaYWA==" },
         ];
     }
 }
