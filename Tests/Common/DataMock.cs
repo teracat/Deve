@@ -4,10 +4,13 @@ namespace Deve.Tests
 {
     /// <summary>
     /// Data used in the DataSourceMock.
+    /// Id 1 will be used as the data to Get by Id (check the virtual property defined in Tests.Core.TestCoreBaseDataGet.ValidId).
+    /// Id 1 will also be used to test Update methods (check the overriden method CreateValidDataToUpdate in every Tests.Core.TestCoreXXX).
+    /// Id 3 will be used to test Delete methods (check the virtual property defined in Tests.Core.TestCoreBaseDataAll.ValidIdDelete).
     /// </summary>
     internal class DataMock
     {
-        //Countries
+        // Countries
         public static readonly List<Country> Countries =
         [
             new Country() { Id = 1, Name = "España", IsoCode = "ES" },
@@ -15,7 +18,7 @@ namespace Deve.Tests
             new Country() { Id = 3, Name = "France", IsoCode = "FR" },
         ];
 
-        //States
+        // States
         public static readonly List<State> States =
         [
             new State() { Id = 1, Name = "Barcelona", CountryId = 1, Country = "España" },
@@ -23,7 +26,7 @@ namespace Deve.Tests
             new State() { Id = 3, Name = "Madrid", CountryId = 1, Country = "España" },
         ];
 
-        //Cities
+        // Cities
         public static readonly List<City> Cities =
         [
             new City() { Id = 1, Name = "Santpedor", StateId = 1, State = "Barcelona", CountryId = 1, Country = "España" },
@@ -32,7 +35,8 @@ namespace Deve.Tests
             new City() { Id = 4, Name = "Redmond", StateId = 2, State = "Washington", CountryId = 2, Country = "USA" },
         ];
 
-        //Clients
+        // Clients
+        // Client with Id 1 will also be used to test the UpdateStatus method.
         public static readonly List<Client> Clients =
         [
             new Client() { Id = 1, Name = "Jordi Badia", TradeName = "Teracat", Balance = 50, Status = ClientStatus.Active, TaxName = "Jordi Badia Santaulària", Location = new Location()
@@ -64,11 +68,13 @@ namespace Deve.Tests
             }},
         ];
 
-        //Users
+        // Users
+        // User with Username "tests" will be used as the user to perform valid logins (it must have the Admin role to pass the permissions checks).
+        // User with Username "tests2" will be used for inactive user tests.
         public static readonly List<User> Users =
         [
-            new User() { Id = 1, Role = Role.Admin, Name = "Jordi Badia", Username = "teracat", Email = "jordib@teracat.com", IsActive = true, Joined = new DateTime(2024, 9, 19), PasswordHash = "Rke4hgrN46Zgzeivca85NdtghI7CL3yFtbzoLTxHe0HYsEUscTRH8TtJw1Si6z+/krDvdzSBoCLWs55slzOV3Q==" },
-            new User() { Id = 2, Role = Role.User, Name = "Dan Brown", Username = "dan.brown",  IsActive = false, Joined = new DateTime(2024, 9, 19), PasswordHash = "9jn9NVRbBwRdo0/+5c63F6pO77Jzc8Der3nH8vyDiHjunLrFefqlkbf55TF7SS+LhCrDj20bt77LxPetqLaYWA==" },
+            new User() { Id = 1, Role = Role.Admin, Name = "Valid Tests User", Username = "tests", IsActive = true, Joined = new DateTime(2024, 9, 19), PasswordHash = "7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w==" },
+            new User() { Id = 2, Role = Role.User, Name = "Inactive Tests User", Username = "tests2",  IsActive = false, Joined = new DateTime(2024, 9, 19), PasswordHash = "vaZLjDLI1HmTSVpN6AJEmpxgQdch6uHpMhZOcKLBPLHxkBEDEnds6hfkZCP4/g/UcbTqiZ1vgJBvzX3w3WWOtg==" },
             new User() { Id = 3, Role = Role.User, Name = "Fake User", Username = "fake",  IsActive = false, Joined = new DateTime(2024, 11, 19), PasswordHash = "9jn9NVRbBwRdo0/+5c63F6pO77Jzc8Der3nH8vyDiHjunLrFefqlkbf55TF7SS+LhCrDj20bt77LxPetqLaYWA==" },
         ];
     }

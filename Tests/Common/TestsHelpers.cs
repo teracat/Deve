@@ -5,11 +5,11 @@ namespace Deve.Tests
 {
     public static class TestsHelpers
     {
-        public const string UserUsernameValid = "teracat";
-        public const string UserPasswordValid = "teracat";
+        public const string UserUsernameValid = "tests";
+        public const string UserPasswordValid = "tests";
 
-        public const string UserUsernameInactive = "dan.brown";
-        public const string UserPasswordInactive = "dan.brown";
+        public const string UserUsernameInactive = "tests2";
+        public const string UserPasswordInactive = "tests2";
 
         public static IDataSource CreateDataSourceMock() => new DataSourceMock().Object;
 
