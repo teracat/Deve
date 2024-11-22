@@ -1,3 +1,4 @@
+using Deve.DataSource;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Deve.Api
@@ -6,8 +7,8 @@ namespace Deve.Api
     [Route(ApiConstants.PathAuth)]
     public class ControllerAuth : ControllerBaseDeve
     {
-        public ControllerAuth(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerAuth(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
 

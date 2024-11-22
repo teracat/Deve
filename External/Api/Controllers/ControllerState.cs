@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.External.Api
 {
@@ -9,8 +10,8 @@ namespace Deve.External.Api
     {
         protected override IDataGet<State, State, CriteriaState> DataGet => Core.States;
 
-        public ControllerState(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
     }

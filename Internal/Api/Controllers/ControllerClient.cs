@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.Internal.Api
 {
@@ -9,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<Client, Client, CriteriaClient> DataAll => Core.Clients;
 
-        public ControllerClient(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerClient(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
 

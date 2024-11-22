@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
 using Deve.External;
+using Deve.DataSource;
 
 namespace Deve.Internal.Api
 {
@@ -10,8 +11,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataGet<ClientBasic, External.Client, CriteriaClientBasic> DataGet => Core.ClientsBasic;
 
-        public ControllerClientBasic(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerClientBasic(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
     }

@@ -53,7 +53,7 @@ namespace Deve.Tests.Auth
         public async Task Login_CredentialsValid_ReturnTrue()
         {
             var auth = TestsHelpers.CreateAuth();
-            var result = await auth.Login(new UserCredentials("teracat", "teracat"));
+            var result = await auth.Login(new UserCredentials(TestsHelpers.ValidUsername, TestsHelpers.ValidPassword));
 
             Assert.True(result.Success);
         }

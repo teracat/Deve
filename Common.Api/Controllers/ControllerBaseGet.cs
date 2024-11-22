@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.External;
+using Deve.DataSource;
 
 namespace Deve.Api
 {
@@ -10,8 +11,8 @@ namespace Deve.Api
         #endregion
 
         #region Constructor
-        public ControllerBaseGet(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerBaseGet(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
         #endregion

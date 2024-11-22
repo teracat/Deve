@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.External.Api
 {
@@ -9,8 +10,8 @@ namespace Deve.External.Api
     {
         protected override IDataGet<City, City, CriteriaCity> DataGet => Core.Cities;
 
-        public ControllerCity(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerCity(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
     }

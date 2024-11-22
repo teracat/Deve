@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.9.2" />
@@ -20,10 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
-    <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\..\DataSource\Deve.DataSource.csproj" />
-    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
+    <ProjectReference Include="..\..\Common.Api\Deve.Common.Api.csproj" />
+    <ProjectReference Include="..\..\External\Api\Deve.External.Api.csproj" />
+    <ProjectReference Include="..\..\Internal\Api\Deve.Internal.Api.csproj" />
+    <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

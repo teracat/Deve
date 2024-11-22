@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.Internal.Api
 {
@@ -8,8 +9,8 @@ namespace Deve.Internal.Api
     public class ControllerStats : ControllerBaseAuth
     {
         #region Constructor
-        public ControllerStats(IHttpContextAccessor contextAccessor)
-            : base( contextAccessor)
+        public ControllerStats(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base( contextAccessor, dataSourceFactory)
         {
         }
         #endregion

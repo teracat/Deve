@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.Internal.Api
 {
@@ -9,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
 
-        public ControllerUser(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerUser(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
     }

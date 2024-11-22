@@ -52,7 +52,7 @@
         {
             var core = CreateCore();
 
-            var result = await core.Authenticate.Login(new UserCredentials(ValidUsername, ValidPassword));
+            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.ValidUsername, TestsHelpers.ValidPassword));
 
             Assert.True(result.Success);
         }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api;
+using Deve.DataSource;
 
 namespace Deve.Internal.Api
 {
@@ -9,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<State, State, CriteriaState> DataAll => Core.States;
 
-        public ControllerState(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
         }
     }

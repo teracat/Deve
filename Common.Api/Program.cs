@@ -4,19 +4,21 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 using Deve.Auth;
 using Deve.Auth.Jwt;
+using Deve.DataSource;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Api
 {
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {
             //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
-            /*var config = new DataSource.DataSourceConfig()
+            /*var config = new DataSourceConfig()
             {
                 ConnectionString = ""
             };
-            DataSource.DataSourceFactory.SetConfig(config);*/
+            DataSourceFactory.SetConfig(config);*/
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +86,9 @@ namespace Deve.Api
 
             // Inject HttpContextAccessor to the Controllers constructor
             builder.Services.AddHttpContextAccessor();
+
+            // Inject IDataSourceFactory to the Controllers constructor
+            builder.Services.AddSingleton<IDataSourceFactory, DataSourceFactory>();
 
             // Authentication
             // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the class TokenManagerJwt)

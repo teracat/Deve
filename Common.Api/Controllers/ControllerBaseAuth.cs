@@ -1,13 +1,14 @@
 using System.Security.Claims;
 using Deve.Auth;
+using Deve.DataSource;
 
 namespace Deve.Api
 {
     public class ControllerBaseAuth : ControllerBaseDeve
     {
         #region Constructor
-        public ControllerBaseAuth(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerBaseAuth(IHttpContextAccessor contextAccessor, IDataSourceFactory dataSourceFactory)
+            : base(contextAccessor, dataSourceFactory)
         {
             Core.UserIdentity = CreateUserIdentity(contextAccessor?.HttpContext?.User);
         }
