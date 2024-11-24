@@ -117,8 +117,8 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task RefreshToken_InactiveUser_ReturnFalse()
         {
+            var userToken = TestsHelpers.CreateTokenInactiveUser();
             var auth = TestsHelpers.CreateAuth();
-            var userToken = TestsHelpers.CreateTokenInactiveUser(auth);
 
             var result = await auth.RefreshToken(userToken.Token);
 
@@ -128,8 +128,8 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
+            var userToken = TestsHelpers.CreateTokenValid();
             var auth = TestsHelpers.CreateAuth();
-            var userToken = TestsHelpers.CreateTokenValid(auth);
 
             var result = await auth.RefreshToken(userToken.Token);
 

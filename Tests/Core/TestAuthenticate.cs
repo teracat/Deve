@@ -112,8 +112,8 @@
         [Fact]
         public async Task RefreshToken_InactiveUser_ReturnFalse()
         {
+            var userToken = TestsHelpers.CreateTokenInactiveUser();
             var core = CreateCore();
-            var userToken = TestsHelpers.CreateTokenInactiveUser(core.Auth);
 
             var result = await core.Authenticate.RefreshToken(userToken.Token);
 
@@ -123,8 +123,8 @@
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
+            var userToken = TestsHelpers.CreateTokenValid();
             var core = CreateCore();
-            var userToken = TestsHelpers.CreateTokenValid(core.Auth);
 
             var result = await core.Authenticate.RefreshToken(userToken.Token);
 

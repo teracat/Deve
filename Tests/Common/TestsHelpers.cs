@@ -1,4 +1,5 @@
 ﻿using Deve.Auth;
+using Deve.Auth.Jwt;
 using Deve.DataSource;
 
 namespace Deve.Tests
@@ -9,20 +10,28 @@ namespace Deve.Tests
 
         public static IAuth CreateAuth(IDataSource? dataSource = null) => AuthFactory.Get(dataSource ?? CreateDataSourceMock());
 
-        public static UserToken CreateTokenValid(IAuth? auth = null)
+        /// <summary>
+        /// Set the TokenManagerJwt (which is used in the Api) as the default ITokenManager implementation and creates a valid token using it.
+        /// </summary>
+        /// <returns>Valid user token.</returns>
+        public static UserToken CreateTokenValid()
         {
-            auth ??= CreateAuth();
-
+            var tokenManager = new TokenManagerJwt();
+            TokenManagerFactory.Set(ApiConstants.AuthDefaultScheme, tokenManager);
             var user = DataMock.Users.First(x => x.Username == TestsConstants.UserUsernameValid);
-            return auth.TokenManager.CreateToken(user);
+            return tokenManager.CreateToken(user);
         }
 
-        public static UserToken CreateTokenInactiveUser(IAuth? auth = null)
+        /// <summary>
+        /// Set the TokenManagerJwt (which is used in the Api) as the default ITokenManager implementation and creates a token from an inactive user.
+        /// </summary>
+        /// <returns>Inactive user token.</returns>
+        public static UserToken CreateTokenInactiveUser()
         {
-            auth ??= CreateAuth();
-
+            var tokenManager = new TokenManagerJwt();
+            TokenManagerFactory.Set(ApiConstants.AuthDefaultScheme, tokenManager);
             var user = DataMock.Users.First(x => x.Username == TestsConstants.UserUsernameInactive);
-            return auth.TokenManager.CreateToken(user);
+            return tokenManager.CreateToken(user);
         }
     }
 }
