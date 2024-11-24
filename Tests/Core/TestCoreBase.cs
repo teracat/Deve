@@ -13,7 +13,7 @@ namespace Deve.Tests.Core
         protected async Task<ICore> CreateCoreAndExecuteValidLogin()
         {
             ICore core = CreateCore();
-            await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
+            await core.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
             return core;
         }
     }

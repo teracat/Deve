@@ -1,6 +1,6 @@
-using Deve.DataSource;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Deve.DataSource;
 
 namespace Deve.Tests.Api
 {
@@ -23,5 +23,12 @@ namespace Deve.Tests.Api
         }
 
         protected HttpClient CreateClient() => _factory.CreateClient();
+
+        protected HttpClient CreateClientWithAuth(string token)
+        {
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ApiConstants.AuthDefaultScheme, token);
+            return client;
+        }
     }
 }

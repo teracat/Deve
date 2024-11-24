@@ -55,7 +55,7 @@ namespace Deve.Tests.Auth
         {
             var auth = TestsHelpers.CreateAuth();
 
-            var result = await auth.Login(new UserCredentials(TestsHelpers.UserUsernameInactive, TestsHelpers.UserPasswordInactive));
+            var result = await auth.Login(new UserCredentials(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
 
             Assert.False(result.Success);
         }
@@ -65,7 +65,7 @@ namespace Deve.Tests.Auth
         {
             var auth = TestsHelpers.CreateAuth();
 
-            var result = await auth.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
+            var result = await auth.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
             Assert.True(result.Success);
         }
@@ -109,7 +109,18 @@ namespace Deve.Tests.Auth
         {
             var auth = TestsHelpers.CreateAuth();
 
-            var result = await auth.RefreshToken("P83hovvDJI9+6LMyV9Tv/MCBELipU06iTIqm9IqsTTMNjLPaYmSvarlIxOst+2ZId4dHPK2xkqKD1hQL6Iy3gf7DEg8y+3N2K4REL2A0FVA=");
+            var result = await auth.RefreshToken(TestsConstants.TokenExpired);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task RefreshToken_InactiveUser_ReturnFalse()
+        {
+            var auth = TestsHelpers.CreateAuth();
+            var userToken = TestsHelpers.CreateTokenInactiveUser(auth);
+
+            var result = await auth.RefreshToken(userToken.Token);
 
             Assert.False(result.Success);
         }
@@ -117,25 +128,10 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
-            var ds = TestsHelpers.CreateDataSourceMock();
-            var auth = TestsHelpers.CreateAuth(ds);
-            var usersRes = await ds.Users.Get(new Internal.CriteriaUser()
-            {
-                OnlyActive = CriteriaActiveType.OnlyActive
-            });
-            if (!usersRes.Success)
-            {
-                Assert.True(usersRes.Success, "Could not find an active user");
-                return;
-            }
-            if (usersRes.Data.Count == 0)
-            {
-                Assert.NotEmpty(usersRes.Data);
-                return;
-            }
+            var auth = TestsHelpers.CreateAuth();
+            var userToken = TestsHelpers.CreateTokenValid(auth);
 
-            var tokenData = auth.TokenManager.CreateToken(usersRes.Data.First());
-            var result = await auth.RefreshToken(tokenData.Token);
+            var result = await auth.RefreshToken(userToken.Token);
 
             Assert.True(result.Success);
         }

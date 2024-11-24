@@ -8,7 +8,7 @@ namespace Deve.Tests
     /// Id 1 will also be used to test Update methods (check the overriden method CreateValidDataToUpdate in every Tests.Core.TestCoreXXX).
     /// Id 3 will be used to test Delete methods (check the virtual property defined in Tests.Core.TestCoreBaseDataAll.ValidIdDelete).
     /// </summary>
-    internal class DataMock
+    public class DataMock
     {
         // Countries
         public static readonly List<Country> Countries =
@@ -69,7 +69,7 @@ namespace Deve.Tests
         ];
 
         // Users
-        // User with Username "tests" will be used as the user to perform valid logins (it must have the Admin role to pass the permissions checks).
+        // User with Username "tests" will be used as the user to perform valid logins (it must have the Admin role to pass the permissions checks and it also must be active).
         // User with Username "tests2" will be used for inactive user tests.
         public static readonly List<User> Users =
         [

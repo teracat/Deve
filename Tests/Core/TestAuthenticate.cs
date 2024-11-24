@@ -52,7 +52,7 @@
         {
             var core = CreateCore();
 
-            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameInactive, TestsHelpers.UserPasswordInactive));
+            var result = await core.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
 
             Assert.False(result.Success);
         }
@@ -62,7 +62,7 @@
         {
             var core = CreateCore();
 
-            var result = await core.Authenticate.Login(new UserCredentials(TestsHelpers.UserUsernameValid, TestsHelpers.UserPasswordValid));
+            var result = await core.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
             Assert.True(result.Success);
         }
@@ -113,23 +113,9 @@
         public async Task RefreshToken_InactiveUser_ReturnFalse()
         {
             var core = CreateCore();
-            var usersRes = await core.DataSource.Users.Get(new Internal.CriteriaUser()
-            {
-                OnlyActive = CriteriaActiveType.OnlyInactive,
-            });
-            if (!usersRes.Success)
-            {
-                Assert.True(usersRes.Success, "Could not find any invalid user");
-                return;
-            }
-            if (usersRes.Data.Count == 0)
-            {
-                Assert.NotEmpty(usersRes.Data);
-                return;
-            }
+            var userToken = TestsHelpers.CreateTokenInactiveUser(core.Auth);
 
-            var tokenData = core.Auth.TokenManager.CreateToken(usersRes.Data.First());
-            var result = await core.Authenticate.RefreshToken(tokenData.Token);
+            var result = await core.Authenticate.RefreshToken(userToken.Token);
 
             Assert.False(result.Success);
         }
@@ -138,23 +124,9 @@
         public async Task RefreshToken_Valid_ReturnTrue()
         {
             var core = CreateCore();
-            var usersRes = await core.DataSource.Users.Get(new Internal.CriteriaUser()
-            {
-                OnlyActive = CriteriaActiveType.OnlyActive
-            });
-            if (!usersRes.Success)
-            {
-                Assert.True(usersRes.Success);
-                return;
-            }
-            if (usersRes.Data.Count == 0)
-            {
-                Assert.NotEmpty(usersRes.Data);
-                return;
-            }
+            var userToken = TestsHelpers.CreateTokenValid(core.Auth);
 
-            var tokenData = core.Auth.TokenManager.CreateToken(usersRes.Data.First());
-            var result = await core.Authenticate.RefreshToken(tokenData.Token);
+            var result = await core.Authenticate.RefreshToken(userToken.Token);
 
             Assert.True(result.Success);
         }
