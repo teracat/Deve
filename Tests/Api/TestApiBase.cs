@@ -7,7 +7,7 @@ namespace Deve.Tests.Api
     /// <summary>
     /// Api tests base class.
     /// </summary>
-    public class TestApiBase<TEntryPoint> : IClassFixture<WebApplicationFactory<TEntryPoint>> where TEntryPoint : class
+    public abstract class TestApiBase<TEntryPoint> : IClassFixture<WebApplicationFactory<TEntryPoint>> where TEntryPoint : class
     {
         private readonly WebApplicationFactory<TEntryPoint> _factory;
 
