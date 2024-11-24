@@ -1,4 +1,6 @@
-﻿namespace Deve.DataSource
+﻿using Deve.DataSource;
+
+namespace Deve.Api
 {
     /// <summary>
     /// IDataSourceBuilder implementation that uses the DataSourceFactory.
