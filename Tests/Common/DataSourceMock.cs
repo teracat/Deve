@@ -109,8 +109,32 @@ namespace Deve.Tests
         }
 
         private static Task<ResultGet<ModelId>> Add<T,F>(List<T> list, F data) where F: ModelId => Task.Run(() => Utils.ResultGetOk<ModelId>(data));
-        private static Task<Result> Update<T, F>(List<T> list, F data) => Task.Run(() => Utils.ResultOk());
-        private static Task<Result> Delete<T>(List<T> list, long id) => Task.Run(() => Utils.ResultOk());
+
+        private static Task<Result> Update<T, F>(List<T> list, F data) where T : ModelId where F : ModelId
+        {
+            return Task.Run(() =>
+            {
+                //We must check if the Id exists so the tests with invalid Id don't Fail
+                var item = list.FirstOrDefault(x => x.Id == data.Id);
+                if (item is null)
+                    return Utils.ResultGetError<T>(ResultErrorType.NotFound);
+
+                return Utils.ResultOk();
+            });
+        }
+
+        private static Task<Result> Delete<T>(List<T> list, long id) where T : ModelId
+        {
+            return Task.Run(() =>
+            {
+                //We must check if the Id exists so the tests with invalid Id don't Fail
+                var item = list.FirstOrDefault(x => x.Id == id);
+                if (item is null)
+                    return Utils.ResultGetError<T>(ResultErrorType.NotFound);
+                
+                return Utils.ResultOk();
+            });
+        }
         #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace Deve.Tests.Core
         /// Should be different from the ValidId defined in TestCoreBaseDataGet and different from the Id used for Update methods.
         /// This Id should not be used in the data used to Add or Update in other tests.
         /// </summary>
-        protected virtual long ValidIdDelete => 3;
+        protected virtual long ValidIdDelete => TestsConstants.DefaultValidIdDelete;
         #endregion
 
         #region Override Methods
@@ -363,6 +363,17 @@ namespace Deve.Tests.Core
             var dataAll = GetDataAll(core);
 
             var res = await dataAll.Delete(0);
+
+            Assert.NotEmpty(res.Errors);
+        }
+
+        [Fact]
+        public async Task Delete_InvalidId_ReturnNotSuccess()
+        {
+            var core = await CreateCoreAndExecuteValidLogin();
+            var dataAll = GetDataAll(core);
+
+            var res = await dataAll.Delete(InvalidId);
 
             Assert.NotEmpty(res.Errors);
         }

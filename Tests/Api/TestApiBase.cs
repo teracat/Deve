@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Deve.Api;
@@ -29,6 +31,12 @@ namespace Deve.Tests.Api
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ApiConstants.AuthDefaultScheme, token);
             return client;
+        }
+
+        protected HttpContent ToHttpContent(object data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            return new StringContent(json, Encoding.UTF8, "application/json");
         }
     }
 }

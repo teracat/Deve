@@ -10,8 +10,8 @@ namespace Deve.Tests.Core
     public abstract class TestCoreBaseDataGet<ModelList, Model, Criteria> : TestCoreBase where Model: ModelId
     {
         #region Properties
-        protected virtual long ValidId => 1;
-        protected virtual long InvalidId => 999999;
+        protected virtual long ValidId => TestsConstants.DefaultValidId;
+        protected virtual long InvalidId => TestsConstants.DefaultInvalidId;
         #endregion
 
         #region Abstract Methods

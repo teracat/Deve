@@ -7,7 +7,8 @@ namespace Deve.Tests.Api
         protected abstract string Path { get; }
 
         protected virtual string ValidCriteriaParameterName => "name";
-        protected virtual long ValidId => 1;
+        protected virtual long ValidId => TestsConstants.DefaultValidId;
+        protected virtual long InvalidId => TestsConstants.DefaultInvalidId;
 
         public TestApiBaseGet(WebApplicationFactory<TEntryPoint> factory)
             : base(factory)
