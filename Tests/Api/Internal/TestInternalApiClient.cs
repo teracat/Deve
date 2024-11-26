@@ -53,5 +53,50 @@ namespace Deve.Tests.Api.Internal
                 State = "Barcelona",
             }
         };
+
+        #region UpdateStatus Tests
+        [Fact]
+        public async Task UpdateStatus_Unauthorized_NotSuccessStatusCode()
+        {
+            var client = CreateClient();
+
+            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
+
+            Assert.False(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateStatus_Zero_NotSuccessStatusCode()
+        {
+            var userToken = TestsHelpers.CreateTokenValid();
+            var client = CreateClientWithAuth(userToken.Token);
+
+            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
+
+            Assert.False(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateStatus_InvalidId_NotSuccessStatusCode()
+        {
+            var userToken = TestsHelpers.CreateTokenValid();
+            var client = CreateClientWithAuth(userToken.Token);
+
+            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{InvalidId}/{(int)ClientStatus.Inactive}", null);
+
+            Assert.False(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateStatus_Valid_SuccessStatusCode()
+        {
+            var userToken = TestsHelpers.CreateTokenValid();
+            var client = CreateClientWithAuth(userToken.Token);
+
+            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{ValidId}/{(int)ClientStatus.Inactive}", null);
+
+            Assert.True(response.IsSuccessStatusCode);
+        }
+        #endregion
     }
 }
