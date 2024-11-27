@@ -56,7 +56,7 @@ namespace Deve.Tests
                 Latitude = x.Location.Latitude,
                 Longitude = x.Location.Longitude,
             }).ToList();
-            Setup(d => d.ClientsBasic.Get(It.IsAny<CriteriaClient?>())).Returns<CriteriaClient>((c) => GetList(clientsBasic));
+            Setup(d => d.ClientsBasic.Get(It.IsAny<CriteriaClientBasic?>())).Returns<CriteriaClientBasic>((c) => GetList(clientsBasic));
             Setup(d => d.ClientsBasic.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Clients.Select(x => x as External.Client).ToList(), id));
         }
 

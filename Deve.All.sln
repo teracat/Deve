@@ -61,7 +61,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Auth.Jwt", "Extra\Auth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Tests.Common", "Tests\Common\Deve.Tests.Common.csproj", "{FDC225CF-E078-4797-A3AE-7BA8E33BB798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Tests.Api", "Tests\Api\Deve.Tests.Api.csproj", "{9F3DBD77-FC08-4259-A1DC-D4C869A7A574}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Tests.Api", "Tests\Api\Deve.Tests.Api.csproj", "{9F3DBD77-FC08-4259-A1DC-D4C869A7A574}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Tests.Sdk", "Tests\Sdk\Deve.Tests.Sdk.csproj", "{E7361718-3F8F-4A47-9489-A1B804B3DCE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +175,10 @@ Global
 		{9F3DBD77-FC08-4259-A1DC-D4C869A7A574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F3DBD77-FC08-4259-A1DC-D4C869A7A574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F3DBD77-FC08-4259-A1DC-D4C869A7A574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7361718-3F8F-4A47-9489-A1B804B3DCE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7361718-3F8F-4A47-9489-A1B804B3DCE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7361718-3F8F-4A47-9489-A1B804B3DCE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7361718-3F8F-4A47-9489-A1B804B3DCE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +204,7 @@ Global
 		{4FCB14AB-C20B-4FAD-A6D6-03AF88FA1111} = {2A52D688-96F9-4C04-945E-5B6E3920B29E}
 		{FDC225CF-E078-4797-A3AE-7BA8E33BB798} = {CEBE374A-E4B9-45BA-BB62-DC94A665121A}
 		{9F3DBD77-FC08-4259-A1DC-D4C869A7A574} = {CEBE374A-E4B9-45BA-BB62-DC94A665121A}
+		{E7361718-3F8F-4A47-9489-A1B804B3DCE0} = {CEBE374A-E4B9-45BA-BB62-DC94A665121A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8157CD2-E584-4372-9A7B-B73C837733A5}

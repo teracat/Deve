@@ -44,6 +44,12 @@
 
             UpdatedOptions();
         }
+
+        internal SdkMainBase(HttpClient client, DataOptions? options = null)
+        {
+            _client = client;
+            _options = options ?? new DataOptions();
+        }
         #endregion
 
         #region Methods

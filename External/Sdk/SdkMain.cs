@@ -32,6 +32,11 @@ namespace Deve.External.Sdk
             : base(environment, options, handler)
         {
         }
+
+        internal SdkMain(HttpClient client, DataOptions? options = null)
+            : base(client, options)
+        {
+        }
         #endregion
 
         #region IData

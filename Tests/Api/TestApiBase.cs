@@ -1,8 +1,6 @@
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using Deve.Api;
 
 namespace Deve.Tests.Api
 {
@@ -11,17 +9,11 @@ namespace Deve.Tests.Api
     /// </summary>
     public abstract class TestApiBase<TEntryPoint> : IClassFixture<WebApplicationFactory<TEntryPoint>> where TEntryPoint : class
     {
-        private readonly WebApplicationFactory<TEntryPoint> _factory;
+        private readonly TestApiFactory<TEntryPoint> _factory;
 
         public TestApiBase(WebApplicationFactory<TEntryPoint> factory)
         {
-            _factory = factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureServices(services =>
-                {
-                    services.AddSingleton<IDataSourceBuilder, DataSourceBuilderMock>();
-                });
-            });
+            _factory = new TestApiFactory<TEntryPoint>(factory);
         }
 
         protected HttpClient CreateClient() => _factory.CreateClient();

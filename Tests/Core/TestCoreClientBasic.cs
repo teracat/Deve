@@ -3,8 +3,10 @@ using Deve.External;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreClientBasic : TestCoreBaseDataGet<ClientBasic, Client, CriteriaClientBasic>
+    public class TestCoreClientBasic : TestBaseDataGet<ICore, ClientBasic, Client, CriteriaClientBasic>
     {
-        protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> GetDataGet(ICore core) => core.ClientsBasic;
+        protected override ICore CreateData() => TestsCoreHelpers.CreateCore();
+
+        protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> GetDataGet(ICore data) => data.ClientsBasic;
     }
 }

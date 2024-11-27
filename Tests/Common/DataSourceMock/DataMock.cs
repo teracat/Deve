@@ -4,9 +4,9 @@ namespace Deve.Tests
 {
     /// <summary>
     /// Data used in the DataSourceMock.
-    /// Id 1 will be used as the data to Get by Id (check the virtual property defined in Tests.Core.TestCoreBaseDataGet.ValidId).
-    /// Id 1 will also be used to test Update methods (check the overriden method CreateValidDataToUpdate in every Tests.Core.TestCoreXXX).
-    /// Id 3 will be used to test Delete methods (check the virtual property defined in Tests.Core.TestCoreBaseDataAll.ValidIdDelete).
+    /// Id 1 will be used as the data to Get by Id (check the virtual property defined in Tests.TestBaseDataGet.ValidId).
+    /// Id 1 will also be used to test Update methods (check the overriden method CreateValidDataToUpdate in every Tests.TestXXX).
+    /// Id 3 will be used to test Delete methods (check the virtual property defined in Tests.TestBaseDataAll.ValidIdDelete).
     /// </summary>
     public class DataMock
     {
