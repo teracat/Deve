@@ -7,25 +7,25 @@ namespace Deve.Tests.Auth
     /// </summary>
     public abstract class TestTokenManagerBase
     {
-        protected abstract ITokenManager CreateTokenManager();
-        protected abstract string GetExpiredToken();
+        IFixtureTokenManager _fixtureTokenManager;
+
+        public TestTokenManagerBase(IFixtureTokenManager fixtureTokenManager)
+        {
+            _fixtureTokenManager = fixtureTokenManager;
+        }
 
         [Fact]
         public void CreateToken_Null_ThrowsArgumentNullException()
         {
-            var tokenManager = CreateTokenManager();
-
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            Assert.Throws<ArgumentNullException>(() => tokenManager.CreateToken(null));
+            Assert.Throws<ArgumentNullException>(() => _fixtureTokenManager.TokenManager.CreateToken(null));
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
         [Fact]
         public void CreateToken_User_NotNull()
         {
-            var tokenManager = CreateTokenManager();
-
-            var userToken = tokenManager.CreateToken(new UserTests());
+            var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
             
             Assert.NotNull(userToken);
         }
@@ -33,10 +33,8 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_Null_NotValid()
         {
-            var tokenManager = CreateTokenManager();
-
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = tokenManager.ValidateToken(null, out _);
+            var result = _fixtureTokenManager.TokenManager.ValidateToken(null, out _);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.Equal(TokenParseResult.NotValid, result);
@@ -45,9 +43,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_Empty_NotValid()
         {
-            var tokenManager = CreateTokenManager();
-
-            var result = tokenManager.ValidateToken(string.Empty, out _);
+            var result = _fixtureTokenManager.TokenManager.ValidateToken(string.Empty, out _);
 
             Assert.Equal(TokenParseResult.NotValid, result);
         }
@@ -55,9 +51,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_String_NotValid()
         {
-            var tokenManager = CreateTokenManager();
-
-            var result = tokenManager.ValidateToken("not valid", out _);
+            var result = _fixtureTokenManager.TokenManager.ValidateToken("not valid", out _);
 
             Assert.Equal(TokenParseResult.NotValid, result);
         }
@@ -65,9 +59,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_ExpiredToken_Expired()
         {
-            var tokenManager = CreateTokenManager();
-
-            var result = tokenManager.ValidateToken(GetExpiredToken(), out _);
+            var result = _fixtureTokenManager.TokenManager.ValidateToken(_fixtureTokenManager.TokenExpired, out _);
 
             Assert.Equal(TokenParseResult.Expired, result);
         }
@@ -75,10 +67,9 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_User_Valid()
         {
-            var tokenManager = CreateTokenManager();
-            UserToken userToken = tokenManager.CreateToken(new UserTests());
+            UserToken userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
 
-            var result = tokenManager.ValidateToken(userToken.Token, out _);
+            var result = _fixtureTokenManager.TokenManager.ValidateToken(userToken.Token, out _);
 
             Assert.Equal(TokenParseResult.Valid, result);
         }
