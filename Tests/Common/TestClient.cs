@@ -2,10 +2,17 @@ using Deve.Internal;
 
 namespace Deve.Tests
 {
-    public abstract class TestClient : TestBaseDataAll<IData, Client, Client, CriteriaClient>
+    public abstract class TestClient<TDataType> : TestBaseDataAll<TDataType, Client, Client, CriteriaClient> where TDataType : IData
     {
+        #region Constructor
+        public TestClient(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
+            : base(fixtureData, fixtureDataLogged)
+        {
+        }
+        #endregion
+
         #region Overrides
-        protected override IDataAll<Client, Client, CriteriaClient> GetDataAll(IData data) => data.Clients;
+        protected override IDataAll<Client, Client, CriteriaClient> GetDataAll(TDataType data) => data.Clients;
 
         protected override Client CreateInvalidDataToAdd() => new();
 
@@ -55,8 +62,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnNotSuccess()
         {
-            var data = CreateData();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureData.Data);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -66,8 +72,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorNotNull()
         {
-            var data = CreateData();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureData.Data);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -77,8 +82,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorNotEmpty()
         {
-            var data = CreateData();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureData.Data);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -88,8 +92,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorType()
         {
-            var data = CreateData();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureData.Data);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -99,8 +102,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnNotSuccess()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureDataLogged.Data);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -110,8 +112,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsNotNull()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureDataLogged.Data);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -121,8 +122,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsType()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureDataLogged.Data);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -132,8 +132,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsNotEmpty()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureDataLogged.Data);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -143,8 +142,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_ValidData_ReturnSuccess()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-            var dataClient = GetDataClient(data);
+            var dataClient = GetDataClient(FixtureDataLogged.Data);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 

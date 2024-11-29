@@ -2,13 +2,13 @@ namespace Deve.Tests
 {
     public abstract class TestBase<TDataType> where TDataType : IDataCommon
     {
-        protected abstract TDataType CreateData();
+        protected IFixtureData<TDataType> FixtureData { get; private set; }
+        protected IFixtureDataLogged<TDataType> FixtureDataLogged { get; private set; }
 
-        protected async Task<TDataType> CreateDataAndExecuteValidLogin()
+        public TestBase(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
         {
-            var data = CreateData();
-            await data.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-            return data;
+            FixtureData = fixtureData;
+            FixtureDataLogged = fixtureDataLogged;
         }
     }
 }

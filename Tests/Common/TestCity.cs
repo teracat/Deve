@@ -2,6 +2,13 @@ namespace Deve.Tests
 {
     public abstract class TestCity<TDataType> : TestBaseDataAll<TDataType, City, City, CriteriaCity> where TDataType : IDataCommon
     {
+        #region Constructor
+        public TestCity(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
+            : base(fixtureData, fixtureDataLogged)
+        {
+        }
+        #endregion
+
         #region Overrides
         protected override City CreateInvalidDataToAdd() => new();
 

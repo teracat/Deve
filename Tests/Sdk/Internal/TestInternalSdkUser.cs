@@ -1,19 +1,12 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Deve.Internal;
-using Deve.Internal.Api;
-using Deve.Tests.Api;
+using Deve.Internal.Sdk;
 
 namespace Deve.Tests.Sdk.Internal
 {
-    public class TestInternalSdkUser : TestUser, IClassFixture<WebApplicationFactory<Program>>
+    public class TestInternalSdkUser : TestUser<ISdk>, IClassFixture<FixtureDataSdk>, IClassFixture<FixtureDataSdkLogged>
     {
-        private readonly TestApiFactory<Program> _factory;
-
-        public TestInternalSdkUser(WebApplicationFactory<Program> factory)
+        public TestInternalSdkUser(FixtureDataSdk fixtureData, FixtureDataSdkLogged fixtureDataLogged)
+            : base(fixtureData, fixtureDataLogged)
         {
-            _factory = new TestApiFactory<Program>(factory);
         }
-
-        protected override IData CreateData() => TestsInternalSdkHelpers.CreateSdk(_factory.CreateClient());
     }
 }

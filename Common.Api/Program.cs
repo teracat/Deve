@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 using Deve.Auth;
 using Deve.Auth.Jwt;
-using Deve.DataSource;
 
 namespace Deve.Api
 {

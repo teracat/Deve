@@ -2,8 +2,11 @@ using Deve.Core;
 
 namespace Deve.Tests.Core
 {
-    public abstract class TestCoreBaseDataAll<ModelList, Model, Criteria> : TestBaseDataAll<ICore, ModelList, Model, Criteria> where Model: ModelId
+    public abstract class TestCoreBaseDataAll<ModelList, Model, Criteria> : TestBaseDataAll<ICore, ModelList, Model, Criteria>, IClassFixture<FixtureDataCore>, IClassFixture<FixtureDataCoreLogged> where Model: ModelId
     {
-        protected override ICore CreateData() => TestsCoreHelpers.CreateCore();
+        public TestCoreBaseDataAll(FixtureDataCore fixtureDataCore, FixtureDataCoreLogged fixtureDataLogged)
+            : base(fixtureDataCore, fixtureDataLogged)
+        {
+        }
     }
 }

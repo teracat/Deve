@@ -1,9 +1,12 @@
-using Deve.Internal;
+using Deve.Core;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreClient : TestClient
+    public class TestCoreClient : TestClient<ICore>, IClassFixture<FixtureDataCore>, IClassFixture<FixtureDataCoreLogged>
     {
-        protected override IData CreateData() => TestsCoreHelpers.CreateCore();
+        public TestCoreClient(FixtureDataCore fixtureDataCore, FixtureDataCoreLogged fixtureDataLogged)
+            : base(fixtureDataCore, fixtureDataLogged)
+        {
+        }
     }
 }

@@ -126,12 +126,12 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreMain(bool isSharedInstance = true, IDataSource? dataSource = null, DataOptions? options = null)
+        public CoreMain(bool isSharedInstance = true, IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
         {
             _isSharedInstance = isSharedInstance;
             _dataSource = dataSource ?? DataSourceFactory.Get();
             _options = options ?? new DataOptions();
-            _auth = AuthFactory.Get(_dataSource, _options);
+            _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
         }
         #endregion
     }

@@ -2,10 +2,17 @@ using Deve.Internal;
 
 namespace Deve.Tests
 {
-    public abstract class TestUser : TestBaseDataAll<IData, UserBase, UserPlainPassword, CriteriaUser>
+    public abstract class TestUser<TDataType> : TestBaseDataAll<TDataType, UserBase, UserPlainPassword, CriteriaUser> where TDataType : IData
     {
+        #region Constructor
+        public TestUser(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
+            : base(fixtureData, fixtureDataLogged)
+        {
+        }
+        #endregion
+
         #region Overrides
-        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> GetDataAll(IData data) => data.Users;
+        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> GetDataAll(TDataType data) => data.Users;
 
         protected override UserPlainPassword CreateInvalidDataToAdd() => new();
 

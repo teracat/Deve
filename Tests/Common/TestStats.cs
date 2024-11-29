@@ -2,14 +2,20 @@ using Deve.Internal;
 
 namespace Deve.Tests
 {
-    public abstract class TestStats : TestBase<IData>
+    public abstract class TestStats<TDataType> : TestBase<TDataType> where TDataType : IData
     {
+        #region Constructor
+        public TestStats(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
+            : base(fixtureData, fixtureDataLogged)
+        {
+        }
+        #endregion
+
+        #region Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnNotSuccess()
         {
-            var data = CreateData();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureData.Data.Stats.GetClientStats();
 
             Assert.False(res.Success);
         }
@@ -17,9 +23,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorNotNull()
         {
-            var data = CreateData();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureData.Data.Stats.GetClientStats();
 
             Assert.NotNull(res.Errors);
         }
@@ -27,9 +31,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorNotEmpty()
         {
-            var data = CreateData();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureData.Data.Stats.GetClientStats();
 
             Assert.NotEmpty(res.Errors);
         }
@@ -37,9 +39,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorType()
         {
-            var data = CreateData();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureData.Data.Stats.GetClientStats();
 
             Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
@@ -47,9 +47,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnSuccess()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
 
             Assert.True(res.Success);
         }
@@ -57,9 +55,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnDataNotNull()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
 
             Assert.NotNull(res.Data);
         }
@@ -67,11 +63,10 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnDataType()
         {
-            var data = await CreateDataAndExecuteValidLogin();
-
-            var res = await data.Stats.GetClientStats();
+            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
 
             Assert.IsAssignableFrom<ClientStats>(res.Data);
         }
+        #endregion
     }
 }
