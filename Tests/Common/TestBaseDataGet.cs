@@ -14,8 +14,8 @@ namespace Deve.Tests
         #endregion
 
         #region Constructor
-        public TestBaseDataGet(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestBaseDataGet(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion
@@ -28,7 +28,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetList_CriteriaNull_ReturnNotNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(default(Criteria?));
 
@@ -38,7 +38,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetList_CriteriaNull_ReturnSuccess()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(default(Criteria?));
 
@@ -48,7 +48,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetList_CriteriaNull_ReturnDataType()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(default(Criteria?));
 
@@ -58,7 +58,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetList_CriteriaNull_ReturnNotEmpty()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(default(Criteria?));
 
@@ -68,7 +68,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetList_CriteriaNull_ReturnFirstItemNotNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(default(Criteria?));
 
@@ -80,7 +80,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_Zero_ReturnResultNotNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(0);
 
@@ -90,7 +90,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_Zero_ReturnNotSuccess()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(0);
 
@@ -100,7 +100,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_Zero_ReturnDataNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(0);
 
@@ -110,7 +110,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_InvalidId_ReturnNotSuccess()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(InvalidId);
 
@@ -120,7 +120,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_ValidId_ReturnResultNotNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(ValidId);
 
@@ -130,7 +130,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_ValidId_ReturnSuccess()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(ValidId);
 
@@ -140,7 +140,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_ValidId_ReturnDataNotNull()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(ValidId);
 
@@ -150,7 +150,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Get_ValidId_ReturnDataIdMatch()
         {
-            var dataGet = GetDataGet(FixtureDataLogged.Data);
+            var dataGet = GetDataGet(Fixture.DataValidAuth);
 
             var res = await dataGet.Get(ValidId);
 

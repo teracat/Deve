@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Testing;
 using Deve.External.Api;
 
 namespace Deve.Tests.Api.External
@@ -8,8 +7,8 @@ namespace Deve.Tests.Api.External
     /// </summary>
     public abstract class TestExternalApiBase : TestApiBase<Program>
     {
-        public TestExternalApiBase(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestExternalApiBase(FixtureApiExternal fixture)
+            : base(fixture)
         {
         }
     }

@@ -3,10 +3,10 @@ using Deve.External.Sdk;
 
 namespace Deve.Tests.Sdk.External
 {
-    public class TestExternalSdkCountry : TestBaseDataGet<ISdk, Country, Country, CriteriaCountry>, IClassFixture<FixtureDataSdk>, IClassFixture<FixtureDataSdkLogged>
+    public class TestExternalSdkCountry : TestBaseDataGet<ISdk, Country, Country, CriteriaCountry>, IClassFixture<FixtureSdkExternal>
     {
-        public TestExternalSdkCountry(FixtureDataSdk fixtureData, FixtureDataSdkLogged fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestExternalSdkCountry(FixtureSdkExternal fixture)
+            : base(fixture)
         {
         }
 

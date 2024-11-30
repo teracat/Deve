@@ -3,8 +3,8 @@ namespace Deve.Tests
     public abstract class TestState<TDataType> : TestBaseDataAll<TDataType, State, State, CriteriaState> where TDataType : IDataCommon
     {
         #region Constructor
-        public TestState(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestState(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion

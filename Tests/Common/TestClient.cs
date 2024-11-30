@@ -5,8 +5,8 @@ namespace Deve.Tests
     public abstract class TestClient<TDataType> : TestBaseDataAll<TDataType, Client, Client, CriteriaClient> where TDataType : IData
     {
         #region Constructor
-        public TestClient(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestClient(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion
@@ -62,7 +62,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnNotSuccess()
         {
-            var dataClient = GetDataClient(FixtureData.Data);
+            var dataClient = GetDataClient(Fixture.DataNoAuth);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -72,7 +72,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorNotNull()
         {
-            var dataClient = GetDataClient(FixtureData.Data);
+            var dataClient = GetDataClient(Fixture.DataNoAuth);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -82,7 +82,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorNotEmpty()
         {
-            var dataClient = GetDataClient(FixtureData.Data);
+            var dataClient = GetDataClient(Fixture.DataNoAuth);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -92,7 +92,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_NoAuthValidData_ReturnErrorType()
         {
-            var dataClient = GetDataClient(FixtureData.Data);
+            var dataClient = GetDataClient(Fixture.DataNoAuth);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
@@ -102,7 +102,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnNotSuccess()
         {
-            var dataClient = GetDataClient(FixtureDataLogged.Data);
+            var dataClient = GetDataClient(Fixture.DataValidAuth);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -112,7 +112,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsNotNull()
         {
-            var dataClient = GetDataClient(FixtureDataLogged.Data);
+            var dataClient = GetDataClient(Fixture.DataValidAuth);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -122,7 +122,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsType()
         {
-            var dataClient = GetDataClient(FixtureDataLogged.Data);
+            var dataClient = GetDataClient(Fixture.DataValidAuth);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -132,7 +132,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_InvalidData_ReturnErrorsNotEmpty()
         {
-            var dataClient = GetDataClient(FixtureDataLogged.Data);
+            var dataClient = GetDataClient(Fixture.DataValidAuth);
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
@@ -142,7 +142,7 @@ namespace Deve.Tests
         [Fact]
         public async Task UpdateStatus_ValidData_ReturnSuccess()
         {
-            var dataClient = GetDataClient(FixtureDataLogged.Data);
+            var dataClient = GetDataClient(Fixture.DataValidAuth);
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 

@@ -3,10 +3,10 @@ using Deve.Core;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreCity : TestCity<ICore>, IClassFixture<FixtureDataCore>, IClassFixture<FixtureDataCoreLogged>
+    public class TestCoreCity : TestCity<ICore>, IClassFixture<FixtureDataCore>
     {
-        public TestCoreCity(FixtureDataCore fixtureDataCore, FixtureDataCoreLogged fixtureDataLogged)
-            : base(fixtureDataCore, fixtureDataLogged)
+        public TestCoreCity(FixtureDataCore fixtureDataCore)
+            : base(fixtureDataCore)
         {
         }
 

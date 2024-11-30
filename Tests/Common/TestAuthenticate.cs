@@ -5,8 +5,8 @@
     /// </summary>
     public abstract class TestAuthenticate<TDataType> : TestBase<TDataType> where TDataType: IDataCommon
     {
-        public TestAuthenticate(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestAuthenticate(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
 
@@ -14,7 +14,7 @@
         public async Task Login_CredentialsNull_ReturnFalse()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = await FixtureData.Data.Authenticate.Login(null);
+            var result = await Fixture.DataNoAuth.Authenticate.Login(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.False(result.Success);
@@ -23,7 +23,7 @@
         [Fact]
         public async Task Login_CredentialsDefConstructor_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.Login(new UserCredentials());
+            var result = await Fixture.DataNoAuth.Authenticate.Login(new UserCredentials());
 
             Assert.False(result.Success);
         }
@@ -31,7 +31,7 @@
         [Fact]
         public async Task Login_CredentialsEmpty_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.Login(new UserCredentials(string.Empty, string.Empty));
+            var result = await Fixture.DataNoAuth.Authenticate.Login(new UserCredentials(string.Empty, string.Empty));
 
             Assert.False(result.Success);
         }
@@ -39,7 +39,7 @@
         [Fact]
         public async Task Login_CredentialsNotValid_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.Login(new UserCredentials("aa", "bb"));
+            var result = await Fixture.DataNoAuth.Authenticate.Login(new UserCredentials("aa", "bb"));
 
             Assert.False(result.Success);
         }
@@ -47,7 +47,7 @@
         [Fact]
         public async Task Login_CredentialsInactive_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
+            var result = await Fixture.DataNoAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
 
             Assert.False(result.Success);
         }
@@ -55,7 +55,7 @@
         [Fact]
         public async Task Login_CredentialsValid_ReturnTrue()
         {
-            var result = await FixtureData.Data.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
+            var result = await Fixture.DataNoAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
             Assert.True(result.Success);
         }
@@ -64,7 +64,7 @@
         public async Task RefreshToken_Null_ReturnFalse()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = await FixtureData.Data.Authenticate.RefreshToken(null);
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.False(result.Success);
@@ -73,7 +73,7 @@
         [Fact]
         public async Task RefreshToken_Empty_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.RefreshToken(string.Empty);
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(string.Empty);
 
             Assert.False(result.Success);
         }
@@ -81,7 +81,7 @@
         [Fact]
         public async Task RefreshToken_NotValid_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.RefreshToken("aa");
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken("aa");
 
             Assert.False(result.Success);
         }
@@ -89,7 +89,7 @@
         [Fact]
         public async Task RefreshToken_Expired_ReturnFalse()
         {
-            var result = await FixtureData.Data.Authenticate.RefreshToken(TestsConstants.TokenExpired);
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(TestsConstants.TokenExpired);
 
             Assert.False(result.Success);
         }
@@ -99,7 +99,7 @@
         {
             var userToken = TestsHelpers.CreateTokenInactiveUser();
 
-            var result = await FixtureData.Data.Authenticate.RefreshToken(userToken.Token);
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(userToken.Token);
 
             Assert.False(result.Success);
         }
@@ -109,7 +109,7 @@
         {
             var userToken = TestsHelpers.CreateTokenValid();
 
-            var result = await FixtureData.Data.Authenticate.RefreshToken(userToken.Token);
+            var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(userToken.Token);
 
             Assert.True(result.Success);
         }

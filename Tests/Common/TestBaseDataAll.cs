@@ -28,8 +28,8 @@ namespace Deve.Tests
         #endregion
 
         #region Constructor
-        public TestBaseDataAll(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestBaseDataAll(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion
@@ -42,7 +42,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_NoAuthValidData_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -53,7 +53,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_NoAuthValidData_ReturnErrorNotNull()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -64,7 +64,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_NoAuthValidData_ReturnErrorNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -75,7 +75,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_NoAuthValidData_ReturnErrorType()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -86,7 +86,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_Null_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var res = await dataAll.Add(null);
@@ -98,7 +98,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_InvalidData_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -109,7 +109,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsNotNull()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -120,7 +120,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsType()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -131,7 +131,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_InvalidData_ReturnErrorsNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -142,7 +142,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Add_ValidData_ReturnSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateValidDataToAdd();
 
             var res = await dataAll.Add(obj);
@@ -155,7 +155,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_NoAuthValidData_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -166,7 +166,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_NoAuthValidData_ReturnErrorNotNull()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -177,7 +177,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_NoAuthValidData_ReturnErrorNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -188,7 +188,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_NoAuthValidData_ReturnErrorType()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
             var obj = CreateValidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -199,7 +199,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_Null_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             var res = await dataAll.Update(null);
@@ -211,7 +211,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_InvalidData_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -222,7 +222,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_InvalidData_ReturnErrorsNotNull()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -233,7 +233,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_InvalidData_ReturnErrorsType()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -244,7 +244,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_InvalidData_ReturnErrorsNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateInvalidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -255,7 +255,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Update_ValidData_ReturnSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
             var obj = CreateValidDataToUpdate();
 
             var res = await dataAll.Update(obj);
@@ -268,7 +268,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_NoAuthValidData_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
 
             var res = await dataAll.Delete(ValidIdDelete);
 
@@ -278,7 +278,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_NoAuthValidData_ReturnErrorNotNull()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
 
             var res = await dataAll.Delete(ValidIdDelete);
 
@@ -288,7 +288,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_NoAuthValidData_ReturnErrorNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
 
             var res = await dataAll.Delete(ValidIdDelete);
 
@@ -298,7 +298,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_NoAuthValidData_ReturnErrorType()
         {
-            var dataAll = GetDataAll(FixtureData.Data);
+            var dataAll = GetDataAll(Fixture.DataNoAuth);
 
             var res = await dataAll.Delete(ValidIdDelete);
 
@@ -308,7 +308,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_Zero_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(0);
 
@@ -318,7 +318,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_Zero_ReturnErrorsNotNull()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(0);
 
@@ -328,7 +328,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_Zero_ReturnErrorsType()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(0);
 
@@ -338,7 +338,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_Zero_ReturnErrorsNotEmpty()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(0);
 
@@ -348,7 +348,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_InvalidId_ReturnNotSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(InvalidId);
 
@@ -358,7 +358,7 @@ namespace Deve.Tests
         [Fact]
         public async Task Delete_ValidData_ReturnSuccess()
         {
-            var dataAll = GetDataAll(FixtureDataLogged.Data);
+            var dataAll = GetDataAll(Fixture.DataValidAuth);
 
             var res = await dataAll.Delete(ValidIdDelete);
 

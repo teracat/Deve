@@ -5,8 +5,8 @@ namespace Deve.Tests
     public abstract class TestStats<TDataType> : TestBase<TDataType> where TDataType : IData
     {
         #region Constructor
-        public TestStats(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestStats(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion
@@ -15,7 +15,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnNotSuccess()
         {
-            var res = await FixtureData.Data.Stats.GetClientStats();
+            var res = await Fixture.DataNoAuth.Stats.GetClientStats();
 
             Assert.False(res.Success);
         }
@@ -23,7 +23,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorNotNull()
         {
-            var res = await FixtureData.Data.Stats.GetClientStats();
+            var res = await Fixture.DataNoAuth.Stats.GetClientStats();
 
             Assert.NotNull(res.Errors);
         }
@@ -31,7 +31,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorNotEmpty()
         {
-            var res = await FixtureData.Data.Stats.GetClientStats();
+            var res = await Fixture.DataNoAuth.Stats.GetClientStats();
 
             Assert.NotEmpty(res.Errors);
         }
@@ -39,7 +39,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_NoAuth_ReturnErrorType()
         {
-            var res = await FixtureData.Data.Stats.GetClientStats();
+            var res = await Fixture.DataNoAuth.Stats.GetClientStats();
 
             Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
@@ -47,7 +47,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnSuccess()
         {
-            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
+            var res = await Fixture.DataValidAuth.Stats.GetClientStats();
 
             Assert.True(res.Success);
         }
@@ -55,7 +55,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnDataNotNull()
         {
-            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
+            var res = await Fixture.DataValidAuth.Stats.GetClientStats();
 
             Assert.NotNull(res.Data);
         }
@@ -63,7 +63,7 @@ namespace Deve.Tests
         [Fact]
         public async Task GetClientStats_Auth_ReturnDataType()
         {
-            var res = await FixtureDataLogged.Data.Stats.GetClientStats();
+            var res = await Fixture.DataValidAuth.Stats.GetClientStats();
 
             Assert.IsAssignableFrom<ClientStats>(res.Data);
         }

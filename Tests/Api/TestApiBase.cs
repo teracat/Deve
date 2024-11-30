@@ -1,28 +1,18 @@
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Deve.Tests.Api
 {
     /// <summary>
     /// Api tests base class.
     /// </summary>
-    public abstract class TestApiBase<TEntryPoint> : IClassFixture<WebApplicationFactory<TEntryPoint>> where TEntryPoint : class
+    public abstract class TestApiBase<TEntryPoint> where TEntryPoint : class
     {
-        private readonly TestApiFactory<TEntryPoint> _factory;
+        protected FixtureApiClients<TEntryPoint> Fixture { get; private set; }
 
-        public TestApiBase(WebApplicationFactory<TEntryPoint> factory)
+        public TestApiBase(FixtureApiClients<TEntryPoint> fixture)
         {
-            _factory = new TestApiFactory<TEntryPoint>(factory);
-        }
-
-        protected HttpClient CreateClient() => _factory.CreateClient();
-
-        protected HttpClient CreateClientWithAuth(string token)
-        {
-            var client = _factory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(ApiConstants.AuthDefaultScheme, token);
-            return client;
+            Fixture = fixture;
         }
 
         protected HttpContent ToHttpContent(object data)

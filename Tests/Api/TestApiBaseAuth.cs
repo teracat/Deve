@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-
 namespace Deve.Tests.Api
 {
     /// <summary>
@@ -9,10 +7,12 @@ namespace Deve.Tests.Api
     /// </summary>
     public abstract class TestApiBaseAuth<TEntryPoint> : TestApiBase<TEntryPoint> where TEntryPoint : class
     {
-        public TestApiBaseAuth(WebApplicationFactory<TEntryPoint> factory)
-            : base(factory)
+        #region Constructor
+        public TestApiBaseAuth(FixtureApiClients<TEntryPoint> fixture)
+            : base(fixture)
         {
         }
+        #endregion
 
         #region Common
         [Theory]
@@ -20,9 +20,7 @@ namespace Deve.Tests.Api
         [InlineData(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken)]
         public async Task Get_Empty_NotSuccessStatusCode(string path)
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(path);
+            var response = await Fixture.ClientNoAuth.GetAsync(path);
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -32,9 +30,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Login_EmptyCredentials_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + "?username=&password=");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + "?username=&password=");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -42,9 +38,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Login_NotValidCredentials_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + "?username=aa&password=aa");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + "?username=aa&password=aa");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -52,9 +46,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Login_InactiveUserCredentials_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsConstants.UserUsernameInactive}&password={TestsConstants.UserPasswordInactive}");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsConstants.UserUsernameInactive}&password={TestsConstants.UserPasswordInactive}");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -62,9 +54,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Login_ValidCredentials_SuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsConstants.UserUsernameValid}&password={TestsConstants.UserPasswordValid}");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodLogin + $"?username={TestsConstants.UserUsernameValid}&password={TestsConstants.UserPasswordValid}");
 
             Assert.True(response.IsSuccessStatusCode);
         }
@@ -74,9 +64,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task RefreshToken_EmptyToken_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + "?token=");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + "?token=");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -84,9 +72,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task RefreshToken_NotValidToken_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + "?token=aa");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + "?token=aa");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -94,9 +80,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task RefreshToken_ExpiredToken_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={TestsConstants.TokenExpired}");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={TestsConstants.TokenExpired}");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -104,10 +88,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task RefreshToken_InactiveUser_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-            var userToken = TestsHelpers.CreateTokenInactiveUser();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={userToken.Token}");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={Fixture.UserTokenInactiveUser.Token}");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -115,10 +96,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task RefreshToken_Valid_SuccessStatusCode()
         {
-            var client = CreateClient();
-            var userToken = TestsHelpers.CreateTokenValid();
-
-            var response = await client.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={userToken.Token}");
+            var response = await Fixture.ClientNoAuth.GetAsync(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + $"?token={Fixture.UserTokenValid.Token}");
 
             Assert.True(response.IsSuccessStatusCode);
         }

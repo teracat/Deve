@@ -3,10 +3,10 @@ using Deve.Internal;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreState : TestState<ICore>, IClassFixture<FixtureDataCore>, IClassFixture<FixtureDataCoreLogged>
+    public class TestCoreState : TestState<ICore>, IClassFixture<FixtureDataCore>
     {
-        public TestCoreState(FixtureDataCore fixtureDataCore, FixtureDataCoreLogged fixtureDataLogged)
-            : base(fixtureDataCore, fixtureDataLogged)
+        public TestCoreState(FixtureDataCore fixtureDataCore)
+            : base(fixtureDataCore)
         {
         }
 

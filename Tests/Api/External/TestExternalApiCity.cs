@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Deve.External.Api;
-
 namespace Deve.Tests.Api.External
 {
-    public class TestExternalApiCity : TestExternalApiBaseGet
+    public class TestExternalApiCity : TestExternalApiBaseGet, IClassFixture<FixtureApiExternal>
     {
         protected override string Path => ApiConstants.PathCity;
 
-        public TestExternalApiCity(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestExternalApiCity(FixtureApiExternal fixture)
+            : base(fixture)
         {
         }
     }

@@ -3,10 +3,10 @@ using Deve.Internal.Sdk;
 
 namespace Deve.Tests.Sdk.Internal
 {
-    public class TestInternalSdkState : TestState<ISdk>, IClassFixture<FixtureDataSdk>, IClassFixture<FixtureDataSdkLogged>
+    public class TestInternalSdkState : TestState<ISdk>, IClassFixture<FixtureSdkInternal>
     {
-        public TestInternalSdkState(FixtureDataSdk fixtureData, FixtureDataSdkLogged fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestInternalSdkState(FixtureSdkInternal fixture)
+            : base(fixture)
         {
         }
 

@@ -3,8 +3,8 @@ namespace Deve.Tests
     public abstract class TestCountry<TDataType> : TestBaseDataAll<TDataType, Country, Country, CriteriaCountry> where TDataType : IDataCommon
     {
         #region Constructor
-        public TestCountry(IFixtureData<TDataType> fixtureData, IFixtureDataLogged<TDataType> fixtureDataLogged)
-            : base(fixtureData, fixtureDataLogged)
+        public TestCountry(IFixtureData<TDataType> fixture)
+            : base(fixture)
         {
         }
         #endregion

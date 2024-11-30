@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Deve.Internal.Api;
-
 namespace Deve.Tests.Api.Internal
 {
-    public class TestInternalApiCity : TestInternalApiBaseAll<City>
+    public class TestInternalApiCity : TestInternalApiBaseAll<City>, IClassFixture<FixtureApiInternal>
     {
         protected override string Path => ApiConstants.PathCity;
 
-        public TestInternalApiCity(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestInternalApiCity(FixtureApiInternal fixture)
+            : base(fixture)
         {
         }
 

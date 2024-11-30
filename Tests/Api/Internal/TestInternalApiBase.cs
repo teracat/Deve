@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Testing;
 using Deve.Internal.Api;
 
 namespace Deve.Tests.Api.Internal
@@ -8,8 +7,8 @@ namespace Deve.Tests.Api.Internal
     /// </summary>
     public class TestInternalApiBase : TestApiBase<Program>
     {
-        public TestInternalApiBase(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestInternalApiBase(FixtureApiInternal fixture)
+            : base(fixture)
         {
         }
     }

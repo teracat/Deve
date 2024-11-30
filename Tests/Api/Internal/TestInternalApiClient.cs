@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Deve.Internal.Api;
 using Deve.Internal;
 
 namespace Deve.Tests.Api.Internal
 {
-    public class TestInternalApiClient : TestInternalApiBaseAll<Client>
+    public class TestInternalApiClient : TestInternalApiBaseAll<Client>, IClassFixture<FixtureApiInternal>
     {
         protected override string Path => ApiConstants.PathClient;
 
-        public TestInternalApiClient(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestInternalApiClient(FixtureApiInternal fixture)
+            : base(fixture)
         {
         }
 
@@ -58,9 +56,7 @@ namespace Deve.Tests.Api.Internal
         [Fact]
         public async Task UpdateStatus_Unauthorized_NotSuccessStatusCode()
         {
-            var client = CreateClient();
-
-            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
+            var response = await Fixture.ClientNoAuth.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -68,10 +64,7 @@ namespace Deve.Tests.Api.Internal
         [Fact]
         public async Task UpdateStatus_Zero_NotSuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
+            var response = await Fixture.ClientValidAuth.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/0/{(int)ClientStatus.Inactive}", null);
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -79,10 +72,7 @@ namespace Deve.Tests.Api.Internal
         [Fact]
         public async Task UpdateStatus_InvalidId_NotSuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{InvalidId}/{(int)ClientStatus.Inactive}", null);
+            var response = await Fixture.ClientValidAuth.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{InvalidId}/{(int)ClientStatus.Inactive}", null);
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -90,10 +80,7 @@ namespace Deve.Tests.Api.Internal
         [Fact]
         public async Task UpdateStatus_Valid_SuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{ValidId}/{(int)ClientStatus.Inactive}", null);
+            var response = await Fixture.ClientValidAuth.PutAsync(Path + ApiConstants.MethodUpdateStatus + $"/{ValidId}/{(int)ClientStatus.Inactive}", null);
 
             Assert.True(response.IsSuccessStatusCode);
         }

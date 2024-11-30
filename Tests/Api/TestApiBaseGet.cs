@@ -1,28 +1,27 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-
 namespace Deve.Tests.Api
 {
     public abstract class TestApiBaseGet<TEntryPoint> : TestApiBase<TEntryPoint> where TEntryPoint : class
     {
+        #region Properties
         protected abstract string Path { get; }
 
         protected virtual string ValidCriteriaParameterName => "name";
         protected virtual long ValidId => TestsConstants.DefaultValidId;
         protected virtual long InvalidId => TestsConstants.DefaultInvalidId;
+        #endregion
 
-        public TestApiBaseGet(WebApplicationFactory<TEntryPoint> factory)
-            : base(factory)
+        #region Constructor
+        public TestApiBaseGet(FixtureApiClients<TEntryPoint> fixture)
+            : base(fixture)
         {
         }
+        #endregion
 
         #region GetList
         [Fact]
         public async Task GetList_EmptyCriteria_SuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.GetAsync(Path);
+            var response = await Fixture.ClientValidAuth.GetAsync(Path);
 
             Assert.True(response.IsSuccessStatusCode);
         }
@@ -30,10 +29,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task GetList_Parameter_SuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.GetAsync(Path + $"?{ValidCriteriaParameterName}=aa");
+            var response = await Fixture.ClientValidAuth.GetAsync(Path + $"?{ValidCriteriaParameterName}=aa");
 
             Assert.True(response.IsSuccessStatusCode);
         }
@@ -43,10 +39,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Get_Zero_NotSuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.GetAsync(Path + "0");
+            var response = await Fixture.ClientValidAuth.GetAsync(Path + "0");
 
             Assert.False(response.IsSuccessStatusCode);
         }
@@ -54,10 +47,7 @@ namespace Deve.Tests.Api
         [Fact]
         public async Task Get_ValidId_SuccessStatusCode()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
-            var client = CreateClientWithAuth(userToken.Token);
-
-            var response = await client.GetAsync(Path + ValidId);
+            var response = await Fixture.ClientValidAuth.GetAsync(Path + ValidId);
 
             Assert.True(response.IsSuccessStatusCode);
         }

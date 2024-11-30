@@ -2,10 +2,10 @@ using Deve.Core;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreStats : TestStats<ICore>, IClassFixture<FixtureDataCore>, IClassFixture<FixtureDataCoreLogged>
+    public class TestCoreStats : TestStats<ICore>, IClassFixture<FixtureDataCore>
     {
-        public TestCoreStats(FixtureDataCore fixtureDataCore, FixtureDataCoreLogged fixtureDataLogged)
-           : base(fixtureDataCore, fixtureDataLogged)
+        public TestCoreStats(FixtureDataCore fixtureDataCore)
+           : base(fixtureDataCore)
         {
         }
     }

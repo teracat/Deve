@@ -4,13 +4,13 @@ using Deve.Api;
 
 namespace Deve.Tests.Api
 {
-    public class TestApiFactory<TEntryPoint> where TEntryPoint : class
+    public class FixtureApi<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint: class
     {
-        private readonly WebApplicationFactory<TEntryPoint> _factory;
+        protected readonly WebApplicationFactory<TEntryPoint> _factory;
 
-        public TestApiFactory(WebApplicationFactory<TEntryPoint> factory)
+        public FixtureApi()
         {
-            _factory = factory.WithWebHostBuilder(builder =>
+            _factory = WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
@@ -18,7 +18,5 @@ namespace Deve.Tests.Api
                 });
             });
         }
-
-        public HttpClient CreateClient() => _factory.CreateClient();
     }
 }

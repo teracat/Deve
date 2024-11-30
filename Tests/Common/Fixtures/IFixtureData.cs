@@ -2,6 +2,7 @@
 {
     public interface IFixtureData<TDataType> where TDataType : IDataCommon
     {
-        TDataType Data { get; }
+        TDataType DataNoAuth { get; }
+        TDataType DataValidAuth { get; }
     }
 }

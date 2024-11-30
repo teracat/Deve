@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Deve.Internal.Api;
-
 namespace Deve.Tests.Api.Internal
 {
-    public class TestInternalApiState : TestInternalApiBaseAll<State>
+    public class TestInternalApiState : TestInternalApiBaseAll<State>, IClassFixture<FixtureApiInternal>
     {
         protected override string Path => ApiConstants.PathState;
 
-        public TestInternalApiState(WebApplicationFactory<Program> factory)
-            : base(factory)
+        public TestInternalApiState(FixtureApiInternal fixture)
+            : base(fixture)
         {
         }
 
