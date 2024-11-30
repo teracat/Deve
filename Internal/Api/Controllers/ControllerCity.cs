@@ -9,8 +9,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<City, City, CriteriaCity> DataAll => Core.Cities;
 
-        public ControllerCity(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerCity(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

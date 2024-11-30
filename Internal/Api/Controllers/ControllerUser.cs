@@ -9,8 +9,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
 
-        public ControllerUser(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerUser(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

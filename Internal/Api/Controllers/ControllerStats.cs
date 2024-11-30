@@ -8,8 +8,8 @@ namespace Deve.Internal.Api
     public class ControllerStats : ControllerBaseAuth
     {
         #region Constructor
-        public ControllerStats(IHttpContextAccessor contextAccessor)
-            : base( contextAccessor)
+        public ControllerStats(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base( contextAccessor, dataSourceBuilder)
         {
         }
         #endregion

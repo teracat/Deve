@@ -9,8 +9,8 @@ namespace Deve.External.Api
     {
         protected override IDataGet<State, State, CriteriaState> DataGet => Core.States;
 
-        public ControllerState(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

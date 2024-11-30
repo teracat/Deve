@@ -85,7 +85,7 @@ namespace Deve.DataSource
                 if (client is null)
                     return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
 
-                return Utils.ResultGetOk<Client>(client);
+                return Utils.ResultGetOk(client);
             });
         }
         #endregion

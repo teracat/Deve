@@ -101,9 +101,6 @@ namespace Deve.DataSource
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
-                if (id <= 0)
-                    return Utils.ResultGetError<User>(DataSourceMain.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(User.Id));
-
                 var city = Data.Users.FirstOrDefault(x => x.Id == id);
                 if (city is null)
                     return Utils.ResultGetError<User>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);

@@ -9,7 +9,6 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 
 ## Still working on
 
-- Tests
 - Client samples
 
 ## Installation

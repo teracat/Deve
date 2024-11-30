@@ -9,8 +9,8 @@ namespace Deve.External.Api
     {
         protected override IDataGet<City, City, CriteriaCity> DataGet => Core.Cities;
 
-        public ControllerCity(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerCity(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

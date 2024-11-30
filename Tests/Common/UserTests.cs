@@ -1,6 +1,6 @@
-﻿namespace Deve.Tests.Auth
+﻿namespace Deve.Tests
 {
-    internal class UserTests : User
+    public class UserTests : User
     {
         public UserTests()
         {

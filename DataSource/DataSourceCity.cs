@@ -109,9 +109,6 @@
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
-                if (id <= 0)
-                    return Utils.ResultGetError<City>(ResultErrorType.MissingRequiredField, nameof(City.Id));
-
                 var city = Data.Cities.FirstOrDefault(x => x.Id == id);
                 if (city is null)
                     return Utils.ResultGetError<City>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);

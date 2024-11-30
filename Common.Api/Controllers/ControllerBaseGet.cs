@@ -10,8 +10,8 @@ namespace Deve.Api
         #endregion
 
         #region Constructor
-        public ControllerBaseGet(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerBaseGet(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
         #endregion

@@ -14,7 +14,7 @@ namespace Deve.Internal.Sdk
         #region IDataClient
         public async Task<Result> UpdateStatus(long id, ClientStatus newStatus)
         {
-            return await Put(Path + id + "/" + ((int)newStatus).ToString(), RequestAuthType.Default, null);
+            return await Put(Path + ApiConstants.MethodUpdateStatus + $"/{id}/{(int)newStatus}", RequestAuthType.Default, null);
         }
         #endregion
     }

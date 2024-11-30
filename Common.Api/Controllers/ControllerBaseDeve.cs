@@ -14,7 +14,7 @@ namespace Deve.Api
         #endregion
 
         #region Constructor
-        public ControllerBaseDeve(IHttpContextAccessor contextAccessor)
+        public ControllerBaseDeve(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
         {
             string? langCode = UtilsApi.GetLangCodeFromRequest(contextAccessor.HttpContext?.Request);   //IRequestCultureFeature seems to not take into account available languages to set the culture
             var options = new DataOptions()
@@ -24,7 +24,9 @@ namespace Deve.Api
             if (!string.IsNullOrWhiteSpace(langCode))
                 options.LangCode = langCode;
 
-            _core = CoreFactory.Get(false, null, options);
+            var dataSource = dataSourceBuilder.Create(options);
+
+            _core = CoreFactory.Get(false, dataSource, options);
         }
         #endregion
     }

@@ -71,9 +71,6 @@
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
-                if (id <= 0)
-                    return Utils.ResultGetError<Country>(DataSourceMain.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(Country.Id));
-
                 var country = Data.Countries.FirstOrDefault(x => x.Id == id);
                 if (country is null)
                     return Utils.ResultGetError<Country>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);

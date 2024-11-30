@@ -1,60 +1,68 @@
-﻿using Xunit;
-using Deve.Auth;
-using Deve.DataSource;
+﻿using Deve.Auth;
 
 namespace Deve.Tests.Auth
 {
     /// <summary>
     /// Auth Tests.
     /// </summary>
-    public class TestAuth
+    public class TestAuth : IClassFixture<FixtureAuth>
     {
+        FixtureAuth _fixtureAuth;
+
+        public TestAuth(FixtureAuth authFixture)
+        {
+            _fixtureAuth = authFixture;
+        }
+
         #region Login
         [Fact]
         public async Task Login_CredentialsNull_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = await auth.Login(null);
+            var result = await _fixtureAuth.Auth.Login(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-            Assert.False(result.Success, "Login with Null UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task Login_CredentialsDefConstructor_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.Login(new UserCredentials());
+            var result = await _fixtureAuth.Auth.Login(new UserCredentials());
 
-            Assert.False(result.Success, "Login with Default UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task Login_CredentialsEmpty_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.Login(new UserCredentials(string.Empty, string.Empty));
+            var result = await _fixtureAuth.Auth.Login(new UserCredentials(string.Empty, string.Empty));
 
-            Assert.False(result.Success, "Login with Empty UserCredentials should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task Login_CredentialsNotValid_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.Login(new UserCredentials("aa", "bb"));
+            var result = await _fixtureAuth.Auth.Login(new UserCredentials("aa", "bb"));
 
-            Assert.False(result.Success, "Login with Not Valid UserCredentials should return false");
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Login_CredentialsInactiveUser_ReturnFalse()
+        {
+            var result = await _fixtureAuth.Auth.Login(new UserCredentials(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
+
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task Login_CredentialsValid_ReturnTrue()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.Login(new UserCredentials("teracat", "teracat"));
+            var result = await _fixtureAuth.Auth.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
-            Assert.True(result.Success, "Login with Valid UserCredentials should return true");
+            Assert.True(result.Success);
         }
         #endregion
 
@@ -62,66 +70,51 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task RefreshToken_Null_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = await auth.RefreshToken(null);
+            var result = await _fixtureAuth.Auth.RefreshToken(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-            Assert.False(result.Success, "RefreshToken with Null token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task RefreshToken_Empty_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.RefreshToken(string.Empty);
+            var result = await _fixtureAuth.Auth.RefreshToken(string.Empty);
 
-            Assert.False(result.Success, "RefreshToken with Empty token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task RefreshToken_NotValid_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.RefreshToken("aa");
+            var result = await _fixtureAuth.Auth.RefreshToken("aa");
 
-            Assert.False(result.Success, "RefreshToken with Not Valid token should return false");
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task RefreshToken_Expired_ReturnFalse()
         {
-            var auth = AuthFactory.Get();
-            var result = await auth.RefreshToken("P83hovvDJI9+6LMyV9Tv/MCBELipU06iTIqm9IqsTTMNjLPaYmSvarlIxOst+2ZId4dHPK2xkqKD1hQL6Iy3gf7DEg8y+3N2K4REL2A0FVA=");
+            var result = await _fixtureAuth.Auth.RefreshToken(TestsConstants.TokenExpired);
 
-            Assert.False(result.Success, "RefreshToken with Expired token should return false");
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task RefreshToken_InactiveUser_ReturnFalse()
+        {
+            var result = await _fixtureAuth.Auth.RefreshToken(_fixtureAuth.UserTokenInactive.Token);
+
+            Assert.False(result.Success);
         }
 
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
-            var ds = DataSourceFactory.Get();
-            var auth = AuthFactory.Get(ds);
+            var result = await _fixtureAuth.Auth.RefreshToken(_fixtureAuth.UserTokenValid.Token);
 
-            var usersRes = await ds.Users.Get(new Internal.CriteriaUser()
-            {
-                OnlyActive = CriteriaActiveType.OnlyActive
-            });
-            if (!usersRes.Success)
-            {
-                Assert.True(usersRes.Success, "Could not find an active user");
-                return;
-            }
-            if (usersRes.Data.Count == 0)
-            {
-                Assert.NotEmpty(usersRes.Data);
-                return;
-            }
-
-            var tokenData = auth.TokenManager.CreateToken(usersRes.Data.First());
-            var result = await auth.RefreshToken(tokenData.Token);
-
-            Assert.True(result.Success, "RefreshToken with Valid token should return true");
+            Assert.True(result.Success);
         }
         #endregion
 
@@ -129,71 +122,41 @@ namespace Deve.Tests.Auth
         [Fact]
         public async Task IsGranted_NullGetListState_ReturnGranted()
         {
-            var auth = AuthFactory.Get();
+            var result = await _fixtureAuth.Auth.IsGranted(null, PermissionType.GetList, PermissionDataType.State);
 
-            var result = await auth.IsGranted(null, PermissionType.GetList, PermissionDataType.State);
-
-            Assert.True(result == PermissionResult.Granted, "IsGranted with null User for GetList on State should return Granted");
+            Assert.Equal(PermissionResult.Granted, result);
         }
 
         [Fact]
         public async Task IsGranted_UserGetListState_ReturnGranted()
         {
-            var auth = AuthFactory.Get();
-            var userIdentity = new UserIdentity()
-            {
-                Id = 1,
-                Role = Role.User,
-            };
+            var result = await _fixtureAuth.Auth.IsGranted(_fixtureAuth.UserIdentityUser, PermissionType.GetList, PermissionDataType.State);
 
-            var result = await auth.IsGranted(userIdentity, PermissionType.GetList, PermissionDataType.State);
-
-            Assert.True(result == PermissionResult.Granted, "IsGranted with User role for GetList on State should return Granted");
+            Assert.Equal(PermissionResult.Granted, result);
         }
 
         [Fact]
         public async Task IsGranted_AdminGetListState_ReturnGranted()
         {
-            var auth = AuthFactory.Get();
-            var userIdentity = new UserIdentity()
-            {
-                Id = 1,
-                Role = Role.Admin,
-            };
+            var result = await _fixtureAuth.Auth.IsGranted(_fixtureAuth.UserIdentityAdmin, PermissionType.GetList, PermissionDataType.State);
 
-            var result = await auth.IsGranted(userIdentity, PermissionType.GetList, PermissionDataType.State);
-
-            Assert.True(result == PermissionResult.Granted, "IsGranted with User role for GetList on State should return Granted");
+            Assert.Equal(PermissionResult.Granted, result);
         }
 
         [Fact]
         public async Task IsGranted_UserAddState_ReturnNotGranted()
         {
-            var auth = AuthFactory.Get();
-            var userIdentity = new UserIdentity()
-            {
-                Id = 1,
-                Role = Role.User,
-            };
+            var result = await _fixtureAuth.Auth.IsGranted(_fixtureAuth.UserIdentityUser, PermissionType.Add, PermissionDataType.State);
 
-            var result = await auth.IsGranted(userIdentity, PermissionType.Add, PermissionDataType.State);
-
-            Assert.True(result == PermissionResult.NotGranted, "IsGranted with User role for Add on State should return NotGranted");
+            Assert.Equal(PermissionResult.NotGranted, result);
         }
 
         [Fact]
         public async Task IsGranted_AdminAddState_ReturnGranted()
         {
-            var auth = AuthFactory.Get();
-            var userIdentity = new UserIdentity()
-            {
-                Id = 1,
-                Role = Role.Admin,
-            };
+            var result = await _fixtureAuth.Auth.IsGranted(_fixtureAuth.UserIdentityAdmin, PermissionType.Add, PermissionDataType.State);
 
-            var result = await auth.IsGranted(userIdentity, PermissionType.Add, PermissionDataType.State);
-
-            Assert.True(result == PermissionResult.Granted, "IsGranted with Admin role for Add on State should return Granted");
+            Assert.Equal(PermissionResult.Granted, result);
         }
         #endregion
     }

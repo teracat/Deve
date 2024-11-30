@@ -10,8 +10,8 @@ namespace Deve.Internal.Api
     {
         protected override IDataGet<ClientBasic, External.Client, CriteriaClientBasic> DataGet => Core.ClientsBasic;
 
-        public ControllerClientBasic(IHttpContextAccessor contextAccessor)
-            : base(contextAccessor)
+        public ControllerClientBasic(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
+            : base(contextAccessor, dataSourceBuilder)
         {
         }
     }

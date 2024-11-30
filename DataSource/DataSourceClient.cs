@@ -49,10 +49,7 @@ namespace Deve.DataSource
         {
             return Utils.RunProtectedAsync(Semaphore, () =>
             {
-                if (id <= 0)
-                    return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(Client.Id));
-
-                var client = Data.Clients.FirstOrDefault(x => x.Id == id) as Client;
+                var client = Data.Clients.FirstOrDefault(x => x.Id == id);
                 if (client is null)
                     return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
 

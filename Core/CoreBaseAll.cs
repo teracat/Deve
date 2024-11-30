@@ -28,6 +28,9 @@ namespace Deve.Core
                 return Utils.ResultGetError<ModelId>(resPerm);
 
             //Some basic checks
+            if (data is null)
+                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+
             var resRequired = await CheckRequired(data, ChecksActionType.Add);
             if (!resRequired.Success)
                 return Utils.ResultGetError<ModelId>(resRequired);
@@ -55,6 +58,9 @@ namespace Deve.Core
                 return Utils.ResultGetError<Model>(resPerm);
 
             //Some basic checks
+            if (data is null)
+                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+
             var result = await CheckRequired(data, ChecksActionType.Update);
             if (!result.Success)
                 return result;

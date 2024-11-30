@@ -22,13 +22,13 @@ namespace Deve.Auth
         #endregion
 
         #region Constructor
-        public AuthMain(IDataSource? dataSource = null, DataOptions? options = null)
+        public AuthMain(IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
         {
             _options = options ?? new DataOptions();
             DataSource = dataSource ?? DataSourceFactory.Get(_options);
             Hash = new HashSha512();
             Crypt = new CryptAes();
-            TokenManager = TokenManagerFactory.Get();
+            TokenManager = tokenManager ?? TokenManagerFactory.Get();
         }
         #endregion
 

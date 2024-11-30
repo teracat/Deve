@@ -2,3 +2,4 @@
 
 [assembly: InternalsVisibleTo("Deve.Internal.Sdk")]
 [assembly: InternalsVisibleTo("Deve.External.Sdk")]
+[assembly: InternalsVisibleTo("Deve.Tests.Sdk")]

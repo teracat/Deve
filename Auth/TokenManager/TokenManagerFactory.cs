@@ -11,10 +11,11 @@
         /// <param name="tokenManager">The ITokenManager implementation that will be used for that scheme.</param>
         public static void Set(string scheme, ITokenManager tokenManager)
         {
-            if (_tokenManagers.ContainsKey(scheme))
-                _tokenManagers[scheme] = tokenManager;
-            else
-                _tokenManagers.Add(scheme, tokenManager);
+            lock (_tokenManagers)
+            {
+                if (!_tokenManagers.TryAdd(scheme, tokenManager))
+                    _tokenManagers[scheme] = tokenManager;
+            }
         }
 
         /// <summary>
