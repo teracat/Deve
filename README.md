@@ -7,6 +7,14 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 
 ![Diagram](diagram.png)
 
+## Still working on
+
+- Client samples
+
+## Installation
+
+Check the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
+
 ## Wiki
 
 Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) section for more information (still working on it):
@@ -66,11 +74,6 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [External Sdk](https://github.com/teracat/Deve/wiki/Sdk#external-sdk)
   - [Internal Sdk](https://github.com/teracat/Deve/wiki/Sdk#internal-sdk)
   - [Use cases](https://github.com/teracat/Deve/wiki/Sdk#use-cases)
-
-
-## Still working on
-
-- Client samples
 
 ## Contributing
 
