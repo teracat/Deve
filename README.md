@@ -70,7 +70,6 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
 
 ## Still working on
 
-- Tests
 - Client samples
 
 ## Contributing
