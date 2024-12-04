@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:strings="clr-namespace:Deve.External.ClientApp.Maui.Resources.Strings"
+             x:Class="Deve.External.ClientApp.Maui.MainPage"
+             BackgroundColor="{StaticResource DefaultPageBgColor}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="5">
+            <Image
+                Source="logo.png"
+                HeightRequest="90"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            <Frame BackgroundColor="{StaticResource Gray100}" BorderColor="{StaticResource Gray300}" WidthRequest="350" HeightRequest="400" HorizontalOptions="Center">
+                <VerticalStackLayout Padding="15,0" Spacing="5">
+
+                    <Label
+                        Text="{x:Static strings:AppResources.Identification}"
+                        Style="{StaticResource Headline}"
+                        SemanticProperties.HeadingLevel="Level1" />
+
+                    <Label
+                        Text="Welcome to Deve"
+                        Style="{StaticResource SubHeadline}"
+                        SemanticProperties.HeadingLevel="Level2"
+                        SemanticProperties.Description="Welcome to Deve" />
+
+                    <Label
+                        Text=".NET DEVEloper Template"
+                        HorizontalTextAlignment="Center"
+                        SemanticProperties.Description=".NET DEVEloper Template" />
+
+                    <Label
+                        Text="{x:Static strings:AppResources.Username}"
+                        Margin="0,10,0,0"
+                        SemanticProperties.Description="" />
+
+                    <Entry />
+
+                    <Label
+                        Text="{x:Static strings:AppResources.Password}"
+                        SemanticProperties.Description="" />
+
+                    <Entry IsPassword="True" />
+
+                    <Button
+                        Text="{x:Static strings:AppResources.Login}" 
+                        SemanticProperties.Hint="Check username and password to login"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -14,6 +14,8 @@
     <Color x:Key="SecondaryDarkText">#545454</Color>
     <Color x:Key="Tertiary">#f2c6ff</Color>
 
+    <Color x:Key="DefaultPageBgColor">#ffffff</Color>
+
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Magenta">#D600AA</Color>
