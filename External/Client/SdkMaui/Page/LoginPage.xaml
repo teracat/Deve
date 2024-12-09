@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:strings="clr-namespace:Deve.External.ClientApp.Maui.Resources.Strings"
-             x:Class="Deve.External.ClientApp.Maui.MainPage"
-             BackgroundColor="{StaticResource DefaultPageBgColor}">
+<local:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:Deve.External.ClientApp.Maui"
+            xmlns:strings="clr-namespace:Deve.External.ClientApp.Maui.Resources.Strings"
+            x:Class="Deve.External.ClientApp.Maui.LoginPage"
+            BackgroundColor="{StaticResource DefaultPageBgColor}">
 
     <ScrollView>
         <VerticalStackLayout Spacing="5">
@@ -12,9 +13,9 @@
                 HeightRequest="90"
                 Aspect="AspectFit"
                 HorizontalOptions="Center"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+                SemanticProperties.Description="app logo" />
 
-            <Frame BackgroundColor="{StaticResource Gray100}" BorderColor="{StaticResource Gray300}" WidthRequest="350" HeightRequest="400" HorizontalOptions="Center">
+            <Frame WidthRequest="350" HeightRequest="400" HorizontalOptions="Center" Style="{StaticResource GroupFrame}">
                 <VerticalStackLayout Padding="15,0" Spacing="5">
 
                     <Label
@@ -38,13 +39,13 @@
                         Margin="0,10,0,0"
                         SemanticProperties.Description="" />
 
-                    <Entry />
+                    <Entry Text="{Binding Username}" />
 
                     <Label
                         Text="{x:Static strings:AppResources.Password}"
                         SemanticProperties.Description="" />
 
-                    <Entry IsPassword="True" />
+                    <Entry IsPassword="True" Text="{Binding Password}" />
 
                     <Button
                         Text="{x:Static strings:AppResources.Login}" 
@@ -55,4 +56,4 @@
         </VerticalStackLayout>
     </ScrollView>
 
-</ContentPage>
+</local:BasePage>
