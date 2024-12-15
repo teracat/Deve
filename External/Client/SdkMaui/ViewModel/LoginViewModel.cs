@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Deve.External.ClientApp.Maui.Resources.Strings;
 
 namespace Deve.External.ClientApp.Maui
 {
@@ -7,6 +8,7 @@ namespace Deve.External.ClientApp.Maui
         #region Fields
         private string _username = string.Empty;
         private string _password = string.Empty;
+        private string _errorText = string.Empty;
 
         private ICommand? _loginCommand;
         #endregion
@@ -23,6 +25,18 @@ namespace Deve.External.ClientApp.Maui
             get => _password;
             set => SetProperty(ref _password, value);
         }
+
+        public string ErrorText
+        {
+            get => _errorText;
+            set
+            {
+                if (SetProperty(ref _errorText, value))
+                    OnPropertyChanged(nameof(HasError));
+            }
+        }
+
+        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
         #endregion
 
         #region Constructor
@@ -33,11 +47,13 @@ namespace Deve.External.ClientApp.Maui
         #endregion
 
         #region Methods
-        private async Task DoLogin()
+        internal async Task DoLogin()
         {
+            ErrorText = string.Empty;
+
             if (Utils.SomeIsNullOrWhiteSpace(_username, _password))
             {
-                //TODO: show error
+                ErrorText = AppResources.MissingUsernamePassword;
                 return;
             }
 
@@ -45,7 +61,12 @@ namespace Deve.External.ClientApp.Maui
             try
             {
                 var resLogin = await Api.Authenticate.Login(new UserCredentials(_username, _password));
-                //TODO: check Login response
+                if (!resLogin.Success)
+                {
+                    ErrorText = Utils.ErrorsToString(resLogin.Errors);
+                    return;
+                }
+                //TODO: go to main page
             }
             finally
             {
@@ -55,7 +76,7 @@ namespace Deve.External.ClientApp.Maui
         #endregion
 
         #region Commands
-        public ICommand Login => _loginCommand ??= new Command(() => _ = DoLogin());
+        public ICommand Login => _loginCommand ??= new Command(() => _ = DoLogin(), () => IsIdle);
         #endregion
     }
 }

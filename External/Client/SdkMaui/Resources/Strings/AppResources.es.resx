@@ -123,6 +123,9 @@
   <data name="Login" xml:space="preserve">
     <value>Entrar</value>
   </data>
+  <data name="MissingUsernamePassword" xml:space="preserve">
+    <value>El usuario y contraseña son obligatorios</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Contraseña</value>
   </data>

@@ -434,4 +434,8 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray100}}" />
     </Style>
 
+    <Style TargetType="Label" x:Key="ErrorLabel">
+        <Setter Property="TextColor" Value="{StaticResource ErrorText}" />
+    </Style>
+
 </ResourceDictionary>

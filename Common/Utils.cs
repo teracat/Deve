@@ -143,5 +143,10 @@ namespace Deve
         {
             return (T?)Activator.CreateInstance(typeof(T));
         }
+
+        public static string ErrorsToString(IList<ResultError> errors, char separator = ',')
+        {
+            return string.Join(separator, errors.Select(x => x.Description));
+        }
     }
 }

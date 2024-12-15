@@ -13,6 +13,7 @@
     <Color x:Key="Secondary">#c6e6b9</Color>
     <Color x:Key="SecondaryDarkText">#545454</Color>
     <Color x:Key="Tertiary">#f2c6ff</Color>
+    <Color x:Key="ErrorText">#ff0000</Color>
 
     <Color x:Key="DefaultPageBgColor">#ffffff</Color>
 
