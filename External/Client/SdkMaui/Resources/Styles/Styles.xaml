@@ -400,7 +400,7 @@
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource DefaultPageBgColor}, Dark={StaticResource DefaultPageBgColorDark}}" />
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
@@ -436,6 +436,7 @@
 
     <Style TargetType="Label" x:Key="ErrorLabel">
         <Setter Property="TextColor" Value="{StaticResource ErrorText}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
 </ResourceDictionary>

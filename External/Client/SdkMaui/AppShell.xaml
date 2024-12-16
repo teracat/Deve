@@ -5,12 +5,30 @@
     xmlns:local="clr-namespace:Deve.External.ClientApp.Maui"
     xmlns:strings="clr-namespace:Deve.External.ClientApp.Maui.Resources.Strings"
     x:Class="Deve.External.ClientApp.Maui.AppShell"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutHeaderBehavior="Fixed"
     Title="Maui">
 
-    <ShellContent
-        Title=""
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="Login" />
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid>
+                <Image Source="logo.png" HeightRequest="90" Aspect="AspectFit" HorizontalOptions="Center"
+                       SemanticProperties.Description="app logo" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
 
+    <ShellContent Route="login" Title="" ContentTemplate="{DataTemplate local:LoginPage}" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+
+    <ShellContent Route="clients" Title="{x:Static strings:AppResources.Clients}" ContentTemplate="{DataTemplate local:ClientsPage}" />
+
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <StackLayout Padding="10">
+                <Label Text=".NET DEVEloper Template" FontAttributes="Bold" HorizontalOptions="Center" />
+                <Label Text="{Binding Source={x:Static local:Globals.AppVersion}}" HorizontalOptions="Center" />
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutFooterTemplate>
+    
 </Shell>

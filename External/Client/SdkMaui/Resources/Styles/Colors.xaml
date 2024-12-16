@@ -16,6 +16,7 @@
     <Color x:Key="ErrorText">#ff0000</Color>
 
     <Color x:Key="DefaultPageBgColor">#ffffff</Color>
+    <Color x:Key="DefaultPageBgColorDark">#1f1f1f</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

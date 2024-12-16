@@ -33,7 +33,7 @@ namespace Deve.DataSource
             new Client() { Id = 1, Name = "Jordi Badia", TradeName = "Teracat", Balance = 50, Status = ClientStatus.Active, TaxName = "Jordi Badia Santaulària", Location = new Location()
             {
                 CityId = 1,
-                City = "Santedor",
+                City = "Santpedor",
                 CountryId = 1,
                 Country = "España",
                 StateId = 1,

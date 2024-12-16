@@ -8,7 +8,6 @@ namespace Deve.External.ClientApp.Maui
         #region Fields
         private string _username = string.Empty;
         private string _password = string.Empty;
-        private string _errorText = string.Empty;
 
         private ICommand? _loginCommand;
         #endregion
@@ -25,18 +24,6 @@ namespace Deve.External.ClientApp.Maui
             get => _password;
             set => SetProperty(ref _password, value);
         }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                    OnPropertyChanged(nameof(HasError));
-            }
-        }
-
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
         #endregion
 
         #region Constructor
@@ -60,13 +47,13 @@ namespace Deve.External.ClientApp.Maui
             IsBusy = true;
             try
             {
-                var resLogin = await Api.Authenticate.Login(new UserCredentials(_username, _password));
+                var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(_username, _password));
                 if (!resLogin.Success)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
                     return;
                 }
-                //TODO: go to main page
+                await Shell.Current.GoToAsync("//clients");
             }
             finally
             {

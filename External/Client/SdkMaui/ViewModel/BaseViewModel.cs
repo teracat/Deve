@@ -4,13 +4,11 @@
     {
         #region Fields
         private bool _isBusy = false;
-        private IData? _data;
+        private string _errorText = string.Empty;
         #endregion
 
         #region Properties
         protected BasePage Page { get; private set; }
-
-        protected IData Api => _data ??= Sdk.SdkFactory.Get(Deve.Sdk.EnvironmentType.Staging);
 
         public bool IsBusy
         {
@@ -32,6 +30,18 @@
             get => !IsBusy;
             set => IsBusy = !value;
         }
+
+        public string ErrorText
+        {
+            get => _errorText;
+            set
+            {
+                if (SetProperty(ref _errorText, value))
+                    OnPropertyChanged(nameof(HasError));
+            }
+        }
+
+        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
         #endregion
 
         #region Constructor
