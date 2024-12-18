@@ -6,7 +6,17 @@
         {
             InitializeComponent();
 
+            GoToLogin();
+        }
+
+        public void GoToMain()
+        {
             MainPage = new AppShell();
+        }
+
+        public void GoToLogin()
+        {
+            MainPage = new LoginPage();
         }
     }
 }

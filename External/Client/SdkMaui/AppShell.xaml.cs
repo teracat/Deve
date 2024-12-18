@@ -6,5 +6,7 @@
         {
             InitializeComponent();
         }
+
+        private void LogoutClicked(object sender, EventArgs e) => ((App?)Application.Current)?.GoToLogin();
     }
 }

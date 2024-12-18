@@ -48,12 +48,15 @@ namespace Deve.External.ClientApp.Maui
             try
             {
                 var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(_username, _password));
-                if (!resLogin.Success)
+                if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
                     return;
                 }
-                await Shell.Current.GoToAsync("//clients");
+
+                Globals.UserToken = resLogin.Data;
+
+                ((App?)Application.Current)?.GoToMain();
             }
             finally
             {

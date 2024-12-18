@@ -18,15 +18,20 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <ShellContent Route="login" Title="" ContentTemplate="{DataTemplate local:LoginPage}" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
-
     <ShellContent Route="clients" Title="{x:Static strings:AppResources.Clients}" ContentTemplate="{DataTemplate local:ClientsPage}" />
+    <ShellContent Route="cities" Title="{x:Static strings:AppResources.Cities}" ContentTemplate="{DataTemplate local:CitiesPage}" />
+    <ShellContent Route="states" Title="{x:Static strings:AppResources.States}" ContentTemplate="{DataTemplate local:StatesPage}" />
+    <ShellContent Route="countries" Title="{x:Static strings:AppResources.Countries}" ContentTemplate="{DataTemplate local:CountriesPage}" />
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
-            <StackLayout Padding="10">
-                <Label Text=".NET DEVEloper Template" FontAttributes="Bold" HorizontalOptions="Center" />
-                <Label Text="{Binding Source={x:Static local:Globals.AppVersion}}" HorizontalOptions="Center" />
+            <StackLayout Padding="10" Orientation="Vertical">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="{x:Static local:Globals.LoggerUser}" FontSize="12" VerticalOptions="Center" />
+                    <Button Text="{x:Static strings:AppResources.Logout}" Clicked="LogoutClicked" FontSize="12" VerticalOptions="Center" Style="{StaticResource LinkButton}" />
+                </StackLayout>
+                <Label Grid.ColumnSpan="2" Text=".NET DEVEloper Template" FontAttributes="Bold" HorizontalOptions="Center" />
+                <Label Grid.ColumnSpan="2" Text="{x:Static local:Globals.AppVersion}" HorizontalOptions="Center" />
             </StackLayout>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>

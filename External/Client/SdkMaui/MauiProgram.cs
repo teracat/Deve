@@ -44,10 +44,10 @@ namespace Deve.External.ClientApp.Maui
                         });
                     });
 #endif
-                }); 
+                });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            Log.Providers.AddDebug();
 #endif
 
             return builder.Build();

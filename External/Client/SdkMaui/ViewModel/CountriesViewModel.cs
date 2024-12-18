@@ -1,9 +1,9 @@
 ﻿namespace Deve.External.ClientApp.Maui
 {
-    public class ClientsViewModel : ListDataViewModel
+    public class CountriesViewModel : ListDataViewModel
     {
         #region Constructor
-        public ClientsViewModel(ClientsPage page) 
+        public CountriesViewModel(CountriesPage page) 
             : base(page)
         {
         }
@@ -12,8 +12,8 @@
         #region Methods
         protected override async Task LoadListData()
         {
-            CriteriaClientBasic? criteria = null;
-            var res = await Globals.Data.Clients.Get(criteria);
+            CriteriaCountry? criteria = null;
+            var res = await Globals.Data.Countries.Get(criteria);
             if (!res.Success)
             {
                 ErrorText = Utils.ErrorsToString(res.Errors);
@@ -22,8 +22,8 @@
 
             ListData = res.Data.Select(x => new ListData()
             {
-                Main = x.DisplayName,
-                Detail = x.City + ", " + x.State + " (" + x.Country + ")",
+                Main = x.Name,
+                Detail = x.IsoCode,
             }).ToList();
         }
         #endregion

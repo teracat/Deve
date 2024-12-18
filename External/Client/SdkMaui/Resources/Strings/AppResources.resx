@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cities" xml:space="preserve">
+    <value>Cities</value>
+  </data>
   <data name="Clients" xml:space="preserve">
     <value>Clients</value>
+  </data>
+  <data name="Countries" xml:space="preserve">
+    <value>Countries</value>
   </data>
   <data name="Identification" xml:space="preserve">
     <value>Identification</value>
@@ -126,11 +132,17 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="MissingUsernamePassword" xml:space="preserve">
     <value>Username and password are required</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="States" xml:space="preserve">
+    <value>States</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>

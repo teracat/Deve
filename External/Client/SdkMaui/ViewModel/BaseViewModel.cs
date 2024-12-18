@@ -1,4 +1,6 @@
-﻿namespace Deve.External.ClientApp.Maui
+﻿using System.Windows.Input;
+
+namespace Deve.External.ClientApp.Maui
 {
     public abstract class BaseViewModel : UIBase
     {
@@ -52,17 +54,11 @@
         #endregion
 
         #region Virtual Methods
-        public virtual void OnViewAppearing()
-        {
-        }
+        public virtual void OnViewAppearing() {}
 
-        public virtual void OnViewDisappearing()
-        {
-        }
+        public virtual void OnViewDisappearing() {}
 
-        protected virtual void OnIsBusyChanged()
-        {
-        }
+        protected virtual void OnIsBusyChanged() {}
 
         public virtual bool OnViewBackButtonPressed()
         {

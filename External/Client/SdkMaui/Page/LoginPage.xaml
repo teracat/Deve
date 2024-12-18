@@ -6,12 +6,12 @@
                 x:Class="Deve.External.ClientApp.Maui.LoginPage">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="5">
-            <Image Source="logo.png" HeightRequest="90" Aspect="AspectFit" HorizontalOptions="Center"
+        <VerticalStackLayout Spacing="5" VerticalOptions="Center">
+            <Image Source="logo.png" HeightRequest="100" Aspect="AspectFit" HorizontalOptions="Center"
                    SemanticProperties.Description="app logo" />
 
-            <Frame WidthRequest="350" HeightRequest="400" HorizontalOptions="Center" Style="{StaticResource GroupFrame}">
-                <VerticalStackLayout Padding="15,0" Spacing="5">
+            <Frame WidthRequest="350" HorizontalOptions="Center" Style="{StaticResource GroupFrame}">
+                <VerticalStackLayout Padding="15" Spacing="5">
 
                     <Label Text="{x:Static strings:AppResources.Identification}" Style="{StaticResource Headline}"
                            SemanticProperties.HeadingLevel="Level1" />

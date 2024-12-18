@@ -61,11 +61,29 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cities.
+        /// </summary>
+        internal static string Cities {
+            get {
+                return ResourceManager.GetString("Cities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clients.
         /// </summary>
         internal static string Clients {
             get {
                 return ResourceManager.GetString("Clients", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Countries.
+        /// </summary>
+        internal static string Countries {
+            get {
+                return ResourceManager.GetString("Countries", resourceCulture);
             }
         }
         
@@ -88,6 +106,15 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        internal static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username and password are required.
         /// </summary>
         internal static string MissingUsernamePassword {
@@ -102,6 +129,15 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to States.
+        /// </summary>
+        internal static string States {
+            get {
+                return ResourceManager.GetString("States", resourceCulture);
             }
         }
         
