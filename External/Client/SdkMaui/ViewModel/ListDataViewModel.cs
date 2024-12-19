@@ -12,6 +12,17 @@
             get => _listData;
             set => SetProperty(ref _listData, value);
         }
+
+        public ListData? SelectedData
+        {
+            get => null;
+            set
+            {
+                if (value is not null)
+                    DoSelected(value);
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Constructor
@@ -43,8 +54,18 @@
                 IsBusy = false;
             }
         }
+        #endregion
 
+        #region Abstract/Virtual Methods
         protected abstract Task LoadListData();
+        protected virtual void DoSelected(ListData data)
+        {
+            var navigationParameter = new ShellNavigationQueryParameters
+            {
+                { "Id", data.Id }
+            };
+            Shell.Current.GoToAsync("details", navigationParameter);
+        }
         #endregion
     }
 }

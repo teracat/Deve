@@ -33,6 +33,17 @@ namespace Deve.External.ClientApp.Maui
         }
         #endregion
 
+        #region Overrides
+#if DEBUG
+        public override void OnViewAppearing()
+        {
+            base.OnViewAppearing();
+            Username = "teracat";
+            Password = "teracat";
+        }
+#endif
+#endregion
+
         #region Methods
         internal async Task DoLogin()
         {

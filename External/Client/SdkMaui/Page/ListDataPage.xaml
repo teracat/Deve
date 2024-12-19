@@ -10,7 +10,7 @@
             <ActivityIndicator HorizontalOptions="Center" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
             <Label Text="{Binding ErrorText}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorLabel}" />
             
-            <ListView ItemsSource="{Binding ListData}">
+            <ListView ItemsSource="{Binding ListData}" SelectedItem="{Binding SelectedData, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

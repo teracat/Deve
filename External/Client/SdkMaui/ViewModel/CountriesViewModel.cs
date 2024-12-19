@@ -9,7 +9,7 @@
         }
         #endregion
 
-        #region Methods
+        #region Overrides
         protected override async Task LoadListData()
         {
             CriteriaCountry? criteria = null;
@@ -22,6 +22,7 @@
 
             ListData = res.Data.Select(x => new ListData()
             {
+                Id = x.Id,
                 Main = x.Name,
                 Detail = x.IsoCode,
             }).ToList();

@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Extra\Log.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Sdk", "Common.Sdk\Deve.Common.Sdk.csproj", "{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.External.ClientApp.Sdk.Maui", "External\Client\SdkMaui\Deve.External.ClientApp.Sdk.Maui.csproj", "{A402B48F-0A76-4925-9102-19EC999F6E25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,12 @@ Global
 		{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A402B48F-0A76-4925-9102-19EC999F6E25}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +117,7 @@ Global
 		{7DC4296C-8470-4309-B557-59E2405221A7} = {36A59BE0-B472-499A-98A8-99184F6A1627}
 		{689C1119-AF45-4D8F-91A5-2803D73F6159} = {66B806F6-6293-447A-BE10-9931F243F758}
 		{30FC12D4-FCD3-472E-A85E-6AB1D6B01045} = {66B806F6-6293-447A-BE10-9931F243F758}
+		{A402B48F-0A76-4925-9102-19EC999F6E25} = {D1ADA6A3-C95F-422E-8BA6-7284ED1ACE10}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8157CD2-E584-4372-9A7B-B73C837733A5}

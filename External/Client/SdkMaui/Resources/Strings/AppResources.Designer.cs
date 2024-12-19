@@ -61,11 +61,29 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        internal static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cities.
         /// </summary>
         internal static string Cities {
             get {
                 return ResourceManager.GetString("Cities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client.
+        /// </summary>
+        internal static string Client {
+            get {
+                return ResourceManager.GetString("Client", resourceCulture);
             }
         }
         
@@ -124,6 +142,15 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string Password {
@@ -138,6 +165,33 @@ namespace Deve.External.ClientApp.Maui.Resources.Strings {
         internal static string States {
             get {
                 return ResourceManager.GetString("States", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax Id.
+        /// </summary>
+        internal static string TaxId {
+            get {
+                return ResourceManager.GetString("TaxId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax Name.
+        /// </summary>
+        internal static string TaxName {
+            get {
+                return ResourceManager.GetString("TaxName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trade Name.
+        /// </summary>
+        internal static string TradeName {
+            get {
+                return ResourceManager.GetString("TradeName", resourceCulture);
             }
         }
         
