@@ -439,7 +439,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="FieldNameLabel">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray400}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray400}}" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Margin" Value="0,0,0,15" />
     </Style>

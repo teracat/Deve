@@ -15,7 +15,7 @@ namespace Deve.External.ClientApp.Maui
         #endregion
 
         #region Helpers
-        public static string AppVersion => DeviceInfo.Current.Version.ToString(3);
+        public static string AppVersion => "v" + AppInfo.Version.ToString(3);
         #endregion
     }
 }

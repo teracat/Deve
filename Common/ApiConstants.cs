@@ -5,7 +5,7 @@
         #region Url External
 #if DEBUG
         public const string UrlProductionExternal   = "http://localhost:5057";
-        public const string UrlStagingExternal      = "http://localhost:5057";
+        public const string UrlStagingExternal      = "https://1e44-178-237-140-181.ngrok-free.app";
 #else
         //TODO: change with real URLs
         public const string UrlProductionExternal   = "http://api.deve.com/v1";

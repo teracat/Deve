@@ -6,17 +6,23 @@
         {
             InitializeComponent();
 
-            GoToLogin();
+            MainPage = new LoginPage();
         }
 
         public void GoToMain()
         {
-            MainPage = new AppShell();
+            Dispatcher.Dispatch(() =>
+            {
+                MainPage = new AppShell();
+            });
         }
 
         public void GoToLogin()
         {
-            MainPage = new LoginPage();
+            Dispatcher.Dispatch(() =>
+            {
+                MainPage = new LoginPage();
+            });
         }
     }
 }

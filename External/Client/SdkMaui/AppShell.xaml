@@ -31,7 +31,7 @@
                     <Button Text="{x:Static strings:AppResources.Logout}" Clicked="LogoutClicked" FontSize="12" VerticalOptions="Center" Style="{StaticResource LinkButton}" />
                 </StackLayout>
                 <Label Grid.ColumnSpan="2" Text=".NET DEVEloper Template" FontAttributes="Bold" HorizontalOptions="Center" />
-                <Label Grid.ColumnSpan="2" Text="{x:Static local:Globals.AppVersion}" HorizontalOptions="Center" />
+                <Label Grid.ColumnSpan="2" Text="{x:Static local:Globals.AppVersion}" HorizontalOptions="Center" FontSize="11" />
             </StackLayout>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>

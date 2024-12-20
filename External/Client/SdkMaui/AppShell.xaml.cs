@@ -6,7 +6,7 @@
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("clients/details", typeof(ClientDetailsPage));
+            Routing.RegisterRoute("//clients/details", typeof(ClientDetailsPage));
         }
 
         private void LogoutClicked(object sender, EventArgs e) => ((App?)Application.Current)?.GoToLogin();

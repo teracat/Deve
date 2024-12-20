@@ -42,6 +42,8 @@
                     <Label Text="{Binding ErrorText}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorLabel}" />
                 </VerticalStackLayout>
             </Frame>
+
+            <Label Text="{x:Static local:Globals.AppVersion}" HorizontalOptions="Center" FontSize="11" />
         </VerticalStackLayout>
     </ScrollView>
 
