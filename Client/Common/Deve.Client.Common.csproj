@@ -4,13 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Deve.ClientApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common.Sdk\Deve.Common.Sdk.csproj" />
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\..\Core\Deve.Core.csproj" />
+    <ProjectReference Include="..\..\External\Common\Deve.External.Common.csproj" />
     <ProjectReference Include="..\..\External\Sdk\Deve.External.Sdk.csproj" />
-    <ProjectReference Include="..\Common\Deve.Internal.Common.csproj" />
+    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
+    <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
   </ItemGroup>
 
 </Project>
