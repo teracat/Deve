@@ -1,0 +1,60 @@
+﻿<local:BaseWindow x:Class="Deve.ClientApp.Wpf.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
+                  xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Control"
+                  xmlns:strings="clr-namespace:Deve.ClientApp.Wpf.Resources.Strings"
+                  xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+                  mc:Ignorable="d"
+                  Width="600" Height="500" MinWidth="600" MinHeight="500"
+                  Title="WPF Sample" 
+                  ResizeMode="CanResizeWithGrip" WindowState="Maximized"
+                  x:Name="root">
+    <Border Padding="20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Clients -->
+            <ctrl:DataListControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Title="{x:Static strings:AppResources.Clients}" DataContext="{Binding CtrlDataClients}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+
+            <!-- Client Stats -->
+            <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource MainBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Content="{x:Static strings:AppResources.ClientStats}" Style="{StaticResource TitleLabel}" />
+                    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Background="White">
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Cities -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="0" Title="{x:Static strings:AppResources.Cities}" DataContext="{Binding CtrlDataCities}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+
+            <!-- States -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}" DataContext="{Binding CtrlDataStates}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+
+            <!-- Countries -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}" DataContext="{Binding CtrlDataCountries}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+            
+        </Grid>
+    </Border>
+</local:BaseWindow>
