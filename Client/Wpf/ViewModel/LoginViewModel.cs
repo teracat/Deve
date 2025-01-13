@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Globalization;
+using System.Windows.Input;
 using Deve.ClientApp.Wpf.Resources.Strings;
 using Deve.ClientApp.Wpf.Window;
 
@@ -9,6 +10,8 @@ namespace Deve.ClientApp.Wpf.ViewModel
         #region Fields
         private LoginWindow _loginWindow;
         private string _username = string.Empty;
+        private List<CultureInfo> _languages = [new CultureInfo("en"), new CultureInfo("es-ES")];
+        private CultureInfo? _selectedLanguage;
 
         private ICommand? _loginCommand;
         #endregion
@@ -19,6 +22,22 @@ namespace Deve.ClientApp.Wpf.ViewModel
             get => _username;
             set => SetProperty(ref _username, value);
         }
+
+        public List<CultureInfo> Languages
+        {
+            get => _languages;
+            set => SetProperty(ref _languages, value);
+        }
+
+        public CultureInfo? SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                if (SetProperty(ref _selectedLanguage, value) && value is not null)
+                    App.ChangeCulture(value);
+            }
+        }
         #endregion
 
         #region Constructor
@@ -26,6 +45,7 @@ namespace Deve.ClientApp.Wpf.ViewModel
             : base(window)
         {
             _loginWindow = window;
+            _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID);
         }
         #endregion
 

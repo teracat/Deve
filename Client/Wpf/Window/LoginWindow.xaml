@@ -10,10 +10,10 @@
                 xmlns:fa="http://schemas.fontawesome.com/icons/svg"
                 mc:Ignorable="d"
                 Title="{x:Static strings:AppResources.Identification}"
-                Width="475" Height="475"
+                Width="475" Height="525"
                 ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Image Source="/Resources/Images/logo.png" Height="100" HorizontalAlignment="Center" />
             <Border Width="350" HorizontalAlignment="Center" Style="{StaticResource MainBorder}">
                 <StackPanel Orientation="Vertical">
@@ -22,6 +22,8 @@
                     <Label Content="Welcome to Deve" Style="{StaticResource SubHeadline}" />
 
                     <Label Content=".NET DEVEloper Template" HorizontalContentAlignment="Center" />
+
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="NativeName" Margin="0,10,0,0" />
 
                     <Label Content="{x:Static strings:AppResources.Username}" Margin="0,10,0,0" />
 
