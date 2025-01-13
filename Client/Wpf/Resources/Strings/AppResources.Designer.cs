@@ -79,6 +79,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average Balance.
+        /// </summary>
+        public static string AvgBalance {
+            get {
+                return ResourceManager.GetString("AvgBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cities.
         /// </summary>
         public static string Cities {
@@ -147,6 +156,24 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         public static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum balance.
+        /// </summary>
+        public static string MaxBalance {
+            get {
+                return ResourceManager.GetString("MaxBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum balance.
+        /// </summary>
+        public static string MinBalance {
+            get {
+                return ResourceManager.GetString("MinBalance", resourceCulture);
             }
         }
         

@@ -1,4 +1,8 @@
-﻿namespace Deve.ClientApp.Wpf
+﻿using Deve.ClientApp.Wpf.Window;
+using System.Runtime.InteropServices;
+using System.Windows;
+
+namespace Deve.ClientApp.Wpf.ViewModel
 {
     public abstract class BaseViewModel : UIBase
     {
@@ -31,17 +35,27 @@
             set => IsBusy = !value;
         }
 
+        public Visibility IsBusyVisibility => IsBusy ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility IsIdleVisibility => IsIdle ? Visibility.Visible : Visibility.Collapsed;
+
         public string ErrorText
         {
             get => _errorText;
             set
             {
                 if (SetProperty(ref _errorText, value))
+                {
                     OnPropertyChanged(nameof(HasError));
+                    OnPropertyChanged(nameof(HasErrorVisibility));
+                }
             }
         }
 
         public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public Visibility HasErrorVisibility => HasError ? Visibility.Visible : Visibility.Collapsed;
+
+        public string AmountStringFormat => "{0}€";
         #endregion
 
         #region Constructor

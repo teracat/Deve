@@ -1,7 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
 using Deve.Internal;
+using Deve.ClientApp.Wpf.Window;
 
-namespace Deve.ClientApp.Wpf
+namespace Deve.ClientApp.Wpf.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
@@ -10,6 +11,8 @@ namespace Deve.ClientApp.Wpf
         private ListControlData _ctrlDataCities;
         private ListControlData _ctrlDataStates;
         private ListControlData _ctrlDataCountries;
+        private bool _isLoadingClientStats = false;
+        private ClientStats? _clientStats;
         #endregion
 
         #region Properties
@@ -32,6 +35,21 @@ namespace Deve.ClientApp.Wpf
         {
             get => _ctrlDataCountries;
             set => SetProperty(ref _ctrlDataCountries, value);
+        }
+        public bool IsLoadingClientStats
+        {
+            get => _isLoadingClientStats;
+            set
+            {
+                if (SetProperty(ref _isLoadingClientStats, value))
+                    OnPropertyChanged(nameof(IsLoadingClientStatsVisibility));
+            }
+        }
+        public Visibility IsLoadingClientStatsVisibility => _isLoadingClientStats ? Visibility.Visible : Visibility.Collapsed;
+        public ClientStats? ClientStats
+        {
+            get => _clientStats;
+            set => SetProperty(ref _clientStats, value);
         }
         #endregion
 
@@ -61,6 +79,7 @@ namespace Deve.ClientApp.Wpf
             await LoadDataCities();
             await LoadDataStates();
             await LoadDataCountries();
+            await LoadClientStats();
         }
 
         private async Task LoadDataClients()
@@ -175,6 +194,26 @@ namespace Deve.ClientApp.Wpf
             finally
             {
                 _ctrlDataCountries.IsBusy = false;
+            }
+        }
+
+        private async Task LoadClientStats()
+        {
+            IsLoadingClientStats = true;
+            try
+            {
+                var res = await Globals.Data.Stats.GetClientStats();
+                if (!res.Success)
+                {
+                    _ctrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
+                    return;
+                }
+
+                ClientStats = res.Data;
+            }
+            finally
+            {
+                IsLoadingClientStats = false;
             }
         }
         #endregion

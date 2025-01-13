@@ -1,8 +1,9 @@
 ﻿using System.Windows;
+using Deve.ClientApp.Wpf.ViewModel;
 
-namespace Deve.ClientApp.Wpf
+namespace Deve.ClientApp.Wpf.Window
 {
-    public class BaseWindow : Window
+    public class BaseWindow : System.Windows.Window
     {
         #region Fields
         private BaseViewModel? _viewModel;
@@ -30,9 +31,21 @@ namespace Deve.ClientApp.Wpf
         }
         #endregion
 
+        #region Methods
+        protected virtual void OnWindowLoaded()
+        {
+            _viewModel?.OnWindowLoaded();
+        }
+
+        protected virtual void OnWindowUnloaded()
+        {
+            _viewModel?.OnWindowUnloaded();
+        }
+        #endregion
+
         #region Events
-        private void OnWindowLoaded(object sender, RoutedEventArgs e) => _viewModel?.OnWindowLoaded();
-        private void OnWindowUnloaded(object sender, RoutedEventArgs e) => _viewModel?.OnWindowUnloaded();
+        private void OnWindowLoaded(object sender, RoutedEventArgs e) => OnWindowLoaded();
+        private void OnWindowUnloaded(object sender, RoutedEventArgs e) => OnWindowUnloaded();
         #endregion
     }
 }

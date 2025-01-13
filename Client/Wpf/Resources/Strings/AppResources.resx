@@ -123,6 +123,9 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="AvgBalance" xml:space="preserve">
+    <value>Average Balance</value>
+  </data>
   <data name="Cities" xml:space="preserve">
     <value>Cities</value>
   </data>
@@ -146,6 +149,12 @@
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
+  </data>
+  <data name="MaxBalance" xml:space="preserve">
+    <value>Maximum balance</value>
+  </data>
+  <data name="MinBalance" xml:space="preserve">
+    <value>Minimum balance</value>
   </data>
   <data name="MissingUsernamePassword" xml:space="preserve">
     <value>Username and password are required</value>

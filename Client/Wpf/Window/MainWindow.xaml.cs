@@ -1,4 +1,6 @@
-﻿namespace Deve.ClientApp.Wpf
+﻿using Deve.ClientApp.Wpf.ViewModel;
+
+namespace Deve.ClientApp.Wpf.Window
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

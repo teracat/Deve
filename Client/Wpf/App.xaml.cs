@@ -10,5 +10,4 @@ namespace Wpf
     public partial class App : Application
     {
     }
-
 }

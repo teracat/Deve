@@ -25,7 +25,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Title, ElementName=root}" Style="{StaticResource TitleLabel}" />
-            <TextBox x:Name="uxSearchTextBox" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding SearchText, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" FontSize="12" Foreground="{StaticResource Gray600Brush}" ToolTip="{x:Static strings:AppResources.Search}" KeyDown="OnSearchTextBoxKeyDown" />
+            <TextBox x:Name="uxSearchTextBox" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding SearchText, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" FontSize="12" Padding="0" ToolTip="{x:Static strings:AppResources.Search}" KeyDown="OnSearchTextBoxKeyDown" />
             <Button x:Name="uxSearchButton" Grid.Column="3" Grid.Row="0" Margin="3" Padding="3" ToolTip="{x:Static strings:AppResources.Search}" Command="{Binding SearchCommand, ElementName=root}" Style="{StaticResource LinkButton}">
                 <fa:ImageAwesome Icon="Solid_MagnifyingGlass" PrimaryColor="{StaticResource PrimaryBrush}"  />
             </Button>
@@ -46,8 +46,8 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontWeight="Bold" Padding="0" />
-                            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" Padding="0" />
+                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontWeight="Bold" />
+                            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" />
                             <Border Grid.Column="0" Grid.Row="2" Background="{StaticResource Gray100Brush}" />
                         </Grid>
                     </DataTemplate>

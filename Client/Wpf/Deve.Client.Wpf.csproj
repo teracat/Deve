@@ -7,7 +7,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <RootNamespace>Deve.ClientApp.Wpf</RootNamespace>
+    <ApplicationIcon>Resources\Images\logo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Images\logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\logo.png">
+      <Resize>True</Resize>
+      <BaseSize>500,500</BaseSize>
+    </Resource>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
