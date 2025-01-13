@@ -13,7 +13,9 @@ namespace Deve.DataSource
                 qry = qry.Where(x => x.Id == criteria.Id.Value);
 
             if (!string.IsNullOrWhiteSpace(criteria.Name))
-                qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase));
+                qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                                     (!string.IsNullOrEmpty(x.TradeName) && x.TradeName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) ||
+                                     (!string.IsNullOrEmpty(x.TaxName) && x.TaxName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) );
 
             if (criteria.CountryId.HasValue)
                 qry = qry.Where(x => x.Location.CountryId == criteria.CountryId.Value);
