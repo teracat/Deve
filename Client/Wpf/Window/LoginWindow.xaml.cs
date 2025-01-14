@@ -1,4 +1,5 @@
 ﻿using Deve.ClientApp.Wpf.ViewModel;
+using System.Globalization;
 
 namespace Deve.ClientApp.Wpf.Window
 {
@@ -11,12 +12,28 @@ namespace Deve.ClientApp.Wpf.Window
         private readonly LoginViewModel _viewModel;
         #endregion
 
-        #region Constructor
+        #region Constructors
         public LoginWindow()
         {
             InitializeComponent();
+            string? username = null;
+#if DEBUG
+            if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
+            {
+                username = "teracat";
+                uxPassword.Password = "teracat";
+            }
+#endif
+            ViewModel = _viewModel = new LoginViewModel(this, username);
+        }
 
-            ViewModel = _viewModel = new LoginViewModel(this);
+        public LoginWindow(string? username, string? password)
+        {
+            InitializeComponent();
+
+            uxPassword.Password = password;
+
+            ViewModel = _viewModel = new LoginViewModel(this, username);
         }
         #endregion
 
@@ -24,11 +41,18 @@ namespace Deve.ClientApp.Wpf.Window
         protected override void OnWindowLoaded()
         {
             base.OnWindowLoaded();
-#if DEBUG
-            uxUsername.Text = "teracat";
-            uxPassword.Password = "teracat";
-#endif
-            uxUsername.Focus();
+
+            if (string.IsNullOrEmpty(uxUsername.Text))
+                uxUsername.Focus();
+            else
+                uxPassword.Focus();
+        }
+        #endregion
+
+        #region Methods
+        internal void ChangeCulture(CultureInfo value, string username)
+        {
+            App.ChangeCulture(value, username, uxPassword.Password);
         }
         #endregion
 

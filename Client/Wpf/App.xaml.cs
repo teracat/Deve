@@ -13,18 +13,22 @@ namespace Deve.ClientApp.Wpf
         {
             base.OnStartup(e);
 
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+            if (Wpf.Properties.Settings.Default.LangCode > 0)
+            {
+                var culture = new CultureInfo(Wpf.Properties.Settings.Default.LangCode);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
         }
 
-        public static void ChangeCulture(CultureInfo newCulture)
+        public static void ChangeCulture(CultureInfo newCulture, string username, string password)
         {
             Thread.CurrentThread.CurrentCulture = newCulture;
             Thread.CurrentThread.CurrentUICulture = newCulture;
 
             var oldWindow = Application.Current.MainWindow;
 
-            Application.Current.MainWindow = new LoginWindow();
+            Application.Current.MainWindow = new LoginWindow(username, password);
             Application.Current.MainWindow.Show();
 
             oldWindow.Close();

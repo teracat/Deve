@@ -9,9 +9,10 @@ namespace Deve.ClientApp.Wpf.ViewModel
     {
         #region Fields
         private LoginWindow _loginWindow;
-        private string _username = string.Empty;
         private List<CultureInfo> _languages = [new CultureInfo("en"), new CultureInfo("es-ES")];
         private CultureInfo? _selectedLanguage;
+        private string _username = string.Empty;
+        private bool _remember = false;
 
         private ICommand? _loginCommand;
         #endregion
@@ -35,28 +36,34 @@ namespace Deve.ClientApp.Wpf.ViewModel
             set
             {
                 if (SetProperty(ref _selectedLanguage, value) && value is not null)
-                    App.ChangeCulture(value);
+                {
+                    Properties.Settings.Default.LangCode = value.LCID;
+                    Properties.Settings.Default.Save();
+
+                    _loginWindow.ChangeCulture(value, _username);
+                }
             }
+        }
+
+        public bool Remember
+        {
+            get => _remember;
+            set => SetProperty(ref _remember, value);
         }
         #endregion
 
         #region Constructor
-        public LoginViewModel(LoginWindow window)
+        public LoginViewModel(LoginWindow window, string? username = null)
             : base(window)
         {
             _loginWindow = window;
-            _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID);
+            _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
+            if (username is not null)
+                _username = username;
+            else
+                _username = Properties.Settings.Default.Username;
+            _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
         }
-        #endregion
-
-        #region Overrides
-#if DEBUG
-        public override void OnWindowLoaded()
-        {
-            base.OnWindowLoaded();
-            Username = "teracat";
-        }
-#endif
         #endregion
 
         #region Methods
@@ -82,6 +89,10 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
                 Globals.UserToken = resLogin.Data;
 
+                Properties.Settings.Default.Username = _remember ? _username : string.Empty;
+                Properties.Settings.Default.Save();
+
+                // Go to MainWindow
                 var mainWindow = new MainWindow();
                 mainWindow.Show();
                 Window.Close();
