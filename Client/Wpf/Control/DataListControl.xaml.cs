@@ -14,6 +14,7 @@ namespace Deve.ClientApp.Wpf.Control
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(DataListControl), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(DataListControl), new PropertyMetadata(OnIsBusyChanged));
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<ListData>), typeof(DataListControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataListControl), new PropertyMetadata(null));
         public static readonly DependencyProperty AddCommandProperty = DependencyProperty.Register(nameof(AddCommand), typeof(ICommand), typeof(DataListControl), new PropertyMetadata(null));
         public static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(nameof(SearchCommand), typeof(ICommand), typeof(DataListControl), new PropertyMetadata(null));
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(DataListControl), new PropertyMetadata(string.Empty));
@@ -62,12 +63,19 @@ namespace Deve.ClientApp.Wpf.Control
             get => (string)GetValue(ErrorTextProperty);
             set => SetValue(ErrorTextProperty, value);
         }
+
+        public DataTemplate ItemTemplate
+        {
+            get => (DataTemplate)GetValue(ItemTemplateProperty);
+            set => SetValue(ItemTemplateProperty, value);
+        }
         #endregion
 
         #region Constructor
         public DataListControl()
         {
             InitializeComponent();
+            ItemTemplate = (DataTemplate)Application.Current.TryFindResource("DefaultDataListItemTemplate");
             UpdateIsBusy(false);
         }
         #endregion

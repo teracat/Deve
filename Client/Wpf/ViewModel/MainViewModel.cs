@@ -98,11 +98,12 @@ namespace Deve.ClientApp.Wpf.ViewModel
                     return;
                 }
 
-                _ctrlDataClients.Items = res.Data.Select(x => new ListData()
+                _ctrlDataClients.Items = res.Data.Select(x => new ListDataClient()
                 {
                     Id = x.Id,
                     Main = x.DisplayName,
                     Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
+                    Balance = x.Balance,
                 }).ToList();
             }
             finally

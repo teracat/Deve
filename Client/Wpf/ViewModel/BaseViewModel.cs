@@ -54,8 +54,6 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
         public Visibility HasErrorVisibility => HasError ? Visibility.Visible : Visibility.Collapsed;
-
-        public string AmountStringFormat => "{0}€";
         #endregion
 
         #region Constructor

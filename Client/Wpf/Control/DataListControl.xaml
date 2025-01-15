@@ -33,26 +33,7 @@
                 <fa:ImageAwesome Icon="Solid_Plus" PrimaryColor="{StaticResource BlackBrush}" />
             </Button>
             <fa:ImageAwesome x:Name="uxLoadingImage" Grid.Column="5" Grid.Row="0" Style="{StaticResource LoadingImageAwesome}" />
-            <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding Items, ElementName=root}" Style="{StaticResource MainListView}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="1" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontWeight="Bold" />
-                            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" />
-                            <Border Grid.Column="0" Grid.Row="2" Background="{StaticResource Gray100Brush}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding Items, ElementName=root}" ItemTemplate="{Binding ItemTemplate, ElementName=root}" Style="{StaticResource MainListView}" />
             <Label x:Name="uxErrorTextLabel" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5" Content="{Binding ErrorText, ElementName=root}" Visibility="Collapsed" Foreground="{StaticResource ErrorTextBrush}" />
         </Grid>
     </Border>

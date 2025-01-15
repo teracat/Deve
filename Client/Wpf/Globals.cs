@@ -1,11 +1,15 @@
-﻿using Deve.Core;
+﻿using System.Reflection;
+using Deve.Core;
 using Deve.Internal;
-using System.Reflection;
 
 namespace Deve.ClientApp.Wpf
 {
     public static class Globals
     {
+        #region Constants
+        public const string AmountStringFormat = "{0:###,###,##0.##}€";
+        #endregion
+
         #region IData
         private static IData? _data;
         public static IData Data => _data ??= CoreFactory.Get();

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
                     xmlns:fa="http://schemas.fontawesome.com/icons/svg">
     
     <!-- Default Styles -->
@@ -156,14 +157,71 @@
     </Style>
 
     <Style TargetType="Label" x:Key="ClientStatsTitleLabel">
-        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="Padding" Value="5" />
     </Style>
     
     <Style TargetType="Label" x:Key="ClientStatsValueLabel">
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Padding" Value="5" />
     </Style>
     
+    <!-- Item Templates -->
+    <DataTemplate x:Key="DefaultDataListItemTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontSize="20" Padding="5,5,5,0" />
+            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" FontSize="16" Padding="5,0,5,5" />
+            <Border Grid.Column="0" Grid.Row="2" Background="{StaticResource Gray100Brush}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SimpleDataListItemTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontSize="20" Padding="5" />
+            <Border Grid.Column="0" Grid.Row="1" Background="{StaticResource Gray100Brush}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ClientDataListItemTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="125" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontSize="20" Padding="10,10,10,0" />
+            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" FontSize="16" Padding="10,0,10,10" />
+
+            <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Content="{Binding Balance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}"
+                FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+
+            <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource Gray100Brush}" />
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

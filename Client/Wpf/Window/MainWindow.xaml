@@ -9,7 +9,7 @@
                   xmlns:strings="clr-namespace:Deve.ClientApp.Wpf.Resources.Strings"
                   xmlns:fa="http://schemas.fontawesome.com/icons/svg"
                   mc:Ignorable="d"
-                  Width="600" Height="500" MinWidth="600" MinHeight="500"
+                  Width="750" Height="500" MinWidth="750" MinHeight="500"
                   ResizeMode="CanResizeWithGrip" WindowState="Maximized"
                   x:Name="root">
     <Border Padding="20">
@@ -25,7 +25,10 @@
             </Grid.RowDefinitions>
 
             <!-- Clients -->
-            <ctrl:DataListControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Title="{x:Static strings:AppResources.Clients}" DataContext="{Binding CtrlDataClients}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+            <ctrl:DataListControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Title="{x:Static strings:AppResources.Clients}" 
+                                  DataContext="{Binding CtrlDataClients}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" 
+                                  IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" 
+                                  ItemTemplate="{StaticResource ClientDataListItemTemplate}" />
 
             <!-- Client Stats -->
             <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource MainBorder}">
@@ -44,7 +47,7 @@
                     <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Padding="10" Style="{StaticResource MainInternalBorder}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="125" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -54,13 +57,13 @@
                             </Grid.RowDefinitions>
 
                             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static strings:AppResources.MinBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
-                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding ClientStats.MinBalance}" ContentStringFormat="{Binding AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding ClientStats.MinBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static strings:AppResources.AvgBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
-                            <Label Grid.Column="1" Grid.Row="1" Content="{Binding ClientStats.AvgBalance}" ContentStringFormat="{Binding AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+                            <Label Grid.Column="1" Grid.Row="1" Content="{Binding ClientStats.AvgBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
 
                             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static strings:AppResources.MaxBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
-                            <Label Grid.Column="1" Grid.Row="2" Content="{Binding ClientStats.MaxBalance}" ContentStringFormat="{Binding AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+                            <Label Grid.Column="1" Grid.Row="2" Content="{Binding ClientStats.MaxBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
 
                             <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="{Binding IsLoadingClientStatsVisibility}" Style="{StaticResource LoadingImageAwesome}" />
                         </Grid>
@@ -69,13 +72,19 @@
             </Border>
 
             <!-- Cities -->
-            <ctrl:DataListControl Grid.Column="1" Grid.Row="0" Title="{x:Static strings:AppResources.Cities}" DataContext="{Binding CtrlDataCities}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="0" Title="{x:Static strings:AppResources.Cities}" DataContext="{Binding CtrlDataCities}" 
+                                  Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" 
+                                  ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
 
             <!-- States -->
-            <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}" DataContext="{Binding CtrlDataStates}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}" DataContext="{Binding CtrlDataStates}" 
+                                  Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" 
+                                  ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
 
             <!-- Countries -->
-            <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}" DataContext="{Binding CtrlDataCountries}" Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" />
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}" DataContext="{Binding CtrlDataCountries}" 
+                                  Items="{Binding Items}" SearchText="{Binding SearchText, Mode=TwoWay}" IsBusy="{Binding IsBusy}" 
+                                  ErrorText="{Binding ErrorText}" SearchCommand="{Binding SearchCommand}" ItemTemplate="{StaticResource SimpleDataListItemTemplate}" />
             
         </Grid>
     </Border>
