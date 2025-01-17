@@ -11,14 +11,14 @@ namespace Deve.ClientApp.Wpf.Control
     public partial class DataListControl : UserControl
     {
         #region Static Properties
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(DataListControl), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(DataListControl), new PropertyMetadata(OnIsBusyChanged));
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<ListData>), typeof(DataListControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataListControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty AddCommandProperty = DependencyProperty.Register(nameof(AddCommand), typeof(ICommand), typeof(DataListControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(nameof(SearchCommand), typeof(ICommand), typeof(DataListControl), new PropertyMetadata(null));
-        public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(DataListControl), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty ErrorTextProperty = DependencyProperty.Register(nameof(ErrorText), typeof(string), typeof(DataListControl), new PropertyMetadata(OnErrorTextChanged));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(string.Empty));
+        public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(OnIsBusyChanged));
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<ListData>), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty AddCommandProperty = DependencyProperty.Register(nameof(AddCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(nameof(SearchCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ErrorTextProperty = DependencyProperty.Register(nameof(ErrorText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(OnErrorTextChanged));
         #endregion
 
         #region Properties
