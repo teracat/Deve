@@ -99,17 +99,6 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="ctrl:IconButton">
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{StaticResource Gray600Brush}" />
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <!-- Styles -->
     <Style TargetType="Border" x:Key="MainBorder">
         <Setter Property="CornerRadius" Value="10"/>

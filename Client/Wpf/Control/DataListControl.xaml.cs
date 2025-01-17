@@ -16,6 +16,7 @@ namespace Deve.ClientApp.Wpf.Control
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<ListData>), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty AddCommandProperty = DependencyProperty.Register(nameof(AddCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty IsAddEnabledProperty = DependencyProperty.Register(nameof(IsAddEnabled), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(true));        
         public static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(nameof(SearchCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(string.Empty));
         public static readonly DependencyProperty ErrorTextProperty = DependencyProperty.Register(nameof(ErrorText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(OnErrorTextChanged));
@@ -44,6 +45,12 @@ namespace Deve.ClientApp.Wpf.Control
         {
             get => (ICommand)GetValue(AddCommandProperty);
             set => SetValue(AddCommandProperty, value);
+        }
+
+        public bool IsAddEnabled
+        {
+            get => (bool)GetValue(IsAddEnabledProperty);
+            set => SetValue(IsAddEnabledProperty, value);
         }
 
         public ICommand SearchCommand

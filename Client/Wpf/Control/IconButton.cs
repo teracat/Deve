@@ -5,13 +5,17 @@ using FontAwesome6;
 
 namespace Deve.ClientApp.Wpf.Control
 {
-    /// <summary>
-    /// Interaction logic for IconButton.xaml
-    /// </summary>
-    public partial class IconButton : Button
+    public class IconButton : Button
     {
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(EFontAwesomeIcon), typeof(DataListControl), new FrameworkPropertyMetadata(EFontAwesomeIcon.Solid_Question));
         public static readonly DependencyProperty IconColorProperty = DependencyProperty.Register(nameof(IconColor), typeof(Brush), typeof(DataListControl), new FrameworkPropertyMetadata(Brushes.Black));
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(DataListControl), new FrameworkPropertyMetadata(new CornerRadius(0)));
+        
+
+        static IconButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(IconButton), new FrameworkPropertyMetadata(typeof(IconButton)));
+        }
 
         public EFontAwesomeIcon Icon
         {
@@ -25,9 +29,10 @@ namespace Deve.ClientApp.Wpf.Control
             set => SetValue(IconColorProperty, value);
         }
 
-        public IconButton()
+        public CornerRadius CornerRadius
         {
-            InitializeComponent();
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
     }
 }
