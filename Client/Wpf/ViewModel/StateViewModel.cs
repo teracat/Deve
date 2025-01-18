@@ -50,12 +50,18 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         internal async override Task DoSave()
         {
+            if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
+            {
+                Globals.ShowError(AppResources.MissingField);
+                return;
+            }
+
             IsBusy = true;
             try
             {
                 _state.Name = _name.Trim();
-                _state.CountryId = _selectedCountry?.Id ?? 0;
-                _state.Country = _selectedCountry?.Name ?? string.Empty;
+                _state.CountryId = _selectedCountry.Id;
+                _state.Country = _selectedCountry.Name;
 
                 Result res;
                 if (_state.Id == 0)
@@ -68,8 +74,6 @@ namespace Deve.ClientApp.Wpf.ViewModel
                     Globals.ShowError(res.Errors);
                     return;
                 }
-
-                await Task.Delay(5000);
             }
             finally
             {

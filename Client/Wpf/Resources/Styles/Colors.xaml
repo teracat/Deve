@@ -14,6 +14,8 @@
     <Color x:Key="Link">#43b6cb</Color>
     <Color x:Key="LinkDark">#f2c6ff</Color>
     <Color x:Key="DefaultTextColor">#000000</Color>
+    <Color x:Key="ControlsBorderColor">#919191</Color>
+    <Color x:Key="ControlsBorderFocusedColor">Black</Color>
 
     <Color x:Key="DefaultPageBgColor">#ffffff</Color>
     <Color x:Key="DefaultPageBgColorDark">#1f1f1f</Color>
@@ -47,7 +49,9 @@
     <SolidColorBrush x:Key="LinkBrush" Color="{StaticResource Link}"/>
     <SolidColorBrush x:Key="ErrorTextBrush" Color="{StaticResource ErrorText}"/>
     <SolidColorBrush x:Key="MidnightBlueBrush" Color="{StaticResource MidnightBlue}"/>
-    <SolidColorBrush x:Key="DefaultTextColorBrush" Color="{StaticResource DefaultTextColor}"/>
+    <SolidColorBrush x:Key="DefaultTextBrush" Color="{StaticResource DefaultTextColor}"/>
+    <SolidColorBrush x:Key="ControlsBorderBrush" Color="{StaticResource ControlsBorderColor}"/>
+    <SolidColorBrush x:Key="ControlsBorderFocusedBrush" Color="{StaticResource ControlsBorderFocusedColor}"/>
 
     <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
     <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
