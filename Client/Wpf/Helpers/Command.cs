@@ -5,9 +5,11 @@ namespace Deve.ClientApp.Wpf
     public class Command : ICommand
     {
         public delegate void ICommandOnExecute();
+        public delegate void ICommandWithParamOnExecute(object? param);
         public delegate bool ICommandOnCanExecute();
 
         private ICommandOnExecute? _execute;
+        private ICommandWithParamOnExecute? _executeWithParam;
         private ICommandOnCanExecute? _canExecute;
 
         public Command(ICommandOnExecute onExecuteMethod, ICommandOnCanExecute? onCanExecuteMethod = null)
@@ -16,8 +18,13 @@ namespace Deve.ClientApp.Wpf
             _canExecute = onCanExecuteMethod;
         }
 
-        #region ICommand Members
+        public Command(ICommandWithParamOnExecute onExecuteWithParamMethod, ICommandOnCanExecute? onCanExecuteMethod = null)
+        {
+            _executeWithParam = onExecuteWithParamMethod;
+            _canExecute = onCanExecuteMethod;
+        }
 
+        #region ICommand Members
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -31,9 +38,11 @@ namespace Deve.ClientApp.Wpf
 
         public void Execute(object? parameter)
         {
-            _execute?.Invoke();
+            if (_execute is not null)
+                _execute.Invoke();
+            else if (_executeWithParam is not null)
+                _executeWithParam.Invoke(parameter);
         }
-
         #endregion
     }
 }

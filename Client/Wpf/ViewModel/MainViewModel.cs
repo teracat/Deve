@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using Deve.Internal;
 using Deve.ClientApp.Wpf.Window;
+using System.Diagnostics.Metrics;
+using Deve.ClientApp.Wpf.Resources.Strings;
+using System.Windows.Controls.Primitives;
 
 namespace Deve.ClientApp.Wpf.ViewModel
 {
@@ -17,6 +20,8 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         private ICommand? _addStateCommand;
         private ICommand? _addCountryCommand;
+        private ICommand? _editCountryCommand;
+        private ICommand? _deleteCountryCommand;
         #endregion
 
         #region Properties
@@ -143,26 +148,6 @@ namespace Deve.ClientApp.Wpf.ViewModel
             });
         }
 
-        private async Task LoadDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
-        {
-            data.IsBusy = true;
-            try
-            {
-                var res = await dataAll.Get(criteria);
-                if (!res.Success)
-                {
-                    data.ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
-
-                data.Items = res.Data.Select(selector).ToList();
-            }
-            finally
-            {
-                data.IsBusy = false;
-            }
-        }
-
         private async Task LoadClientStats()
         {
             IsLoadingClientStats = true;
@@ -194,11 +179,110 @@ namespace Deve.ClientApp.Wpf.ViewModel
             if (wnd.ShowDialog() == true)
                 await LoadDataCountries();
         }
+
+        private async Task DoEditCountry(ListData? listData)
+        {
+            await DoEdit(listData, _ctrlDataCountries, Globals.Data.Countries, (o) =>
+            {
+                var wnd = new CountryWindow(o);
+                if (wnd.ShowDialog() == true)
+                {
+                    _ = LoadDataCountries();
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        private async Task DoDeleteCountry(ListData? listData)
+        {
+            await DoDelete(listData, AppResources.ConfirmDeleteCountry, _ctrlDataCountries, Globals.Data.Countries, LoadDataCountries);
+        }
+        #endregion
+
+        #region Generic Methods
+        private async Task LoadDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
+        {
+            data.IsBusy = true;
+            try
+            {
+                var res = await dataAll.Get(criteria);
+                if (!res.Success)
+                {
+                    data.ErrorText = Utils.ErrorsToString(res.Errors);
+                    return;
+                }
+
+                data.Items = res.Data.Select(selector).ToList();
+            }
+            finally
+            {
+                data.IsBusy = false;
+            }
+        }
+
+        private async Task DoEdit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model?, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
+        {
+            if (listData is not null)
+            {
+                Model? obj = null;
+
+                data.IsBusy = true;
+                try
+                {
+                    var res = await dataAll.Get(listData.Id);
+                    if (!res.Success)
+                    {
+                        Globals.ShowError(res.Errors);
+                        return;
+                    }
+
+                    obj = res.Data;
+                }
+                finally
+                {
+                    data.IsBusy = false;
+                }
+
+                if (obj is not null)
+                {
+                    editFunc(obj);
+                }
+            }
+        }
+
+        private async Task DoDelete<ModelList, Model, Criteria>(ListData? listData, string message, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Task> actionWhenDone) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
+        {
+            if (listData is not null)
+            {
+                if (Globals.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
+                {
+                    data.IsBusy = true;
+                    try
+                    {
+                        var res = await dataAll.Delete(listData.Id);
+                        if (!res.Success)
+                        {
+                            Globals.ShowError(res.Errors);
+                            return;
+                        }
+
+                        await actionWhenDone();
+                    }
+                    finally
+                    {
+                        data.IsBusy = false;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Commands
         public ICommand AddState => _addStateCommand ??= new Command(() => _ = DoAddState(), () => !_ctrlDataStates.IsBusy);
         public ICommand AddCountry => _addCountryCommand ??= new Command(() => _ = DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
+        public ICommand EditCountry => _editCountryCommand ??= new Command((listData) => _ = DoEditCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
+        public ICommand DeleteCountry => _deleteCountryCommand ??= new Command((listData) => _ = DoDeleteCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
         #endregion
     }
 }

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
                     xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Control"
+                    xmlns:strings="clr-namespace:Deve.ClientApp.Wpf.Resources.Strings"
                     xmlns:fa="http://schemas.fontawesome.com/icons/svg">
     
     <!-- Default Styles -->
@@ -202,11 +203,15 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0" Grid.Row="0" Content="{Binding Main}" FontSize="20" Padding="5,5,5,0" />
             <Label Grid.Column="0" Grid.Row="1" Content="{Binding Detail}" FontSize="16" Padding="5,0,5,5" />
-            <Border Grid.Column="0" Grid.Row="2" Background="{StaticResource Gray100Brush}" />
+            <ctrl:IconButton Grid.Column="1" Grid.RowSpan="2" Icon="Solid_Pencil" IconColor="{StaticResource PrimaryBrush}" ToolTip="{x:Static strings:AppResources.Edit}" Command="{Binding EditCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:DataListControl}}}" CommandParameter="{Binding .}" Visibility="{Binding CanEditVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:DataListControl}}}" />
+            <ctrl:IconButton Grid.Column="2" Grid.RowSpan="2" Icon="Solid_Trash" IconColor="{StaticResource SecondaryBrush}" ToolTip="{x:Static strings:AppResources.Delete}" Command="{Binding DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:DataListControl}}}" CommandParameter="{Binding .}" Visibility="{Binding CanDeleteVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:DataListControl}}}"  />
+            <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource Gray100Brush}" />
         </Grid>
     </DataTemplate>
 

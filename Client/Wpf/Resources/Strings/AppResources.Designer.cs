@@ -133,6 +133,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the country {0}?.
+        /// </summary>
+        public static string ConfirmDeleteCountry {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Countries.
         /// </summary>
         public static string Countries {
@@ -147,6 +156,24 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         public static string Country {
             get {
                 return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         

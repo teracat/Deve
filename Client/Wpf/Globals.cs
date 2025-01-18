@@ -14,7 +14,10 @@ namespace Deve.ClientApp.Wpf
 
         #region IData
         private static IData? _data;
-        public static IData Data => _data ??= CoreFactory.Get();
+        public static IData Data => _data ??= CoreFactory.Get(true, null, new DataOptions()
+        {
+            LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
+        });
         #endregion
 
         #region UserToken
@@ -28,6 +31,8 @@ namespace Deve.ClientApp.Wpf
         public static void ShowError(string message) => MessageBox.Show(message, AppResources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
 
         public static void ShowError(IList<ResultError> errors, char separator = ',') => ShowError(Utils.ErrorsToString(errors, separator));
+
+        public static bool ShowQuestion(string message, string caption) => MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         #endregion
     }
 }

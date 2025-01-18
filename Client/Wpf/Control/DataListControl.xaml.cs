@@ -16,7 +16,11 @@ namespace Deve.ClientApp.Wpf.Control
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<ListData>), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty AddCommandProperty = DependencyProperty.Register(nameof(AddCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
-        public static readonly DependencyProperty IsAddEnabledProperty = DependencyProperty.Register(nameof(IsAddEnabled), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(true));        
+        public static readonly DependencyProperty IsAddEnabledProperty = DependencyProperty.Register(nameof(IsAddEnabled), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(true));
+        public static readonly DependencyProperty EditCommandProperty = DependencyProperty.Register(nameof(EditCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty CanEditProperty = DependencyProperty.Register(nameof(CanEdit), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(true));
+        public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(nameof(DeleteCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(nameof(CanDelete), typeof(bool), typeof(DataListControl), new FrameworkPropertyMetadata(true));
         public static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(nameof(SearchCommand), typeof(ICommand), typeof(DataListControl), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(string.Empty));
         public static readonly DependencyProperty ErrorTextProperty = DependencyProperty.Register(nameof(ErrorText), typeof(string), typeof(DataListControl), new FrameworkPropertyMetadata(OnErrorTextChanged));
@@ -53,6 +57,30 @@ namespace Deve.ClientApp.Wpf.Control
             set => SetValue(IsAddEnabledProperty, value);
         }
 
+        public ICommand EditCommand
+        {
+            get => (ICommand)GetValue(EditCommandProperty);
+            set => SetValue(EditCommandProperty, value);
+        }
+
+        public bool CanEdit
+        {
+            get => (bool)GetValue(CanEditProperty);
+            set => SetValue(CanEditProperty, value);
+        }
+
+        public ICommand DeleteCommand
+        {
+            get => (ICommand)GetValue(DeleteCommandProperty);
+            set => SetValue(DeleteCommandProperty, value);
+        }
+
+        public bool CanDelete
+        {
+            get => (bool)GetValue(CanDeleteProperty);
+            set => SetValue(CanDeleteProperty, value);
+        }
+
         public ICommand SearchCommand
         {
             get => (ICommand)GetValue(SearchCommandProperty);
@@ -76,6 +104,10 @@ namespace Deve.ClientApp.Wpf.Control
             get => (DataTemplate)GetValue(ItemTemplateProperty);
             set => SetValue(ItemTemplateProperty, value);
         }
+
+        public Visibility CanEditVisibility => CanEdit ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility CanDeleteVisibility => CanDelete ? Visibility.Visible : Visibility.Collapsed;
         #endregion
 
         #region Constructor

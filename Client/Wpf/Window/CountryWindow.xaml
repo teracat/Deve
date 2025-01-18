@@ -36,10 +36,10 @@
                     <Label Grid.ColumnSpan="2" Grid.Row="0" Content="{x:Static strings:AppResources.Country}" Style="{StaticResource Headline}" />
 
                     <Label Grid.ColumnSpan="2" Grid.Row="1" Content="{x:Static strings:AppResources.Name}" Margin="0,10,0,0" />
-                    <TextBox x:Name="uxName" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" KeyDown="OnNameKeyDown" />
+                    <TextBox x:Name="uxName" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" MaxLength="20" KeyDown="OnNameKeyDown" />
 
                     <Label Grid.ColumnSpan="2" Grid.Row="3" Content="{x:Static strings:AppResources.IsoCode}" Margin="0,10,0,0" />
-                    <TextBox x:Name="uxIsoCode" Grid.ColumnSpan="2" Grid.Row="4" Text="{Binding IsoCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" KeyDown="OnIsoCodeKeyDown" />
+                    <TextBox x:Name="uxIsoCode" Grid.Column="0" Grid.Row="4" Text="{Binding IsoCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" MaxLength="2" CharacterCasing="Upper" KeyDown="OnIsoCodeKeyDown" />
 
                     <Button Grid.Column="0" Grid.Row="6" Content="{x:Static strings:AppResources.Cancel}" Margin="0,10,5,0" Command="{Binding Cancel}" Visibility="{Binding IsIdleVisibility}" Style="{StaticResource SecondaryButton}" />
                     <Button Grid.Column="1" Grid.Row="6" Content="{x:Static strings:AppResources.Save}" Margin="5,10,0,0" Command="{Binding Save}" Visibility="{Binding IsIdleVisibility}" />

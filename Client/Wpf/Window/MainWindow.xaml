@@ -76,18 +76,20 @@
             <!-- Cities -->
             <ctrl:DataListControl Grid.Column="1" Grid.Row="0" Title="{x:Static strings:AppResources.Cities}"
                                   Items="{Binding CtrlDataCities.Items}" SearchText="{Binding CtrlDataCities.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCities.IsBusy}" 
-                                  ErrorText="{Binding CtrlDataCities.ErrorText}" SearchCommand="{Binding CtrlDataCities.SearchCommand}" IsAddEnabled="False" />
+                                  ErrorText="{Binding CtrlDataCities.ErrorText}" SearchCommand="{Binding CtrlDataCities.SearchCommand}"
+                                  IsAddEnabled="False" CanEdit="False" CanDelete="False" />
 
             <!-- States -->
             <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}"
                                   Items="{Binding CtrlDataStates.Items}" SearchText="{Binding CtrlDataStates.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataStates.IsBusy}" 
-                                  ErrorText="{Binding CtrlDataStates.ErrorText}" SearchCommand="{Binding CtrlDataStates.SearchCommand}" AddCommand="{Binding AddState}" />
+                                  ErrorText="{Binding CtrlDataStates.ErrorText}" SearchCommand="{Binding CtrlDataStates.SearchCommand}" 
+                                  AddCommand="{Binding AddState}" />
 
             <!-- Countries -->
             <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}"
                                   Items="{Binding CtrlDataCountries.Items}" SearchText="{Binding CtrlDataCountries.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCountries.IsBusy}" 
                                   ErrorText="{Binding CtrlDataCountries.ErrorText}" SearchCommand="{Binding CtrlDataCountries.SearchCommand}"
-                                  AddCommand="{Binding AddCountry}" />
+                                  AddCommand="{Binding AddCountry}" EditCommand="{Binding EditCountry}" DeleteCommand="{Binding DeleteCountry}" />
             
         </Grid>
     </Border>

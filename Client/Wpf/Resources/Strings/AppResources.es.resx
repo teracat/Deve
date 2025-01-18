@@ -141,11 +141,20 @@
   <data name="ClientStats" xml:space="preserve">
     <value>Estadísticas de Cliente</value>
   </data>
+  <data name="ConfirmDeleteCountry" xml:space="preserve">
+    <value>¿Confirmas que quieres borrar el país {0}?</value>
+  </data>
   <data name="Countries" xml:space="preserve">
     <value>Países</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>País</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
