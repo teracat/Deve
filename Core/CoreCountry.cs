@@ -46,6 +46,9 @@ namespace Deve.Core
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
 
+                if (list.Any(x => x.Id != data.Id && x.IsoCode.Equals(data.IsoCode, StringComparison.InvariantCultureIgnoreCase)))
+                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.IsoCode));
+
                 return Utils.ResultOk();
             });
         }
