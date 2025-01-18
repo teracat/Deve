@@ -126,6 +126,9 @@
   <data name="AvgBalance" xml:space="preserve">
     <value>Saldo medio</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Cities" xml:space="preserve">
     <value>Ciudades</value>
   </data>
@@ -141,8 +144,17 @@
   <data name="Countries" xml:space="preserve">
     <value>Países</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificación</value>
+  </data>
+  <data name="IsoCode" xml:space="preserve">
+    <value>Código ISO</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Entrar</value>
@@ -156,6 +168,9 @@
   <data name="MinBalance" xml:space="preserve">
     <value>Saldo mínimo</value>
   </data>
+  <data name="MissingName" xml:space="preserve">
+    <value>El nombre es obligatorio</value>
+  </data>
   <data name="MissingUsernamePassword" xml:space="preserve">
     <value>El usuario y contraseña son obligatorios</value>
   </data>
@@ -167,6 +182,9 @@
   </data>
   <data name="Remember" xml:space="preserve">
     <value>Recordar</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>

@@ -146,7 +146,7 @@ namespace Deve
 
         public static string ErrorsToString(IList<ResultError> errors, char separator = ',')
         {
-            return string.Join(separator, errors.Select(x => x.Description));
+            return string.Join(separator, errors.Select(x => string.IsNullOrEmpty(x.FieldName) ? x.Description : $"{x.Description} ({x.FieldName})"));
         }
     }
 }

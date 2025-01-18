@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Deve.ClientApp.Wpf.Resources.Strings;
+using System.Windows;
 using Deve.Core;
 using Deve.Internal;
 
@@ -22,6 +24,10 @@ namespace Deve.ClientApp.Wpf
 
         #region Helpers
         public static string AppVersion => "v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? string.Empty;
+
+        public static void ShowError(string message) => MessageBox.Show(message, AppResources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+
+        public static void ShowError(IList<ResultError> errors, char separator = ',') => ShowError(Utils.ErrorsToString(errors, separator));
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Deve.Internal;
 using Deve.ClientApp.Wpf.Window;
 
@@ -13,6 +14,9 @@ namespace Deve.ClientApp.Wpf.ViewModel
         private ListControlData _ctrlDataCountries;
         private bool _isLoadingClientStats = false;
         private ClientStats? _clientStats;
+
+        private ICommand? _addStateCommand;
+        private ICommand? _addCountryCommand;
         #endregion
 
         #region Properties
@@ -84,117 +88,78 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         private async Task LoadDataClients()
         {
-            _ctrlDataClients.IsBusy = true;
-            try
+            var criteria = new CriteriaClient()
             {
-                var criteria = new CriteriaClient()
-                {
-                    Name = _ctrlDataClients.SearchText,
-                };
-                var res = await Globals.Data.Clients.Get(criteria);
-                if (!res.Success)
-                {
-                    _ctrlDataClients.ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
-
-                _ctrlDataClients.Items = res.Data.Select(x => new ListDataClient()
-                {
-                    Id = x.Id,
-                    Main = x.DisplayName,
-                    Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
-                    Balance = x.Balance,
-                }).ToList();
-            }
-            finally
+                Name = _ctrlDataClients.SearchText,
+            };
+            await LoadDataList(_ctrlDataClients, Globals.Data.Clients, criteria, x => new ListDataClient()
             {
-                _ctrlDataClients.IsBusy = false;
-            }
+                Id = x.Id,
+                Main = x.DisplayName,
+                Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
+                Balance = x.Balance,
+            });
         }
 
         private async Task LoadDataCities()
         {
-            _ctrlDataCities.IsBusy = true;
-            try
+            var criteria = new CriteriaCity()
             {
-                var criteria = new CriteriaCity()
-                {
-                    Name = _ctrlDataCities.SearchText,
-                };
-                var res = await Globals.Data.Cities.Get(criteria);
-                if (!res.Success)
-                {
-                    _ctrlDataCities.ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
-
-                _ctrlDataCities.Items = res.Data.Select(x => new ListData()
-                {
-                    Id = x.Id,
-                    Main = x.Name,
-                    Detail = x.State,
-                }).ToList();
-            }
-            finally
+                Name = _ctrlDataCities.SearchText,
+            };
+            await LoadDataList(_ctrlDataCities, Globals.Data.Cities, criteria, x => new ListData()
             {
-                _ctrlDataCities.IsBusy = false;
-            }
+                Id = x.Id,
+                Main = x.Name,
+                Detail = x.State,
+            });
         }
 
         private async Task LoadDataStates()
         {
-            _ctrlDataStates.IsBusy = true;
-            try
+            var criteria = new CriteriaState()
             {
-                var criteria = new CriteriaState()
-                {
-                    Name = _ctrlDataStates.SearchText,
-                };
-                var res = await Globals.Data.States.Get(criteria);
-                if (!res.Success)
-                {
-                    _ctrlDataStates.ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
-
-                _ctrlDataStates.Items = res.Data.Select(x => new ListData()
-                {
-                    Id = x.Id,
-                    Main = x.Name,
-                    Detail = x.Country,
-                }).ToList();
-            }
-            finally
+                Name = _ctrlDataStates.SearchText,
+            };
+            await LoadDataList(_ctrlDataStates, Globals.Data.States, criteria, x => new ListData()
             {
-                _ctrlDataStates.IsBusy = false;
-            }
+                Id = x.Id,
+                Main = x.Name,
+                Detail = x.Country,
+            });
         }
 
         private async Task LoadDataCountries()
         {
-            _ctrlDataCountries.IsBusy = true;
+            var criteria = new CriteriaCountry()
+            {
+                Name = _ctrlDataCountries.SearchText,
+            };
+            await LoadDataList(_ctrlDataCountries, Globals.Data.Countries, criteria, x => new ListData()
+            {
+                Id = x.Id,
+                Main = x.Name,
+                Detail = x.IsoCode,
+            });
+        }
+
+        private async Task LoadDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
+        {
+            data.IsBusy = true;
             try
             {
-                var criteria = new CriteriaCountry()
-                {
-                    Name = _ctrlDataCountries.SearchText,
-                };
-                var res = await Globals.Data.Countries.Get(criteria);
+                var res = await dataAll.Get(criteria);
                 if (!res.Success)
                 {
-                    _ctrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
+                    data.ErrorText = Utils.ErrorsToString(res.Errors);
                     return;
                 }
 
-                _ctrlDataCountries.Items = res.Data.Select(x => new ListData()
-                {
-                    Id = x.Id,
-                    Main = x.Name,
-                }).ToList();
+                data.Items = res.Data.Select(selector).ToList();
             }
             finally
             {
-                _ctrlDataCountries.IsBusy = false;
+                data.IsBusy = false;
             }
         }
 
@@ -217,6 +182,23 @@ namespace Deve.ClientApp.Wpf.ViewModel
                 IsLoadingClientStats = false;
             }
         }
+
+        private async Task DoAddState()
+        {
+
+        }
+
+        private async Task DoAddCountry()
+        {
+            var wnd = new CountryWindow(new Country());
+            if (wnd.ShowDialog() == true)
+                await LoadDataCountries();
+        }
+        #endregion
+
+        #region Commands
+        public ICommand AddState => _addStateCommand ??= new Command(() => _ = DoAddState(), () => !_ctrlDataStates.IsBusy);
+        public ICommand AddCountry => _addCountryCommand ??= new Command(() => _ = DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
         #endregion
     }
 }

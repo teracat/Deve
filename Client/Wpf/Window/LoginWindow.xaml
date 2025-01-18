@@ -8,6 +8,8 @@
                 xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Control"
                 xmlns:strings="clr-namespace:Deve.ClientApp.Wpf.Resources.Strings"
                 xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+                xmlns:vm="clr-namespace:Deve.ClientApp.Wpf.ViewModel"
+                d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
                 mc:Ignorable="d"
                 Title="{x:Static strings:AppResources.Identification}"
                 Width="475" Height="525"

@@ -88,6 +88,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cities.
         /// </summary>
         public static string Cities {
@@ -133,11 +142,38 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
         public static string Identification {
             get {
                 return ResourceManager.GetString("Identification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISO Code.
+        /// </summary>
+        public static string IsoCode {
+            get {
+                return ResourceManager.GetString("IsoCode", resourceCulture);
             }
         }
         
@@ -178,6 +214,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        public static string MissingName {
+            get {
+                return ResourceManager.GetString("MissingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username and password are required.
         /// </summary>
         public static string MissingUsernamePassword {
@@ -210,6 +255,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         public static string Remember {
             get {
                 return ResourceManager.GetString("Remember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

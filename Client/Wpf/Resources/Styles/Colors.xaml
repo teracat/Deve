@@ -5,9 +5,11 @@
     <Color x:Key="PrimaryText">#545454</Color>
     <Color x:Key="PrimaryDark">#43b6cb</Color>
     <Color x:Key="PrimaryDarkText">#ffffff</Color>
-    <Color x:Key="Secondary">#c6e6b9</Color>
+    <Color x:Key="Secondary">#f2c6ff</Color>
+    <Color x:Key="SecondaryText">#545454</Color>
+    <Color x:Key="SecondaryDark">#ffa0ff</Color>
     <Color x:Key="SecondaryDarkText">#545454</Color>
-    <Color x:Key="Tertiary">#f2c6ff</Color>
+    <Color x:Key="Tertiary">#c6e6b9</Color>
     <Color x:Key="ErrorText">#ff0000</Color>
     <Color x:Key="Link">#43b6cb</Color>
     <Color x:Key="LinkDark">#f2c6ff</Color>
@@ -36,6 +38,9 @@
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
     <SolidColorBrush x:Key="PrimaryDarkTextBrush" Color="{StaticResource PrimaryDarkText}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="{StaticResource SecondaryText}"/>
+    <SolidColorBrush x:Key="SecondaryDarkBrush" Color="{StaticResource SecondaryDark}"/>
+    <SolidColorBrush x:Key="SecondaryDarkTextBrush" Color="{StaticResource SecondaryDarkText}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
