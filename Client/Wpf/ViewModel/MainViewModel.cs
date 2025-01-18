@@ -242,7 +242,7 @@ namespace Deve.ClientApp.Wpf.ViewModel
             }
         }
 
-        private async Task DoEdit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model?, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
+        private async Task DoEdit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
         {
             if (listData is not null)
             {
