@@ -1,0 +1,52 @@
+﻿<wnd:BaseWindow x:Class="Deve.ClientApp.Wpf.Window.LoginWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
+                xmlns:wnd="clr-namespace:Deve.ClientApp.Wpf.Window"
+                xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Control"
+                xmlns:strings="clr-namespace:Deve.ClientApp.Wpf.Resources.Strings"
+                xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+                xmlns:vm="clr-namespace:Deve.ClientApp.Wpf.ViewModel"
+                d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
+                mc:Ignorable="d"
+                Title="{x:Static strings:AppResources.Identification}"
+                Width="475" Height="525"
+                ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <Image Source="/Resources/Images/logo.png" Height="100" HorizontalAlignment="Center" />
+            <Border Width="350" HorizontalAlignment="Center" Style="{StaticResource MainBorder}">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{x:Static strings:AppResources.Identification}" Style="{StaticResource Headline}" />
+
+                    <Label Content="Welcome to Deve" Style="{StaticResource SubHeadline}" />
+
+                    <Label Content=".NET DEVEloper Template" HorizontalContentAlignment="Center" />
+
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="NativeName" Margin="0,10,0,0" />
+
+                    <Label Content="{x:Static strings:AppResources.Username}" Margin="0,10,0,0" />
+
+                    <TextBox x:Name="uxUsername" Text="{Binding Username}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" KeyDown="OnUsernameKeyDown" />
+
+                    <Label Content="{x:Static strings:AppResources.Password}" Margin="0,10,0,0" />
+
+                    <PasswordBox x:Name="uxPassword" IsEnabled="{Binding IsIdle}" KeyDown="OnPasswordKeyDown" />
+
+                    <CheckBox IsChecked="{Binding Remember}" Content="{x:Static strings:AppResources.Remember}" Margin="0,10,0,0" />
+
+                    <Button Content="{x:Static strings:AppResources.Login}" HorizontalAlignment="Stretch" Margin="0,10,0,0"
+                            Command="{Binding Login}" Visibility="{Binding IsIdleVisibility}" />
+
+                    <fa:ImageAwesome Height="20" Visibility="{Binding IsBusyVisibility}" Margin="0,10,0,0" Style="{StaticResource LoadingImageAwesome}" />
+
+                    <Label Content="{Binding ErrorText}" Visibility="{Binding HasErrorVisibility}" Style="{StaticResource ErrorLabel}" />
+                </StackPanel>
+            </Border>
+
+            <Label Content="{x:Static local:Globals.AppVersion}" HorizontalAlignment="Center" FontSize="11" />
+        </StackPanel>
+    </ScrollViewer>
+</wnd:BaseWindow>

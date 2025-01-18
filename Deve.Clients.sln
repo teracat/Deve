@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Maui", "Client\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Wpf", "Client\Wpf\Deve.Client.Wpf.csproj", "{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{6210A8BA-369E-4DC1-BB26-AD1FCF319664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6210A8BA-369E-4DC1-BB26-AD1FCF319664}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6210A8BA-369E-4DC1-BB26-AD1FCF319664}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{50664655-0922-4142-AD8A-0738919C4EFA} = {10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}
 		{6A572925-1DFC-41AB-AC8F-BE5BD0CC2BB5} = {10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}
 		{6210A8BA-369E-4DC1-BB26-AD1FCF319664} = {10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}
+		{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E} = {10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8157CD2-E584-4372-9A7B-B73C837733A5}
