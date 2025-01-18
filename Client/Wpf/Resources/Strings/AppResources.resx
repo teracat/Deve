@@ -144,6 +144,9 @@
   <data name="ConfirmDeleteCountry" xml:space="preserve">
     <value>Do you really want to delete the country {0}?</value>
   </data>
+  <data name="ConfirmDeleteState" xml:space="preserve">
+    <value>Do you really want to delete the state {0}?</value>
+  </data>
   <data name="Countries" xml:space="preserve">
     <value>Countries</value>
   </data>
@@ -177,8 +180,8 @@
   <data name="MinBalance" xml:space="preserve">
     <value>Minimum balance</value>
   </data>
-  <data name="MissingName" xml:space="preserve">
-    <value>Name is required</value>
+  <data name="MissingField" xml:space="preserve">
+    <value>Missing some required field</value>
   </data>
   <data name="MissingUsernamePassword" xml:space="preserve">
     <value>Username and password are required</value>
@@ -197,6 +200,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
   </data>
   <data name="States" xml:space="preserve">
     <value>States</value>

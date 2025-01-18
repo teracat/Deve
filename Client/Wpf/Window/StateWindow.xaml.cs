@@ -2,25 +2,25 @@
 
 namespace Deve.ClientApp.Wpf.Window
 {
-    public partial class CountryWindow : BaseEditWindow
+    public partial class StateWindow : BaseEditWindow
     {
         #region Fields
-        private readonly CountryViewModel _viewModel;
+        private readonly BaseEditViewModel _viewModel;
         #endregion
 
         #region Constructors
-        public CountryWindow(Country country)
+        public StateWindow(State state)
         {
             InitializeComponent();
-            ViewModel = _viewModel = new CountryViewModel(this, country);
+            ViewModel = _viewModel = new StateViewModel(this, state);
         }
         #endregion
 
         #region Overrides
         protected override void OnWindowLoaded()
         {
-            base.OnWindowLoaded();
             uxName.Focus();
+            base.OnWindowLoaded();
         }
         #endregion
 
@@ -28,10 +28,10 @@ namespace Deve.ClientApp.Wpf.Window
         private void OnNameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
-                uxIsoCode.Focus();
+                uxCountry.Focus();
         }
 
-        private void OnIsoCodeKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void OnCountryKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
                 _ = _viewModel.DoSave();

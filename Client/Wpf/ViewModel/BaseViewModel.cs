@@ -24,6 +24,8 @@ namespace Deve.ClientApp.Wpf.ViewModel
                     _isBusy = value;
                     OnPropertyChanged(nameof(IsBusy));
                     OnPropertyChanged(nameof(IsIdle));
+                    OnPropertyChanged(nameof(IsBusyVisibility));
+                    OnPropertyChanged(nameof(IsIdleVisibility));
                     OnIsBusyChanged();
                 }
             }

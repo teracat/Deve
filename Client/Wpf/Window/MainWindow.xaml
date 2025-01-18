@@ -83,7 +83,7 @@
             <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}"
                                   Items="{Binding CtrlDataStates.Items}" SearchText="{Binding CtrlDataStates.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataStates.IsBusy}" 
                                   ErrorText="{Binding CtrlDataStates.ErrorText}" SearchCommand="{Binding CtrlDataStates.SearchCommand}" 
-                                  AddCommand="{Binding AddState}" />
+                                  AddCommand="{Binding AddState}" EditCommand="{Binding EditState}" DeleteCommand="{Binding DeleteState}" />
 
             <!-- Countries -->
             <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}"

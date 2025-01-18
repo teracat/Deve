@@ -142,6 +142,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the state {0}?.
+        /// </summary>
+        public static string ConfirmDeleteState {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Countries.
         /// </summary>
         public static string Countries {
@@ -241,11 +250,11 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name is required.
+        ///   Looks up a localized string similar to Missing some required field.
         /// </summary>
-        public static string MissingName {
+        public static string MissingField {
             get {
-                return ResourceManager.GetString("MissingName", resourceCulture);
+                return ResourceManager.GetString("MissingField", resourceCulture);
             }
         }
         
@@ -300,6 +309,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string State {
+            get {
+                return ResourceManager.GetString("State", resourceCulture);
             }
         }
         

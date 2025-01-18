@@ -17,6 +17,8 @@ namespace Deve.ClientApp.Wpf.ViewModel
         private ClientStats? _clientStats;
 
         private ICommand? _addStateCommand;
+        private ICommand? _editStateCommand;
+        private ICommand? _deleteStateCommand;
         private ICommand? _addCountryCommand;
         private ICommand? _editCountryCommand;
         private ICommand? _deleteCountryCommand;
@@ -168,7 +170,28 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         private async Task DoAddState()
         {
+            var wnd = new StateWindow(new State());
+            if (wnd.ShowDialog() == true)
+                await LoadDataStates();
+        }
 
+        private async Task DoEditState(ListData? listData)
+        {
+            await DoEdit(listData, _ctrlDataStates, Globals.Data.States, (o) =>
+            {
+                var wnd = new StateWindow(o);
+                if (wnd.ShowDialog() == true)
+                {
+                    _ = LoadDataStates();
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        private async Task DoDeleteState(ListData? listData)
+        {
+            await DoDelete(listData, AppResources.ConfirmDeleteState, _ctrlDataStates, Globals.Data.States, LoadDataStates);
         }
 
         private async Task DoAddCountry()
@@ -278,6 +301,9 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
         #region Commands
         public ICommand AddState => _addStateCommand ??= new Command(() => _ = DoAddState(), () => !_ctrlDataStates.IsBusy);
+        public ICommand EditState => _editStateCommand ??= new Command((listData) => _ = DoEditState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+        public ICommand DeleteState => _deleteStateCommand ??= new Command((listData) => _ = DoDeleteState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+
         public ICommand AddCountry => _addCountryCommand ??= new Command(() => _ = DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
         public ICommand EditCountry => _editCountryCommand ??= new Command((listData) => _ = DoEditCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
         public ICommand DeleteCountry => _deleteCountryCommand ??= new Command((listData) => _ = DoDeleteCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);

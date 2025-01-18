@@ -193,6 +193,17 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="Label" x:Key="RequiredFieldLabel">
+        <Setter Property="ContentStringFormat" Value="{}{0}*" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,10,0,0" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="OptionalFieldLabel">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,10,0,0" />
+    </Style>
+
     <!-- Item Templates -->
     <DataTemplate x:Key="DefaultDataListItemTemplate">
         <Grid>

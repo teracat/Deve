@@ -3,9 +3,6 @@ using System.Globalization;
 
 namespace Deve.ClientApp.Wpf.Window
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : BaseWindow
     {
         #region Fields

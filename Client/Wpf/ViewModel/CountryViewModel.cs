@@ -4,16 +4,12 @@ using Deve.ClientApp.Wpf.Window;
 
 namespace Deve.ClientApp.Wpf.ViewModel
 {
-    public class CountryViewModel : BaseViewModel
+    public class CountryViewModel : BaseEditViewModel
     {
         #region Fields
-        private CountryWindow _countryWindow;
         private Country _country;
         private string _name;
         private string _isoCode;
-
-        private ICommand? _saveCommand;
-        private ICommand? _cancelCommand;
         #endregion
 
         #region Properties
@@ -33,33 +29,26 @@ namespace Deve.ClientApp.Wpf.ViewModel
         public CountryViewModel(CountryWindow window, Country country)
             : base(window)
         {
-            _countryWindow = window;
             _country = country;
             _name = _country.Name;
             _isoCode = _country.IsoCode;
         }
         #endregion
 
-        #region Methods
-        internal void DoCancel()
-        {
-            Window.DialogResult = false;
-            Window.Close();
-        }
-
-        internal async Task DoSave()
+        #region Overrides
+        internal async override Task DoSave()
         {
             if (Utils.SomeIsNullOrWhiteSpace(_name,_isoCode))
             {
-                Globals.ShowError(AppResources.MissingName);
+                Globals.ShowError(AppResources.MissingField);
                 return;
             }
 
             IsBusy = true;
             try
             {
-                _country.Name = _name;
-                _country.IsoCode = _isoCode;
+                _country.Name = _name.Trim();
+                _country.IsoCode = _isoCode.Trim();
 
                 Result res;
                 if (_country.Id == 0)
@@ -72,20 +61,15 @@ namespace Deve.ClientApp.Wpf.ViewModel
                     Globals.ShowError(res.Errors);
                     return;
                 }
-
-                Window.DialogResult = true;
-                Window.Close();
             }
             finally
             {
                 IsBusy = false;
             }
-        }
-        #endregion
 
-        #region Commands
-        public ICommand Cancel => _cancelCommand ??= new Command(() => DoCancel(), () => IsIdle);
-        public ICommand Save => _saveCommand ??= new Command(() => _ = DoSave(), () => IsIdle);
+            Window.DialogResult = true;
+            Window.Close();
+        }
         #endregion
     }
 }

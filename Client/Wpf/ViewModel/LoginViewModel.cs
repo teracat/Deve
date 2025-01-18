@@ -91,16 +91,16 @@ namespace Deve.ClientApp.Wpf.ViewModel
 
                 Properties.Settings.Default.Username = _remember ? _username : string.Empty;
                 Properties.Settings.Default.Save();
-
-                // Go to MainWindow
-                var mainWindow = new MainWindow();
-                mainWindow.Show();
-                Window.Close();
             }
             finally
             {
                 IsBusy = false;
             }
+
+            // Go to MainWindow
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            Window.Close();
         }
         #endregion
 

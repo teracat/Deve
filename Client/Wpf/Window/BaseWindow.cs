@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using Deve.ClientApp.Wpf.ViewModel;
 
 namespace Deve.ClientApp.Wpf.Window
@@ -28,6 +29,15 @@ namespace Deve.ClientApp.Wpf.Window
         {
             Loaded += OnWindowLoaded;
             Unloaded += OnWindowUnloaded;
+        }
+        #endregion
+
+        #region Overrides
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (_viewModel is not null && _viewModel.IsBusy)
+                e.Cancel = true;
         }
         #endregion
 
