@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Deve.ClientApp.Wpf.Resources.Strings;
 using System.Windows;
 using Deve.Core;
 using Deve.Internal;
+using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf
 {

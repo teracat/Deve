@@ -2,9 +2,7 @@
 using System.Windows.Input;
 using Deve.Internal;
 using Deve.ClientApp.Wpf.Window;
-using System.Diagnostics.Metrics;
 using Deve.ClientApp.Wpf.Resources.Strings;
-using System.Windows.Controls.Primitives;
 
 namespace Deve.ClientApp.Wpf.ViewModel
 {
