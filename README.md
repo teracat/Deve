@@ -7,13 +7,25 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 
 ![Diagram](diagram.png)
 
-## Still working on
-
-- Client samples
-
 ## Installation
 
 Check the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
+
+## Client Samples
+
+Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Client) section.
+
+MAUI Screenshots:
+
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" title="MAUI - Windows: Login Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" width="200" alt="MAUI - AWindows: Login Window"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" title="MAUI - Android: Login Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" width="100" alt="MAUI - AAndroid: Login Window"></a>
+
+
+WPF Screenshots:
+
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-wpf-login.png" title="WPF - Login Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-wpf-login.png" width="150" alt="WPF - Login Window"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-wpf-main.png" title="WPF - Main Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-wpf-main.png" width="200" alt="WPF - Main Window"></a>
+
 
 ## Wiki
 
@@ -74,6 +86,12 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [External Sdk](https://github.com/teracat/Deve/wiki/Sdk#external-sdk)
   - [Internal Sdk](https://github.com/teracat/Deve/wiki/Sdk#internal-sdk)
   - [Use cases](https://github.com/teracat/Deve/wiki/Sdk#use-cases)
+- [Client](https://github.com/teracat/Deve/wiki/Client)
+  - [Common](https://github.com/teracat/Deve/wiki/Client#common)
+  - [Console](https://github.com/teracat/Deve/wiki/Client#console)
+  - [Service](https://github.com/teracat/Deve/wiki/Client#service)
+  - [MAUI](https://github.com/teracat/Deve/wiki/Client#maui)
+  - [WPF](https://github.com/teracat/Deve/wiki/Client#wpf)
 
 ## Contributing
 
