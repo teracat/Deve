@@ -1,6 +1,8 @@
 ![Header](header.png)
 
 [![.NET](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml/badge.svg?branch=main)](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml)
+![NuGet Version](https://img.shields.io/nuget/v/Teracat.Deve)
+
 
 # Deve
 Welcome to the **.NET DEVEloper Template**! This project serves as a starting point for developers who need to create applications with data access requirements. The template is designed to be flexible and adaptable, allowing you to change data access strategies without needing to overhaul the entire project.
