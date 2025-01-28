@@ -34,6 +34,7 @@ namespace Deve.ClientApp.Maui
         #endregion
 
         #region Overrides
+//-:cnd
 #if DEBUG
         public override void OnViewAppearing()
         {
@@ -42,6 +43,7 @@ namespace Deve.ClientApp.Maui
             Password = "teracat";
         }
 #endif
+//+:cnd
         #endregion
 
         #region Methods

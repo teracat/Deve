@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
+﻿using Microsoft.Maui.LifecycleEvents;
+//-:cnd
 #if WINDOWS
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 #endif
+//+:cnd
 
 namespace Deve.ClientApp.Maui
 {
@@ -21,6 +22,7 @@ namespace Deve.ClientApp.Maui
                 })
                 .ConfigureLifecycleEvents(events =>
                 {
+//-:cnd
 #if WINDOWS
                     events.AddWindows(w =>
                     {
@@ -44,12 +46,13 @@ namespace Deve.ClientApp.Maui
                         });
                     });
 #endif
+//+:cnd
                 });
-
+//-:cnd
 #if DEBUG
             Log.Providers.AddDebug();
 #endif
-
+//+:cnd
             return builder.Build();
         }
     }

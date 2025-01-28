@@ -10,9 +10,11 @@ namespace Deve.ClientApp
         {
             //Log.Providers.AddLog4net();
             //Log.Providers.AddNLog();
+//-:cnd
 #if DEBUG
             Log.Providers.AddDebug();
 #endif
+//+:cnd
 
             var builder = Host.CreateApplicationBuilder(args);
             builder.Services.AddWindowsService(options =>

@@ -3,6 +3,7 @@
     public static class ApiConstants
     {
         #region Url External
+//-:cnd
 #if DEBUG
         public const string UrlProductionExternal   = "http://localhost:5057";
         public const string UrlStagingExternal      = "http://localhost:5057";
@@ -11,6 +12,7 @@
         public const string UrlProductionExternal   = "http://api.deve.com/v1";
         public const string UrlStagingExternal      = "http://dev.api.deve.com/v1";
 #endif
+//+:cnd
         #endregion
 
         #region Auth

@@ -1,5 +1,5 @@
-﻿using Deve.ClientApp.Wpf.ViewModel;
-using System.Globalization;
+﻿using System.Globalization;
+using Deve.ClientApp.Wpf.ViewModel;
 
 namespace Deve.ClientApp.Wpf.Window
 {
@@ -14,6 +14,7 @@ namespace Deve.ClientApp.Wpf.Window
         {
             InitializeComponent();
             string? username = null;
+//-:cnd
 #if DEBUG
             if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
@@ -21,6 +22,7 @@ namespace Deve.ClientApp.Wpf.Window
                 uxPassword.Password = "teracat";
             }
 #endif
+//+:cnd
             ViewModel = _viewModel = new LoginViewModel(this, username);
         }
 
