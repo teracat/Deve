@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Create a template package: https://learn.microsoft.com/en-us/dotnet/core/tutorials/cli-templates-create-template-package -->
+    <!-- Publish NuGet packages: https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#web-portal-use-the-upload-package-tab-on-nugetorg -->
+    <!-- To generate the nupkg file, run the following command from .nuget folder (Debug is used to avoid losing the #if DEBUG statements): dotnet pack -v diag -->
+    <PackageId>Teracat.Deve</PackageId>
+    <PackageVersion>1.0.1</PackageVersion>
+    <Title>.NET DEVEloper Template</Title>
+    <Authors>Jordi Badia Santaulària</Authors>
+    <Description>This project serves as a starting point for developers who need to create applications with data access requirements</Description>
+    <PackageTags>templates</PackageTags>
+    <PackageProjectUrl>https://github.com/teracat/Deve</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/teracat/Deve</RepositoryUrl>
+
+    <!-- Keep package type as 'Template' to show the package as a template package on nuget.org and make your template available in dotnet new search.-->
+    <PackageType>Template</PackageType>
+    <TargetFramework>net8.0</TargetFramework>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content;contentFiles</ContentTargetFolders>
+    <NoWarn>$(NoWarn);NU5128;NU5100</NoWarn>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LocalizeTemplates>false</LocalizeTemplates>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TemplateEngine.Tasks" Version="*" PrivateAssets="all" IsImplicitlyDefined="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="..\logo.png" Pack="true" PackagePath="" />
+    <None Include="..\diagram.png" Pack="true" PackagePath="" />
+    <None Include="..\*.sln" Pack="true" PackagePath="" />
+    <None Include="..\.template.config\**\*" Pack="true" PackagePath=".template.config" />
+    <None Include="..\Auth\**\*" Pack="true" PackagePath="Auth" />
+    <None Include="..\Client\**\*" Pack="true" PackagePath="Client" />
+    <None Include="..\Common\**\*" Pack="true" PackagePath="Common" />
+    <None Include="..\Common.Api\**\*" Pack="true" PackagePath="Common.Api" />
+    <None Include="..\Common.Sdk\**\*" Pack="true" PackagePath="Common.Sdk" />
+    <None Include="..\Core\**\*" Pack="true" PackagePath="Core" />
+    <None Include="..\DataSource\**\*" Pack="true" PackagePath="DataSource" />
+    <None Include="..\External\**\*" Pack="true" PackagePath="External" />
+    <None Include="..\Extra\**\*" Pack="true" PackagePath="Extra" />
+    <None Include="..\Internal\**\*" Pack="true" PackagePath="Internal" />
+    <None Include="..\Tests\**\*" Pack="true" PackagePath="Tests" />
+  </ItemGroup>
+
+</Project>
