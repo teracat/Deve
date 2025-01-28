@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-Sdk.Service-ed71242f-0a3f-4969-b141-709b63391286</UserSecretsId>
-    <RootNamespace>Deve.External.ClientApp</RootNamespace>
+    <RootNamespace>Deve.ClientApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
