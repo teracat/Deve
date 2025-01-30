@@ -1,6 +1,7 @@
 ![Header](header.png)
 
 [![.NET](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml/badge.svg?branch=main)](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml)
+[![.NET](https://img.shields.io/nuget/v/Teracat.Deve)](https://www.nuget.org/packages/Teracat.Deve)
 
 # Deve
 Welcome to the **.NET DEVEloper Template**! This project serves as a starting point for developers who need to create applications with data access requirements. The template is designed to be flexible and adaptable, allowing you to change data access strategies without needing to overhaul the entire project.
@@ -9,7 +10,18 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 
 ## Installation
 
-Check the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
+1. Install the template from Nuget:
+```bash
+dotnet new install Teracat.Deve
+```
+
+2. Create a project using the template:
+
+```bash
+dotnet new deve -n YourNewProjectName
+```
+
+For more information or alternative options, refer to the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
 
 ## Client Samples
 
