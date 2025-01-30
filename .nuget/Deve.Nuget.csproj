@@ -5,7 +5,7 @@
     <!-- Publish NuGet packages: https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#web-portal-use-the-upload-package-tab-on-nugetorg -->
     <!-- To generate the nupkg file, run the following command from .nuget folder (Debug is used to avoid losing the #if DEBUG statements): dotnet pack -v diag -->
     <PackageId>Teracat.Deve</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Title>.NET DEVEloper Template</Title>
     <Authors>Jordi Badia Santaulària</Authors>
     <Description>This project serves as a starting point for developers who need to create applications with data access requirements</Description>
@@ -35,10 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**" />
-    <Compile Remove="**\*" />
+    <Content Include="content\**\*" Exclude="**\bin\**;**\obj\**" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="" />
     <None Include="..\logo.png" Pack="true" PackagePath="" />
@@ -56,6 +55,7 @@
     <None Include="..\Extra\**\*" Pack="true" PackagePath="Extra" />
     <None Include="..\Internal\**\*" Pack="true" PackagePath="Internal" />
     <None Include="..\Tests\**\*" Pack="true" PackagePath="Tests" />
+    <None Remove="**\bin\**;**\obj\**" />
   </ItemGroup>
 
 </Project>
