@@ -1,4 +1,6 @@
-﻿namespace Deve.ClientApp.Maui
+﻿using Deve.ClientApp.Maui.Views;
+
+namespace Deve.ClientApp.Maui
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new LoginPage();
+            MainPage = new LoginView();
         }
 
         public void GoToMain()
@@ -21,7 +23,7 @@
         {
             Dispatcher.Dispatch(() =>
             {
-                MainPage = new LoginPage();
+                MainPage = new LoginView();
             });
         }
     }

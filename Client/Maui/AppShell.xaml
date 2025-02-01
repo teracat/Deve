@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Deve.ClientApp.Maui"
+    xmlns:v="clr-namespace:Deve.ClientApp.Maui.Views"
     xmlns:strings="clr-namespace:Deve.ClientApp.Maui.Resources.Strings"
     x:Class="Deve.ClientApp.Maui.AppShell"
     Shell.FlyoutBehavior="Flyout"
@@ -18,10 +19,10 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <ShellContent Route="clients" Title="{x:Static strings:AppResources.Clients}" ContentTemplate="{DataTemplate local:ClientsPage}" />
-    <ShellContent Route="cities" Title="{x:Static strings:AppResources.Cities}" ContentTemplate="{DataTemplate local:CitiesPage}" />
-    <ShellContent Route="states" Title="{x:Static strings:AppResources.States}" ContentTemplate="{DataTemplate local:StatesPage}" />
-    <ShellContent Route="countries" Title="{x:Static strings:AppResources.Countries}" ContentTemplate="{DataTemplate local:CountriesPage}" />
+    <ShellContent Route="clients" Title="{x:Static strings:AppResources.Clients}" ContentTemplate="{DataTemplate v:ClientsView}" />
+    <ShellContent Route="cities" Title="{x:Static strings:AppResources.Cities}" ContentTemplate="{DataTemplate v:CitiesView}" />
+    <ShellContent Route="states" Title="{x:Static strings:AppResources.States}" ContentTemplate="{DataTemplate v:StatesView}" />
+    <ShellContent Route="countries" Title="{x:Static strings:AppResources.Countries}" ContentTemplate="{DataTemplate v:CountriesView}" />
 
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>

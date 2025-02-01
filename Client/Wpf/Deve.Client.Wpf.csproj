@@ -45,10 +45,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Window\StateWindow.xaml.cs">
+    <Compile Update="Views\StateView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Window\CountryWindow.xaml.cs">
+    <Compile Update="Views\CountryView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Window\StateWindow.xaml">
+    <Page Update="Views\StateView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
              xmlns:fa="http://schemas.fontawesome.com/icons/svg"
-             StartupUri="Window/LoginWindow.xaml">
+             StartupUri="Views/LoginView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/GenericStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/KeyedStyles.xaml" />

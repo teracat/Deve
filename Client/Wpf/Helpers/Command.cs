@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Deve.ClientApp.Wpf
+namespace Deve.ClientApp.Wpf.Helpers
 {
     public class Command : ICommand
     {

@@ -1,4 +1,6 @@
-﻿namespace Deve.ClientApp.Maui
+﻿using Deve.ClientApp.Maui.Views;
+
+namespace Deve.ClientApp.Maui
 {
     public partial class AppShell : Shell
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("//clients/details", typeof(ClientDetailsPage));
+            Routing.RegisterRoute("//clients/details", typeof(ClientDetailsView));
         }
 
         private void LogoutClicked(object sender, EventArgs e) => ((App?)Application.Current)?.GoToLogin();

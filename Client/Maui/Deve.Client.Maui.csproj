@@ -74,14 +74,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Page\ListDataPage.xaml.cs">
-	    <DependentUpon>ListDataPage.xaml</DependentUpon>
+	  <Compile Update="Views\ListDataView.xaml.cs">
+	    <DependentUpon>ListDataView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Page\ClientDetailsPage.xaml.cs">
-	    <DependentUpon>ClientDetailsPage.xaml</DependentUpon>
+	  <Compile Update="Views\ClientDetailsView.xaml.cs">
+	    <DependentUpon>ClientDetailsView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Page\LoginPage.xaml.cs">
-	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  <Compile Update="Views\LoginView.xaml.cs">
+	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\Strings\AppResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -98,10 +98,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Page\ListDataPage.xaml">
+	  <MauiXaml Update="Views\ListDataView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Page\ClientDetailsPage.xaml">
+	  <MauiXaml Update="Views\ClientDetailsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

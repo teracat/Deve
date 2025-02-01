@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Deve.ClientApp.Wpf"
-                    xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Control"
+                    xmlns:ctrl="clr-namespace:Deve.ClientApp.Wpf.Controls"
                     xmlns:fa="http://schemas.fontawesome.com/icons/svg">
 
     <!-- ListViewItem -->

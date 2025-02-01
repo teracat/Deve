@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows;
-using Deve.ClientApp.Wpf.Window;
+using Deve.ClientApp.Wpf.Views;
 
 namespace Deve.ClientApp.Wpf
 {
@@ -28,7 +28,7 @@ namespace Deve.ClientApp.Wpf
 
             var oldWindow = Application.Current.MainWindow;
 
-            Application.Current.MainWindow = new LoginWindow(username, password);
+            Application.Current.MainWindow = new LoginView(username, password);
             Application.Current.MainWindow.Show();
 
             oldWindow.Close();
