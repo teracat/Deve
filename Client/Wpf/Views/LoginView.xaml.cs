@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows.Controls;
 using Deve.ClientApp.Wpf.ViewModels;
 
 namespace Deve.ClientApp.Wpf.Views
@@ -14,16 +15,20 @@ namespace Deve.ClientApp.Wpf.Views
         {
             InitializeComponent();
             string? username = null;
+            string? password = null;
 //-:cnd
 #if DEBUG
             if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
                 username = "teracat";
-                uxPassword.Password = "teracat";
+                password = "teracat";
             }
 #endif
 //+:cnd
             ViewModel = _viewModel = new LoginViewModel(this, username);
+
+            if (!string.IsNullOrWhiteSpace(password))
+                uxPassword.Password = password;
         }
 
         public LoginView(string? username, string? password)
@@ -59,12 +64,18 @@ namespace Deve.ClientApp.Wpf.Views
         {
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
-                _ = _viewModel.DoLogin(uxPassword.Password);
+                _ = _viewModel.Login(uxPassword.Password);
         }
 
         private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            _ = _viewModel.DoLogin(uxPassword.Password);
+            _ = _viewModel.Login(uxPassword.Password);
+        }
+
+        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var passwordBox = (PasswordBox)sender;
+            _viewModel.Password = passwordBox.SecurePassword;
         }
         #endregion
     }

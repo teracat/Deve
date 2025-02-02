@@ -205,6 +205,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid value.
+        /// </summary>
+        public static string InvalidValue {
+            get {
+                return ResourceManager.GetString("InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ISO Code.
         /// </summary>
         public static string IsoCode {
@@ -250,20 +259,47 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing some required field.
+        ///   Looks up a localized string similar to Country is required.
         /// </summary>
-        public static string MissingField {
+        public static string MissingCountry {
             get {
-                return ResourceManager.GetString("MissingField", resourceCulture);
+                return ResourceManager.GetString("MissingCountry", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username and password are required.
+        ///   Looks up a localized string similar to Missing Iso Code.
         /// </summary>
-        public static string MissingUsernamePassword {
+        public static string MissingIsoCode {
             get {
-                return ResourceManager.GetString("MissingUsernamePassword", resourceCulture);
+                return ResourceManager.GetString("MissingIsoCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        public static string MissingName {
+            get {
+                return ResourceManager.GetString("MissingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is required.
+        /// </summary>
+        public static string MissingPassword {
+            get {
+                return ResourceManager.GetString("MissingPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username is required.
+        /// </summary>
+        public static string MissingUsername {
+            get {
+                return ResourceManager.GetString("MissingUsername", resourceCulture);
             }
         }
         

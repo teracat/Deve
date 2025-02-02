@@ -20,7 +20,7 @@ namespace Deve.ClientApp.Maui.Views
 
         private void uxPassword_Completed(object sender, EventArgs e)
         {
-            _ = viewModel.DoLogin();
+            _ = viewModel.Login();
         }
     }
 }

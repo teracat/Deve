@@ -1,34 +1,27 @@
-﻿using System.Windows.Input;
-using Deve.ClientApp.Wpf.Helpers;
+﻿using CommunityToolkit.Mvvm.Input;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public abstract class BaseEditViewModel : BaseViewModel
+    public abstract partial class BaseEditViewModel : BaseViewModel
     {
-        #region Fields
-        private ICommand? _saveCommand;
-        private ICommand? _cancelCommand;
-        #endregion
-
-        #region Constructor
-        public BaseEditViewModel()
-        {
-        }
-        #endregion
-
         #region Methods
-        internal void DoCancel()
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        internal void Cancel()
         {
             SetResult(false);
             Close();
         }
 
-        internal abstract Task DoSave();
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        internal abstract Task Save();
         #endregion
 
-        #region Commands
-        public ICommand Cancel => _cancelCommand ??= new Command(() => DoCancel(), () => IsIdle);
-        public ICommand Save => _saveCommand ??= new Command(() => _ = DoSave(), () => IsIdle);
+        #region Overrides
+        protected override void OnIsBusyChanged()
+        {
+            CancelCommand.NotifyCanExecuteChanged();
+            SaveCommand.NotifyCanExecuteChanged();
+        }
         #endregion
     }
 }

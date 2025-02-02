@@ -81,13 +81,13 @@
             <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}"
                                   Items="{Binding CtrlDataStates.Items}" SearchText="{Binding CtrlDataStates.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataStates.IsBusy}" 
                                   ErrorText="{Binding CtrlDataStates.ErrorText}" SearchCommand="{Binding CtrlDataStates.SearchCommand}" 
-                                  AddCommand="{Binding AddState}" EditCommand="{Binding EditState}" DeleteCommand="{Binding DeleteState}" />
+                                  AddCommand="{Binding AddStateCommand}" EditCommand="{Binding EditStateCommand}" DeleteCommand="{Binding DeleteStateCommand}" />
 
             <!-- Countries -->
             <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}"
                                   Items="{Binding CtrlDataCountries.Items}" SearchText="{Binding CtrlDataCountries.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCountries.IsBusy}" 
                                   ErrorText="{Binding CtrlDataCountries.ErrorText}" SearchCommand="{Binding CtrlDataCountries.SearchCommand}"
-                                  AddCommand="{Binding AddCountry}" EditCommand="{Binding EditCountry}" DeleteCommand="{Binding DeleteCountry}" />
+                                  AddCommand="{Binding AddCountryCommand}" EditCommand="{Binding EditCountryCommand}" DeleteCommand="{Binding DeleteCountryCommand}" />
             
         </Grid>
     </Border>

@@ -51,7 +51,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="ErrorLabel">
-        <Setter Property="Foreground" Value="{StaticResource ErrorTextBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 

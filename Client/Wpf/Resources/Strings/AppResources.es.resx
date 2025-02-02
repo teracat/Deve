@@ -162,6 +162,9 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Valor no válido</value>
+  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificación</value>
   </data>
@@ -180,11 +183,17 @@
   <data name="MinBalance" xml:space="preserve">
     <value>Saldo mínimo</value>
   </data>
-  <data name="MissingField" xml:space="preserve">
-    <value>Falta algún campo obligatorio</value>
+  <data name="MissingCountry" xml:space="preserve">
+    <value>El país es obligatorio</value>
   </data>
-  <data name="MissingUsernamePassword" xml:space="preserve">
-    <value>El usuario y contraseña son obligatorios</value>
+  <data name="MissingName" xml:space="preserve">
+    <value>El nombre es obligatorio</value>
+  </data>
+  <data name="MissingPassword" xml:space="preserve">
+    <value>La contraseña es obligatoria</value>
+  </data>
+  <data name="MissingUsername" xml:space="preserve">
+    <value>El usuario es obligatorio</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nombre</value>
@@ -218,5 +227,8 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>Usuario</value>
+  </data>
+  <data name="MissingIsoCode" xml:space="preserve">
+    <value>El código ISO es obligatorio</value>
   </data>
 </root>

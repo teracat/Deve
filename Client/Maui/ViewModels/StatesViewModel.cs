@@ -4,12 +4,6 @@ namespace Deve.ClientApp.Maui.ViewModels
 {
     public class StatesViewModel : ListDataViewModel
     {
-        #region Constructor
-        public StatesViewModel()
-        {
-        }
-        #endregion
-
         #region Overrides
         protected override async Task LoadListData()
         {

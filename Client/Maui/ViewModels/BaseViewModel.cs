@@ -1,53 +1,23 @@
-﻿using Deve.ClientApp.Maui.Helpers;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public abstract class BaseViewModel : UIBase
+    public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasError))]
         private string _errorText = string.Empty;
         #endregion
 
         #region Properties
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                if (_isBusy != value)
-                {
-                    _isBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
-                    OnPropertyChanged(nameof(IsIdle));
-                    OnIsBusyChanged();
-                }
-            }
-        }
+        public bool IsIdle => !IsBusy;
 
-        public bool IsIdle
-        {
-            get => !IsBusy;
-            set => IsBusy = !value;
-        }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                    OnPropertyChanged(nameof(HasError));
-            }
-        }
-
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
-        #endregion
-
-        #region Constructor
-        public BaseViewModel()
-        {
-        }
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
         #endregion
 
         #region Virtual Methods
@@ -55,13 +25,24 @@ namespace Deve.ClientApp.Maui.ViewModels
 
         public virtual void OnViewDisappearing() {}
 
-        protected virtual void OnIsBusyChanged() {}
-
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)
                 return true;
             return false;
+        }
+
+        protected virtual bool Validate()
+        {
+            ErrorText = string.Empty;
+            ClearErrors();
+            ValidateAllProperties();
+            if (HasErrors)
+            {
+                ErrorText = string.Join("\n", GetErrors());
+                return false;
+            }
+            return true;
         }
         #endregion
     }

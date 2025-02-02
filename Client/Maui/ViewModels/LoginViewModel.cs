@@ -1,35 +1,22 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Deve.ClientApp.Maui.Resources.Strings;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public partial class LoginViewModel : BaseViewModel
     {
         #region Fields
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
         private string _username = string.Empty;
+
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
         private string _password = string.Empty;
-
-        private ICommand? _loginCommand;
-        #endregion
-
-        #region Properties
-        public string Username
-        {
-            get => _username;
-            set => SetProperty(ref _username, value);
-        }
-
-        public string Password
-        {
-            get => _password;
-            set => SetProperty(ref _password, value);
-        }
-        #endregion
-
-        #region Constructor
-        public LoginViewModel()
-        {
-        }
         #endregion
 
         #region Overrides
@@ -46,20 +33,16 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Methods
-        internal async Task DoLogin()
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        internal async Task Login()
         {
-            ErrorText = string.Empty;
-
-            if (Utils.SomeIsNullOrWhiteSpace(_username, _password))
-            {
-                ErrorText = AppResources.MissingUsernamePassword;
+            if (!Validate())
                 return;
-            }
 
             IsBusy = true;
             try
             {
-                var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(_username, _password));
+                var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(Username, Password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
@@ -75,10 +58,6 @@ namespace Deve.ClientApp.Maui.ViewModels
                 IsBusy = false;
             }
         }
-        #endregion
-
-        #region Commands
-        public ICommand Login => _loginCommand ??= new Command(() => _ = DoLogin(), () => IsIdle);
         #endregion
     }
 }

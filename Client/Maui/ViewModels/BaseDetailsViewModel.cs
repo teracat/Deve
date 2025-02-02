@@ -1,6 +1,6 @@
 ﻿namespace Deve.ClientApp.Maui.ViewModels
 {
-    public abstract class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
+    public abstract partial class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
         #region Fields
         protected long _id = 0;

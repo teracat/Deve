@@ -3,14 +3,8 @@ using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public class ClientsViewModel : ListDataViewModel
+    public partial class ClientsViewModel : ListDataViewModel
     {
-        #region Constructor
-        public ClientsViewModel() 
-        {
-        }
-        #endregion
-
         #region Overrides
         protected override async Task LoadListData()
         {

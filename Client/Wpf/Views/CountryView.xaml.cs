@@ -27,7 +27,7 @@ namespace Deve.ClientApp.Wpf.Views
         private void OnIsoCodeKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
-                _ = _viewModel.DoSave();
+                _ = _viewModel.Save();
         }
         #endregion
     }

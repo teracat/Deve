@@ -1,26 +1,22 @@
-﻿using Deve.ClientApp.Wpf.Resources.Strings;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public class CountryViewModel : BaseEditViewModel
+    public partial class CountryViewModel : BaseEditViewModel
     {
         #region Fields
+        [ObservableProperty]
         private Country _country;
-        private string _name;
-        private string _isoCode;
-        #endregion
 
-        #region Properties
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
-        public string IsoCode
-        {
-            get => _isoCode;
-            set => SetProperty(ref _isoCode, value);
-        }
+        [ObservableProperty]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
+        private string _name;
+
+        [ObservableProperty]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingIsoCode))]
+        private string _isoCode;
         #endregion
 
         #region Constructor
@@ -32,26 +28,23 @@ namespace Deve.ClientApp.Wpf.ViewModels
         }
         #endregion
 
-        #region Overrides
-        internal async override Task DoSave()
+        #region Override
+        internal async override Task Save()
         {
-            if (Utils.SomeIsNullOrWhiteSpace(_name,_isoCode))
-            {
-                Globals.ShowError(AppResources.MissingField);
+            if (!Validate())
                 return;
-            }
 
             IsBusy = true;
             try
             {
-                _country.Name = _name.Trim();
-                _country.IsoCode = _isoCode.Trim();
+                Country.Name = Name.Trim();
+                Country.IsoCode = IsoCode.Trim();
 
                 Result res;
-                if (_country.Id == 0)
-                    res = await Globals.Data.Countries.Add(_country);
+                if (Country.Id == 0)
+                    res = await Globals.Data.Countries.Add(Country);
                 else
-                    res = await Globals.Data.Countries.Update(_country);
+                    res = await Globals.Data.Countries.Update(Country);
 
                 if (!res.Success)
                 {

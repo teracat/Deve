@@ -1,35 +1,23 @@
-﻿using Deve.ClientApp.Maui.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public abstract class ListDataViewModel : BaseViewModel
+    public abstract partial class ListDataViewModel : BaseViewModel
     {
         #region Fields
+        [ObservableProperty]
         IEnumerable<ListData>? _listData;
+
+        [ObservableProperty]
+        ListData? _selectedData;
         #endregion
 
-        #region Properties
-        public IEnumerable<ListData>? ListData
+        #region OnPropertyChanged
+        partial void OnSelectedDataChanged(ListData? value)
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
-
-        public ListData? SelectedData
-        {
-            get => null;
-            set
-            {
-                if (value is not null)
-                    DoSelected(value);
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        #region Constructor
-        public ListDataViewModel()
-        {
+            if (value is not null)
+                DoSelected(value);
         }
         #endregion
 
@@ -59,6 +47,7 @@ namespace Deve.ClientApp.Maui.ViewModels
 
         #region Abstract/Virtual Methods
         protected abstract Task LoadListData();
+
         protected virtual void DoSelected(ListData data)
         {
             var navigationParameter = new ShellNavigationQueryParameters
