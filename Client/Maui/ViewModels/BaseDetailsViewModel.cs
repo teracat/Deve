@@ -27,7 +27,7 @@
         protected abstract Task LoadData();
         #endregion
 
-        #region INotifyPropertyChanged
+        #region IQueryAttributable
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             _id = (long)query["Id"];
