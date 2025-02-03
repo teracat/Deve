@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Security;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.ClientApp.Wpf.Helpers;
+using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.Resources.Strings;
 using Deve.ClientApp.Wpf.Views;
 
@@ -69,6 +70,15 @@ namespace Deve.ClientApp.Wpf.ViewModels
             else
                 _username = Properties.Settings.Default.Username;
             _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
+        }
+        #endregion
+
+        #region Overrides
+        protected override bool Validate()
+        {
+            bool res = base.Validate();
+            OnPropertyChanged(nameof(HasErrorPassword));
+            return res;
         }
         #endregion
 

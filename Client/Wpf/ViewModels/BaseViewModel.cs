@@ -36,12 +36,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             ErrorText = string.Empty;
             ClearErrors();
             ValidateAllProperties();
-            if (HasErrors)
-            {
-                ErrorText = string.Join("\n", GetErrors());
-                return false;
-            }
-            return true;
+            return !HasErrors;
         }
         #endregion
 

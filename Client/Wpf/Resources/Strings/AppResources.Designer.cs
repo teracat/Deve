@@ -259,6 +259,15 @@ namespace Deve.ClientApp.Wpf.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Iso code must have a minimum length of {1} characters..
+        /// </summary>
+        public static string MinLengthIsoCode {
+            get {
+                return ResourceManager.GetString("MinLengthIsoCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Country is required.
         /// </summary>
         public static string MissingCountry {

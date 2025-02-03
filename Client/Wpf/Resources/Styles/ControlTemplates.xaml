@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Deve.ClientApp.Wpf">
+
+    <!-- ValidationErrorTemplate -->
+    <ControlTemplate x:Key="ValidationErrorTemplate">
+        <StackPanel Orientation="Vertical">
+            <AdornedElementPlaceholder x:Name="placeholder" />
+            <TextBlock FontSize="11" FontStyle="Italic" Foreground="{StaticResource ErrorBrush}" TextWrapping="Wrap"
+                       Text="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+        </StackPanel>
+    </ControlTemplate>
+
+</ResourceDictionary>

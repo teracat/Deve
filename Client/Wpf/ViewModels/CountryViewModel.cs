@@ -7,15 +7,17 @@ namespace Deve.ClientApp.Wpf.ViewModels
     public partial class CountryViewModel : BaseEditViewModel
     {
         #region Fields
-        [ObservableProperty]
-        private Country _country;
+        private readonly Country _country;
 
         [ObservableProperty]
+        [NotifyDataErrorInfo]
         [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
         private string _name;
 
         [ObservableProperty]
+        [NotifyDataErrorInfo]
         [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingIsoCode))]
+        [MinLength(2, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MinLengthIsoCode))]
         private string _isoCode;
         #endregion
 
@@ -37,14 +39,14 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                Country.Name = Name.Trim();
-                Country.IsoCode = IsoCode.Trim();
+                _country.Name = Name.Trim();
+                _country.IsoCode = IsoCode.Trim();
 
                 Result res;
-                if (Country.Id == 0)
-                    res = await Globals.Data.Countries.Add(Country);
+                if (_country.Id == 0)
+                    res = await Globals.Data.Countries.Add(_country);
                 else
-                    res = await Globals.Data.Countries.Update(Country);
+                    res = await Globals.Data.Countries.Update(_country);
 
                 if (!res.Success)
                 {

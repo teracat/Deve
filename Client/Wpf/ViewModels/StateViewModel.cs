@@ -8,10 +8,10 @@ namespace Deve.ClientApp.Wpf.ViewModels
     public partial class StateViewModel : BaseEditViewModel
     {
         #region Fields
-        [ObservableProperty]
-        private State _state;
+        private readonly State _state;
 
         [ObservableProperty]
+        [NotifyDataErrorInfo]
         [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
         private string _name;
 
@@ -19,15 +19,16 @@ namespace Deve.ClientApp.Wpf.ViewModels
         private IList<Country>? _countries;
 
         [ObservableProperty]
-        [GreaterThanOrEqual(nameof(SelectedCountry.Id), 0, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
+        [NotifyDataErrorInfo]
+        [GreaterThanOrEqual(nameof(SelectedCountry.Id), 1, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
         private Country? _selectedCountry;
         #endregion
 
         #region Constructor
         public StateViewModel(State state)
         {
-            State = state;
-            Name = _state.Name;
+            _state = state;
+            _name = _state.Name;
             _ = LoadCountries();
         }
         #endregion
@@ -41,15 +42,15 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                State.Name = Name.Trim();
-                State.CountryId = SelectedCountry!.Id;
-                State.Country = SelectedCountry.Name;
+                _state.Name = Name.Trim();
+                _state.CountryId = SelectedCountry!.Id;
+                _state.Country = SelectedCountry.Name;
 
                 Result res;
-                if (State.Id == 0)
-                    res = await Globals.Data.States.Add(State);
+                if (_state.Id == 0)
+                    res = await Globals.Data.States.Add(_state);
                 else
-                    res = await Globals.Data.States.Update(State);
+                    res = await Globals.Data.States.Update(_state);
 
                 if (!res.Success)
                 {
@@ -83,8 +84,8 @@ namespace Deve.ClientApp.Wpf.ViewModels
                 }
 
                 Countries = res.Data;
-                if (State.CountryId > 0)
-                    SelectedCountry = Countries?.FirstOrDefault(x => x.Id == State.CountryId);
+                if (_state.CountryId > 0)
+                    SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
             finally
             {

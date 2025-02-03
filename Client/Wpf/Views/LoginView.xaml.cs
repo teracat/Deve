@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
+using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.ViewModels;
 
 namespace Deve.ClientApp.Wpf.Views
@@ -18,11 +19,11 @@ namespace Deve.ClientApp.Wpf.Views
             string? password = null;
 //-:cnd
 #if DEBUG
-            if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
+            /*if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
                 username = "teracat";
                 password = "teracat";
-            }
+            }*/
 #endif
 //+:cnd
             ViewModel = _viewModel = new LoginViewModel(this, username);
@@ -35,11 +36,17 @@ namespace Deve.ClientApp.Wpf.Views
         {
             InitializeComponent();
 
-            uxPassword.Password = password;
-
             ViewModel = _viewModel = new LoginViewModel(this, username);
 
-            if (string.IsNullOrEmpty(uxUsername.Text))
+            uxPassword.Password = password;
+        }
+        #endregion
+
+        #region Overrides
+        protected override void OnWindowLoaded()
+        {
+            base.OnWindowLoaded();
+            if (string.IsNullOrEmpty(_viewModel.Username))
                 uxUsername.Focus();
             else
                 uxPassword.Focus();

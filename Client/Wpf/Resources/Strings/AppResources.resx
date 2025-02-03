@@ -231,4 +231,7 @@
   <data name="MissingIsoCode" xml:space="preserve">
     <value>Missing Iso Code</value>
   </data>
+  <data name="MinLengthIsoCode" xml:space="preserve">
+    <value>The Iso code must have a minimum length of {1} characters.</value>
+  </data>
 </root>
