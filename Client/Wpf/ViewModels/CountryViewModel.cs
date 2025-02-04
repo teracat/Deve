@@ -3,7 +3,7 @@ using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public class CountryViewModel : BaseEditViewModel
+    public class CountryViewModel : BaseEditViewModel, INavigationAwareWithType<Country>
     {
         #region Fields
         private Country? _country;
@@ -37,21 +37,24 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                if (Id <= 0)
+                if (_country is null)
                 {
-                    _country = new Country();
-                }
-                else
-                {
-                    var res = await DataService.Data.Countries.Get(Id);
-                    if (!res.Success || res.Data is null)
+                    if (Id <= 0)
                     {
-                        Globals.ShowError(res.Errors);
-                        Close();
-                        return;
+                        _country = new Country();
                     }
-                    
-                    _country = res.Data;
+                    else
+                    {
+                        var res = await DataService.Data.Countries.Get(Id);
+                        if (!res.Success || res.Data is null)
+                        {
+                            Globals.ShowError(res.Errors);
+                            Close();
+                            return;
+                        }
+
+                        _country = res.Data;
+                    }
                 }
 
                 Name = _country.Name;
@@ -99,6 +102,14 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
             SetResult(true);
             Close();
+        }
+        #endregion
+
+        #region INavigationAwareWithType
+        public void OnNavigatedToWithType(Country parameter)
+        {
+            _country = parameter;
+            _ = LoadData();
         }
         #endregion
     }

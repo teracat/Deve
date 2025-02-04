@@ -12,7 +12,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Properties
-        public long Id { get; set; }
+        public long Id { get; set; } = 0;
         #endregion
 
         #region Constructor

@@ -160,7 +160,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         private async Task DoAddState()
         {
-            if (NavigationService.NavigateModalTo<StateView>(0))
+            if (NavigationService.NavigateModalTo<StateView>())
                 await LoadDataStates();
         }
 
@@ -168,6 +168,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
         {
             await DoEdit(listData, _ctrlDataStates, DataService.Data.States, (o) =>
             {
+                // Use case 1: sending Id to force data download again
                 if (NavigationService.NavigateModalTo<StateView>(o.Id))
                 {
                     _ = LoadDataStates();
@@ -192,7 +193,8 @@ namespace Deve.ClientApp.Wpf.ViewModels
         {
             await DoEdit(listData, _ctrlDataCountries, DataService.Data.Countries, (o) =>
             {
-                if (NavigationService.NavigateModalTo<CountryView>(o.Id))
+                // Use case 2: sending Country object to avoid data download again
+                if (NavigationService.NavigateModalTo<CountryView, Country>(o))
                 {
                     _ = LoadDataCountries();
                     return true;

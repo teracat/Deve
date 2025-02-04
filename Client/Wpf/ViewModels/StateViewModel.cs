@@ -3,7 +3,7 @@ using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public class StateViewModel : BaseEditViewModel
+    public class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
     {
         #region Fields
         private State? _state;
@@ -45,22 +45,25 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                if (Id <= 0)
+                if (_state is null)
                 {
-                    _state = new State();
-                }
-                else
-                {
-                    var res = await DataService.Data.States.Get(Id);
-                    if (!res.Success || res.Data is null)
+                    if (Id <= 0)
                     {
-                        Globals.ShowError(res.Errors);
-                        IsBusy = false; // When IsBusy=true the Window will not be closed
-                        Close();
-                        return;
+                        _state = new State();
                     }
+                    else
+                    {
+                        var res = await DataService.Data.States.Get(Id);
+                        if (!res.Success || res.Data is null)
+                        {
+                            Globals.ShowError(res.Errors);
+                            IsBusy = false; // When IsBusy=true the Window will not be closed
+                            Close();
+                            return;
+                        }
 
-                    _state = res.Data;
+                        _state = res.Data;
+                    }
                 }
 
                 Name = _state.Name;
@@ -135,6 +138,14 @@ namespace Deve.ClientApp.Wpf.ViewModels
             {
                 IsBusy = false;
             }
+        }
+        #endregion
+
+        #region INavigationAwareWithType
+        public void OnNavigatedToWithType(State parameter)
+        {
+            _state = parameter;
+            _ = LoadData();
         }
         #endregion
     }
