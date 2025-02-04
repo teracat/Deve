@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Internal;
+using Deve.ClientApp.Maui.Interfaces;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
@@ -10,26 +11,24 @@ namespace Deve.ClientApp.Maui.ViewModels
         private Client? _client;
         #endregion
 
-        #region Methods
-        protected override async Task LoadData()
+        #region Constructor
+        public ClientDetailsViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
-            ErrorText = string.Empty;
-            IsBusy = true;
-            try
-            {
-                var res = await Globals.Data.Clients.Get(_id);
-                if (!res.Success)
-                {
-                    ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
+        }
+        #endregion
 
-                Client = res.Data;
-            }
-            finally
+        #region Methods
+        protected override async Task GetData()
+        {
+            var res = await DataService.Data.Clients.Get(_id);
+            if (!res.Success)
             {
-                IsBusy = false;
+                ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
             }
+
+            Client = res.Data;
         }
         #endregion
     }

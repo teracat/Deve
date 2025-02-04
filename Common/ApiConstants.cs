@@ -5,12 +5,12 @@
         #region Url External
 //-:cnd
 #if DEBUG
-        public const string UrlProductionExternal   = "http://localhost:5057";
-        public const string UrlStagingExternal      = "http://localhost:5057";
+        public const string UrlProductionExternal   = "https://localhost:7175";
+        public const string UrlStagingExternal      = "https://localhost:7175";
 #else
         //TODO: change with real URLs
-        public const string UrlProductionExternal   = "http://api.deve.com/v1";
-        public const string UrlStagingExternal      = "http://dev.api.deve.com/v1";
+        public const string UrlProductionExternal   = "https://api.deve.com/v1";
+        public const string UrlStagingExternal      = "https://dev.api.deve.com/v1";
 #endif
 //+:cnd
         #endregion

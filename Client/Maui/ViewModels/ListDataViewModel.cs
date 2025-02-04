@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
@@ -21,10 +22,10 @@ namespace Deve.ClientApp.Maui.ViewModels
         }
         #endregion
 
-        #region Overrides
-        public override void OnViewAppearing()
+        #region Constructor
+        public ListDataViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
-            base.OnViewAppearing();
             _ = LoadData();
         }
         #endregion
@@ -36,7 +37,7 @@ namespace Deve.ClientApp.Maui.ViewModels
             IsBusy = true;
             try
             {
-                await LoadListData();
+                await GetListData();
             }
             finally
             {
@@ -46,8 +47,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Abstract/Virtual Methods
-        protected abstract Task LoadListData();
-
+        protected abstract Task GetListData();
         protected virtual void DoSelected(ListData data)
         {
             var navigationParameter = new ShellNavigationQueryParameters

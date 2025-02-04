@@ -9,11 +9,15 @@ namespace Deve.ClientApp.Wpf.Views
         #endregion
 
         #region Constructors
-        public CountryView(Country country)
+        public CountryView(CountryViewModel viewModel)
         {
             InitializeComponent();
-            ViewModel = _viewModel = new CountryViewModel(country);
-            uxName.Focus();
+            
+            // When the data is loaded, set initial focus
+            viewModel.LoadDataDoneAction = new Action(() => { uxName.Focus(); });
+
+            // Set ViewModel
+            ViewModel = _viewModel = viewModel;
         }
         #endregion
 

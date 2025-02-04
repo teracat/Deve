@@ -4,13 +4,14 @@ namespace Deve.ClientApp.Maui.Views
 {
     public partial class LoginView : BaseView
     {
-        private LoginViewModel viewModel;
+        private LoginViewModel _viewModel;
 
-        public LoginView()
+        public LoginView(LoginViewModel viewModel)
+            : base(viewModel)
         {
             InitializeComponent();
 
-            ViewModel = viewModel = new LoginViewModel();
+            ViewModel = _viewModel = viewModel;
         }
 
         private void uxUsername_Completed(object sender, EventArgs e)

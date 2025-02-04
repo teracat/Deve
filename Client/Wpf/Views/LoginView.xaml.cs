@@ -1,5 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Globalization;
 using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.ViewModels;
 
@@ -12,32 +13,28 @@ namespace Deve.ClientApp.Wpf.Views
         #endregion
 
         #region Constructors
-        public LoginView()
+        public LoginView(LoginViewModel viewModel)
         {
             InitializeComponent();
-            string? username = null;
-            string? password = null;
+            
+            viewModel.LoginView = this;
+            ViewModel = _viewModel = viewModel;
+
 //-:cnd
 #if DEBUG
-            /*if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
-                username = "teracat";
-                password = "teracat";
-            }*/
+                SetUsernamePassword("teracat", "teracat");
+            }
 #endif
 //+:cnd
-            ViewModel = _viewModel = new LoginViewModel(this, username);
-
-            if (!string.IsNullOrWhiteSpace(password))
-                uxPassword.Password = password;
         }
+        #endregion
 
-        public LoginView(string? username, string? password)
+        #region Methods
+        public void SetUsernamePassword(string username, string password)
         {
-            InitializeComponent();
-
-            ViewModel = _viewModel = new LoginViewModel(this, username);
-
+            _viewModel.Username = username;
             uxPassword.Password = password;
         }
         #endregion
@@ -46,7 +43,7 @@ namespace Deve.ClientApp.Wpf.Views
         protected override void OnWindowLoaded()
         {
             base.OnWindowLoaded();
-            if (string.IsNullOrEmpty(_viewModel.Username))
+            if (string.IsNullOrEmpty(uxUsername.Text))
                 uxUsername.Focus();
             else
                 uxPassword.Focus();
@@ -56,7 +53,7 @@ namespace Deve.ClientApp.Wpf.Views
         #region IViewLogin
         public void ChangeCulture(CultureInfo value, string username)
         {
-            App.ChangeCulture(value, username, uxPassword.Password);
+            ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
         }
         #endregion
 

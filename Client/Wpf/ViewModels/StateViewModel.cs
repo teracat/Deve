@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.ClientApp.Wpf.Helpers;
+using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public partial class StateViewModel : BaseEditViewModel
+    public partial class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
     {
         #region Fields
-        private readonly State _state;
+        private State? _state;
 
         [ObservableProperty]
         [NotifyDataErrorInfo]
         [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
-        private string _name;
+        private string? _name;
 
         [ObservableProperty]
         private IList<Country>? _countries;
@@ -25,32 +26,39 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public StateViewModel(State state)
+        public StateViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
-            _state = state;
-            _name = _state.Name;
-            _ = LoadCountries();
         }
         #endregion
 
         #region Overrides
+        protected async override Task GetData()
+        {
+            await GetDataState();
+            await GetDataCountries();
+        }
+
         internal async override Task Save()
         {
+            if (_state is null)
+                return;
+
             if (!Validate())
                 return;
 
             IsBusy = true;
             try
             {
-                _state.Name = Name.Trim();
+                _state.Name = Name!.Trim();
                 _state.CountryId = SelectedCountry!.Id;
                 _state.Country = SelectedCountry.Name;
 
                 Result res;
                 if (_state.Id == 0)
-                    res = await Globals.Data.States.Add(_state);
+                    res = await DataService.Data.States.Add(_state);
                 else
-                    res = await Globals.Data.States.Update(_state);
+                    res = await DataService.Data.States.Update(_state);
 
                 if (!res.Success)
                 {
@@ -69,28 +77,54 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Methods
-        private async Task LoadCountries()
+        private async Task GetDataState()
         {
-            IsBusy = true;
-            try
+            if (_state is null)
             {
-                var res = await Globals.Data.Countries.Get();
-                if (!res.Success)
+                if (Id <= 0)
                 {
-                    Globals.ShowError(res.Errors);
-                    IsBusy = false; // When IsBusy=true the Window will not be closed
-                    Close();
-                    return;
+                    _state = new State();
                 }
+                else
+                {
+                    var res = await DataService.Data.States.Get(Id);
+                    if (!res.Success || res.Data is null)
+                    {
+                        Globals.ShowError(res.Errors);
+                        IsBusy = false; // When IsBusy=true the Window will not be closed
+                        Close();
+                        return;
+                    }
 
-                Countries = res.Data;
-                if (_state.CountryId > 0)
-                    SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+                    _state = res.Data;
+                }
             }
-            finally
+
+            Name = _state.Name;
+        }
+
+        private async Task GetDataCountries()
+        {
+            var res = await DataService.Data.Countries.Get();
+            if (!res.Success)
             {
-                IsBusy = false;
+                Globals.ShowError(res.Errors);
+                IsBusy = false; // When IsBusy=true the Window will not be closed
+                Close();
+                return;
             }
+
+            Countries = res.Data;
+            if (_state is not null && _state.CountryId > 0)
+                SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+        }
+        #endregion
+
+        #region INavigationAwareWithType
+        public void OnNavigatedToWithType(State parameter)
+        {
+            _state = parameter;
+            _ = LoadData();
         }
         #endregion
     }

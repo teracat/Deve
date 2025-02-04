@@ -1,6 +1,9 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
+using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.ClientApp.Wpf
 {
@@ -9,6 +12,22 @@ namespace Deve.ClientApp.Wpf
     /// </summary>
     public partial class App : Application
     {
+        private ServiceProvider serviceProvider { get; set; }
+
+        public App()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            serviceProvider = services.BuildServiceProvider();
+        }
+
+        private void ConfigureServices(ServiceCollection services)
+        {
+            ServiceProviderHelper.RegisterServices(services);
+            ServiceProviderHelper.RegisterViewModels(services);
+            ServiceProviderHelper.RegisterViews(services);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -19,17 +38,22 @@ namespace Deve.ClientApp.Wpf
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
             }
+
+            var loginView = serviceProvider.GetRequiredService<LoginView>();
+            loginView.Show();
         }
 
-        public static void ChangeCulture(CultureInfo newCulture, string username, string password)
+        public void ChangeCulture(CultureInfo newCulture, string username, string password)
         {
             Thread.CurrentThread.CurrentCulture = newCulture;
             Thread.CurrentThread.CurrentUICulture = newCulture;
 
-            var oldWindow = Application.Current.MainWindow;
+            var oldWindow = Current.MainWindow;
 
-            Application.Current.MainWindow = new LoginView(username, password);
-            Application.Current.MainWindow.Show();
+            var loginView = serviceProvider.GetRequiredService<LoginView>();
+            loginView.SetUsernamePassword(username, password);
+            loginView.Show();
+            Current.MainWindow = loginView;
 
             oldWindow.Close();
         }

@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Maui.Helpers;
+using Deve.ClientApp.Maui.Interfaces;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
     public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IDataService _dataService;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
@@ -15,16 +19,39 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Properties
-        public bool IsIdle => !IsBusy;
+        protected IDataService DataService => _dataService;
 
-        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+        protected IServiceProvider ServiceProvider => _serviceProvider;
+        public bool IsIdle
+        {
+            get => !IsBusy;
+            set => IsBusy = !value;
+        }
+
+        public string ErrorText
+        {
+            get => _errorText;
+            set
+            {
+                if (SetProperty(ref _errorText, value))
+                    OnPropertyChanged(nameof(HasError));
+            }
+        }
+
+        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+
+        public Action? GoBackAction { get; set; }
+        #endregion
+
+        #region Constructor
+        public BaseViewModel(IServiceProvider serviceProvider, IDataService dataService)
+        {
+            _serviceProvider = serviceProvider;
+            _dataService = dataService;
+        }
         #endregion
 
         #region Virtual Methods
-        public virtual void OnViewAppearing() {}
-
-        public virtual void OnViewDisappearing() {}
-
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)
@@ -44,6 +71,10 @@ namespace Deve.ClientApp.Maui.ViewModels
             }
             return true;
         }
+        #endregion
+
+        #region Helper Methods
+        protected void GoBack() => GoBackAction?.Invoke();
         #endregion
     }
 }

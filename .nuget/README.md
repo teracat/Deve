@@ -7,6 +7,10 @@ Welcome to the **.NET DEVEloper Template**! This project serves as a starting po
 
 Check the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
 
+## Changelog & Roadmap
+
+To stay up to date with the latest updates and changes to the project, you can check out our [Changelog](https://github.com/teracat/Deve/wiki/Changelog) and [Roadmap](https://github.com/teracat/Deve/wiki/Roadmap) in the Wiki section of the repository.
+
 ## Client Samples
 
 Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Client) section.
