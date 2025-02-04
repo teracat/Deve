@@ -121,9 +121,6 @@ namespace Deve.Api
                 app.UseSwaggerUI();
             }
 
-            // Redirect HTTP requests to HTTPS
-            app.UseHttpsRedirection();
-
             // Add TooManyRequestsMiddleware
             app.UseMiddleware<TooManyRequestsMiddleware>();
 

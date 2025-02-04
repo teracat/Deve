@@ -4,12 +4,12 @@
     {
 //-:cnd
 #if DEBUG
-        public const string UrlProduction   = "http://localhost:5053";
-        public const string UrlStaging      = "http://localhost:5053";
+        public const string UrlProduction   = "https://localhost:7245";
+        public const string UrlStaging      = "https://localhost:7245";
 #else
         //TODO: change with real URLs
-        public const string UrlProduction   = "http://api-int.deve.com/v1";
-        public const string UrlStaging      = "http://dev.api-int.deve.com/v1";
+        public const string UrlProduction   = "https://api-int.deve.com/v1";
+        public const string UrlStaging      = "https://dev.api-int.deve.com/v1";
 #endif
 //+:cnd
     }
