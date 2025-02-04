@@ -1,10 +1,11 @@
-﻿using Microsoft.Maui.LifecycleEvents;
-//-:cnd
+﻿//-:cnd
 #if WINDOWS
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 #endif
 //+:cnd
+using Microsoft.Maui.LifecycleEvents;
+using Deve.ClientApp.Maui.Helpers;
 
 namespace Deve.ClientApp.Maui
 {
@@ -15,6 +16,9 @@ namespace Deve.ClientApp.Maui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .RegisterServices()
+                .RegisterViewModels()
+                .RegisterViews()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -48,7 +52,7 @@ namespace Deve.ClientApp.Maui
 #endif
 //+:cnd
                 });
-//-:cnd
+            //-:cnd
 #if DEBUG
             Log.Providers.AddDebug();
 #endif

@@ -9,10 +9,10 @@ namespace Deve.ClientApp.Wpf.Views
         #endregion
 
         #region Constructors
-        public StateView(State state)
+        public StateView(StateViewModel viewModel)
         {
             InitializeComponent();
-            ViewModel = _viewModel = new StateViewModel(state);
+            ViewModel = _viewModel = viewModel;
             uxName.Focus();
         }
         #endregion

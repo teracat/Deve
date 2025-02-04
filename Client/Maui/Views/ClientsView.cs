@@ -5,10 +5,10 @@ namespace Deve.ClientApp.Maui.Views
 {
     public class ClientsView : ListDataView
     {
-        public ClientsView()
+        public ClientsView(ClientsViewModel viewModel)
+            : base(viewModel)
         {
             Title = AppResources.Clients;
-            ViewModel = new ClientsViewModel();
         }
     }
 }

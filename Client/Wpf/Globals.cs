@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using System.Windows;
-using Deve.Core;
-using Deve.Internal;
 using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf
@@ -10,14 +8,6 @@ namespace Deve.ClientApp.Wpf
     {
         #region Constants
         public const string AmountStringFormat = "{0:###,###,##0.##}€";
-        #endregion
-
-        #region IData
-        private static IData? _data;
-        public static IData Data => _data ??= CoreFactory.Get(true, null, new DataOptions()
-        {
-            LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
-        });
         #endregion
 
         #region UserToken

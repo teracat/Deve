@@ -17,30 +17,36 @@ namespace Deve.ClientApp.Maui.Views
                 if (_viewModel != value)
                 {
                     BindingContext = _viewModel = value;
+                    if (_viewModel is not null)
+                    {
+                        _viewModel.GoBackAction = GoBack;
+                    }
                 }
             }
         }
         #endregion
 
+        #region Constructor
+        public BaseView(BaseViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        #endregion
+
         #region Overrides
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            ViewModel?.OnViewAppearing();
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            ViewModel?.OnViewDisappearing();
-        }
-
         protected override bool OnBackButtonPressed()
         {
             if (ViewModel is not null)
                 return ViewModel.OnViewBackButtonPressed();
             else
                 return base.OnBackButtonPressed();
+        }
+        #endregion
+
+        #region Methods
+        protected virtual void GoBack()
+        {
+            Navigation?.PopAsync();
         }
         #endregion
     }

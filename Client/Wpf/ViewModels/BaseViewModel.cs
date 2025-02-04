@@ -1,16 +1,22 @@
-﻿using System.Windows;
-using Deve.ClientApp.Wpf.Helpers;
+﻿using Deve.ClientApp.Wpf.Helpers;
+using Deve.ClientApp.Wpf.Interfaces;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
     public abstract class BaseViewModel : UIBase
     {
         #region Fields
+        private readonly INavigationService _navigationService;
+        private readonly IDataService _dataService;
         private bool _isBusy = false;
         private string _errorText = string.Empty;
         #endregion
 
         #region Properties
+        protected INavigationService NavigationService => _navigationService;
+
+        protected IDataService DataService => _dataService;
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -52,8 +58,10 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel()
+        public BaseViewModel(INavigationService navigationService, IDataService dataService)
         {
+            _navigationService = navigationService;
+            _dataService = dataService;
         }
         #endregion
 

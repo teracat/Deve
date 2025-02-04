@@ -1,12 +1,14 @@
 ﻿using Deve.Internal;
 using Deve.ClientApp.Maui.Models;
+using Deve.ClientApp.Maui.Interfaces;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
     public class ClientsViewModel : ListDataViewModel
     {
         #region Constructor
-        public ClientsViewModel() 
+        public ClientsViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
         }
         #endregion
@@ -15,7 +17,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         protected override async Task LoadListData()
         {
             CriteriaClient? criteria = null;
-            var res = await Globals.Data.Clients.Get(criteria);
+            var res = await DataService.Data.Clients.Get(criteria);
             if (!res.Success)
             {
                 ErrorText = Utils.ErrorsToString(res.Errors);

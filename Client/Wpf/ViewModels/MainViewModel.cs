@@ -1,10 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Deve.Internal;
 using Deve.ClientApp.Wpf.Views;
 using Deve.ClientApp.Wpf.Resources.Strings;
 using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Models;
+using Deve.ClientApp.Wpf.Interfaces;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
@@ -60,7 +60,8 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel()
+        public MainViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
             _ctrlDataClients = new(LoadDataClients);
             _ctrlDataCities = new(LoadDataCities);
@@ -86,7 +87,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             {
                 Name = _ctrlDataClients.SearchText,
             };
-            await LoadDataList(_ctrlDataClients, Globals.Data.Clients, criteria, x => new ListDataClient()
+            await LoadDataList(_ctrlDataClients, DataService.Data.Clients, criteria, x => new ListDataClient()
             {
                 Id = x.Id,
                 Main = x.DisplayName,
@@ -101,7 +102,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             {
                 Name = _ctrlDataCities.SearchText,
             };
-            await LoadDataList(_ctrlDataCities, Globals.Data.Cities, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataCities, DataService.Data.Cities, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -115,7 +116,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             {
                 Name = _ctrlDataStates.SearchText,
             };
-            await LoadDataList(_ctrlDataStates, Globals.Data.States, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataStates, DataService.Data.States, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -129,7 +130,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             {
                 Name = _ctrlDataCountries.SearchText,
             };
-            await LoadDataList(_ctrlDataCountries, Globals.Data.Countries, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataCountries, DataService.Data.Countries, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -142,7 +143,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsLoadingClientStats = true;
             try
             {
-                var res = await Globals.Data.Stats.GetClientStats();
+                var res = await DataService.Data.Stats.GetClientStats();
                 if (!res.Success)
                 {
                     _ctrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
@@ -159,17 +160,16 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         private async Task DoAddState()
         {
-            var wnd = new StateView(new State());
-            if (wnd.ShowDialog() == true)
+            if (NavigationService.NavigateModalTo<StateView>())
                 await LoadDataStates();
         }
 
         private async Task DoEditState(ListData? listData)
         {
-            await DoEdit(listData, _ctrlDataStates, Globals.Data.States, (o) =>
+            await DoEdit(listData, _ctrlDataStates, DataService.Data.States, (o) =>
             {
-                var wnd = new StateView(o);
-                if (wnd.ShowDialog() == true)
+                // Use case 1: sending Id to force data download again
+                if (NavigationService.NavigateModalTo<StateView>(o.Id))
                 {
                     _ = LoadDataStates();
                     return true;
@@ -180,22 +180,21 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         private async Task DoDeleteState(ListData? listData)
         {
-            await DoDelete(listData, AppResources.ConfirmDeleteState, _ctrlDataStates, Globals.Data.States, LoadDataStates);
+            await DoDelete(listData, AppResources.ConfirmDeleteState, _ctrlDataStates, DataService.Data.States, LoadDataStates);
         }
 
         private async Task DoAddCountry()
         {
-            var wnd = new CountryView(new Country());
-            if (wnd.ShowDialog() == true)
+            if (NavigationService.NavigateModalTo<CountryView>())
                 await LoadDataCountries();
         }
 
         private async Task DoEditCountry(ListData? listData)
         {
-            await DoEdit(listData, _ctrlDataCountries, Globals.Data.Countries, (o) =>
+            await DoEdit(listData, _ctrlDataCountries, DataService.Data.Countries, (o) =>
             {
-                var wnd = new CountryView(o);
-                if (wnd.ShowDialog() == true)
+                // Use case 2: sending Country object to avoid data download again
+                if (NavigationService.NavigateModalTo<CountryView, Country>(o))
                 {
                     _ = LoadDataCountries();
                     return true;
@@ -206,7 +205,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         private async Task DoDeleteCountry(ListData? listData)
         {
-            await DoDelete(listData, AppResources.ConfirmDeleteCountry, _ctrlDataCountries, Globals.Data.Countries, LoadDataCountries);
+            await DoDelete(listData, AppResources.ConfirmDeleteCountry, _ctrlDataCountries, DataService.Data.Countries, LoadDataCountries);
         }
         #endregion
 

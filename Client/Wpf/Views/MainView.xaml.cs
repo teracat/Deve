@@ -4,11 +4,11 @@ namespace Deve.ClientApp.Wpf.Views
 {
     public partial class MainView : BaseView
     {
-        public MainView()
+        public MainView(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            ViewModel = new MainViewModel();
+            ViewModel = mainViewModel;
         }
     }
 }
