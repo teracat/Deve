@@ -1,15 +1,11 @@
-﻿using Deve.ClientApp.Maui.Interfaces;
-using Deve.ClientApp.Maui.Services;
-using Deve.ClientApp.Maui.ViewModels;
-using Deve.ClientApp.Maui.Views;
-using Microsoft.Maui.LifecycleEvents;
-using System.Reflection;
-//-:cnd
+﻿//-:cnd
 #if WINDOWS
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 #endif
 //+:cnd
+using Microsoft.Maui.LifecycleEvents;
+using Deve.ClientApp.Maui.Helpers;
 
 namespace Deve.ClientApp.Maui
 {
@@ -62,39 +58,6 @@ namespace Deve.ClientApp.Maui
 #endif
 //+:cnd
             return builder.Build();
-        }
-
-        public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
-        {
-            mauiAppBuilder.Services.AddTransient<IDataService, DataService>();
-
-            return mauiAppBuilder;
-        }
-
-        public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var viewModels = assembly.GetTypes()
-                                     .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseViewModel)));
-            foreach (var vm in viewModels)
-            {
-                mauiAppBuilder.Services.AddTransient(vm);
-            }
-
-            return mauiAppBuilder;
-        }
-
-        public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var views = assembly.GetTypes()
-                                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseView)));
-            foreach (var v in views)
-            {
-                mauiAppBuilder.Services.AddTransient(v);
-            }
-
-            return mauiAppBuilder;
         }
     }
 }
