@@ -25,25 +25,16 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected override async Task LoadData()
+        protected override async Task GetData()
         {
-            ErrorText = string.Empty;
-            IsBusy = true;
-            try
+            var res = await DataService.Data.Clients.Get(_id);
+            if (!res.Success)
             {
-                var res = await DataService.Data.Clients.Get(_id);
-                if (!res.Success)
-                {
-                    ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
+                ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
+            }
 
-                Client = res.Data;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            Client = res.Data;
         }
         #endregion
     }

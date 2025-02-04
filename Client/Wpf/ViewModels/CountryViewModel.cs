@@ -32,38 +32,30 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task LoadData()
+        protected async override Task GetData()
         {
-            IsBusy = true;
-            try
+            if (_country is null)
             {
-                if (_country is null)
+                if (Id <= 0)
                 {
-                    if (Id <= 0)
-                    {
-                        _country = new Country();
-                    }
-                    else
-                    {
-                        var res = await DataService.Data.Countries.Get(Id);
-                        if (!res.Success || res.Data is null)
-                        {
-                            Globals.ShowError(res.Errors);
-                            Close();
-                            return;
-                        }
-
-                        _country = res.Data;
-                    }
+                    _country = new Country();
                 }
+                else
+                {
+                    var res = await DataService.Data.Countries.Get(Id);
+                    if (!res.Success || res.Data is null)
+                    {
+                        Globals.ShowError(res.Errors);
+                        Close();
+                        return;
+                    }
 
-                Name = _country.Name;
-                IsoCode = _country.IsoCode;
+                    _country = res.Data;
+                }
             }
-            finally
-            {
-                IsBusy = false;
-            }
+
+            Name = _country.Name;
+            IsoCode = _country.IsoCode;
         }
 
         internal async override Task DoSave()

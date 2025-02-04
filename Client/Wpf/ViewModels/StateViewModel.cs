@@ -40,39 +40,10 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task LoadData()
+        protected async override Task GetData()
         {
-            IsBusy = true;
-            try
-            {
-                if (_state is null)
-                {
-                    if (Id <= 0)
-                    {
-                        _state = new State();
-                    }
-                    else
-                    {
-                        var res = await DataService.Data.States.Get(Id);
-                        if (!res.Success || res.Data is null)
-                        {
-                            Globals.ShowError(res.Errors);
-                            IsBusy = false; // When IsBusy=true the Window will not be closed
-                            Close();
-                            return;
-                        }
-
-                        _state = res.Data;
-                    }
-                }
-
-                Name = _state.Name;
-                await LoadCountries();
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            await GetDataState();
+            await GetDataCountries();
         }
 
         internal async override Task DoSave()
@@ -116,28 +87,46 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Methods
-        private async Task LoadCountries()
+        private async Task GetDataState()
         {
-            IsBusy = true;
-            try
+            if (_state is null)
             {
-                var res = await DataService.Data.Countries.Get();
-                if (!res.Success)
+                if (Id <= 0)
                 {
-                    Globals.ShowError(res.Errors);
-                    IsBusy = false; // When IsBusy=true the Window will not be closed
-                    Close();
-                    return;
+                    _state = new State();
                 }
+                else
+                {
+                    var res = await DataService.Data.States.Get(Id);
+                    if (!res.Success || res.Data is null)
+                    {
+                        Globals.ShowError(res.Errors);
+                        IsBusy = false; // When IsBusy=true the Window will not be closed
+                        Close();
+                        return;
+                    }
 
-                Countries = res.Data;
-                if (_state is not null && _state.CountryId > 0)
-                    SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+                    _state = res.Data;
+                }
             }
-            finally
+
+            Name = _state.Name;
+        }
+
+        private async Task GetDataCountries()
+        {
+            var res = await DataService.Data.Countries.Get();
+            if (!res.Success)
             {
-                IsBusy = false;
+                Globals.ShowError(res.Errors);
+                IsBusy = false; // When IsBusy=true the Window will not be closed
+                Close();
+                return;
             }
+
+            Countries = res.Data;
+            if (_state is not null && _state.CountryId > 0)
+                SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
         }
         #endregion
 

@@ -16,7 +16,23 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Abstract Methods
-        protected abstract Task LoadData();
+        protected abstract Task GetData();
+        #endregion
+
+        #region Methods
+        protected async Task LoadData()
+        {
+            ErrorText = string.Empty;
+            IsBusy = true;
+            try
+            {
+                await GetData();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
         #endregion
 
         #region IQueryAttributable

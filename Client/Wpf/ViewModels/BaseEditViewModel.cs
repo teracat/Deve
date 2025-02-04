@@ -7,6 +7,8 @@ namespace Deve.ClientApp.Wpf.ViewModels
     public abstract class BaseEditViewModel : BaseViewModel, INavigationAware
     {
         #region Fields
+        public Action? LoadDataDoneAction { get; set; }
+
         private ICommand? _saveCommand;
         private ICommand? _cancelCommand;
         #endregion
@@ -31,7 +33,22 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         internal abstract Task DoSave();
 
-        protected abstract Task LoadData();
+        protected async Task LoadData()
+        {
+            IsBusy = true;
+            try
+            {
+                await GetData();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            LoadDataDoneAction?.Invoke();
+        }
+
+        protected abstract Task GetData();
         #endregion
 
         #region INavigationAware

@@ -12,8 +12,12 @@ namespace Deve.ClientApp.Wpf.Views
         public CountryView(CountryViewModel viewModel)
         {
             InitializeComponent();
+            
+            // When the data is loaded, set initial focus
+            viewModel.LoadDataDoneAction = new Action(() => { uxName.Focus(); });
+
+            // Set ViewModel
             ViewModel = _viewModel = viewModel;
-            uxName.Focus();
         }
         #endregion
 
