@@ -43,7 +43,7 @@ namespace Deve.ClientApp.Maui.ViewModels
             IsBusy = true;
             try
             {
-                await LoadListData();
+                await GetListData();
             }
             finally
             {
@@ -53,7 +53,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Abstract/Virtual Methods
-        protected abstract Task LoadListData();
+        protected abstract Task GetListData();
         protected virtual void DoSelected(ListData data)
         {
             var navigationParameter = new ShellNavigationQueryParameters

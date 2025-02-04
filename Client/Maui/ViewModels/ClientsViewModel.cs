@@ -14,7 +14,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Overrides
-        protected override async Task LoadListData()
+        protected override async Task GetListData()
         {
             CriteriaClient? criteria = null;
             var res = await DataService.Data.Clients.Get(criteria);
