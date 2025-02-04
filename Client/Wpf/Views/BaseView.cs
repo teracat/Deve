@@ -11,7 +11,7 @@ namespace Deve.ClientApp.Wpf.Views
         #endregion
 
         #region Properties
-        protected BaseViewModel? ViewModel
+        public BaseViewModel? ViewModel
         {
             get => _viewModel;
             set

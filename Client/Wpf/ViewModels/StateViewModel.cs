@@ -1,19 +1,19 @@
-﻿using Deve.ClientApp.Wpf.Resources.Strings;
-using Deve.ClientApp.Wpf.Views;
+﻿using Deve.ClientApp.Wpf.Interfaces;
+using Deve.ClientApp.Wpf.Resources.Strings;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
     public class StateViewModel : BaseEditViewModel
     {
         #region Fields
-        private State _state;
-        private string _name;
+        private State? _state;
+        private string? _name;
         private IList<Country>? _countries;
         private Country? _selectedCountry;
         #endregion
 
         #region Properties
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
@@ -33,17 +33,50 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public StateViewModel(State state)
+        public StateViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
-            _state = state;
-            _name = _state.Name;
-            _ = LoadCountries();
         }
         #endregion
 
         #region Overrides
+        protected async override Task LoadData()
+        {
+            IsBusy = true;
+            try
+            {
+                if (Id <= 0)
+                {
+                    _state = new State();
+                }
+                else
+                {
+                    var res = await DataService.Data.States.Get(Id);
+                    if (!res.Success || res.Data is null)
+                    {
+                        Globals.ShowError(res.Errors);
+                        IsBusy = false; // When IsBusy=true the Window will not be closed
+                        Close();
+                        return;
+                    }
+
+                    _state = res.Data;
+                }
+
+                Name = _state.Name;
+                await LoadCountries();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         internal async override Task DoSave()
         {
+            if (_state is null)
+                return;
+
             if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
             {
                 Globals.ShowError(AppResources.MissingField);
@@ -53,15 +86,15 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                _state.Name = _name.Trim();
+                _state.Name = _name!.Trim();
                 _state.CountryId = _selectedCountry.Id;
                 _state.Country = _selectedCountry.Name;
 
                 Result res;
                 if (_state.Id == 0)
-                    res = await Globals.Data.States.Add(_state);
+                    res = await DataService.Data.States.Add(_state);
                 else
-                    res = await Globals.Data.States.Update(_state);
+                    res = await DataService.Data.States.Update(_state);
 
                 if (!res.Success)
                 {
@@ -80,13 +113,12 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Methods
-
         private async Task LoadCountries()
         {
             IsBusy = true;
             try
             {
-                var res = await Globals.Data.Countries.Get();
+                var res = await DataService.Data.Countries.Get();
                 if (!res.Success)
                 {
                     Globals.ShowError(res.Errors);
@@ -96,7 +128,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
                 }
 
                 Countries = res.Data;
-                if (_state.CountryId > 0)
+                if (_state is not null && _state.CountryId > 0)
                     SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
             finally
