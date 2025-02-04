@@ -12,7 +12,6 @@ namespace Deve.ClientApp.Maui.ViewModels
         public BaseDetailsViewModel(IServiceProvider serviceProvider, IDataService dataService)
             : base(serviceProvider, dataService)
         {
-            _ = LoadData();
         }
         #endregion
 
@@ -24,6 +23,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             _id = (long)query["Id"];
+            _ = LoadData();
         }
         #endregion
     }
