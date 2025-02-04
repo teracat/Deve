@@ -4,11 +4,10 @@ namespace Deve.ClientApp.Maui.Views
 {
     public partial class ClientDetailsView : BaseView
     {
-        public ClientDetailsView()
+        public ClientDetailsView(ClientDetailsViewModel viewModel)
+            : base(viewModel)
         {
             InitializeComponent();
-
-            ViewModel = new ClientDetailsViewModel();
         }
     }
 }

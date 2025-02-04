@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.Resources.Strings;
 using Deve.ClientApp.Wpf.Views;
 
@@ -7,7 +8,6 @@ namespace Deve.ClientApp.Wpf.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         #region Fields
-        private ILoginView _loginView;
         private List<CultureInfo> _languages = [new CultureInfo("en"), new CultureInfo("es-ES")];
         private CultureInfo? _selectedLanguage;
         private string _username = string.Empty;
@@ -15,6 +15,8 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Properties
+        public ILoginView? LoginView { get; set; }
+
         public string Username
         {
             get => _username;
@@ -37,7 +39,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
                     Properties.Settings.Default.LangCode = value.LCID;
                     Properties.Settings.Default.Save();
 
-                    _loginView?.ChangeCulture(value, _username);
+                    LoginView?.ChangeCulture(value, _username);
                 }
             }
         }
@@ -50,14 +52,11 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(ILoginView loginView, string? username = null)
+        public LoginViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
-            _loginView = loginView;
             _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
-            if (username is not null)
-                _username = username;
-            else
-                _username = Properties.Settings.Default.Username;
+            _username = Properties.Settings.Default.Username;
             _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
         }
         #endregion
@@ -76,7 +75,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(_username, password));
+                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(_username, password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
@@ -94,8 +93,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
             }
 
             // Go to MainWindow
-            var mainView = new MainView();
-            mainView.Show();
+            NavigationService.NavigateTo<MainView>();
             Close();
         }
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows;
 using Deve.ClientApp.Wpf.ViewModels;
 
 namespace Deve.ClientApp.Wpf.Views
@@ -10,30 +11,36 @@ namespace Deve.ClientApp.Wpf.Views
         #endregion
 
         #region Constructors
-        public LoginView()
+        public LoginView(LoginViewModel viewModel)
         {
             InitializeComponent();
-            string? username = null;
-//-:cnd
+            
+            viewModel.LoginView = this;
+            ViewModel = _viewModel = viewModel;
+
+            //-:cnd
 #if DEBUG
             if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
-                username = "teracat";
-                uxPassword.Password = "teracat";
+                SetUsernamePassword("teracat", "teracat");
             }
 #endif
-//+:cnd
-            ViewModel = _viewModel = new LoginViewModel(this, username);
+            //+:cnd
         }
+        #endregion
 
-        public LoginView(string? username, string? password)
+        #region Methods
+        public void SetUsernamePassword(string username, string password)
         {
-            InitializeComponent();
-
+            _viewModel.Username = username;
             uxPassword.Password = password;
+        }
+        #endregion
 
-            ViewModel = _viewModel = new LoginViewModel(this, username);
-
+        #region Overrides
+        protected override void OnWindowLoaded()
+        {
+            base.OnWindowLoaded();
             if (string.IsNullOrEmpty(uxUsername.Text))
                 uxUsername.Focus();
             else
@@ -44,7 +51,7 @@ namespace Deve.ClientApp.Wpf.Views
         #region IViewLogin
         public void ChangeCulture(CultureInfo value, string username)
         {
-            App.ChangeCulture(value, username, uxPassword.Password);
+            ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
         }
         #endregion
 

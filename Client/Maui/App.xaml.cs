@@ -4,11 +4,15 @@ namespace Deve.ClientApp.Maui
 {
     public partial class App : Application
     {
-        public App()
+        IServiceProvider _serviceProvider;
+
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
-            MainPage = new LoginView();
+            _serviceProvider = serviceProvider;
+
+            MainPage = _serviceProvider.GetRequiredService<LoginView>();
         }
 
         public void GoToMain()
@@ -23,7 +27,7 @@ namespace Deve.ClientApp.Maui
         {
             Dispatcher.Dispatch(() =>
             {
-                MainPage = new LoginView();
+                MainPage = _serviceProvider.GetRequiredService<LoginView>();
             });
         }
     }

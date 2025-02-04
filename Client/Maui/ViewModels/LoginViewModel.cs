@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Resources.Strings;
 
 namespace Deve.ClientApp.Maui.ViewModels
@@ -27,22 +28,16 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel()
+        public LoginViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
-        }
-        #endregion
-
-        #region Overrides
 //-:cnd
 #if DEBUG
-        public override void OnViewAppearing()
-        {
-            base.OnViewAppearing();
             Username = "teracat";
             Password = "teracat";
-        }
 #endif
 //+:cnd
+        }
         #endregion
 
         #region Methods
@@ -59,7 +54,7 @@ namespace Deve.ClientApp.Maui.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await Globals.Data.Authenticate.Login(new UserCredentials(_username, _password));
+                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(_username, _password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
