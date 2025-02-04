@@ -5,10 +5,10 @@ namespace Deve.ClientApp.Maui.Views
 {
     public class CitiesView : ListDataView
     {
-        public CitiesView()
+        public CitiesView(CitiesViewModel viewModel)
+            : base(viewModel)
         {
             Title = AppResources.Cities;
-            ViewModel = new CitiesViewModel();
         }
     }
 }

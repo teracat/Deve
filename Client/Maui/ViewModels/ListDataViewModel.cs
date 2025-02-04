@@ -1,4 +1,5 @@
-﻿using Deve.ClientApp.Maui.Models;
+﻿using Deve.ClientApp.Maui.Interfaces;
+using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
@@ -28,15 +29,9 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ListDataViewModel()
+        public ListDataViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
-        }
-        #endregion
-
-        #region Overrides
-        public override void OnViewAppearing()
-        {
-            base.OnViewAppearing();
             _ = LoadData();
         }
         #endregion

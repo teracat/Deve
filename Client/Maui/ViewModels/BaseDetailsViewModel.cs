@@ -1,4 +1,6 @@
-﻿namespace Deve.ClientApp.Maui.ViewModels
+﻿using Deve.ClientApp.Maui.Interfaces;
+
+namespace Deve.ClientApp.Maui.ViewModels
 {
     public abstract class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
@@ -6,19 +8,10 @@
         protected long _id = 0;
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Constructor
-        public BaseDetailsViewModel()
+        public BaseDetailsViewModel(IServiceProvider serviceProvider, IDataService dataService)
+            : base(serviceProvider, dataService)
         {
-        }
-        #endregion
-
-        #region Overrides
-        public override void OnViewAppearing()
-        {
-            base.OnViewAppearing();
             _ = LoadData();
         }
         #endregion
