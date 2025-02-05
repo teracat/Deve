@@ -19,6 +19,9 @@ namespace Deve.ClientApp.Maui.ViewModels
         {
             if (value is not null)
                 DoSelected(value);
+
+            // Clear the selection to allow the same item to be selected again
+            SelectedData = null;
         }
         #endregion
 
