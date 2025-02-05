@@ -57,6 +57,8 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
 - [Installation](https://github.com/teracat/Deve/wiki/Installation)
   - [Prerequisites](https://github.com/teracat/Deve/wiki/Installation#prerequisites)
   - [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide)
+  - [Uninstall](https://github.com/teracat/Deve/wiki/Installation#uninstall)
+  - [Install an Older Version](https://github.com/teracat/Deve/wiki/Installation#uninstall)
 - [Common](https://github.com/teracat/Deve/wiki/Common)
   - [Constants](https://github.com/teracat/Deve/wiki/Common#constants)
   - [Utils](https://github.com/teracat/Deve/wiki/Common#utils)
