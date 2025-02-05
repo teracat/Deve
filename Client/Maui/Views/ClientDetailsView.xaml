@@ -4,9 +4,9 @@
             xmlns:local="clr-namespace:Deve.ClientApp.Maui"
             xmlns:strings="clr-namespace:Deve.ClientApp.Maui.Resources.Strings"
             xmlns:v="clr-namespace:Deve.ClientApp.Maui.Views"
-            x:Class="Deve.ClientApp.Maui.Views.ClientDetailsView"
             xmlns:vm="clr-namespace:Deve.ClientApp.Maui.ViewModels"
             x:DataType="vm:ClientDetailsViewModel"
+            x:Class="Deve.ClientApp.Maui.Views.ClientDetailsView"
             Title="{x:Static strings:AppResources.Client}">
 
     <ScrollView>
