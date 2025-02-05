@@ -52,8 +52,12 @@ namespace Deve.ClientApp.Wpf.ViewModels
                 }
             }
 
-            Name = _country!.Name;
-            IsoCode = _country!.IsoCode;
+            // Only assign values if it's not a new country to avoid validation errors
+            if (_country.Id > 0)
+            {
+                Name = _country!.Name;
+                IsoCode = _country!.IsoCode;
+            }
         }
 
         internal async override Task Save()

@@ -100,7 +100,11 @@ namespace Deve.ClientApp.Wpf.ViewModels
                 }
             }
 
-            Name = _state.Name;
+            // Only assign values if it's not a new state to avoid validation errors
+            if (_state.Id > 0)
+            {
+                Name = _state.Name;
+            }
         }
 
         private async Task GetDataCountries()
