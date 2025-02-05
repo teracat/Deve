@@ -4,6 +4,9 @@
             xmlns:local="clr-namespace:Deve.ClientApp.Maui"
             xmlns:v="clr-namespace:Deve.ClientApp.Maui.Views"
             xmlns:strings="clr-namespace:Deve.ClientApp.Maui.Resources.Strings"
+            xmlns:vm="clr-namespace:Deve.ClientApp.Maui.ViewModels"
+            xmlns:m="clr-namespace:Deve.ClientApp.Maui.Models"
+            x:DataType="vm:ListDataViewModel"
             x:Class="Deve.ClientApp.Maui.Views.ListDataView">
 
     <ScrollView>
@@ -13,7 +16,7 @@
             
             <ListView ItemsSource="{Binding ListData}" SelectedItem="{Binding SelectedData, Mode=TwoWay}" RowHeight="60" SeparatorColor="{StaticResource Gray100}">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="m:ListData">
                         <ViewCell>
                             <Grid Padding="10">
                                 <Grid.RowDefinitions>
