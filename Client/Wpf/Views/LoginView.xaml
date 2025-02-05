@@ -12,10 +12,10 @@
             d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
             mc:Ignorable="d"
             Title="{x:Static strings:AppResources.Identification}"
-            Width="475" Height="525"
+            Width="450" SizeToContent="Height"
             ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Padding="20">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" MaxWidth="450">
             <Image Source="/Resources/Images/logo.png" Height="100" HorizontalAlignment="Center" />
             <Border Width="350" HorizontalAlignment="Center" Style="{StaticResource MainBorder}">
                 <StackPanel Orientation="Vertical">
@@ -27,13 +27,13 @@
 
                     <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="NativeName" Margin="0,10,0,0" />
 
-                    <Label Content="{x:Static strings:AppResources.Username}" Margin="0,10,0,0" />
+                    <Label Content="{x:Static strings:AppResources.Username}" Margin="0,10,0,0" Style="{StaticResource RequiredFieldLabel}" />
 
-                    <TextBox x:Name="uxUsername" Text="{Binding Username}" IsEnabled="{Binding IsIdle}" AcceptsReturn="False" KeyDown="OnUsernameKeyDown" />
+                    <TextBox x:Name="uxUsername" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" KeyDown="OnUsernameKeyDown" />
 
-                    <Label Content="{x:Static strings:AppResources.Password}" Margin="0,10,0,0" />
+                    <Label Content="{x:Static strings:AppResources.Password}" Margin="0,10,0,0" Style="{StaticResource RequiredFieldLabel}" />
 
-                    <PasswordBox x:Name="uxPassword" IsEnabled="{Binding IsIdle}" KeyDown="OnPasswordKeyDown" />
+                    <PasswordBox x:Name="uxPassword" IsEnabled="{Binding IsIdle}" KeyDown="OnPasswordKeyDown" PasswordChanged="OnPasswordChanged" />
 
                     <CheckBox IsChecked="{Binding Remember}" Content="{x:Static strings:AppResources.Remember}" Margin="0,10,0,0" />
 

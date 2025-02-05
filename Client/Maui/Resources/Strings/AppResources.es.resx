@@ -141,8 +141,11 @@
   <data name="Logout" xml:space="preserve">
     <value>Salir</value>
   </data>
-  <data name="MissingUsernamePassword" xml:space="preserve">
-    <value>El usuario y contraseña son obligatorios</value>
+  <data name="MissingPassword" xml:space="preserve">
+    <value>La contraseña es obligatoria</value>
+  </data>
+  <data name="MissingUsername" xml:space="preserve">
+    <value>El nombre de usuario es obligatorio</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nombre</value>

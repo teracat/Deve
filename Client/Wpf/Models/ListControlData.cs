@@ -1,49 +1,34 @@
-﻿using Deve.ClientApp.Wpf.Helpers;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Deve.ClientApp.Wpf.Models
 {
-    public class ListControlData : UIBase
+    public partial class ListControlData : ObservableObject
     {
         #region Fields
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
+
+        [ObservableProperty]
         private string _searchText = string.Empty;
+
+        [ObservableProperty]
         private string _errorText = string.Empty;
+
+        [ObservableProperty]
         private IEnumerable<ListData>? _items;
+
         private Func<Task>? _funcWhenSearch;
-        private ICommand? _searchCommand;
         #endregion
 
         #region Properties
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
-        }
+        public bool IsIdle => !IsBusy;
+        #endregion
 
-        public string SearchText
-        {
-            get => _searchText;
-            set => SetProperty(ref _searchText, value);
-        }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set => SetProperty(ref _errorText, value);
-        }
-
-        public IEnumerable<ListData>? Items
-        {
-            get => _items;
-            set => SetProperty(ref _items, value);
-        }
-
-        public ICommand SearchCommand => _searchCommand ??= new Command(() =>
-        {
-            if (_funcWhenSearch != null)
-                _funcWhenSearch();
-        }, () => !_isBusy);
+        #region Methods
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        public void Search() => _funcWhenSearch?.Invoke();
         #endregion
 
         #region Constructors

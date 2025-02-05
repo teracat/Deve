@@ -34,7 +34,7 @@ namespace Deve.ClientApp.Wpf.Views
         {
             base.OnKeyDown(e);
             if (e.Key == Key.Escape)
-                _viewModel?.DoCancel();
+                _viewModel?.Cancel();
         }
         #endregion
     }

@@ -1,30 +1,27 @@
-﻿using Deve.ClientApp.Maui.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public abstract class ListDataViewModel : BaseViewModel
+    public abstract partial class ListDataViewModel : BaseViewModel
     {
         #region Fields
+        [ObservableProperty]
         IEnumerable<ListData>? _listData;
+
+        [ObservableProperty]
+        ListData? _selectedData;
         #endregion
 
-        #region Properties
-        public IEnumerable<ListData>? ListData
+        #region OnPropertyChanged
+        partial void OnSelectedDataChanged(ListData? value)
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
+            if (value is not null)
+                DoSelected(value);
 
-        public ListData? SelectedData
-        {
-            get => null;
-            set
-            {
-                if (value is not null)
-                    DoSelected(value);
-                OnPropertyChanged();
-            }
+            // Clear the selection to allow the same item to be selected again
+            SelectedData = null;
         }
         #endregion
 

@@ -1,20 +1,14 @@
-﻿using Deve.Internal;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Internal;
 using Deve.ClientApp.Maui.Interfaces;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public class ClientDetailsViewModel : BaseDetailsViewModel
+    public partial class ClientDetailsViewModel : BaseDetailsViewModel
     {
         #region Atributes
+        [ObservableProperty]
         private Client? _client;
-        #endregion
-
-        #region Properties
-        public Client? Client
-        {
-            get => _client;
-            set => SetProperty(ref _client, value);
-        }
         #endregion
 
         #region Constructor

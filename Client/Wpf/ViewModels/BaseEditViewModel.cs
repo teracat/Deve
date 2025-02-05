@@ -1,16 +1,14 @@
 ﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Interfaces;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public abstract class BaseEditViewModel : BaseViewModel, INavigationAware
+    public abstract partial class BaseEditViewModel : BaseViewModel, INavigationAware
     {
         #region Fields
         public Action? LoadDataDoneAction { get; set; }
-
-        private ICommand? _saveCommand;
-        private ICommand? _cancelCommand;
         #endregion
 
         #region Properties
@@ -25,13 +23,15 @@ namespace Deve.ClientApp.Wpf.ViewModels
         #endregion
 
         #region Methods
-        internal virtual void DoCancel()
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        internal void Cancel()
         {
             SetResult(false);
             Close();
         }
 
-        internal abstract Task DoSave();
+        [RelayCommand(CanExecute = nameof(IsIdle))]
+        internal abstract Task Save();
 
         protected async Task LoadData()
         {
@@ -67,9 +67,12 @@ namespace Deve.ClientApp.Wpf.ViewModels
         }
         #endregion
 
-        #region Commands
-        public ICommand Cancel => _cancelCommand ??= new Command(() => DoCancel(), () => IsIdle);
-        public ICommand Save => _saveCommand ??= new Command(() => _ = DoSave(), () => IsIdle);
+        #region Overrides
+        protected override void OnIsBusyChanged()
+        {
+            CancelCommand.NotifyCanExecuteChanged();
+            SaveCommand.NotifyCanExecuteChanged();
+        }
         #endregion
     }
 }

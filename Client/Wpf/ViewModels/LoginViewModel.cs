@@ -1,53 +1,62 @@
 ﻿using System.Globalization;
+using System.Security;
+using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Interfaces;
 using Deve.ClientApp.Wpf.Resources.Strings;
 using Deve.ClientApp.Wpf.Views;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public partial class LoginViewModel : BaseViewModel
     {
         #region Fields
+        [ObservableProperty]
         private List<CultureInfo> _languages = [new CultureInfo("en"), new CultureInfo("es-ES")];
+
+        [ObservableProperty]
         private CultureInfo? _selectedLanguage;
+
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
         private string _username = string.Empty;
+
+        [ObservableProperty]
         private bool _remember = false;
+
+        private SecureString _password = new();
         #endregion
 
         #region Properties
         public ILoginView? LoginView { get; set; }
 
-        public string Username
+        [SecurePasswordValidation(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
+        public SecureString Password
         {
-            get => _username;
-            set => SetProperty(ref _username, value);
-        }
-
-        public List<CultureInfo> Languages
-        {
-            get => _languages;
-            set => SetProperty(ref _languages, value);
-        }
-
-        public CultureInfo? SelectedLanguage
-        {
-            get => _selectedLanguage;
+            get => _password;
             set
             {
-                if (SetProperty(ref _selectedLanguage, value) && value is not null)
-                {
-                    Properties.Settings.Default.LangCode = value.LCID;
-                    Properties.Settings.Default.Save();
-
-                    LoginView?.ChangeCulture(value, _username);
-                }
+                SetProperty(ref _password, value);
+                ValidateProperty(value);
+                OnPropertyChanged(nameof(HasErrorPassword));
             }
         }
 
-        public bool Remember
+        public bool HasErrorPassword => GetErrors(nameof(Password)).Any();
+        #endregion
+
+        #region OnPropertyChanged
+        partial void OnSelectedLanguageChanged(CultureInfo? value)
         {
-            get => _remember;
-            set => SetProperty(ref _remember, value);
+            if (value is not null)
+            {
+                Properties.Settings.Default.LangCode = value.LCID;
+                Properties.Settings.Default.Save();
+
+                LoginView?.ChangeCulture(value, Username);
+            }
         }
         #endregion
 
@@ -61,21 +70,25 @@ namespace Deve.ClientApp.Wpf.ViewModels
         }
         #endregion
 
-        #region Methods
-        internal async Task DoLogin(string password)
+        #region Overrides
+        protected override bool Validate()
         {
-            ErrorText = string.Empty;
+            bool res = base.Validate();
+            OnPropertyChanged(nameof(HasErrorPassword));
+            return res;
+        }
+        #endregion
 
-            if (Utils.SomeIsNullOrWhiteSpace(_username, password))
-            {
-                ErrorText = AppResources.MissingUsernamePassword;
+        #region Methods
+        internal async Task Login(string password)
+        {
+            if (!Validate())
                 return;
-            }
 
             IsBusy = true;
             try
             {
-                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(_username, password));
+                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(Username, password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
@@ -84,7 +97,7 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
                 Globals.UserToken = resLogin.Data;
 
-                Properties.Settings.Default.Username = _remember ? _username : string.Empty;
+                Properties.Settings.Default.Username = Remember ? Username : string.Empty;
                 Properties.Settings.Default.Save();
             }
             finally

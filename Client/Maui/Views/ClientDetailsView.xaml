@@ -39,7 +39,6 @@
                            SemanticProperties.Description="" />
 
 
-
                     <Label Text="{Binding Client.Location.FullAddress}" Style="{StaticResource FieldValueLabel}"
                            SemanticProperties.Description="" />
                     <Label Text="{x:Static strings:AppResources.Address}" Style="{StaticResource FieldNameLabel}"

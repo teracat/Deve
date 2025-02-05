@@ -3,7 +3,7 @@ using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public class CitiesViewModel : ListDataViewModel
+    public partial class CitiesViewModel : ListDataViewModel
     {
         #region Constructor
         public CitiesViewModel(IServiceProvider serviceProvider, IDataService dataService) 

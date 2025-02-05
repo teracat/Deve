@@ -1,14 +1,20 @@
 ﻿using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Deve.ClientApp.Wpf.ViewModels
 {
-    public abstract class BaseViewModel : UIBase
+    public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
         private readonly INavigationService _navigationService;
         private readonly IDataService _dataService;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasError))]
         private string _errorText = string.Empty;
         #endregion
 
@@ -17,40 +23,9 @@ namespace Deve.ClientApp.Wpf.ViewModels
 
         protected IDataService DataService => _dataService;
 
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                if (_isBusy != value)
-                {
-                    _isBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
-                    OnPropertyChanged(nameof(IsIdle));
-                    OnIsBusyChanged();
-                }
-            }
-        }
+        public bool IsIdle => !IsBusy;
 
-        public bool IsIdle
-        {
-            get => !IsBusy;
-            set => IsBusy = !value;
-        }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                {
-                    OnPropertyChanged(nameof(HasError));
-                }
-            }
-        }
-
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
 
         public Action<bool>? SetResultAction { get; set; }
 
@@ -65,8 +40,20 @@ namespace Deve.ClientApp.Wpf.ViewModels
         }
         #endregion
 
+        #region OnPropertyChanged
+        partial void OnIsBusyChanged(bool value) => OnIsBusyChanged();
+        #endregion
+
         #region Virtual Methods
         protected virtual void OnIsBusyChanged() {}
+
+        protected virtual bool Validate()
+        {
+            ErrorText = string.Empty;
+            ClearErrors();
+            ValidateAllProperties();
+            return !HasErrors;
+        }
         #endregion
 
         #region Helper Methods
