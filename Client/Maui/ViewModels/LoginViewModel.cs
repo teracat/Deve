@@ -44,7 +44,7 @@ namespace Deve.ClientApp.Maui.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(_username, _password));
+                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(Username, Password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);

@@ -22,23 +22,10 @@ namespace Deve.ClientApp.Maui.ViewModels
         protected IDataService DataService => _dataService;
 
         protected IServiceProvider ServiceProvider => _serviceProvider;
-        public bool IsIdle
-        {
-            get => !IsBusy;
-            set => IsBusy = !value;
-        }
 
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                    OnPropertyChanged(nameof(HasError));
-            }
-        }
+        public bool IsIdle => !IsBusy;
 
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
 
         public Action? GoBackAction { get; set; }
         #endregion
