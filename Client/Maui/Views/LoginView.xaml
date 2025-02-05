@@ -5,6 +5,8 @@
             xmlns:local="clr-namespace:Deve.ClientApp.Maui"
             xmlns:strings="clr-namespace:Deve.ClientApp.Maui.Resources.Strings"
             xmlns:v="clr-namespace:Deve.ClientApp.Maui.Views"
+            xmlns:vm="clr-namespace:Deve.ClientApp.Maui.ViewModels"
+            x:DataType="vm:LoginViewModel"
             x:Class="Deve.ClientApp.Maui.Views.LoginView">
 
     <ScrollView>

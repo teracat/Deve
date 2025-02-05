@@ -5,6 +5,8 @@
             xmlns:strings="clr-namespace:Deve.ClientApp.Maui.Resources.Strings"
             xmlns:v="clr-namespace:Deve.ClientApp.Maui.Views"
             x:Class="Deve.ClientApp.Maui.Views.ClientDetailsView"
+            xmlns:vm="clr-namespace:Deve.ClientApp.Maui.ViewModels"
+            x:DataType="vm:ClientDetailsViewModel"
             Title="{x:Static strings:AppResources.Client}">
 
     <ScrollView>
@@ -35,7 +37,6 @@
                            SemanticProperties.Description="" />
                     <Label Text="{x:Static strings:AppResources.TaxId}" Style="{StaticResource FieldNameLabel}"
                            SemanticProperties.Description="" />
-
 
 
                     <Label Text="{Binding Client.Location.FullAddress}" Style="{StaticResource FieldValueLabel}"
