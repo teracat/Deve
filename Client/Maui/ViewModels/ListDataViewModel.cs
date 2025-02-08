@@ -1,4 +1,5 @@
-﻿using Deve.ClientApp.Maui.Interfaces;
+﻿using Deve.ClientApp.Maui.Helpers;
+using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
@@ -29,8 +30,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ListDataViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public ListDataViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService)
+            : base(navigationService, serviceProvider, dataService)
         {
             _ = LoadData();
         }
@@ -56,11 +57,11 @@ namespace Deve.ClientApp.Maui.ViewModels
         protected abstract Task GetListData();
         protected virtual void DoSelected(ListData data)
         {
-            var navigationParameter = new ShellNavigationQueryParameters
+            var navigationParameter = new NavigationParameters
             {
                 { "Id", data.Id }
             };
-            Shell.Current.GoToAsync("details", navigationParameter);
+            NavigationService.NavigateToAsync("details", navigationParameter);
         }
         #endregion
     }

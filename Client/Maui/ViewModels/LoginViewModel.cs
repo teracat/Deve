@@ -28,8 +28,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public LoginViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService)
+            : base(navigationService, serviceProvider, dataService)
         {
 //-:cnd
 #if DEBUG
@@ -63,7 +63,7 @@ namespace Deve.ClientApp.Maui.ViewModels
 
                 Globals.UserToken = resLogin.Data;
 
-                ((App?)Application.Current)?.GoToMain();
+                await NavigationService.NavigateToAsync("//clients");
             }
             finally
             {

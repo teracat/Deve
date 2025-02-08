@@ -17,10 +17,6 @@ namespace Deve.ClientApp.Maui.Views
                 if (_viewModel != value)
                 {
                     BindingContext = _viewModel = value;
-                    if (_viewModel is not null)
-                    {
-                        _viewModel.GoBackAction = GoBack;
-                    }
                 }
             }
         }
@@ -40,13 +36,6 @@ namespace Deve.ClientApp.Maui.Views
                 return ViewModel.OnViewBackButtonPressed();
             else
                 return base.OnBackButtonPressed();
-        }
-        #endregion
-
-        #region Methods
-        protected virtual void GoBack()
-        {
-            Navigation?.PopAsync();
         }
         #endregion
     }
