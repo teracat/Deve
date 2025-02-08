@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android34.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net8.0-android34.0</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))=='false'">net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
@@ -15,7 +15,7 @@
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 		<RuntimeIdentifiers Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">iossimulator-x64</RuntimeIdentifiers>
 
-		<OutputType>Exe</OutputType>
+    <OutputType Condition="'$(TargetFramework)' != 'net8.0'">Exe</OutputType>
 		<RootNamespace>Deve.ClientApp.Maui</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<MauiVersion>8.0.100</MauiVersion>

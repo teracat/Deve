@@ -4,13 +4,13 @@ namespace Deve.ClientApp.Maui.ViewModels
 {
     public abstract partial class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
-        #region Fields
-        protected long _id = 0;
+        #region Properties
+        public long Id { get; private set; }
         #endregion
 
         #region Constructor
-        public BaseDetailsViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public BaseDetailsViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
         }
         #endregion
@@ -38,7 +38,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #region IQueryAttributable
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            _id = (long)query["Id"];
+            Id = (long)query[nameof(Id)];
             _ = LoadData();
         }
         #endregion

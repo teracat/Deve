@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Deve.ClientApp.Wpf.Helpers;
 using Deve.ClientApp.Wpf.Views;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.ClientApp.Wpf
 {
@@ -12,7 +12,7 @@ namespace Deve.ClientApp.Wpf
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider serviceProvider { get; set; }
+        private ServiceProvider serviceProvider;
 
         public App()
         {
