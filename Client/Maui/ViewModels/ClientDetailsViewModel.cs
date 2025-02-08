@@ -18,8 +18,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ClientDetailsViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService)
-            : base(navigationService, serviceProvider, dataService)
+        public ClientDetailsViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
         }
         #endregion

@@ -7,7 +7,6 @@ namespace Deve.ClientApp.Maui.ViewModels
     {
         #region Fields
         private readonly INavigationService _navigationService;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IDataService _dataService;
         private bool _isBusy = false;
         private string _errorText = string.Empty;
@@ -17,8 +16,6 @@ namespace Deve.ClientApp.Maui.ViewModels
         protected INavigationService NavigationService => _navigationService;
 
         protected IDataService DataService => _dataService;
-
-        protected IServiceProvider ServiceProvider => _serviceProvider;
 
         public bool IsBusy
         {
@@ -55,10 +52,9 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService)
+        public BaseViewModel(INavigationService navigationService, IDataService dataService)
         {
             _navigationService = navigationService;
-            _serviceProvider = serviceProvider;
             _dataService = dataService;
         }
         #endregion

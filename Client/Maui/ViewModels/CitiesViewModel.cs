@@ -6,8 +6,8 @@ namespace Deve.ClientApp.Maui.ViewModels
     public class CitiesViewModel : ListDataViewModel
     {
         #region Constructor
-        public CitiesViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService) 
-            : base(navigationService, serviceProvider, dataService)
+        public CitiesViewModel(INavigationService navigationService, IDataService dataService) 
+            : base(navigationService, dataService)
         {
         }
         #endregion

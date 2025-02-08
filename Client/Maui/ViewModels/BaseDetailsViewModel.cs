@@ -9,8 +9,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public BaseDetailsViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDataService dataService)
-            : base(navigationService, serviceProvider, dataService)
+        public BaseDetailsViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
         }
         #endregion
@@ -38,7 +38,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #region IQueryAttributable
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            Id = (long)query["Id"];
+            Id = (long)query[nameof(Id)];
             _ = LoadData();
         }
         #endregion
