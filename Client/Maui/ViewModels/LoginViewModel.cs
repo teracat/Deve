@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Deve.ClientApp.Maui.Helpers;
 using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Resources.Strings;
 
@@ -10,7 +11,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         private string _username = string.Empty;
         private string _password = string.Empty;
 
-        private ICommand? _loginCommand;
+        private AsyncCommand? _loginCommand;
         #endregion
 
         #region Properties
@@ -28,8 +29,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public LoginViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
 //-:cnd
 #if DEBUG
@@ -63,7 +64,7 @@ namespace Deve.ClientApp.Maui.ViewModels
 
                 Globals.UserToken = resLogin.Data;
 
-                ((App?)Application.Current)?.GoToMain();
+                await NavigationService.NavigateToAsync("//clients");
             }
             finally
             {
@@ -73,7 +74,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Commands
-        public ICommand Login => _loginCommand ??= new Command(() => _ = DoLogin(), () => IsIdle);
+        public AsyncCommand Login => _loginCommand ??= new AsyncCommand(DoLogin, () => IsIdle);
         #endregion
     }
 }

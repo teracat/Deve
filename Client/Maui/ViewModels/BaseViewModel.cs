@@ -6,16 +6,16 @@ namespace Deve.ClientApp.Maui.ViewModels
     public abstract class BaseViewModel : UIBase
     {
         #region Fields
-        private readonly IServiceProvider _serviceProvider;
+        private readonly INavigationService _navigationService;
         private readonly IDataService _dataService;
         private bool _isBusy = false;
         private string _errorText = string.Empty;
         #endregion
 
         #region Properties
-        protected IDataService DataService => _dataService;
+        protected INavigationService NavigationService => _navigationService;
 
-        protected IServiceProvider ServiceProvider => _serviceProvider;
+        protected IDataService DataService => _dataService;
 
         public bool IsBusy
         {
@@ -49,14 +49,12 @@ namespace Deve.ClientApp.Maui.ViewModels
         }
 
         public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
-
-        public Action? GoBackAction { get; set; }
         #endregion
 
         #region Constructor
-        public BaseViewModel(IServiceProvider serviceProvider, IDataService dataService)
+        public BaseViewModel(INavigationService navigationService, IDataService dataService)
         {
-            _serviceProvider = serviceProvider;
+            _navigationService = navigationService;
             _dataService = dataService;
         }
         #endregion
@@ -73,7 +71,7 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Helper Methods
-        protected void GoBack() => GoBackAction?.Invoke();
+        protected void GoBack() => _ = NavigationService.PopAsync();
         #endregion
     }
 }

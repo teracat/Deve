@@ -1,15 +1,18 @@
-﻿using Deve.ClientApp.Maui.Interfaces;
+﻿using Deve.ClientApp.Maui.Helpers;
+using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Models;
 
 namespace Deve.ClientApp.Maui.ViewModels
 {
-    public abstract class ListDataViewModel : BaseViewModel
+    public abstract class ListDataViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
         IEnumerable<ListData>? _listData;
         #endregion
 
         #region Properties
+        public Task Initialization { get; private set; }
+
         public IEnumerable<ListData>? ListData
         {
             get => _listData;
@@ -29,15 +32,20 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ListDataViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public ListDataViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
-            _ = LoadData();
+            Initialization = InitializeAsync();
         }
         #endregion
 
         #region Methods
-        internal async Task LoadData()
+        protected virtual async Task InitializeAsync()
+        {
+            await LoadData();
+        }
+
+        public async Task LoadData()
         {
             ErrorText = string.Empty;
             IsBusy = true;
@@ -54,13 +62,14 @@ namespace Deve.ClientApp.Maui.ViewModels
 
         #region Abstract/Virtual Methods
         protected abstract Task GetListData();
+
         protected virtual void DoSelected(ListData data)
         {
-            var navigationParameter = new ShellNavigationQueryParameters
+            var navigationParameter = new NavigationParameters
             {
-                { "Id", data.Id }
+                { nameof(BaseDetailsViewModel.Id), data.Id }
             };
-            Shell.Current.GoToAsync("details", navigationParameter);
+            NavigationService.NavigateToAsync("details", navigationParameter);
         }
         #endregion
     }
