@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
 using Deve.ClientApp.Maui.Interfaces;
 using Deve.ClientApp.Maui.Resources.Strings;
 
@@ -22,8 +21,8 @@ namespace Deve.ClientApp.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(IServiceProvider serviceProvider, IDataService dataService)
-            : base(serviceProvider, dataService)
+        public LoginViewModel(INavigationService navigationService, IDataService dataService)
+            : base(navigationService, dataService)
         {
 //-:cnd
 #if DEBUG
@@ -53,7 +52,7 @@ namespace Deve.ClientApp.Maui.ViewModels
 
                 Globals.UserToken = resLogin.Data;
 
-                ((App?)Application.Current)?.GoToMain();
+                await NavigationService.NavigateToAsync("//clients");
             }
             finally
             {

@@ -19,6 +19,9 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
+    <ShellContent Route="login" Title="{x:Static strings:AppResources.Login}" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
+                  ContentTemplate="{DataTemplate v:LoginView}" />
+    
     <ShellContent Route="clients" Title="{x:Static strings:AppResources.Clients}" ContentTemplate="{DataTemplate v:ClientsView}" />
     <ShellContent Route="cities" Title="{x:Static strings:AppResources.Cities}" ContentTemplate="{DataTemplate v:CitiesView}" />
     <ShellContent Route="states" Title="{x:Static strings:AppResources.States}" ContentTemplate="{DataTemplate v:StatesView}" />

@@ -9,14 +9,13 @@ namespace Deve.ClientApp.Wpf.Helpers
 {
     public static class ServiceProviderHelper
     {
-        public static void RegisterServices(ServiceCollection services)
+        public static void RegisterServices(IServiceCollection services)
         {
-            //services.AddSingleton<IServiceProvider, ServiceProvider>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDataService, DataService>();
         }
 
-        public static void RegisterViewModels(ServiceCollection services)
+        public static void RegisterViewModels(IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var viewModels = assembly.GetTypes()
@@ -27,7 +26,7 @@ namespace Deve.ClientApp.Wpf.Helpers
             }
         }
 
-        public static void RegisterViews(ServiceCollection services)
+        public static void RegisterViews(IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var views = assembly.GetTypes()
