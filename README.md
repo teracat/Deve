@@ -23,9 +23,10 @@ dotnet new deve -n YourNewProjectName
 
 For more information or alternative options, refer to the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
 
-## Changelog & Roadmap
+## Versions & Changelog
 
-To stay up to date with the latest updates and changes to the project, you can check out our [Changelog](https://github.com/teracat/Deve/wiki/Changelog) and [Roadmap](https://github.com/teracat/Deve/wiki/Roadmap) in the Wiki section of the repository.
+To stay up to date with the latest changes and updates to the project, check out the [Changelog](https://github.com/teracat/Deve/wiki/Changelog).  
+For more details about the available versions, see the [Versions](https://github.com/teracat/Deve/wiki/Versions) page.  
 
 ## Client Samples
 
@@ -111,7 +112,7 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [MAUI](https://github.com/teracat/Deve/wiki/Client#maui)
   - [WPF](https://github.com/teracat/Deve/wiki/Client#wpf)
 - [Changelog](https://github.com/teracat/Deve/wiki/Changelog)
-- [Roadmap](https://github.com/teracat/Deve/wiki/Roadmap)
+- [Versions](https://github.com/teracat/Deve/wiki/Versions)
 
 ## Contributing
 
