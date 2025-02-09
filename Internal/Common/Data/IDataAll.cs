@@ -1,6 +1,8 @@
-﻿namespace Deve.Internal
+﻿using Deve.Model;
+
+namespace Deve.Internal.Data
 {
-    public interface IDataAll<ModelList, Model, Criteria> : External.IDataGet<ModelList, Model, Criteria>
+    public interface IDataAll<ModelList, Model, Criteria> : External.Data.IDataGet<ModelList, Model, Criteria>
     {
         Task<ResultGet<ModelId>> Add(Model data);
         Task<Result> Update(Model data);

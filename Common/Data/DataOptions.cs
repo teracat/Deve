@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Data
 {
     public class DataOptions
     {

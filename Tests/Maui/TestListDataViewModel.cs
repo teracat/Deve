@@ -1,8 +1,9 @@
 using Moq;
-using Deve.ClientApp.Maui.Interfaces;
-using Deve.ClientApp.Maui.ViewModels;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.ViewModels;
+using Deve.Clients.Maui.Helpers;
 using Deve.Tests.Maui.Fixtures;
-using Deve.ClientApp.Maui.Helpers;
+using Deve.Tests.Maui.Mocks;
 
 namespace Deve.Tests.Maui
 {
@@ -64,7 +65,7 @@ namespace Deve.Tests.Maui
         {
             // We use a new instance of FixtureNavigationService so other tests does not interfere with this one
 
-            var navigationService = new FixtureNavigationService();
+            var navigationService = new MockNavigationService();
             var viewModel = CreateViewModel(navigationService.Object, _fixture.DataServiceValidAuth);
             await viewModel.Initialization;
             var selectedItem = viewModel.ListData!.First();

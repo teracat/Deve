@@ -1,10 +1,14 @@
 ﻿using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using Deve.Auth;
 using Deve.Localize;
+using Deve.Data;
+using Deve.Logging;
+using Deve.Model;
+using Deve.Auth.TokenManagers;
+using Deve.Auth.Converters;
 
-namespace Deve.Api
+namespace Deve.Api.Auth
 {
     /// <summary>
     /// https://dotnetcorecentral.com/blog/authentication-handler-in-asp-net-core/

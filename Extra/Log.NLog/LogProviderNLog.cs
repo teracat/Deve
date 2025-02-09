@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Deve
+namespace Deve.Logging
 {
     /// <summary>
     /// Use NLog as a log provider

@@ -1,4 +1,10 @@
-﻿using Deve.Internal;
+﻿using Deve.Criteria;
+using Deve.Data;
+using Deve.DataSource.Config;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.DataSource
 {
@@ -26,7 +32,7 @@ namespace Deve.DataSource
         public IDataClient Clients => _dsClient ??= new DataSourceClient(this);
         public IDataAll<User, User, CriteriaUser> Users => _dsUser ??= new DataSourceUser(this);
 
-        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _dsClientBasic ??= new DataSourceClientBasic(this);
+        public External.Data.IDataGet<ClientBasic, External.Model.Client, CriteriaClientBasic> ClientsBasic => _dsClientBasic ??= new DataSourceClientBasic(this);
         #endregion
 
         #region Constructor

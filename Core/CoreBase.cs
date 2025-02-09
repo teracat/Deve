@@ -1,5 +1,6 @@
-﻿using Deve.Auth;
+﻿using Deve.Model;
 using Deve.DataSource;
+using Deve.Auth.Permissions;
 
 namespace Deve.Core
 {

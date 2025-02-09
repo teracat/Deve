@@ -1,8 +1,12 @@
 ﻿using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Deve.Authenticate;
+using Deve.Logging;
+using Deve.Auth.Converters;
+using Deve.Internal.Model;
 
-namespace Deve.Auth.Jwt
+namespace Deve.Auth.TokenManagers.Jwt
 {
     /// <summary>
     /// Class used to create and validate tokens using JWT (JSON Web Tokens).

@@ -1,4 +1,8 @@
-﻿using Deve.Sdk;
+﻿using Deve.Model;
+using Deve.Sdk;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
 
 namespace Deve.Internal.Sdk
 {

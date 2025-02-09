@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Deve
+namespace Deve.Model
 {
     public class Field
     {

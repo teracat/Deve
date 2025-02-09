@@ -1,4 +1,10 @@
-﻿using Deve.Sdk;
+﻿using Deve.Criteria;
+using Deve.Data;
+using Deve.Model;
+using Deve.Sdk;
+using Deve.Sdk.LoggingHandlers;
+using Deve.External.Model;
+using Deve.External.Data;
 
 namespace Deve.External.Sdk
 {

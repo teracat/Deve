@@ -1,4 +1,5 @@
 ﻿using Deve.Core;
+using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {

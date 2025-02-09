@@ -1,3 +1,6 @@
+using Deve.Model;
+using Deve.Tests.Api.Internal.Fixture;
+
 namespace Deve.Tests.Api.Internal
 {
     public class TestInternalApiCountry : TestInternalApiBaseAll<Country>, IClassFixture<FixtureApiInternal>

@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Authenticate
 {
     public class UserCredentials
     {

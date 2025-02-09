@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Internal;
+using Deve.Internal.Data;
+using Deve.Model;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Api
+namespace Deve.Api.Controllers
 {
     public abstract class ControllerBaseAll<ModelList, Model, Criteria> : ControllerBaseAuth
     {

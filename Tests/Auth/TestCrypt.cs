@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using Deve.Tests.Auth.Fixtures;
 
 namespace Deve.Tests.Auth
 {
@@ -7,7 +8,7 @@ namespace Deve.Tests.Auth
     /// </summary>
     public class TestCrypt : IClassFixture<FixtureAuth>
     {
-        FixtureAuth _fixtureAuth;
+        private readonly FixtureAuth _fixtureAuth;
 
         public TestCrypt(FixtureAuth authFixture)
         {

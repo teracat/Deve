@@ -1,4 +1,4 @@
-﻿namespace Deve.DataSource
+﻿namespace Deve.DataSource.Config
 {
     public class DataSourceConfig
     {

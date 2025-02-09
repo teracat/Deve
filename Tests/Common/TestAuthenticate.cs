@@ -1,4 +1,7 @@
-﻿namespace Deve.Tests
+﻿using Deve.Authenticate;
+using Deve.Data;
+
+namespace Deve.Tests
 {
     /// <summary>
     /// Authenticate Tests.

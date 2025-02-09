@@ -1,4 +1,7 @@
-﻿namespace Deve.Auth
+﻿using Deve.Model;
+using Deve.Internal.Model;
+
+namespace Deve.Auth
 {
     /// <summary>
     /// User information used internally (can contain private information).

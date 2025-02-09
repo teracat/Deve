@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Core;
+using Deve.Data;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Api
+namespace Deve.Api.Controllers
 {
     public class ControllerBaseDeve : ControllerBase
     {
