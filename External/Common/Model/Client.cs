@@ -1,4 +1,6 @@
-﻿namespace Deve.External
+﻿using Deve.Model;
+
+namespace Deve.External.Model
 {
     public class Client : ClientBase
     {

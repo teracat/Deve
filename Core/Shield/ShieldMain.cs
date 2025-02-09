@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
+using Deve.Data;
 using Deve.Localize;
+using Deve.Model;
 
 namespace Deve.Core.Shield
 {
@@ -22,7 +24,7 @@ namespace Deve.Core.Shield
         #region Fields
         private readonly Dictionary<string, ShieldOriginData> _origins = [];  //Key: originId
         private readonly Dictionary<string, ShieldOriginMethodData> _originsMethods = [];  //Key: originId-methodKey
-        private Timer _timer;  //Used to remove old data in _origins and _originsMethods
+        private readonly Timer _timer;  //Used to remove old data in _origins and _originsMethods
         #endregion
 
         #region Static Methods

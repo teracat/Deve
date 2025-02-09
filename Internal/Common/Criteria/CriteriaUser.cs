@@ -1,4 +1,6 @@
-﻿namespace Deve.Internal
+﻿using Deve.Criteria;
+
+namespace Deve.Internal.Criteria
 {
     public class CriteriaUser : CriteriaIdName
     {

@@ -1,4 +1,6 @@
-﻿namespace Deve
+﻿using Deve.Model;
+
+namespace Deve.Internal.Model
 {
     /// <summary>
     /// User base class.

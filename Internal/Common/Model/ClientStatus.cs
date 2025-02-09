@@ -1,4 +1,4 @@
-﻿namespace Deve.Internal
+﻿namespace Deve.Internal.Model
 {
     public enum ClientStatus
     {

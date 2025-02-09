@@ -1,5 +1,5 @@
-﻿using Deve.Internal;
-using Deve.ClientApp.Maui.Interfaces;
+﻿using Deve.Internal.Data;
+using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Tests.Maui.Fixtures
 {

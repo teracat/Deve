@@ -1,5 +1,14 @@
-﻿using Deve.Internal;
-using Deve.DataSource;
+﻿using Deve.DataSource;
+using Deve.Data;
+using Deve.Model;
+using Deve.Authenticate;
+using Deve.Criteria;
+using Deve.Auth.TokenManagers;
+using Deve.Auth.Hash;
+using Deve.Auth.Crypt;
+using Deve.Auth.Permissions;
+using Deve.Internal.Model;
+using Deve.Internal.Criteria;
 
 namespace Deve.Auth
 {

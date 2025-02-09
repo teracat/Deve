@@ -1,5 +1,11 @@
-﻿using Deve.External;
-using Deve.Internal;
+﻿using Deve.Criteria;
+using Deve.Model;
+using Deve.Data;
+using Deve.DataSource.Config;
+using Deve.External.Data;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
 
 namespace Deve.DataSource
 {
@@ -18,6 +24,6 @@ namespace Deve.DataSource
         IDataClient Clients { get; }
         IDataAll<User, User, CriteriaUser> Users { get; }
 
-        IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic { get; }
+        IDataGet<ClientBasic, External.Model.Client, CriteriaClientBasic> ClientsBasic { get; }
     }
 }

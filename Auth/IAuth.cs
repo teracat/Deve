@@ -1,4 +1,13 @@
-﻿namespace Deve.Auth
+﻿using Deve.Authenticate;
+using Deve.Data;
+using Deve.Model;
+using Deve.Auth.Crypt;
+using Deve.Auth.Hash;
+using Deve.Auth.TokenManagers;
+using Deve.Auth.Permissions;
+using Deve.Internal.Model;
+
+namespace Deve.Auth
 {
     public interface IAuth : IAuthenticate
     {

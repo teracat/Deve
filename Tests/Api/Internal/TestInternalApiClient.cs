@@ -1,4 +1,6 @@
-using Deve.Internal;
+using Deve.Model;
+using Deve.Internal.Model;
+using Deve.Tests.Api.Internal.Fixture;
 
 namespace Deve.Tests.Api.Internal
 {

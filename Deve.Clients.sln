@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Wpf", "Client\Wpf\Deve.Client.Wpf.csproj", "{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Wpf", "Clients\Wpf\Deve.Clients.Wpf.csproj", "{BC8C59D6-2ECC-4FBF-8842-1AAAD998717E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common", "Common\Deve.Common.csproj", "{12D3177A-D3C8-46B0-84E5-189A9BD15221}"
 EndProject
@@ -27,15 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Log.NLog", "Extra\Log.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common.Sdk", "Common.Sdk\Deve.Common.Sdk.csproj", "{CE728BE9-D2C9-4C84-9CEE-32E219D91C81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Common", "Client\Common\Deve.Client.Common.csproj", "{4F78D413-4004-43B4-BE5B-9B3DE5CB521F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Common", "Clients\Common\Deve.Clients.Common.csproj", "{4F78D413-4004-43B4-BE5B-9B3DE5CB521F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Console", "Client\Console\Deve.Client.Console.csproj", "{50664655-0922-4142-AD8A-0738919C4EFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Console", "Clients\Console\Deve.Clients.Console.csproj", "{50664655-0922-4142-AD8A-0738919C4EFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Service", "Client\Service\Deve.Client.Service.csproj", "{6A572925-1DFC-41AB-AC8F-BE5BD0CC2BB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Service", "Clients\Service\Deve.Clients.Service.csproj", "{6A572925-1DFC-41AB-AC8F-BE5BD0CC2BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Maui", "Client\Maui\Deve.Client.Maui.csproj", "{6210A8BA-369E-4DC1-BB26-AD1FCF319664}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Maui", "Clients\Maui\Deve.Clients.Maui.csproj", "{6210A8BA-369E-4DC1-BB26-AD1FCF319664}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{10DEE3F2-FD65-4F25-A61C-B13D99F8A1B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

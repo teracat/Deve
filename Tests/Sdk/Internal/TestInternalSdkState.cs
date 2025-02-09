@@ -1,5 +1,9 @@
-using Deve.Internal;
+using Deve.Criteria;
+using Deve.Model;
+using Deve.Internal.Data;
 using Deve.Internal.Sdk;
+using Deve.Tests.Sdk.Internal.Fixtures;
+
 
 namespace Deve.Tests.Sdk.Internal
 {

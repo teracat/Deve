@@ -1,4 +1,6 @@
-﻿namespace Deve.Tests.Auth
+﻿using Deve.Tests.Auth.Fixtures;
+
+namespace Deve.Tests.Auth
 {
     /// <summary>
     /// TokenManagerCrypt Tests.

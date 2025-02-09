@@ -1,4 +1,7 @@
-﻿namespace Deve.Internal
+﻿using Deve.Criteria;
+using Deve.Internal.Model;
+
+namespace Deve.Internal.Criteria
 {
     public class CriteriaClient : CriteriaClientBasic
     {

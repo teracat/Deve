@@ -1,6 +1,7 @@
 ﻿using System.Net;
+using Deve.Model;
 
-namespace Deve.Api
+namespace Deve.Api.Helpers
 {
     /// <summary>
     /// If the response StatusCode is TooManyRequests, return the body with the error information to the client.

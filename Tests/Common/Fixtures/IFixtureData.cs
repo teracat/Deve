@@ -1,4 +1,6 @@
-﻿namespace Deve.Tests
+﻿using Deve.Data;
+
+namespace Deve.Tests
 {
     public interface IFixtureData<TDataType> where TDataType : IDataCommon
     {

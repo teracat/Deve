@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Deve.Authenticate;
+using Deve.Model;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Api
+namespace Deve.Api.Controllers
 {
     [ApiController]
     [Route(ApiConstants.PathAuth)]

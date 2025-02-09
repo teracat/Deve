@@ -1,4 +1,7 @@
-﻿namespace Deve.Core
+﻿using Deve.Authenticate;
+using Deve.Model;
+
+namespace Deve.Core
 {
     internal class CoreAuth : CoreBase, IAuthenticate
     {

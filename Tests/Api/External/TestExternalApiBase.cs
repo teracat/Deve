@@ -1,4 +1,5 @@
 using Deve.External.Api;
+using Deve.Tests.Api.External.Fixture;
 
 namespace Deve.Tests.Api.External
 {

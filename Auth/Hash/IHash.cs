@@ -1,4 +1,4 @@
-﻿namespace Deve.Auth
+﻿namespace Deve.Auth.Hash
 {
     public interface IHash
     {

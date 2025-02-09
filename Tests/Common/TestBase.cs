@@ -1,3 +1,5 @@
+using Deve.Data;
+
 namespace Deve.Tests
 {
     public abstract class TestBase<TDataType> where TDataType : IDataCommon
