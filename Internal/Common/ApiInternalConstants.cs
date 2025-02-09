@@ -4,8 +4,8 @@
     {
 //-:cnd
 #if DEBUG
-        public const string UrlProduction   = "https://af83-67-218-252-62.ngrok-free.app";
-        public const string UrlStaging      = "https://af83-67-218-252-62.ngrok-free.app";
+        public const string UrlProduction   = "https://localhost:7245";
+        public const string UrlStaging      = "https://localhost:7245";
 #else
         //TODO: change with real URLs
         public const string UrlProduction   = "https://api-int.deve.com/v1";
