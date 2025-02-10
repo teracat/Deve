@@ -1,15 +1,16 @@
 using Moq;
-using Deve.Clients.Maui.ViewModels;
-using Deve.Tests.Maui.Fixtures;
-using Deve.Tests.Maui.Mocks;
+using Deve.Clients.Wpf.ViewModels;
+using Deve.Clients.Wpf.Views;
+using Deve.Tests.Wpf.Fixtures;
+using Deve.Tests.Wpf.Mocks;
 
-namespace Deve.Tests.Maui
+namespace Deve.Tests.Wpf
 {
-    public class TestLoginViewModel : IClassFixture<FixtureMaui>
+    public class TestLoginViewModel : IClassFixture<FixtureWpf>
     {
-        private readonly FixtureMaui _fixture;
+        private readonly FixtureWpf _fixture;
 
-        public TestLoginViewModel(FixtureMaui fixture)
+        public TestLoginViewModel(FixtureWpf fixture)
         {
             _fixture = fixture;
         }
@@ -20,10 +21,9 @@ namespace Deve.Tests.Maui
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth)
             {
                 Username = string.Empty,
-                Password = string.Empty
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.DoLogin(string.Empty);
 
             Assert.True(loginViewModel.HasError);
         }
@@ -34,10 +34,9 @@ namespace Deve.Tests.Maui
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth)
             {
                 Username = TestsConstants.UserUsernameInactive,
-                Password = TestsConstants.UserPasswordInactive
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.DoLogin(TestsConstants.UserPasswordInactive);
 
             Assert.True(loginViewModel.HasError);
         }
@@ -48,10 +47,9 @@ namespace Deve.Tests.Maui
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth)
             {
                 Username = TestsConstants.UserUsernameValid,
-                Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.DoLogin(TestsConstants.UserPasswordValid);
 
             Assert.False(loginViewModel.HasError);
         }
@@ -64,12 +62,11 @@ namespace Deve.Tests.Maui
             var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataServiceNoAuth)
             {
                 Username = TestsConstants.UserUsernameValid,
-                Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.DoLogin(TestsConstants.UserPasswordValid);
 
-            navigationService.Verify(x => x.NavigateToAsync("//clients", null), Times.Once);
+            navigationService.Verify(x => x.NavigateTo<MainView>(null), Times.Once);
         }
     }
 }

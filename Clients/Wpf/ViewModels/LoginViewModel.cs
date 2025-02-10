@@ -63,7 +63,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Methods
-        internal async Task DoLogin(string password)
+        public async Task DoLogin(string password)
         {
             ErrorText = string.Empty;
 
