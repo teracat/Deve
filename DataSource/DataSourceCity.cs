@@ -1,4 +1,7 @@
-﻿namespace Deve.DataSource
+﻿using Deve.Criteria;
+using Deve.Model;
+
+namespace Deve.DataSource
 {
     internal class DataSourceCity : DataSourceBaseAll<City, City, CriteriaCity>
     {

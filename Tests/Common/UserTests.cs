@@ -1,4 +1,7 @@
-﻿namespace Deve.Tests
+﻿using Deve.Model;
+using Deve.Internal.Model;
+
+namespace Deve.Tests
 {
     public class UserTests : User
     {

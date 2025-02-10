@@ -1,4 +1,5 @@
-﻿using Deve.Auth;
+﻿using Deve.Auth.TokenManagers;
+using Deve.Tests.Auth.Fixtures;
 
 namespace Deve.Tests.Auth
 {
@@ -7,7 +8,7 @@ namespace Deve.Tests.Auth
     /// </summary>
     public abstract class TestTokenManagerBase
     {
-        IFixtureTokenManager _fixtureTokenManager;
+        private readonly IFixtureTokenManager _fixtureTokenManager;
 
         public TestTokenManagerBase(IFixtureTokenManager fixtureTokenManager)
         {
@@ -67,7 +68,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void ValidateToken_User_Valid()
         {
-            UserToken userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
+            var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
 
             var result = _fixtureTokenManager.TokenManager.ValidateToken(userToken.Token, out _);
 

@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using Deve.Data;
+using Deve.Model;
 
 namespace Deve.Core.Shield
 {

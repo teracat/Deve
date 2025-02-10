@@ -1,17 +1,19 @@
-﻿using Deve.ClientApp.Maui.Interfaces;
+﻿using Deve.Authenticate;
+using Deve.Clients.Maui.Interfaces;
 using Deve.Core;
+using Deve.Tests.Maui.Mocks;
 
 namespace Deve.Tests.Maui.Fixtures
 {
     public class FixtureMaui
     {
-        public FixtureNavigationService NavigationService { get; private set; }
+        public MockNavigationService NavigationService { get; private set; }
         public IDataService DataServiceNoAuth { get; private set; }
         public IDataService DataServiceValidAuth { get; private set; }
 
         public FixtureMaui()
         {
-            NavigationService = new FixtureNavigationService();
+            NavigationService = new MockNavigationService();
 
             // IsSharedInstance is set to false to get a new instance of the Data object
             var dataNoAuth = CoreFactory.Get(false, TestsHelpers.CreateDataSourceMock(), null);

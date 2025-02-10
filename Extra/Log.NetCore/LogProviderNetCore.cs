@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Deve
+namespace Deve.Logging
 {
     /// <summary>
     /// Use ILogger from ASP.NET Core as a log provider.

@@ -1,4 +1,5 @@
-﻿using Deve.Internal;
+﻿using Deve.Model;
+using Deve.Internal.Data;
 
 namespace Deve.DataSource
 {

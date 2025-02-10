@@ -1,3 +1,5 @@
+using Deve.Tests.Api.External.Fixture;
+
 namespace Deve.Tests.Api.External
 {
     public class TestExternalApiState : TestExternalApiBaseGet, IClassFixture<FixtureApiExternal>

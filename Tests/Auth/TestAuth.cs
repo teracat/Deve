@@ -1,4 +1,6 @@
-﻿using Deve.Auth;
+﻿using Deve.Auth.Permissions;
+using Deve.Authenticate;
+using Deve.Tests.Auth.Fixtures;
 
 namespace Deve.Tests.Auth
 {
@@ -7,7 +9,7 @@ namespace Deve.Tests.Auth
     /// </summary>
     public class TestAuth : IClassFixture<FixtureAuth>
     {
-        FixtureAuth _fixtureAuth;
+        private readonly FixtureAuth _fixtureAuth;
 
         public TestAuth(FixtureAuth authFixture)
         {

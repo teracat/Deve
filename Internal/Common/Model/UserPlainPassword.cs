@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Internal.Model
 {
     /// <summary>
     /// The User information with Plain Password.

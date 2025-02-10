@@ -2,7 +2,7 @@
 using log4net;
 using log4net.Config;
 
-namespace Deve
+namespace Deve.Logging
 {
     /// <summary>
     /// Use log4net as a log provider

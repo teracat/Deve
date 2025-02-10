@@ -1,5 +1,8 @@
-﻿using Deve.Auth;
-using Deve.Internal;
+﻿using Deve.Model;
+using Deve.Auth.Permissions;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
+using Deve.Internal.Criteria;
 
 namespace Deve.Core
 {

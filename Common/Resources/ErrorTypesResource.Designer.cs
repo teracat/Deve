@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Deve.Common.Resources {
+namespace Deve.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Deve.Common.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Deve.Common.Resources.ErrorTypesResource", typeof(ErrorTypesResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Deve.Resources.ErrorTypesResource", typeof(ErrorTypesResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

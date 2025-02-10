@@ -1,4 +1,6 @@
-﻿namespace Deve
+﻿using Deve.Model;
+
+namespace Deve.Authenticate
 {
     public interface IAuthenticate
     {

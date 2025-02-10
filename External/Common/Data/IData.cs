@@ -1,4 +1,9 @@
-﻿namespace Deve.External
+﻿using Deve.Criteria;
+using Deve.Data;
+using Deve.Model;
+using Deve.External.Model;
+
+namespace Deve.External.Data
 {
     public interface IData : IDataCommon
     {

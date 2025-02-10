@@ -1,5 +1,5 @@
-using Deve.ClientApp.Maui.Interfaces;
-using Deve.ClientApp.Maui.ViewModels;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
 
 namespace Deve.Tests.Maui

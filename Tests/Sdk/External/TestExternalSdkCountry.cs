@@ -1,5 +1,8 @@
-using Deve.External;
+using Deve.Criteria;
+using Deve.Model;
+using Deve.External.Data;
 using Deve.External.Sdk;
+using Deve.Tests.Sdk.External.Fixtures;
 
 namespace Deve.Tests.Sdk.External
 {

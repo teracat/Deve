@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Authenticate
 {
     /// <summary>
     /// Class included in the Login response with some public user information.

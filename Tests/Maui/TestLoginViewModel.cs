@@ -1,5 +1,6 @@
-using Deve.ClientApp.Maui.ViewModels;
+using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
+using Deve.Tests.Maui.Mocks;
 using Moq;
 
 namespace Deve.Tests.Maui
@@ -59,7 +60,7 @@ namespace Deve.Tests.Maui
         public async Task Login_ValidUsernamePassword_NavigatesToClients()
         {
             // We use a new instance of FixtureNavigationService so other tests does not interfere with this one
-            var navigationService = new FixtureNavigationService();
+            var navigationService = new MockNavigationService();
             var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataServiceNoAuth)
             {
                 Username = TestsConstants.UserUsernameValid,

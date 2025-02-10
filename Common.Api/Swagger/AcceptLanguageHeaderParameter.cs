@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Deve.Api
+namespace Deve.Api.Swagger
 {
     public class AcceptLanguageHeaderParameter : IOperationFilter
     {

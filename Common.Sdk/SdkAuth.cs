@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using Deve.Authenticate;
+using Deve.Model;
 
 namespace Deve.Sdk
 {

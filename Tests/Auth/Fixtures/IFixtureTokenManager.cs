@@ -1,6 +1,6 @@
-﻿using Deve.Auth;
+﻿using Deve.Auth.TokenManagers;
 
-namespace Deve.Tests.Auth
+namespace Deve.Tests.Auth.Fixtures
 {
     public interface IFixtureTokenManager
     {

@@ -1,4 +1,5 @@
 using Deve.Internal.Api;
+using Deve.Tests.Api.Internal.Fixture;
 
 namespace Deve.Tests.Api.Internal
 {

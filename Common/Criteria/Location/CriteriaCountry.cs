@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Criteria
 {
     public class CriteriaCountry : CriteriaIdName
     {
