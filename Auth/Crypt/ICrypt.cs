@@ -1,4 +1,4 @@
-﻿namespace Deve.Auth
+﻿namespace Deve.Auth.Crypt
 {
     public interface ICrypt
     {

@@ -1,7 +1,14 @@
-﻿using Deve.Auth;
+﻿using Deve.Model;
+using Deve.Auth;
+using Deve.Authenticate;
+using Deve.Criteria;
+using Deve.Auth.TokenManagers;
+using Deve.Data;
 using Deve.DataSource;
-using Deve.Internal;
 using Deve.Core.Shield;
+using Deve.Internal.Model;
+using Deve.Internal.Data;
+using Deve.Internal.Criteria;
 
 namespace Deve.Core
 {
@@ -122,7 +129,7 @@ namespace Deve.Core
         public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _coreUser ??= new CoreUser(this);
         public IDataStats Stats => _coreStats ??= new CoreStats(this);
 
-        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _coreClientBasic ??= new CoreClientBasic(this);
+        public External.Data.IDataGet<ClientBasic, External.Model.Client, CriteriaClientBasic> ClientsBasic => _coreClientBasic ??= new CoreClientBasic(this);
         #endregion
 
         #region Constructor

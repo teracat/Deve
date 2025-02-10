@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Authenticate
 {
     /// <summary>
     /// Class used as the login response with token information to authorize other requests.

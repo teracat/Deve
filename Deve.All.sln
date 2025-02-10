@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Wpf", "Client\Wpf\Deve.Client.Wpf.csproj", "{005918EB-14E6-4729-91CE-16A3F3270587}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Wpf", "Clients\Wpf\Deve.Clients.Wpf.csproj", "{005918EB-14E6-4729-91CE-16A3F3270587}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common", "Common\Deve.Common.csproj", "{12D3177A-D3C8-46B0-84E5-189A9BD15221}"
 EndProject
@@ -55,15 +55,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Tests.Api", "Tests\Api
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Tests.Sdk", "Tests\Sdk\Deve.Tests.Sdk.csproj", "{E7361718-3F8F-4A47-9489-A1B804B3DCE0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{BB35C45D-081E-4AE4-B521-CE98EAF94778}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{BB35C45D-081E-4AE4-B521-CE98EAF94778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Common", "Client\Common\Deve.Client.Common.csproj", "{CC9E10A1-1659-4785-989F-414AE8E222CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Common", "Clients\Common\Deve.Clients.Common.csproj", "{CC9E10A1-1659-4785-989F-414AE8E222CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Console", "Client\Console\Deve.Client.Console.csproj", "{9B876E3C-9FE9-42B1-9F9A-AB4D27A9B2C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Console", "Clients\Console\Deve.Clients.Console.csproj", "{9B876E3C-9FE9-42B1-9F9A-AB4D27A9B2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Service", "Client\Service\Deve.Client.Service.csproj", "{3C424474-B2C1-4075-A4DE-0ACE2684987C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Service", "Clients\Service\Deve.Clients.Service.csproj", "{3C424474-B2C1-4075-A4DE-0ACE2684987C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Client.Maui", "Client\Maui\Deve.Client.Maui.csproj", "{2E0B07FE-9B5F-482F-9D37-29BE35AAD253}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Clients.Maui", "Clients\Maui\Deve.Clients.Maui.csproj", "{2E0B07FE-9B5F-482F-9D37-29BE35AAD253}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deve.Tests.Maui", "Tests\Maui\Deve.Tests.Maui.csproj", "{E2913628-4AD5-4ACC-9606-E274DA299A61}"
 EndProject

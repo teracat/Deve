@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Maui\Deve.Client.Maui.csproj" />
+    <ProjectReference Include="..\..\Clients\Maui\Deve.Clients.Maui.csproj" />
     <ProjectReference Include="..\..\Core\Deve.Core.csproj" />
     <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
     <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />

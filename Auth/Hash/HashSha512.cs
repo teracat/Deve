@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Security.Cryptography;
 
-namespace Deve.Auth
+namespace Deve.Auth.Hash
 {
     internal class HashSha512 : IHash
     {

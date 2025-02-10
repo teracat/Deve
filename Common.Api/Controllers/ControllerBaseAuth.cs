@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using Deve.Auth;
+using Deve.Auth.Converters;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Api
+namespace Deve.Api.Controllers
 {
     public class ControllerBaseAuth : ControllerBaseDeve
     {

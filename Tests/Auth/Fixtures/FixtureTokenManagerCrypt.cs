@@ -1,6 +1,7 @@
-﻿using Deve.Auth;
+﻿using Deve.Auth.Crypt;
+using Deve.Auth.TokenManagers;
 
-namespace Deve.Tests.Auth
+namespace Deve.Tests.Auth.Fixtures
 {
     public class FixtureTokenManagerCrypt : IFixtureTokenManager
     {

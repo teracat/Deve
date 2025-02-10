@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Criteria
 {
     public enum CriteriaActiveType
     {

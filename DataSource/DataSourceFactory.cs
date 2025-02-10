@@ -1,4 +1,7 @@
-﻿namespace Deve.DataSource
+﻿using Deve.Data;
+using Deve.DataSource.Config;
+
+namespace Deve.DataSource
 {
     public static class DataSourceFactory
     {

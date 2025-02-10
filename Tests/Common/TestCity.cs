@@ -1,3 +1,7 @@
+using Deve.Criteria;
+using Deve.Data;
+using Deve.Model;
+
 namespace Deve.Tests
 {
     public abstract class TestCity<TDataType> : TestBaseDataAll<TDataType, City, City, CriteriaCity> where TDataType : IDataCommon

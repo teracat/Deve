@@ -1,4 +1,7 @@
-using Deve.Internal;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Tests
 {

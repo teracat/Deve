@@ -1,5 +1,8 @@
 using Deve.Core;
-using Deve.Internal;
+using Deve.Criteria;
+using Deve.Model;
+using Deve.Internal.Data;
+using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {

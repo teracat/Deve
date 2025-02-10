@@ -1,4 +1,6 @@
-﻿namespace Deve.Core
+﻿using Deve.Model;
+
+namespace Deve.Core
 {
     internal static class UtilsCore
     {

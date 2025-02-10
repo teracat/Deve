@@ -1,5 +1,9 @@
 using Deve.Core;
-using Deve.External;
+using Deve.Criteria;
+using Deve.Model;
+using Deve.External.Data;
+using Deve.External.Model;
+using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {

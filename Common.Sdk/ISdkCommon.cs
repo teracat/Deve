@@ -1,4 +1,7 @@
-﻿namespace Deve.Sdk
+﻿using Deve.Authenticate;
+using Deve.Data;
+
+namespace Deve.Sdk
 {
     /// <summary>
     /// Definitions available in all Sdk implementations (External & Internal).

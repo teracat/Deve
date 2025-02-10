@@ -1,6 +1,9 @@
 ﻿using Deve.Auth;
-using Deve.Auth.Jwt;
+using Deve.Auth.TokenManagers;
+using Deve.Auth.TokenManagers.Jwt;
+using Deve.Authenticate;
 using Deve.DataSource;
+using Deve.Tests.Mocks;
 
 namespace Deve.Tests
 {

@@ -1,6 +1,9 @@
-﻿using Deve.Internal;
+﻿using Deve.Model;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
 
-namespace Deve.Core
+namespace Deve.Core.DataSourceWrappers
 {
     /// <summary>
     /// Is the converter from the class used in the Api & Core to the class used in the DataSource.

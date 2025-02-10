@@ -1,3 +1,6 @@
+using Deve.Model;
+using Deve.Tests.Api.Fixture;
+
 namespace Deve.Tests.Api
 {
     public abstract class TestApiBaseAll<TEntryPoint, Model> : TestApiBaseGet<TEntryPoint> where TEntryPoint : class where Model: ModelId

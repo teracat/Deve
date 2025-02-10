@@ -1,5 +1,7 @@
-using Deve.External;
-using Deve.Internal;
+using Deve.Data;
+using Deve.Model;
+using Deve.External.Data;
+using Deve.Internal.Data;
 
 namespace Deve.Tests
 {

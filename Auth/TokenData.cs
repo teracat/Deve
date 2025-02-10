@@ -1,4 +1,6 @@
-﻿namespace Deve.Auth
+﻿using Deve.Internal.Model;
+
+namespace Deve.Auth
 {
     /// <summary>
     /// Information that includes the token (used in TokenManagerCrypt).

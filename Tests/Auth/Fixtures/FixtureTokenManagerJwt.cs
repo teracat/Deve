@@ -1,7 +1,7 @@
-﻿using Deve.Auth;
-using Deve.Auth.Jwt;
+﻿using Deve.Auth.TokenManagers;
+using Deve.Auth.TokenManagers.Jwt;
 
-namespace Deve.Tests.Auth
+namespace Deve.Tests.Auth.Fixtures
 {
     public class FixtureTokenManagerJwt : IFixtureTokenManager
     {

@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Api
 {

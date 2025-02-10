@@ -1,6 +1,8 @@
-﻿using Deve.DataSource;
+﻿using Deve.Data;
+using Deve.DataSource;
+using Deve.DataSource.Config;
 
-namespace Deve.Api
+namespace Deve.Api.DataSourceBuilder
 {
     public interface IDataSourceBuilder
     {

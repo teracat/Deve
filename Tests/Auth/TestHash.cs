@@ -1,11 +1,13 @@
-﻿namespace Deve.Tests.Auth
+﻿using Deve.Tests.Auth.Fixtures;
+
+namespace Deve.Tests.Auth
 {
     /// <summary>
     /// Hash Tests.
     /// </summary>
     public class TestHash : IClassFixture<FixtureAuth>
     {
-        FixtureAuth _fixtureAuth;
+        private readonly FixtureAuth _fixtureAuth;
 
         public TestHash(FixtureAuth authFixture)
         {

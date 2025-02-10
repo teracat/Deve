@@ -1,4 +1,5 @@
 using Deve.External.Sdk;
+using Deve.Tests.Sdk.External.Fixtures;
 
 namespace Deve.Tests.Sdk.External
 {

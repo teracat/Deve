@@ -1,7 +1,8 @@
-﻿using Deve.Auth.Jwt;
+﻿using Deve.Authenticate;
+using Deve.Auth.TokenManagers.Jwt;
 using Deve.Core;
 
-namespace Deve.Tests.Core
+namespace Deve.Tests.Core.Fixtures
 {
     public class FixtureDataCore : IFixtureData<ICore>
     {

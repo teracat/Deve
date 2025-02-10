@@ -1,4 +1,7 @@
-﻿using Deve.Internal;
+﻿using Deve.Model;
+using Deve.Criteria;
+using Deve.Internal.Criteria;
+using Deve.Internal.Model;
 
 namespace Deve.DataSource
 {

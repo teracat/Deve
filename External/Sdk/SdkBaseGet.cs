@@ -1,4 +1,6 @@
-﻿using Deve.Sdk;
+﻿using Deve.Model;
+using Deve.Sdk;
+using Deve.External.Data;
 
 namespace Deve.External.Sdk
 {
