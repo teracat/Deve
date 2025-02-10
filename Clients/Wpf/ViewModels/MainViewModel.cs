@@ -4,6 +4,7 @@ using Deve.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
 using Deve.Internal.Model;
+using Deve.Clients.Interfaces;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Helpers;
@@ -12,7 +13,7 @@ using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
         private ListControlData _ctrlDataClients;
@@ -31,6 +32,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Properties
+        public Task Initialization { get; private set; }
+
         public ListControlData CtrlDataClients
         {
             get => _ctrlDataClients;
@@ -71,7 +74,7 @@ namespace Deve.Clients.Wpf.ViewModels
             _ctrlDataCities = new(LoadDataCities);
             _ctrlDataStates = new(LoadDataStates);
             _ctrlDataCountries = new(LoadDataCountries);
-            _ = LoadData();
+            Initialization = LoadData();
         }
         #endregion
 
