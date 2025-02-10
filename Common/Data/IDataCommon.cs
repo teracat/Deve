@@ -1,4 +1,6 @@
-﻿namespace Deve
+﻿using Deve.Authenticate;
+
+namespace Deve.Data
 {
     /// <summary>
     /// Common IData definitions accessible from Internal and External apps.

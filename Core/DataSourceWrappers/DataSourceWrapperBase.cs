@@ -1,6 +1,6 @@
 ﻿using Deve.DataSource;
 
-namespace Deve.Core
+namespace Deve.Core.DataSourceWrappers
 {
     internal class DataSourceWrapperBase
     {

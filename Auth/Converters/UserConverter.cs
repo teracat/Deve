@@ -1,7 +1,9 @@
 ﻿using System.Security.Principal;
 using System.Security.Claims;
+using Deve.Authenticate;
+using Deve.Internal.Model;
 
-namespace Deve.Auth
+namespace Deve.Auth.Converters
 {
     public static class UserConverter
     {

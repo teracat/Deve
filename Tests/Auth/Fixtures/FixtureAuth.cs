@@ -1,6 +1,8 @@
 ﻿using Deve.Auth;
+using Deve.Authenticate;
+using Deve.Model;
 
-namespace Deve.Tests.Auth
+namespace Deve.Tests.Auth.Fixtures
 {
     public class FixtureAuth
     {

@@ -1,0 +1,94 @@
+﻿<v:BaseView x:Class="Deve.Clients.Wpf.Views.MainView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:Deve.Clients.Wpf"
+            xmlns:v="clr-namespace:Deve.Clients.Wpf.Views"
+            xmlns:ctrl="clr-namespace:Deve.Clients.Wpf.Controls"
+            xmlns:strings="clr-namespace:Deve.Clients.Wpf.Resources.Strings"
+            xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+            xmlns:vm="clr-namespace:Deve.Clients.Wpf.ViewModels"
+            d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+            mc:Ignorable="d"
+            Width="750" Height="500" MinWidth="750" MinHeight="500"
+            ResizeMode="CanResizeWithGrip" WindowState="Maximized"
+            x:Name="root">
+    <Border Padding="20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Clients -->
+            <ctrl:DataListControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Title="{x:Static strings:AppResources.Clients}" 
+                                  Items="{Binding CtrlDataClients.Items}" SearchText="{Binding CtrlDataClients.SearchText, Mode=TwoWay}" 
+                                  IsBusy="{Binding CtrlDataClients.IsBusy}" ErrorText="{Binding CtrlDataClients.ErrorText}" SearchCommand="{Binding CtrlDataClients.SearchCommand}" 
+                                  ItemTemplate="{StaticResource ClientDataListItemTemplate}" IsAddEnabled="False" />
+
+            <!-- Client Stats -->
+            <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource MainBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Content="{x:Static strings:AppResources.ClientStats}" Style="{StaticResource TitleLabel}" />
+                    <Border Grid.Row="1" Padding="10" Style="{StaticResource MainInternalBorder}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static strings:AppResources.MinBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
+                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding ClientStats.MinBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+
+                            <Label Grid.Column="0" Grid.Row="1" Content="{x:Static strings:AppResources.AvgBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
+                            <Label Grid.Column="1" Grid.Row="1" Content="{Binding ClientStats.AvgBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+
+                            <Label Grid.Column="0" Grid.Row="2" Content="{x:Static strings:AppResources.MaxBalance}" ContentStringFormat="{}{0}:" Style="{StaticResource ClientStatsTitleLabel}" />
+                            <Label Grid.Column="1" Grid.Row="2" Content="{Binding ClientStats.MaxBalance}" ContentStringFormat="{x:Static local:Globals.AmountStringFormat}" Style="{StaticResource ClientStatsValueLabel}" />
+
+                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="{Binding IsLoadingClientStats, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource LoadingImageAwesome}" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Cities -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="0" Title="{x:Static strings:AppResources.Cities}"
+                                  Items="{Binding CtrlDataCities.Items}" SearchText="{Binding CtrlDataCities.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCities.IsBusy}" 
+                                  ErrorText="{Binding CtrlDataCities.ErrorText}" SearchCommand="{Binding CtrlDataCities.SearchCommand}"
+                                  IsAddEnabled="False" CanEdit="False" CanDelete="False" />
+
+            <!-- States -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="1" Title="{x:Static strings:AppResources.States}"
+                                  Items="{Binding CtrlDataStates.Items}" SearchText="{Binding CtrlDataStates.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataStates.IsBusy}" 
+                                  ErrorText="{Binding CtrlDataStates.ErrorText}" SearchCommand="{Binding CtrlDataStates.SearchCommand}" 
+                                  AddCommand="{Binding AddState}" EditCommand="{Binding EditState}" DeleteCommand="{Binding DeleteState}" />
+
+            <!-- Countries -->
+            <ctrl:DataListControl Grid.Column="1" Grid.Row="2" Title="{x:Static strings:AppResources.Countries}"
+                                  Items="{Binding CtrlDataCountries.Items}" SearchText="{Binding CtrlDataCountries.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCountries.IsBusy}" 
+                                  ErrorText="{Binding CtrlDataCountries.ErrorText}" SearchCommand="{Binding CtrlDataCountries.SearchCommand}"
+                                  AddCommand="{Binding AddCountry}" EditCommand="{Binding EditCountry}" DeleteCommand="{Binding DeleteCountry}" />
+            
+        </Grid>
+    </Border>
+</v:BaseView>

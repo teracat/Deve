@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Collections.Specialized;
 using System.Net.Http.Headers;
 using System.Web;
+using Deve.Authenticate;
 
 namespace Deve.Sdk
 {

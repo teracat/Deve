@@ -1,7 +1,8 @@
 ﻿using Deve.Auth;
 using Deve.DataSource;
-using Deve.Internal;
 using Deve.Core.Shield;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
 
 namespace Deve.Core
 {

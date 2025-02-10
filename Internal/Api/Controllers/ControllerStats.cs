@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Api;
+using Deve.Model;
+using Deve.Internal.Model;
+using Deve.Api.Controllers;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Internal.Api
+namespace Deve.Internal.Api.Controllers
 {
     [ApiController]
     [Route(ApiConstants.PathStats)]

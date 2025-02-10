@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Api;
+using Deve.Model;
+using Deve.Criteria;
+using Deve.External.Model;
+using Deve.External.Data;
+using Deve.Api.Controllers;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.External.Api
+namespace Deve.External.Api.Controllers
 {
     [ApiController]
     [Route(ApiConstants.PathClient)]

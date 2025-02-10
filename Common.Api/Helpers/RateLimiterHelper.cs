@@ -1,6 +1,6 @@
 ﻿using System.Threading.RateLimiting;
 
-namespace Deve.Api
+namespace Deve.Api.Helpers
 {
     /// <summary>
     /// RateLimiter creation.

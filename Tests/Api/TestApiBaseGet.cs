@@ -1,3 +1,5 @@
+using Deve.Tests.Api.Fixture;
+
 namespace Deve.Tests.Api
 {
     public abstract class TestApiBaseGet<TEntryPoint> : TestApiBase<TEntryPoint> where TEntryPoint : class

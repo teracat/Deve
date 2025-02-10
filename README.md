@@ -30,12 +30,14 @@ For more details about the available versions, see the [Versions](https://github
 
 ## Client Samples
 
-Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Client) section.
+Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Clients) section.
 
 MAUI Screenshots:
 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" title="MAUI - Windows: Login Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" width="200" alt="MAUI - AWindows: Login Window"></a> 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" title="MAUI - Android: Login Window"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" width="100" alt="MAUI - AAndroid: Login Window"></a>
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" title="MAUI - Windows: Login View"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-windows.png" width="200" alt="MAUI - Windows: Login View"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-cities-windows.png" title="MAUI - Windows: Cities View"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-cities-windows.png" width="200" alt="MAUI - Windows: Cities View"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" title="MAUI - Android: Login View"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-login-android.png" width="100" alt="MAUI - Android: Login View"></a>
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-cities-android.png" title="MAUI - Android: Cities View"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/client-maui-cities-android.png" width="100" alt="MAUI - Android: Cities View"></a>
 
 
 WPF Screenshots:
@@ -103,12 +105,12 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [External Sdk](https://github.com/teracat/Deve/wiki/Sdk#external-sdk)
   - [Internal Sdk](https://github.com/teracat/Deve/wiki/Sdk#internal-sdk)
   - [Use cases](https://github.com/teracat/Deve/wiki/Sdk#use-cases)
-- [Client](https://github.com/teracat/Deve/wiki/Client)
-  - [Common](https://github.com/teracat/Deve/wiki/Client#common)
-  - [Console](https://github.com/teracat/Deve/wiki/Client#console)
-  - [Service](https://github.com/teracat/Deve/wiki/Client#service)
-  - [MAUI](https://github.com/teracat/Deve/wiki/Client#maui)
-  - [WPF](https://github.com/teracat/Deve/wiki/Client#wpf)
+- [Clients](https://github.com/teracat/Deve/wiki/Clients)
+  - [Common](https://github.com/teracat/Deve/wiki/Clients#common)
+  - [Console](https://github.com/teracat/Deve/wiki/Clients#console)
+  - [Service](https://github.com/teracat/Deve/wiki/Clients#service)
+  - [MAUI](https://github.com/teracat/Deve/wiki/Clients#maui)
+  - [WPF](https://github.com/teracat/Deve/wiki/Clients#wpf)
 - [Changelog](https://github.com/teracat/Deve/wiki/Changelog)
 - [Versions](https://github.com/teracat/Deve/wiki/Versions)
 

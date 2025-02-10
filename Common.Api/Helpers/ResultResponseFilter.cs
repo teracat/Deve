@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Deve.Model;
 
-namespace Deve.Api
+namespace Deve.Api.Helpers
 {
     /// <summary>
     /// Parse the custom Result and change the response StatusCode to match it.

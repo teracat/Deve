@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Deve.Auth
+namespace Deve.Auth.Crypt
 {
     /// <summary>
     /// Encryption/decryption. You should use your own implementation or, at least, change the Key & IV used to encrypt/decrypt (see AutConstants).

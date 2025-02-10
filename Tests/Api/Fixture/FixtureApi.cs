@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using Deve.Api;
+using Deve.Api.DataSourceBuilder;
 
-namespace Deve.Tests.Api
+namespace Deve.Tests.Api.Fixture
 {
     public class FixtureApi<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint: class
     {

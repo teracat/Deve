@@ -1,4 +1,6 @@
-﻿namespace Deve.Auth
+﻿using Deve.Model;
+
+namespace Deve.Auth.Converters
 {
     public static class RoleConverter
     {

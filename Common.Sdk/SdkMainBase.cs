@@ -1,4 +1,8 @@
-﻿namespace Deve.Sdk
+﻿using Deve.Authenticate;
+using Deve.Data;
+using Deve.Sdk.LoggingHandlers;
+
+namespace Deve.Sdk
 {
     internal abstract class SdkMainBase : ISdkCommon
     {

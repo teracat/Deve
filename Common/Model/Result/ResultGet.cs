@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Model
 {
     public class ResultGet<T> : Result
     {

@@ -1,5 +1,12 @@
 ﻿using Deve.Sdk;
+using Deve.Model;
+using Deve.Data;
+using Deve.Sdk.LoggingHandlers;
+using Deve.Criteria;
 using Deve.External.Sdk;
+using Deve.Internal.Model;
+using Deve.Internal.Data;
+using Deve.Internal.Criteria;
 
 namespace Deve.Internal.Sdk
 {
@@ -15,7 +22,7 @@ namespace Deve.Internal.Sdk
         private SdkClientAll? _sdkClient;
         private SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>? _sdkUser;
         private SdkStats? _sdkStats;
-        private SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>? _sdkClientBasicGet;
+        private SdkBaseGet<ClientBasic, External.Model.Client, CriteriaClientBasic, ISdkCommon>? _sdkClientBasicGet;
         #endregion
 
         #region Properties
@@ -55,7 +62,7 @@ namespace Deve.Internal.Sdk
 
         public IDataClient Clients => _sdkClient ??= new SdkClientAll(this);
 
-        public External.IDataGet<ClientBasic, External.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkBaseGet<ClientBasic, External.Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.PathClientBasic, this);
+        public External.Data.IDataGet<ClientBasic, External.Model.Client, CriteriaClientBasic> ClientsBasic => _sdkClientBasicGet ??= new SdkBaseGet<ClientBasic, External.Model.Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.PathClientBasic, this);
 
         public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _sdkUser ??= new SdkBaseAll<UserBase, UserPlainPassword, CriteriaUser>(ApiConstants.PathUser, this);
 

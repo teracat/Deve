@@ -1,3 +1,7 @@
+using Deve.Criteria;
+using Deve.Data;
+using Deve.Model;
+
 namespace Deve.Tests
 {
     public abstract class TestState<TDataType> : TestBaseDataAll<TDataType, State, State, CriteriaState> where TDataType : IDataCommon

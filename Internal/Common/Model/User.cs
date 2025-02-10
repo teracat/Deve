@@ -1,4 +1,4 @@
-﻿namespace Deve
+﻿namespace Deve.Internal.Model
 {
     /// <summary>
     /// User with the password hash.

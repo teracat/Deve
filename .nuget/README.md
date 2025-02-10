@@ -12,9 +12,9 @@ Check the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki
 To stay up to date with the latest changes and updates to the project, check out the [Changelog](https://github.com/teracat/Deve/wiki/Changelog).  
 For more details about the available versions, see the [Versions](https://github.com/teracat/Deve/wiki/Versions) page.  
 
-## Client Samples
+## Clients Samples
 
-Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Client) section.
+Client app samples are provided to show how to use the Core or the Sdk + Api to access the data. More information in the [Wiki](https://github.com/teracat/Deve/wiki/Clients) section.
 
 ## Wiki
 

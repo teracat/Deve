@@ -1,6 +1,8 @@
-﻿using Deve.Tests.Api;
+﻿using Deve.Authenticate;
+using Deve.Data;
+using Deve.Tests.Api.Fixture;
 
-namespace Deve.Tests.Sdk
+namespace Deve.Tests.Sdk.Fixtures
 {
     public abstract class FixtureSdk<TEntryPoint, TDataType> : FixtureApi<TEntryPoint>, IFixtureData<TDataType> where TEntryPoint : class where TDataType : IDataCommon
     {

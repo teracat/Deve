@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
-using Deve.Common.Resources;
+using Deve.Model;
+using Deve.Resources;
 
 namespace Deve.Localize
 {

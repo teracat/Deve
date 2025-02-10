@@ -1,4 +1,6 @@
-﻿namespace Deve.External
+﻿using Deve.Model;
+
+namespace Deve.External.Data
 {
     public interface IDataGet<ModelList, Model, Criteria>
     {
