@@ -90,7 +90,7 @@ namespace Deve.Api
             // Inject HttpContextAccessor to the Controllers constructor
             builder.Services.AddHttpContextAccessor();
 
-            // Inject IDataSourceFactory to the Controllers constructor
+            // Inject IDataSourceBuilder to the Controllers constructor
             builder.Services.AddSingleton<IDataSourceBuilder, DataSourceBuilderFactory>();
 
             // Authentication

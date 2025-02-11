@@ -2,7 +2,7 @@
 
 namespace Deve.Clients.Maui.Interfaces
 {
-    public interface IDataService
+    public interface IDataService : IDisposable
     {
         IData Data { get; }
     }

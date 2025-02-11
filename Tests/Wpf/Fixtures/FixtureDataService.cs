@@ -11,5 +11,10 @@ namespace Deve.Tests.Wpf.Fixtures
         {
             Data = data;
         }
+
+        public void Dispose()
+        {
+            Data.Dispose();
+        }
     }
 }

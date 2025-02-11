@@ -22,10 +22,12 @@ namespace Deve.Core
         #endregion
 
         #region Fields
-        private bool _isSharedInstance;
-        private DataOptions _options;
+        private readonly bool _isSharedInstance;
         private readonly IDataSource _dataSource;
         private readonly IAuth _auth;
+        private DataOptions _options;
+
+        private readonly bool _shouldDisposeDataSource;
 
         private UserIdentity? _userIdentity;
         private User? _user;
@@ -136,9 +138,19 @@ namespace Deve.Core
         public CoreMain(bool isSharedInstance = true, IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
         {
             _isSharedInstance = isSharedInstance;
-            _dataSource = dataSource ?? DataSourceFactory.Get();
+            _dataSource = dataSource ?? DataSourceFactory.Get(options);
             _options = options ?? new DataOptions();
             _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
+            _shouldDisposeDataSource = dataSource is null;
+        }
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            _auth.Dispose();
+            if (_shouldDisposeDataSource)
+                DataSource.Dispose();
         }
         #endregion
     }

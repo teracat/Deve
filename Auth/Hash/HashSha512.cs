@@ -14,5 +14,9 @@ namespace Deve.Auth.Hash
             var hash = SHA512.HashData(data);
             return Convert.ToBase64String(hash);
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -95,5 +95,9 @@ namespace Deve.Auth.TokenManagers.Jwt
                 return TokenParseResult.NotValid;
             }
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
