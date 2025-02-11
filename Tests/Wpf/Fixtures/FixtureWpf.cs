@@ -5,10 +5,12 @@ using Deve.Tests.Wpf.Mocks;
 
 namespace Deve.Tests.Wpf.Fixtures
 {
-    public class FixtureWpf
+    public class FixtureWpf : IAsyncLifetime
     {
         public MockNavigationService NavigationService { get; private set; }
+
         public IDataService DataServiceNoAuth { get; private set; }
+        
         public IDataService DataServiceValidAuth { get; private set; }
 
         public FixtureWpf()
@@ -20,10 +22,25 @@ namespace Deve.Tests.Wpf.Fixtures
 
             // IsSharedInstance is set to true so the Login stores the User authenticated to avoid permissions errors
             var dataValidAuth = CoreFactory.Get(true, TestsHelpers.CreateDataSourceMock(), null);
-            dataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid)).Wait();
-
+            
             DataServiceNoAuth = new FixtureDataService(dataNoAuth);
             DataServiceValidAuth = new FixtureDataService(dataValidAuth);
         }
+
+        #region IAsyncLifetime
+        public virtual async Task InitializeAsync()
+        {
+            await DataServiceValidAuth.Data.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
+        }
+
+        public virtual async Task DisposeAsync()
+        {
+            await Task.Run(() =>
+            {
+                DataServiceNoAuth.Dispose();
+                DataServiceValidAuth.Dispose();
+            });
+        }
+        #endregion
     }
 }
