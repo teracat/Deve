@@ -81,11 +81,13 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Methods
         private async Task LoadData()
         {
-            await LoadDataClients();
-            await LoadDataCities();
-            await LoadDataStates();
-            await LoadDataCountries();
-            await LoadClientStats();
+            var taskClients = LoadDataClients();
+            var taskCities = LoadDataCities();
+            var taskStates = LoadDataStates();
+            var taskCountries = LoadDataCountries();
+            var taskStats = LoadClientStats();
+
+            await Task.WhenAll(taskClients, taskCities, taskStates, taskCountries, taskStats);
         }
 
         private async Task LoadDataClients()
