@@ -8,6 +8,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Fields
         private readonly INavigationService _navigationService;
         private readonly IDataService _dataService;
+        private readonly IMessageHandler _messageHandler;
         private bool _isBusy = false;
         private string _errorText = string.Empty;
         #endregion
@@ -16,6 +17,8 @@ namespace Deve.Clients.Wpf.ViewModels
         protected INavigationService NavigationService => _navigationService;
 
         protected IDataService DataService => _dataService;
+
+        protected IMessageHandler MessageHandler => _messageHandler;
 
         public bool IsBusy
         {
@@ -58,10 +61,11 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IDataService dataService)
+        public BaseViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
         {
             _navigationService = navigationService;
             _dataService = dataService;
+            _messageHandler = messageHandler;
         }
         #endregion
 

@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Deve.Criteria;
+﻿using Deve.Criteria;
 using Deve.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
@@ -23,12 +22,12 @@ namespace Deve.Clients.Wpf.ViewModels
         private bool _isLoadingClientStats = false;
         private ClientStats? _clientStats;
 
-        private ICommand? _addStateCommand;
-        private ICommand? _editStateCommand;
-        private ICommand? _deleteStateCommand;
-        private ICommand? _addCountryCommand;
-        private ICommand? _editCountryCommand;
-        private ICommand? _deleteCountryCommand;
+        private AsyncCommand? _addStateCommand;
+        private AsyncCommand? _editStateCommand;
+        private AsyncCommand? _deleteStateCommand;
+        private AsyncCommand? _addCountryCommand;
+        private AsyncCommand? _editCountryCommand;
+        private AsyncCommand? _deleteCountryCommand;
         #endregion
 
         #region Properties
@@ -67,8 +66,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public MainViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
             _ctrlDataClients = new(LoadDataClients);
             _ctrlDataCities = new(LoadDataCities);
@@ -251,7 +250,7 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await dataAll.Get(listData.Id);
                     if (!res.Success)
                     {
-                        Globals.ShowError(res.Errors);
+                        MessageHandler.ShowError(res.Errors);
                         return;
                     }
 
@@ -273,7 +272,7 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             if (listData is not null)
             {
-                if (Globals.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
+                if (MessageHandler.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
                 {
                     data.IsBusy = true;
                     try
@@ -281,7 +280,7 @@ namespace Deve.Clients.Wpf.ViewModels
                         var res = await dataAll.Delete(listData.Id);
                         if (!res.Success)
                         {
-                            Globals.ShowError(res.Errors);
+                            MessageHandler.ShowError(res.Errors);
                             return;
                         }
 
@@ -297,13 +296,13 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Commands
-        public ICommand AddState => _addStateCommand ??= new Command(() => _ = DoAddState(), () => !_ctrlDataStates.IsBusy);
-        public ICommand EditState => _editStateCommand ??= new Command((listData) => _ = DoEditState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
-        public ICommand DeleteState => _deleteStateCommand ??= new Command((listData) => _ = DoDeleteState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+        public AsyncCommand AddState => _addStateCommand ??= new AsyncCommand(DoAddState, () => !_ctrlDataStates.IsBusy);
+        public AsyncCommand EditState => _editStateCommand ??= new AsyncCommand((listData) => DoEditState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+        public AsyncCommand DeleteState => _deleteStateCommand ??= new AsyncCommand((listData) => DoDeleteState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
 
-        public ICommand AddCountry => _addCountryCommand ??= new Command(() => _ = DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
-        public ICommand EditCountry => _editCountryCommand ??= new Command((listData) => _ = DoEditCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
-        public ICommand DeleteCountry => _deleteCountryCommand ??= new Command((listData) => _ = DoDeleteCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
+        public AsyncCommand AddCountry => _addCountryCommand ??= new AsyncCommand(() => DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
+        public AsyncCommand EditCountry => _editCountryCommand ??= new AsyncCommand((listData) => DoEditCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
+        public AsyncCommand DeleteCountry => _deleteCountryCommand ??= new AsyncCommand((listData) => DoDeleteCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
         #endregion
     }
 }

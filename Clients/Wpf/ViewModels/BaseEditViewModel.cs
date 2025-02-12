@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Deve.Clients.Wpf.Helpers;
+﻿using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
@@ -9,8 +8,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Fields
         public Action? LoadDataDoneAction { get; set; }
 
-        private ICommand? _saveCommand;
-        private ICommand? _cancelCommand;
+        private AsyncCommand? _saveCommand;
+        private Command? _cancelCommand;
         #endregion
 
         #region Properties
@@ -18,8 +17,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public BaseEditViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public BaseEditViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
         }
         #endregion
@@ -68,8 +67,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Commands
-        public ICommand Cancel => _cancelCommand ??= new Command(() => DoCancel(), () => IsIdle);
-        public ICommand Save => _saveCommand ??= new Command(() => _ = DoSave(), () => IsIdle);
+        public Command Cancel => _cancelCommand ??= new Command(DoCancel, () => IsIdle);
+        public AsyncCommand Save => _saveCommand ??= new AsyncCommand(DoSave, () => IsIdle);
         #endregion
     }
 }

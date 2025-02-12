@@ -34,8 +34,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public StateViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public StateViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
         }
         #endregion
@@ -54,7 +54,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
             if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
             {
-                Globals.ShowError(AppResources.MissingField);
+                MessageHandler.ShowError(AppResources.MissingField);
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 if (!res.Success)
                 {
-                    Globals.ShowError(res.Errors);
+                    MessageHandler.ShowError(res.Errors);
                     return;
                 }
             }
@@ -101,7 +101,7 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await DataService.Data.States.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        Globals.ShowError(res.Errors);
+                        MessageHandler.ShowError(res.Errors);
                         IsBusy = false; // When IsBusy=true the Window will not be closed
                         Close();
                         return;
@@ -119,7 +119,7 @@ namespace Deve.Clients.Wpf.ViewModels
             var res = await DataService.Data.Countries.Get();
             if (!res.Success)
             {
-                Globals.ShowError(res.Errors);
+                MessageHandler.ShowError(res.Errors);
                 IsBusy = false; // When IsBusy=true the Window will not be closed
                 Close();
                 return;
