@@ -81,7 +81,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Methods
-        internal async Task Login(string password)
+        public async Task Login(string password)
         {
             if (!Validate())
                 return;
