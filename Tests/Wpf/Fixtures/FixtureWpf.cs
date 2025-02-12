@@ -1,21 +1,24 @@
-﻿using Deve.Authenticate;
+﻿using Moq;
+using Deve.Authenticate;
 using Deve.Core;
 using Deve.Clients.Wpf.Interfaces;
-using Deve.Tests.Wpf.Mocks;
 
 namespace Deve.Tests.Wpf.Fixtures
 {
     public class FixtureWpf : IAsyncLifetime
     {
-        public MockNavigationService NavigationService { get; private set; }
+        public Mock<INavigationService> NavigationService { get; private set; }
 
         public IDataService DataServiceNoAuth { get; private set; }
         
         public IDataService DataServiceValidAuth { get; private set; }
 
+        public Mock<IMessageHandler> MessageHandler { get; private set; }
+
         public FixtureWpf()
         {
-            NavigationService = new MockNavigationService();
+            NavigationService = new Mock<INavigationService>();
+            MessageHandler = new Mock<IMessageHandler>();
 
             // IsSharedInstance is set to false to get a new instance of the Data object
             var dataNoAuth = CoreFactory.Get(false, TestsHelpers.CreateDataSourceMock(), null);
