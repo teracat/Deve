@@ -16,6 +16,7 @@ namespace Deve.Auth
     {
         #region Fields
         private DataOptions _options;
+        private readonly bool _shouldDisposeTokenManager;
         #endregion
 
         #region Properties
@@ -31,13 +32,14 @@ namespace Deve.Auth
         #endregion
 
         #region Constructor
-        public AuthMain(IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
+        public AuthMain(IDataSource dataSource, DataOptions? options = null, ITokenManager? tokenManager = null)
         {
             _options = options ?? new DataOptions();
-            DataSource = dataSource ?? DataSourceFactory.Get(_options);
+            DataSource = dataSource;
             Hash = new HashSha512();
             Crypt = new CryptAes();
             TokenManager = tokenManager ?? TokenManagerFactory.Get();
+            _shouldDisposeTokenManager = tokenManager is null;
         }
         #endregion
 
@@ -146,6 +148,16 @@ namespace Deve.Auth
                 var newUserToken = TokenManager.CreateToken(resUsers.Data);
                 return Utils.ResultGetOk(newUserToken);
             });
+        }
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            Hash.Dispose();
+            Crypt.Dispose();
+            if (_shouldDisposeTokenManager)
+                TokenManager.Dispose();
         }
         #endregion
     }

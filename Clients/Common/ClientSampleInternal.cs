@@ -16,7 +16,7 @@ namespace Deve.Clients
         /// <summary>
         /// IData instance to access the data.
         /// </summary>
-        private IData _data;
+        private readonly IData _data;
 
         public ClientSampleInternal(IData data)
         {

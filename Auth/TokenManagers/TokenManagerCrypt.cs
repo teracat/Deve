@@ -61,5 +61,9 @@ namespace Deve.Auth.TokenManagers
                 return TokenParseResult.NotValid;
             }
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

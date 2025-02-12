@@ -2,7 +2,7 @@
 
 namespace Deve.Clients.Wpf.Interfaces
 {
-    public interface IDataService
+    public interface IDataService : IDisposable
     {
         IData Data { get; }
     }

@@ -63,5 +63,12 @@ namespace Deve.Sdk
             _client.DefaultRequestHeaders.AcceptLanguage.Add(new System.Net.Http.Headers.StringWithQualityHeaderValue(_options.LangCode));
         }
         #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            _client.Dispose();
+        }
+        #endregion
     }
 }

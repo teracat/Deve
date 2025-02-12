@@ -1,20 +1,19 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Deve.Criteria;
 using Deve.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
 using Deve.Internal.Model;
+using Deve.Clients.Interfaces;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Resources.Strings;
-using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Models;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public partial class MainViewModel : BaseViewModel
+    public partial class MainViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
         [ObservableProperty]
@@ -36,26 +35,32 @@ namespace Deve.Clients.Wpf.ViewModels
         private ClientStats? _clientStats;
         #endregion
 
+        #region Properties
+        public Task Initialization { get; private set; }
+        #endregion
+
         #region Constructor
-        public MainViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public MainViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
             _ctrlDataClients = new(LoadDataClients);
             _ctrlDataCities = new(LoadDataCities);
             _ctrlDataStates = new(LoadDataStates);
             _ctrlDataCountries = new(LoadDataCountries);
-            _ = LoadData();
+            Initialization = LoadData();
         }
         #endregion
 
         #region Methods
         private async Task LoadData()
         {
-            await LoadDataClients();
-            await LoadDataCities();
-            await LoadDataStates();
-            await LoadDataCountries();
-            await LoadClientStats();
+            var taskClients = LoadDataClients();
+            var taskCities = LoadDataCities();
+            var taskStates = LoadDataStates();
+            var taskCountries = LoadDataCountries();
+            var taskStats = LoadClientStats();
+
+            await Task.WhenAll(taskClients, taskCities, taskStates, taskCountries, taskStats);
         }
 
         private async Task LoadDataClients()
@@ -225,7 +230,7 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await dataAll.Get(listData.Id);
                     if (!res.Success)
                     {
-                        Globals.ShowError(res.Errors);
+                        MessageHandler.ShowError(res.Errors);
                         return;
                     }
 
@@ -247,7 +252,7 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             if (listData is not null)
             {
-                if (Globals.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
+                if (MessageHandler.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
                 {
                     data.IsBusy = true;
                     try
@@ -255,7 +260,7 @@ namespace Deve.Clients.Wpf.ViewModels
                         var res = await dataAll.Delete(listData.Id);
                         if (!res.Success)
                         {
-                            Globals.ShowError(res.Errors);
+                            MessageHandler.ShowError(res.Errors);
                             return;
                         }
 

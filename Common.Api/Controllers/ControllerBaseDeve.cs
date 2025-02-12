@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Deve.Core;
 using Deve.Data;
 using Deve.Api.DataSourceBuilder;
+using Deve.DataSource;
 
 namespace Deve.Api.Controllers
 {
     public class ControllerBaseDeve : ControllerBase
     {
         #region Fields
+        private readonly IDataSource _dataSource;
         private readonly ICore _core;
         #endregion
 
@@ -26,9 +28,12 @@ namespace Deve.Api.Controllers
             if (!string.IsNullOrWhiteSpace(langCode))
                 options.LangCode = langCode;
 
-            var dataSource = dataSourceBuilder.Create(options);
+            _dataSource = dataSourceBuilder.Create(options);
+            _core = CoreFactory.Get(false, _dataSource, options);
 
-            _core = CoreFactory.Get(false, dataSource, options);
+            // Register for dispose when the request is finished
+            contextAccessor.HttpContext?.Response.RegisterForDispose(_core);
+            contextAccessor.HttpContext?.Response.RegisterForDispose(_dataSource);
         }
         #endregion
     }

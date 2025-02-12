@@ -9,9 +9,18 @@ namespace Deve.Clients.Wpf.Services
     {
         private IData? _data;
 
+        #region IDataService
         public IData Data => _data ??= CoreFactory.Get(true, null, new DataOptions()
         {
             LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
         });
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            _data?.Dispose();
+        }
+        #endregion
     }
 }
