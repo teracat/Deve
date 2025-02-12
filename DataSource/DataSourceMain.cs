@@ -11,7 +11,6 @@ namespace Deve.DataSource
     internal class DataSourceMain : IDataSource
     {
         #region Fields
-        private DataSourceConfig? _config;
         private DataSourceCountry? _dsCountry;
         private DataSourceState? _dsState;
         private DataSourceCity? _dsCity;
@@ -21,7 +20,7 @@ namespace Deve.DataSource
         #endregion
 
         #region Properties
-        public DataSourceConfig? Config => _config;
+        public DataSourceConfig? Config { get; }
         public DataOptions Options { get; set; }
         #endregion
 
@@ -38,7 +37,7 @@ namespace Deve.DataSource
         #region Constructor
         public DataSourceMain(DataSourceConfig? config = null, DataOptions? options = null)
         {
-            _config = config;   //The Config is not used in this implementation
+            Config = config;   //The Config is not used in this implementation
             Options = options ?? new DataOptions();
         }
         #endregion
@@ -46,6 +45,8 @@ namespace Deve.DataSource
         #region IDisposable
         public void Dispose()
         {
+            // Nothing to be disposed in this implementation
+            // You should dispose any database connection or file stream here
         }
         #endregion
     }

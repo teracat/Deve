@@ -13,6 +13,7 @@ namespace Deve.Clients.Wpf.Helpers
         {
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDataService, DataService>();
+            services.AddSingleton<IMessageHandler, MessageHandlerMessageBox>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)

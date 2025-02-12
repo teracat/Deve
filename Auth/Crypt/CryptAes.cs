@@ -82,5 +82,9 @@ namespace Deve.Auth.Crypt
 
             return decrypted;
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

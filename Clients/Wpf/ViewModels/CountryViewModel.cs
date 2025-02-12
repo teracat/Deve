@@ -24,8 +24,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public CountryViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public CountryViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
         }
         #endregion
@@ -44,7 +44,7 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await DataService.Data.Countries.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        Globals.ShowError(res.Errors);
+                        MessageHandler.ShowError(res.Errors);
                         Close();
                         return;
                     }
@@ -83,7 +83,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 if (!res.Success)
                 {
-                    Globals.ShowError(res.Errors);
+                    MessageHandler.ShowError(res.Errors);
                     return;
                 }
             }

@@ -2,11 +2,11 @@
 using System.Security;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Authenticate;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Helpers;
-using Deve.Authenticate;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -62,8 +62,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public LoginViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
             _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
             _username = Properties.Settings.Default.Username;
