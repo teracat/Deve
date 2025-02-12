@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Deve.Clients.Wpf.Helpers;
@@ -12,22 +11,20 @@ namespace Deve.Clients.Wpf
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider serviceProvider;
+        #region Fields
+        private readonly ServiceProvider _serviceProvider;
+        #endregion
 
+        #region Constructor
         public App()
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
-            serviceProvider = services.BuildServiceProvider();
+            _serviceProvider = services.BuildServiceProvider();
         }
+        #endregion
 
-        private void ConfigureServices(ServiceCollection services)
-        {
-            ServiceProviderHelper.RegisterServices(services);
-            ServiceProviderHelper.RegisterViewModels(services);
-            ServiceProviderHelper.RegisterViews(services);
-        }
-
+        #region Lifecycle Methods
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -39,8 +36,23 @@ namespace Deve.Clients.Wpf
                 Thread.CurrentThread.CurrentUICulture = culture;
             }
 
-            var loginView = serviceProvider.GetRequiredService<LoginView>();
+            var loginView = _serviceProvider.GetRequiredService<LoginView>();
             loginView.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _serviceProvider.Dispose();
+            base.OnExit(e);
+        }
+        #endregion
+
+        #region Methods
+        private void ConfigureServices(ServiceCollection services)
+        {
+            ServiceProviderHelper.RegisterServices(services);
+            ServiceProviderHelper.RegisterViewModels(services);
+            ServiceProviderHelper.RegisterViews(services);
         }
 
         public void ChangeCulture(CultureInfo newCulture, string username, string password)
@@ -50,11 +62,12 @@ namespace Deve.Clients.Wpf
 
             var oldWindow = Current.MainWindow;
 
-            var loginView = serviceProvider.GetRequiredService<LoginView>();
+            var loginView = _serviceProvider.GetRequiredService<LoginView>();
             loginView.SetUsernamePassword(username, password);
             loginView.Show();
 
             oldWindow.Close();
         }
+        #endregion
     }
 }

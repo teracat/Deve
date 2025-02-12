@@ -6,7 +6,7 @@ namespace Deve.Data
     /// Common IData definitions accessible from Internal and External apps.
     /// These will have to be implemented in Core, Api & Sdk.
     /// </summary>
-    public interface IDataCommon
+    public interface IDataCommon : IDisposable
     {
         DataOptions Options { get; set; }
 

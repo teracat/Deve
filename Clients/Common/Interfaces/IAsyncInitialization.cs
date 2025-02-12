@@ -1,4 +1,4 @@
-﻿namespace Deve.Clients.Maui.Interfaces
+﻿namespace Deve.Clients.Interfaces
 {
     /// <summary>
     /// Marks a type as requiring asynchronous initialization and provides the result of that initialization.

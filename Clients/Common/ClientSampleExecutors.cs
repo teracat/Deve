@@ -9,7 +9,7 @@ namespace Deve.Clients
         #region External
         public static void ExternalSdk(DataOptions? options = null)
         {
-            var data = External.Sdk.SdkFactory.Get(EnvironmentType.Staging, options, new LoggingHandlerLog());
+            using var data = External.Sdk.SdkFactory.Get(EnvironmentType.Staging, options, new LoggingHandlerLog());
             ExternalData(data);
         }
 
@@ -23,13 +23,13 @@ namespace Deve.Clients
         #region Internal
         public static void InternalSdk(DataOptions? options = null)
         {
-            var data = Internal.Sdk.SdkFactory.Get(EnvironmentType.Staging, options, new LoggingHandlerLog());
+            using var data = Internal.Sdk.SdkFactory.Get(EnvironmentType.Staging, options, new LoggingHandlerLog());
             InternalData(data);
         }
 
         public static void InternalEmbedded(DataOptions? options = null)
         {
-            var data = Core.CoreFactory.Get(true, null, options);
+            using var data = Core.CoreFactory.Get(true, null, options);
             InternalData(data);
         }
 

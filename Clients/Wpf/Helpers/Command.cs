@@ -8,9 +8,9 @@ namespace Deve.Clients.Wpf.Helpers
         public delegate void ICommandWithParamOnExecute(object? param);
         public delegate bool ICommandOnCanExecute();
 
-        private ICommandOnExecute? _execute;
-        private ICommandWithParamOnExecute? _executeWithParam;
-        private ICommandOnCanExecute? _canExecute;
+        private readonly ICommandOnExecute? _execute;
+        private readonly ICommandWithParamOnExecute? _executeWithParam;
+        private readonly ICommandOnCanExecute? _canExecute;
 
         public Command(ICommandOnExecute onExecuteMethod, ICommandOnCanExecute? onCanExecuteMethod = null)
         {
@@ -40,8 +40,8 @@ namespace Deve.Clients.Wpf.Helpers
         {
             if (_execute is not null)
                 _execute.Invoke();
-            else if (_executeWithParam is not null)
-                _executeWithParam.Invoke(parameter);
+            else
+                _executeWithParam?.Invoke(parameter);
         }
         #endregion
     }

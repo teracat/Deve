@@ -1,7 +1,7 @@
 ﻿using Deve.Internal.Data;
-using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Wpf.Interfaces;
 
-namespace Deve.Tests.Maui.Fixtures
+namespace Deve.Tests.Wpf.Fixtures
 {
     internal class FixtureDataService : IDataService
     {

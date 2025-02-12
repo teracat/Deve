@@ -53,8 +53,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public LoginViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
             _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
             _username = Properties.Settings.Default.Username;
@@ -63,7 +63,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Methods
-        internal async Task DoLogin(string password)
+        public async Task DoLogin(string password)
         {
             ErrorText = string.Empty;
 

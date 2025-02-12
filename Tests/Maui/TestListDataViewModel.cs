@@ -64,7 +64,6 @@ namespace Deve.Tests.Maui
         public async Task SelectedData_NotNull_NavigatesToDetails()
         {
             // We use a new instance of FixtureNavigationService so other tests does not interfere with this one
-
             var navigationService = new MockNavigationService();
             var viewModel = CreateViewModel(navigationService.Object, _fixture.DataServiceValidAuth);
             await viewModel.Initialization;

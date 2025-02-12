@@ -9,7 +9,7 @@ using Deve.Internal.Model;
 
 namespace Deve.Auth
 {
-    public interface IAuth : IAuthenticate
+    public interface IAuth : IAuthenticate, IDisposable
     {
         DataOptions Options { get; set; }
         ITokenManager TokenManager { get; }
