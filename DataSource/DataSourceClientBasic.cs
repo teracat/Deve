@@ -47,20 +47,6 @@ namespace Deve.DataSource
                 };
                 var qry = CriteriaHandlerClient.Apply(Data.Clients.AsQueryable(), criteriaClient, out string orderBy);
 
-                //Total Count
-                int totalCount = qry.Count();
-
-                //Limit & Offset
-                if (criteria.Offset.HasValue)
-                {
-                    qry = qry.Skip(criteria.Offset.Value);
-                }
-
-                if (criteria.Limit.HasValue)
-                {
-                    qry = qry.Take(criteria.Limit.Value);
-                }
-
                 //Client -> ClientBasic
                 var qryBasic = qry.Select(x => new ClientBasic()
                 {
@@ -74,11 +60,7 @@ namespace Deve.DataSource
                     Longitude = x.Location.Longitude,
                 });
 
-                //Execute Query
-                var data = qryBasic.ToList();
-
-                //Return result
-                return Utils.ResultGetListOk(data, criteria.Offset, criteria.Limit, orderBy, totalCount);
+                return ApplyOffsetAndLimit(qryBasic, criteria, orderBy);
             });
         }
 

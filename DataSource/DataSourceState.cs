@@ -77,25 +77,7 @@ namespace Deve.DataSource
                         break;
                 }
 
-                //Total Count
-                int totalCount = qry.Count();
-
-                //Limit & Offset
-                if (criteria.Offset.HasValue)
-                {
-                    qry = qry.Skip(criteria.Offset.Value);
-                }
-
-                if (criteria.Limit.HasValue)
-                {
-                    qry = qry.Take(criteria.Limit.Value);
-                }
-
-                //Execute Query
-                var data = qry.ToList();
-
-                //Return result
-                return Utils.ResultGetListOk(data, criteria.Offset, criteria.Limit, orderBy, totalCount);
+                return ApplyOffsetAndLimit(qry, criteria, orderBy);
             });
         }
 

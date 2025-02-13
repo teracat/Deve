@@ -23,7 +23,7 @@ namespace Deve.Auth.TokenManagers
             _crypt = crypt;
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
