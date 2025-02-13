@@ -14,6 +14,8 @@ namespace Deve.Api
 {
     public partial class Program
     {
+        protected Program() { }
+
         public static void Main(string[] args)
         {
             //Uncomment the following lines and set the ConnectionString for your DataSource, if needed

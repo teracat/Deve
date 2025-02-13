@@ -20,6 +20,8 @@ namespace Deve.Localize
                 }
                 catch
                 {
+                    // If the langCode is invalid, use the default culture
+                    cultureInfo = CultureInfo.InvariantCulture;
                 }
             }
             return ErrorTypesResource.ResourceManager.GetString(errorType.ToString(), cultureInfo) ?? errorType.ToString();

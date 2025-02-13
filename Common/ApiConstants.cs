@@ -5,18 +5,18 @@
         #region Url External
 //-:cnd
 #if DEBUG
-        public const string UrlProductionExternal   = "https://localhost:7175";
-        public const string UrlStagingExternal      = "https://localhost:7175";
+        public static readonly string UrlProductionExternal   = "https://localhost:7175";
+        public static readonly string UrlStagingExternal      = "https://localhost:7175";
 #else
         //TODO: change with real URLs
-        public const string UrlProductionExternal   = "https://api.deve.com/v1";
-        public const string UrlStagingExternal      = "https://dev.api.deve.com/v1";
+        public static readonly string UrlProductionExternal   = "https://api.deve.com/v1";
+        public static readonly string UrlStagingExternal      = "https://dev.api.deve.com/v1";
 #endif
 //+:cnd
         #endregion
 
         #region Auth
-        public const string AuthDefaultScheme    = "Bearer";
+        public static readonly string AuthDefaultScheme    = "Bearer";
         #endregion
 
         #region Paths

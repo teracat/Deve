@@ -1,5 +1,6 @@
 ﻿using Deve.Criteria;
 using Deve.Model;
+using System.Globalization;
 
 namespace Deve.DataSource
 {
@@ -87,7 +88,7 @@ namespace Deve.DataSource
 
                 //OrderBy
                 string orderBy = criteria.OrderBy ?? nameof(City.Name);
-                switch (orderBy.ToLower())
+                switch (orderBy.ToLower(CultureInfo.InvariantCulture))
                 {
                     case "id":
                         qry = qry.OrderBy(x => x.Id);

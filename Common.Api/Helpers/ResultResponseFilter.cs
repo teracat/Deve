@@ -12,6 +12,7 @@ namespace Deve.Api.Helpers
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            // Not needed
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
@@ -25,19 +26,25 @@ namespace Deve.Api.Helpers
                     switch (error.Type)
                     {
                         case ResultErrorType.Unauthorized:
-                            response.StatusCode =  (int)HttpStatusCode.Unauthorized;
+                            response.StatusCode = (int)HttpStatusCode.Unauthorized;
                             break;
                         case ResultErrorType.MissingRequiredField:
-                        case ResultErrorType.DuplicatedValue:
-                        case ResultErrorType.NotFound:
                         case ResultErrorType.InvalidId:
-                        case ResultErrorType.NotAllowed:
+                        case ResultErrorType.NotFound:
+                        case ResultErrorType.DuplicatedValue:
                             response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case ResultErrorType.NotAllowed:
+                            response.StatusCode = (int)HttpStatusCode.Forbidden;
                             break;
                         case ResultErrorType.Locked:
                             response.StatusCode = (int)HttpStatusCode.Locked;
                             break;
+                        case ResultErrorType.TooManyAttempts:
+                            response.StatusCode = (int)HttpStatusCode.TooManyRequests;
+                            break;
                         case ResultErrorType.Unknown:
+                        default:
                             response.StatusCode = (int)HttpStatusCode.InternalServerError;
                             break;
                     }

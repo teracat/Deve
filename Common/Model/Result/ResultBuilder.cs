@@ -16,10 +16,9 @@ namespace Deve.Model
         #endregion
 
         #region Static Method
-        public static ResultBuilder Create(string langCode = Constants.DefaultLangCode)
-        {
-            return new ResultBuilder(langCode);
-        }
+        public static ResultBuilder Create(string langCode) => new(langCode);
+
+        public static ResultBuilder Create() => Create(Constants.DefaultLangCode);
         #endregion
 
         #region Constructors

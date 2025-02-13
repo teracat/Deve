@@ -198,12 +198,9 @@ namespace Deve.Core.Shield
                         methodData.NumAttemptsInvalid = 0;
                         if (config.MaxAttemptsLockType == ShieldMaxAttemptsLockType.OnlyMethod)
                         {
-                            if (methodData.Status != ShieldLockStatus.Locked)
-                            {
-                                methodData.Status = ShieldLockStatus.Locked;
-                            }
+                            methodData.Status = ShieldLockStatus.Locked;
                         }
-                        else if (originData.Status != ShieldLockStatus.Locked)
+                        else
                         {
                             originData.Status = ShieldLockStatus.Locked;
                         }

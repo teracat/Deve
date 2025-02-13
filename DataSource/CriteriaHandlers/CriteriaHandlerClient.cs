@@ -1,5 +1,6 @@
 ﻿using Deve.Internal.Criteria;
 using Deve.Internal.Model;
+using System.Globalization;
 
 namespace Deve.DataSource.CriteriaHandlers
 {
@@ -31,7 +32,7 @@ namespace Deve.DataSource.CriteriaHandlers
 
             //OrderBy
             orderBy = criteria.OrderBy ?? nameof(Client.Name);
-            switch (orderBy.ToLower())
+            switch (orderBy.ToLower(CultureInfo.InvariantCulture))
             {
                 case "id":
                     qry = qry.OrderBy(x => x.Id);
