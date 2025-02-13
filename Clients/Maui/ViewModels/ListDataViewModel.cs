@@ -44,7 +44,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected virtual async Task InitializeAsync()
+        protected async Task InitializeAsync()
         {
             await LoadData();
         }

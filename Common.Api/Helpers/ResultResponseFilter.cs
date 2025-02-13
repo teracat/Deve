@@ -43,7 +43,6 @@ namespace Deve.Api.Helpers
                         case ResultErrorType.TooManyAttempts:
                             response.StatusCode = (int)HttpStatusCode.TooManyRequests;
                             break;
-                        case ResultErrorType.Unknown:
                         default:
                             response.StatusCode = (int)HttpStatusCode.InternalServerError;
                             break;

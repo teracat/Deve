@@ -14,6 +14,7 @@ namespace Deve.Api.Controllers
         #endregion
 
         #region Properties
+        protected IDataSource DataSource => _dataSource;
         protected ICore Core => _core;
         #endregion
 
