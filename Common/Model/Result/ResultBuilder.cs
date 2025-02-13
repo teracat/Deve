@@ -6,7 +6,7 @@ namespace Deve.Model
     public class ResultBuilder
     {
         #region Fields
-        private string _langCode;
+        private readonly string _langCode;
         #endregion
 
         #region Properties

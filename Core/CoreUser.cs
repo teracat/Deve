@@ -10,7 +10,7 @@ namespace Deve.Core
     internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         #region Fields
-        private DataSourceWrapperUser _wrapperUser;
+        private readonly DataSourceWrapperUser _wrapperUser;
         #endregion
 
         #region CoreBaseAll Abstract Properties

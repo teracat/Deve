@@ -3,7 +3,7 @@
     public class LogProviders
     {
         #region Fields
-        private List<ILogProvider> _list = [];
+        private readonly List<ILogProvider> _list = [];
         #endregion
 
         #region Properties
