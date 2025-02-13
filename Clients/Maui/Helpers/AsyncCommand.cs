@@ -41,7 +41,10 @@ namespace Deve.Clients.Maui.Helpers
 
         public async Task ExecuteAsync(object? parameter)
         {
-            if (!CanExecute(null)) return;
+            if (!CanExecute(null))
+            {
+                return;
+            }
 
             _isExecuting = true;
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
@@ -49,9 +52,13 @@ namespace Deve.Clients.Maui.Helpers
             try
             {
                 if (_execute is not null)
+                {
                     await _execute();
+                }
                 else if (_executeWithParam is not null)
+                {
                     await _executeWithParam(parameter);
+                }
             }
             finally
             {

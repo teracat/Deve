@@ -37,9 +37,14 @@ namespace Deve.DataSource
 
                 //Limit & Offset
                 if (criteria.Offset.HasValue)
+                {
                     qry = qry.Skip(criteria.Offset.Value);
+                }
+
                 if (criteria.Limit.HasValue)
+                {
                     qry = qry.Take(criteria.Limit.Value);
+                }
 
                 //Execute Query
                 var data = qry.ToList();
@@ -55,7 +60,9 @@ namespace Deve.DataSource
             {
                 var client = Data.Clients.FirstOrDefault(x => x.Id == id);
                 if (client is null)
+                {
                     return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk(client);
             });
@@ -78,7 +85,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(client.Id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update
                 found.Name = client.Name;
@@ -108,11 +117,15 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Remove
                 if (!Data.Clients.Remove(found))
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                }
 
                 return Utils.ResultOk();
             });
@@ -127,7 +140,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update Status
                 found.Status = newStatus;

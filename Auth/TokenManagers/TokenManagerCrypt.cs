@@ -41,17 +41,23 @@ namespace Deve.Auth.TokenManagers
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
+            {
                 return TokenParseResult.NotValid;
+            }
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
                 var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
                 if (tokenData is null)
+                {
                     return TokenParseResult.NotValid;
+                }
 
                 if (tokenData.Expires < DateTime.UtcNow)
+                {
                     return TokenParseResult.Expired;
+                }
 
                 userIdentity = tokenData.Subject;
 

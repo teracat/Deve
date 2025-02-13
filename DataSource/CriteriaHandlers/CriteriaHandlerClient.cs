@@ -8,18 +8,26 @@ namespace Deve.DataSource.CriteriaHandlers
         public static IQueryable<Client> Apply(IQueryable<Client> qry, CriteriaClient criteria, out string orderBy)
         {
             if (criteria.Status.HasValue)
+            {
                 qry = qry.Where(x => x.Status == criteria.Status.Value);
+            }
 
             if (criteria.Id.HasValue)
+            {
                 qry = qry.Where(x => x.Id == criteria.Id.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(criteria.Name))
+            {
                 qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase) ||
                                      (!string.IsNullOrEmpty(x.TradeName) && x.TradeName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) ||
                                      (!string.IsNullOrEmpty(x.TaxName) && x.TaxName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) );
+            }
 
             if (criteria.CountryId.HasValue)
+            {
                 qry = qry.Where(x => x.Location.CountryId == criteria.CountryId.Value);
+            }
 
             //OrderBy
             orderBy = criteria.OrderBy ?? nameof(Client.Name);

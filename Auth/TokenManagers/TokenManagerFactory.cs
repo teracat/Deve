@@ -16,7 +16,9 @@ namespace Deve.Auth.TokenManagers
             lock (_tokenManagers)
             {
                 if (!_tokenManagers.TryAdd(scheme, tokenManager))
+                {
                     _tokenManagers[scheme] = tokenManager;
+                }
             }
         }
 
@@ -28,7 +30,9 @@ namespace Deve.Auth.TokenManagers
         public static ITokenManager Get(string scheme)
         {
             if (_tokenManagers.TryGetValue(scheme, out ITokenManager? tokenManager))
+            {
                 return tokenManager;
+            }
 
             switch (scheme)
             {

@@ -79,7 +79,9 @@ namespace Deve.Core
                 {
                     //If the user Id has changed, we set the _user to null to force its data to be fetched again (if accessed)
                     if (_userIdentity is not null && value is not null && _userIdentity.Id != value.Id)
+                    {
                         _user = null;
+                    }
 
                     _userIdentity = value;
                 }
@@ -96,15 +98,21 @@ namespace Deve.Core
             get
             {
                 if (_user is not null)
+                {
                     return _user;
+                }
 
                 if (_userIdentity is null)
+                {
                     return null;
+                }
 
                 var resUser = _dataSource.Users.Get(_userIdentity.Id).Result;
                 if (!resUser.Success)
+                {
                     return null;
-                
+                }
+
                 _user = resUser.Data;
                 return _user;
             }
@@ -112,9 +120,13 @@ namespace Deve.Core
             {
                 _user = value;
                 if (value is null)
+                {
                     _userIdentity = null;
+                }
                 else
+                {
                     _userIdentity = new UserIdentity(value);
+                }
             }
         }
 
@@ -141,9 +153,14 @@ namespace Deve.Core
             _dataSource = dataSource ?? DataSourceFactory.Get(options);
             _options = options ?? new DataOptions();
             if (tokenManager is null)
+            {
                 _auth = AuthFactory.Get(_dataSource, _options);
+            }
             else
+            {
                 _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
+            }
+
             _shouldDisposeDataSource = dataSource is null;
         }
         #endregion
@@ -153,7 +170,9 @@ namespace Deve.Core
         {
             _auth.Dispose();
             if (_shouldDisposeDataSource)
+            {
                 DataSource.Dispose();
+            }
         }
         #endregion
     }

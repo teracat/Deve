@@ -45,7 +45,10 @@ namespace Deve.Clients.Wpf.Helpers
 
         public async Task ExecuteAsync(object? parameter)
         {
-            if (!CanExecute(null)) return;
+            if (!CanExecute(null))
+            {
+                return;
+            }
 
             _isExecuting = true;
             CommandManager.InvalidateRequerySuggested();
@@ -53,9 +56,13 @@ namespace Deve.Clients.Wpf.Helpers
             try
             {
                 if (_execute is not null)
+                {
                     await _execute();
+                }
                 else if (_executeWithParam is not null)
+                {
                     await _executeWithParam(parameter);
+                }
             }
             finally
             {

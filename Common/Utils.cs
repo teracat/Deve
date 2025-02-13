@@ -13,7 +13,9 @@ namespace Deve
             foreach (var field in fields)
             {
                 if (IsEmptyValue(field.Value))
+                {
                     found.Add(field);
+                }
             }
             return found.Count > 0;
         }
@@ -21,16 +23,24 @@ namespace Deve
         public static bool IsEmptyValue(object? value)
         {
             if (value is null)
+            {
                 return true;
+            }
 
             if (value is string strValue)
+            {
                 return string.IsNullOrWhiteSpace(strValue);
-            
+            }
+
             if (value is int iValue)
+            {
                 return iValue <= 0;
+            }
 
             if (value is long lValue)
+            {
                 return lValue <= 0;
+            }
 
             return false;
         }

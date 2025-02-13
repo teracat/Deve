@@ -30,13 +30,19 @@ namespace Deve.DataSource
 
                 //Apply Filters
                 if (criteria.Id.HasValue)
+                {
                     qry = qry.Where(x => x.Id == criteria.Id.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Name))
+                {
                     qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.IsoCode))
+                {
                     qry = qry.Where(x => x.IsoCode.Equals(criteria.IsoCode, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 //OrderBy
                 string orderBy = criteria.OrderBy ?? nameof(Country.Name);
@@ -58,9 +64,14 @@ namespace Deve.DataSource
 
                 //Limit & Offset
                 if (criteria.Offset.HasValue)
+                {
                     qry = qry.Skip(criteria.Offset.Value);
+                }
+
                 if (criteria.Limit.HasValue)
+                {
                     qry = qry.Take(criteria.Limit.Value);
+                }
 
                 //Execute Query
                 var data = qry.ToList();
@@ -76,7 +87,9 @@ namespace Deve.DataSource
             {
                 var country = Data.Countries.FirstOrDefault(x => x.Id == id);
                 if (country is null)
+                {
                     return Utils.ResultGetError<Country>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk(country);
             });
@@ -99,7 +112,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(country.Id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update
                 found.Name = country.Name;
@@ -116,11 +131,15 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Remove
                 if (!Data.Countries.Remove(found))
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                }
 
                 return Utils.ResultOk();
             });

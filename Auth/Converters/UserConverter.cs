@@ -30,7 +30,9 @@ namespace Deve.Auth.Converters
             var username = GetClaimValue(identity, AuthConstants.UserClaimUsername);
             var role = GetClaimValue(identity, AuthConstants.UserClaimRole);
             if (Utils.SomeIsNullOrWhiteSpace(idStr, username, role) || !long.TryParse(idStr, out long id))
+            {
                 return null;
+            }
 
             return new UserIdentity()
             {

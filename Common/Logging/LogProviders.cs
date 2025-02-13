@@ -19,7 +19,9 @@
         public bool Add(ILogProvider provider)
         {
             if (_list.Any(x => x.GetType() == provider.GetType()))
+            {
                 return false;
+            }
 
             _list.Add(provider);
             return true;

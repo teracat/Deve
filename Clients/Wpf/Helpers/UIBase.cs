@@ -16,9 +16,14 @@ namespace Deve.Clients.Wpf.Helpers
         {
             bool changed = false;
             if (EqualityComparer<T>.Default.Equals(property, default))
+            {
                 changed = !EqualityComparer<T>.Default.Equals(value, default);
+            }
             else if (property is not null)
+            {
                 changed = !property.Equals(value);
+            }
+
             if (changed)
             {
                 property = value;

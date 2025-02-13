@@ -23,7 +23,9 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.GetList);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetListError<ModelList>(resPerm);
+            }
 
             return await DataGet.Get(criteria);
         }
@@ -34,10 +36,14 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.Get);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetError<Model>(resPerm);
+            }
 
             if (id <= 0)
+            {
                 return Utils.ResultGetError<Model>(Core.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(id));
+            }
 
             return await DataGet.Get(id);
         }

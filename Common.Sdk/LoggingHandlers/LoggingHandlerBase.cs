@@ -45,7 +45,9 @@
             string msg = request.ToString();
             string content = string.Empty;
             if (request.Content is not null)
+            {
                 content = await request.Content.ReadAsStringAsync(cancellationToken);
+            }
 
             WriteRequest(msg, content);
         }
@@ -55,7 +57,9 @@
             string msg = response.ToString();
             string content = string.Empty;
             if (response.Content is not null)
+            {
                 content = await response.Content.ReadAsStringAsync(cancellationToken);
+            }
 
             WriteResponse(msg, content);
         }
@@ -65,7 +69,9 @@
             Write(_outputPrefix + "Request:");
             Write(_outputPrefix + message);
             if (!string.IsNullOrEmpty(content))
+            {
                 Write(_outputPrefix + content);
+            }
         }
 
         protected virtual void WriteResponse(string message, string content)
@@ -73,7 +79,9 @@
             Write(_outputPrefix + "Response:");
             Write(_outputPrefix + message);
             if (!string.IsNullOrEmpty(content))
+            {
                 Write(_outputPrefix + content);
+            }
         }
 
         protected abstract void Write(string text);

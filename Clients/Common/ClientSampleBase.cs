@@ -30,7 +30,10 @@ namespace Deve.Clients
         {
             var msg = "Errors: ";
             foreach (var error in result.Errors)
+            {
                 msg += $"{error.Type} - {error.Description} [{error.FieldName}]\n";
+            }
+
             LogResult(msg);
         }
 

@@ -30,16 +30,24 @@ namespace Deve.DataSource
 
                 //Apply Filters
                 if (criteria.Id.HasValue)
+                {
                     qry = qry.Where(x => x.Id == criteria.Id.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Name))
+                {
                     qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 if (criteria.StateId.HasValue)
+                {
                     qry = qry.Where(x => x.StateId == criteria.StateId.Value);
+                }
 
                 if (criteria.CountryId.HasValue)
+                {
                     qry = qry.Where(x => x.CountryId == criteria.CountryId.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.IsoCode))
                 {
@@ -53,7 +61,9 @@ namespace Deve.DataSource
                                                        .Select(x => x.Id)
                                                        .ToList();
                         if (countriesIds is not null)
+                        {
                             qry = qry.Where(x => countriesIds.Contains(x.CountryId));
+                        }
                     }
                 }
 
@@ -69,7 +79,9 @@ namespace Deve.DataSource
                                                  .Select(x => x.Id)
                                                  .ToList();
                         if (statesIds is not null)
+                        {
                             qry = qry.Where(x => statesIds.Contains(x.StateId));
+                        }
                     }
                 }
 
@@ -96,9 +108,14 @@ namespace Deve.DataSource
 
                 //Limit & Offset
                 if (criteria.Offset.HasValue)
+                {
                     qry = qry.Skip(criteria.Offset.Value);
+                }
+
                 if (criteria.Limit.HasValue)
+                {
                     qry = qry.Take(criteria.Limit.Value);
+                }
 
                 //Execute Query
                 var data = qry.ToList();
@@ -114,7 +131,9 @@ namespace Deve.DataSource
             {
                 var city = Data.Cities.FirstOrDefault(x => x.Id == id);
                 if (city is null)
+                {
                     return Utils.ResultGetError<City>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk(city);
             });
@@ -136,7 +155,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(city.Id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update
                 found.Name = city.Name;
@@ -156,11 +177,15 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Remove
                 if (!Data.Cities.Remove(found))
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultOk();
             });

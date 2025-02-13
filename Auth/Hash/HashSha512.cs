@@ -8,7 +8,9 @@ namespace Deve.Auth.Hash
         public string Calc(string text)
         {
             if (string.IsNullOrEmpty(text))
+            {
                 return text;
+            }
 
             var data = Encoding.UTF8.GetBytes(text);
             var hash = SHA512.HashData(data);

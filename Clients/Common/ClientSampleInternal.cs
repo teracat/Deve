@@ -32,10 +32,15 @@ namespace Deve.Clients
             ShowClientStats().Wait();
             var newCountryId = AddCountry().Result;
             if (newCountryId > 0)
+            {
                 ShowCountry(newCountryId).Wait();
+            }
+
             ShowCountries().Wait();
             if (newCountryId > 0)
+            {
                 DeleteCountry(newCountryId).Wait();
+            }
         }
 
         private async Task DoLogin()

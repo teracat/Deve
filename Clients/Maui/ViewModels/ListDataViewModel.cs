@@ -26,7 +26,10 @@ namespace Deve.Clients.Maui.ViewModels
             set
             {
                 if (value is not null)
+                {
                     DoSelected(value);
+                }
+
                 OnPropertyChanged();
             }
         }

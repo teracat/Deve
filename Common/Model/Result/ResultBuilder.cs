@@ -67,13 +67,18 @@ namespace Deve.Model
         public void CheckNotNull(object? value, ResultErrorType errorType, [CallerArgumentExpression(nameof(value))] string fieldName = "")
         {
             if (value is null)
+            {
                 Add(errorType, fieldName);
+            }
         }
 
         public ResultBuilder CheckNotNullOrEmpty(params Field[] fields)
         {
             if (Utils.FindNullOrWhiteSpace(out var found, fields))
+            {
                 AddRange(Utils.FoundFieldsToErrors(_langCode, ResultErrorType.MissingRequiredField, found));
+            }
+
             return this;
         }
         #endregion
@@ -82,9 +87,13 @@ namespace Deve.Model
         public Result ToResult()
         {
             if (HasErrors)
+            {
                 return Utils.ResultError(Errors);
+            }
             else
+            {
                 return Utils.ResultOk();
+            }
         }
         #endregion
     }

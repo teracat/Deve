@@ -26,7 +26,9 @@ namespace Deve.Api.Controllers
                 OriginId = contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? string.Empty
             };
             if (!string.IsNullOrWhiteSpace(langCode))
+            {
                 options.LangCode = langCode;
+            }
 
             _dataSource = dataSourceBuilder.Create(options);
             _core = CoreFactory.Get(false, _dataSource, options);

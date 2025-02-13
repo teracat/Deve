@@ -24,7 +24,9 @@ namespace Deve.Core.DataSourceWrappers
         {
             var resUsers = await Core.DataSource.Users.Get(criteria);
             if (!resUsers.Success)
+            {
                 return Utils.ResultGetListError<UserBase>(resUsers);
+            }
 
             var usersBase = resUsers.Data
                                     .Select(x => (UserBase)x)
@@ -39,7 +41,9 @@ namespace Deve.Core.DataSourceWrappers
         {
             var resUser = await Core.DataSource.Users.Get(id);
             if (!resUser.Success || resUser.Data is null)
+            {
                 return Utils.ResultGetError<UserPlainPassword>(resUser);
+            }
 
             return Utils.ResultGetOk(new UserPlainPassword(resUser.Data));
         }
@@ -60,7 +64,9 @@ namespace Deve.Core.DataSourceWrappers
             //The DataSource will only update the Password if is not Empty.
             string newPasswordHash = string.Empty;
             if (!string.IsNullOrWhiteSpace(data.Password))
+            {
                 newPasswordHash = Core.Auth.Hash.Calc(data.Password);
+            }
 
             var user = new User(data)
             {

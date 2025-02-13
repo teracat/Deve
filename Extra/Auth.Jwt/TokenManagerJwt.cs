@@ -65,7 +65,9 @@ namespace Deve.Auth.TokenManagers.Jwt
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
+            {
                 return TokenParseResult.NotValid;
+            }
 
             try
             {
@@ -81,7 +83,9 @@ namespace Deve.Auth.TokenManagers.Jwt
 
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 if (principal is null)
+                {
                     return TokenParseResult.NotValid;
+                }
 
                 userIdentity = UserConverter.ToUserIdentity(principal);
 

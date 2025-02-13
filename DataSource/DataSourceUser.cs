@@ -32,10 +32,14 @@ namespace Deve.DataSource
 
                 //Apply Filters
                 if (criteria.Id.HasValue)
+                {
                     qry = qry.Where(x => x.Id == criteria.Id.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Name))
+                {
                     qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 switch (criteria.OnlyActive)
                 {
@@ -48,13 +52,19 @@ namespace Deve.DataSource
                 }   
 
                 if (!string.IsNullOrWhiteSpace(criteria.Username))
+                {
                     qry = qry.Where(x => x.Username.Equals(criteria.Username, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.PasswordHash))
+                {
                     qry = qry.Where(x => x.PasswordHash.Equals(criteria.PasswordHash, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Email))
+                {
                     qry = qry.Where(x => !string.IsNullOrWhiteSpace(x.Email) && x.Email.Contains(criteria.Email, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 //OrderBy
                 string orderBy = criteria.OrderBy ?? nameof(User.Name);
@@ -88,9 +98,14 @@ namespace Deve.DataSource
 
                 //Limit & Offset
                 if (criteria.Offset.HasValue)
+                {
                     qry = qry.Skip(criteria.Offset.Value);
+                }
+
                 if (criteria.Limit.HasValue)
+                {
                     qry = qry.Take(criteria.Limit.Value);
+                }
 
                 //Execute Query
                 var data = qry.ToList();
@@ -106,7 +121,9 @@ namespace Deve.DataSource
             {
                 var city = Data.Users.FirstOrDefault(x => x.Id == id);
                 if (city is null)
+                {
                     return Utils.ResultGetError<User>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk(city);
             });
@@ -128,7 +145,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(user.Id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update
                 found.Name = user.Name;
@@ -138,7 +157,9 @@ namespace Deve.DataSource
                 found.Joined = user.Joined;
                 found.Birthday = user.Birthday;
                 if (!string.IsNullOrWhiteSpace(user.PasswordHash))
+                {
                     found.PasswordHash = user.PasswordHash;
+                }
 
                 return Utils.ResultOk();
             });
@@ -151,11 +172,15 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Remove
                 if (!Data.Users.Remove(found))
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultOk();
             });

@@ -33,9 +33,13 @@ namespace Deve.Clients.Maui.Views
         protected override bool OnBackButtonPressed()
         {
             if (ViewModel is not null)
+            {
                 return ViewModel.OnViewBackButtonPressed();
+            }
             else
+            {
                 return base.OnBackButtonPressed();
+            }
         }
         #endregion
     }

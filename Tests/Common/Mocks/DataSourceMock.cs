@@ -92,7 +92,9 @@ namespace Deve.Tests.Mocks
                     }
 
                     if (!string.IsNullOrWhiteSpace(criteria.Username))
+                    {
                         qry = qry.Where(x => x.Username.Equals(criteria.Username, StringComparison.InvariantCultureIgnoreCase));
+                    }
 
                     var listFound = qry.ToList();
                     return Utils.ResultGetListOk(listFound, 0, 0, string.Empty, listFound.Count);
@@ -107,11 +109,15 @@ namespace Deve.Tests.Mocks
             return Task.Run(() =>
             {
                 if (id <= 0)
+                {
                     return Utils.ResultGetError<T>(ResultErrorType.InvalidId, nameof(id));
+                }
 
                 var item = list.FirstOrDefault(x => x.Id == id);
                 if (item is null)
+                {
                     return Utils.ResultGetError<T>(ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk<T>(item);
             });
@@ -126,7 +132,9 @@ namespace Deve.Tests.Mocks
                 //We must check if the Id exists so the tests with invalid Id don't Fail
                 var item = list.FirstOrDefault(x => x.Id == id);
                 if (item is null)
+                {
                     return Utils.ResultGetError<T>(ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultOk();
             });
@@ -139,8 +147,10 @@ namespace Deve.Tests.Mocks
                 //We must check if the Id exists so the tests with invalid Id don't Fail
                 var item = list.FirstOrDefault(x => x.Id == id);
                 if (item is null)
+                {
                     return Utils.ResultGetError<T>(ResultErrorType.NotFound);
-                
+                }
+
                 return Utils.ResultOk();
             });
         }

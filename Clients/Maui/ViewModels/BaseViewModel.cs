@@ -44,7 +44,9 @@ namespace Deve.Clients.Maui.ViewModels
             set
             {
                 if (SetProperty(ref _errorText, value))
+                {
                     OnPropertyChanged(nameof(HasError));
+                }
             }
         }
 
@@ -65,7 +67,10 @@ namespace Deve.Clients.Maui.ViewModels
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)
+            {
                 return true;
+            }
+
             return false;
         }
         #endregion

@@ -53,9 +53,13 @@ namespace Deve.Clients.Wpf.Helpers
         public void Execute(object? parameter)
         {
             if (_execute is not null)
+            {
                 _execute.Invoke();
+            }
             else
+            {
                 _executeWithParam?.Invoke(parameter);
+            }
         }
         #endregion
     }

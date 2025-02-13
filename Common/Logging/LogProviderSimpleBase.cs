@@ -40,11 +40,19 @@
         public LogProviderSimpleBase(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
         {
             if (dateFormat is not null)
+            {
                 DateFormat = dateFormat;
+            }
+
             if (debugStringFormat is not null)
+            {
                 DebugStringFormat = debugStringFormat;
+            }
+
             if (errorStringFormat is not null)
+            {
                 ErrorStringFormat = errorStringFormat;
+            }
         }
         #endregion
 

@@ -30,13 +30,19 @@ namespace Deve.DataSource
                 var qry = Data.States.AsQueryable();
 
                 if (criteria.Id.HasValue)
+                {
                     qry = qry.Where(x => x.Id == criteria.Id.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Name))
+                {
                     qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase));
+                }
 
                 if (criteria.CountryId.HasValue)
+                {
                     qry = qry.Where(x => x.CountryId == criteria.CountryId.Value);
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.IsoCode))
                 {
@@ -50,7 +56,9 @@ namespace Deve.DataSource
                                                        .Select(x => x.Id)
                                                        .ToList();
                         if (countriesIds is not null)
+                        {
                             qry = qry.Where(x => countriesIds.Contains(x.CountryId));
+                        }
                     }
                 }
 
@@ -74,9 +82,14 @@ namespace Deve.DataSource
 
                 //Limit & Offset
                 if (criteria.Offset.HasValue)
+                {
                     qry = qry.Skip(criteria.Offset.Value);
+                }
+
                 if (criteria.Limit.HasValue)
+                {
                     qry = qry.Take(criteria.Limit.Value);
+                }
 
                 //Execute Query
                 var data = qry.ToList();
@@ -92,7 +105,9 @@ namespace Deve.DataSource
             {
                 var state = Data.States.FirstOrDefault(x => x.Id == id);
                 if (state is null)
+                {
                     return Utils.ResultGetError<State>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 return Utils.ResultGetOk(state);
             });
@@ -115,7 +130,9 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(state.Id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Update
                 found.Name = state.Name;
@@ -133,11 +150,15 @@ namespace Deve.DataSource
                 //Search the object in memory
                 var found = FindLocal(id);
                 if (found is null)
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                }
 
                 //Remove
                 if (!Data.States.Remove(found))
+                {
                     return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                }
 
                 return Utils.ResultOk();
             });
