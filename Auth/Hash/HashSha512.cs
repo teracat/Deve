@@ -19,6 +19,7 @@ namespace Deve.Auth.Hash
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }

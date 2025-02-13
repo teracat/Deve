@@ -104,6 +104,7 @@ namespace Deve.Auth.TokenManagers.Jwt
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }

@@ -89,6 +89,7 @@ namespace Deve.Auth.Crypt
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }
