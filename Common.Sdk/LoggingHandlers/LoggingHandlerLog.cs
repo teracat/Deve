@@ -8,7 +8,6 @@ namespace Deve.Sdk.LoggingHandlers
     public class LoggingHandlerLog : LoggingHandlerBase
     {
         public LoggingHandlerLog()
-            : base()
         {
         }
 

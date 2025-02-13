@@ -6,7 +6,6 @@
     public class LoggingHandlerConsole : LoggingHandlerBase
     {
         public LoggingHandlerConsole()
-            : base()
         {
         }
 
