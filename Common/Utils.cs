@@ -3,7 +3,7 @@ using Deve.Model;
 
 namespace Deve
 {
-    public class Utils
+    public static class Utils
     {
         public static bool SomeIsNullOrWhiteSpace(params string?[] values) => values.Any(x => string.IsNullOrWhiteSpace(x));
 

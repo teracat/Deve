@@ -1,6 +1,6 @@
 ﻿namespace Deve.Auth
 {
-    public class AuthConstants
+    public static class AuthConstants
     {
         public const int TokenExpiresInHours        = 24;
 
