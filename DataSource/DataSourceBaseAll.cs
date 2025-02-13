@@ -6,7 +6,7 @@ namespace Deve.DataSource
     internal abstract class DataSourceBaseAll<ModelList, Model, Criteria> : DataSourceBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria>
     {
         #region Constructor
-        public DataSourceBaseAll(DataSourceMain dataSourceMain)
+        protected DataSourceBaseAll(DataSourceMain dataSourceMain)
             : base(dataSourceMain)
         {
         }

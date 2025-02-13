@@ -9,7 +9,7 @@ namespace Deve.Tests.Sdk.Fixtures
         public TDataType DataNoAuth { get; private set; }
         public TDataType DataValidAuth { get; private set; }
 
-        public FixtureSdk()
+        protected FixtureSdk()
         {
             DataNoAuth = CreateData();
 

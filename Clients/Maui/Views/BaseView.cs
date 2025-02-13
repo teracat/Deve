@@ -23,7 +23,7 @@ namespace Deve.Clients.Maui.Views
         #endregion
 
         #region Constructor
-        public BaseView(BaseViewModel viewModel)
+        protected BaseView(BaseViewModel viewModel)
         {
             ViewModel = viewModel;
         }

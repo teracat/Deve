@@ -7,23 +7,23 @@
     {
         private readonly string _outputPrefix = string.Empty;
 
-        public LoggingHandlerBase()
+        protected LoggingHandlerBase()
             : base(new HttpClientHandler())
         {
         }
 
-        public LoggingHandlerBase(string outputPrefix)
+        protected LoggingHandlerBase(string outputPrefix)
             : base(new HttpClientHandler())
         {
             _outputPrefix = outputPrefix;
         }
 
-        public LoggingHandlerBase(HttpMessageHandler innerHandler)
+        protected LoggingHandlerBase(HttpMessageHandler innerHandler)
             : base(innerHandler)
         {
         }
 
-        public LoggingHandlerBase(HttpMessageHandler innerHandler, string outputPrefix)
+        protected LoggingHandlerBase(HttpMessageHandler innerHandler, string outputPrefix)
             : base(innerHandler)
         {
             _outputPrefix = outputPrefix;

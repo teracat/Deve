@@ -15,7 +15,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreBaseAll(CoreMain core)
+        protected CoreBaseAll(CoreMain core)
             : base(core)
         {
         }

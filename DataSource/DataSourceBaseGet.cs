@@ -10,7 +10,7 @@ namespace Deve.DataSource
         #endregion
 
         #region Constructor
-        public DataSourceBaseGet(DataSourceMain dataSourceMain)
+        protected DataSourceBaseGet(DataSourceMain dataSourceMain)
             : base(dataSourceMain)
         {
         }

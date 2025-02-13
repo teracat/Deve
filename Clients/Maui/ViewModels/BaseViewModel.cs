@@ -54,7 +54,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IDataService dataService)
+        protected BaseViewModel(INavigationService navigationService, IDataService dataService)
         {
             _navigationService = navigationService;
             _dataService = dataService;

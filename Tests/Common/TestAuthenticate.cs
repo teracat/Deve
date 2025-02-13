@@ -8,7 +8,7 @@ namespace Deve.Tests
     /// </summary>
     public abstract class TestAuthenticate<TDataType> : TestBase<TDataType> where TDataType: IDataCommon
     {
-        public TestAuthenticate(IFixtureData<TDataType> fixture)
+        protected TestAuthenticate(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

@@ -8,7 +8,7 @@ namespace Deve.Tests
     public abstract class TestClient<TDataType> : TestBaseDataAll<TDataType, Client, Client, CriteriaClient> where TDataType : IData
     {
         #region Constructor
-        public TestClient(IFixtureData<TDataType> fixture)
+        protected TestClient(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

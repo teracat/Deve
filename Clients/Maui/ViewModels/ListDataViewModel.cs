@@ -36,7 +36,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ListDataViewModel(INavigationService navigationService, IDataService dataService)
+        protected ListDataViewModel(INavigationService navigationService, IDataService dataService)
             : base(navigationService, dataService)
         {
             Initialization = InitializeAsync();
