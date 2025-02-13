@@ -9,12 +9,14 @@ namespace Deve.Auth.Converters
             return ((int)role).ToString();
         }
 
-        public static Role ToRole(string? value, Role defaultRole = Role.User)
+        public static Role ToRole(string? value, Role defaultRole)
         {
             if (string.IsNullOrWhiteSpace(value) || !int.TryParse(value, out var role))
                 return defaultRole;
             else
                 return (Role)role;
         }
+
+        public static Role ToRole(string? value) => ToRole(value, Role.User);
     }
 }

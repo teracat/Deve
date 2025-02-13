@@ -5,14 +5,11 @@ namespace Deve
 {
     public class Utils
     {
-        public static bool SomeIsNullOrWhiteSpace(params string?[] values)
-        {
-            return values.Any(x => string.IsNullOrWhiteSpace(x));
-        }
+        public static bool SomeIsNullOrWhiteSpace(params string?[] values) => values.Any(x => string.IsNullOrWhiteSpace(x));
 
         public static bool FindNullOrWhiteSpace(out List<Field> found, params Field[] fields)
         {
-            found = new List<Field>();
+            found = [];
             foreach (var field in fields)
             {
                 if (IsEmptyValue(field.Value))
@@ -38,11 +35,8 @@ namespace Deve
             return false;
         }
 
-        public static IList<ResultError> FoundFieldsToErrors(string langCode, ResultErrorType errorType, List<Field> list)
-        {
-            return list.Select(x => new ResultError(errorType, x.Name, ErrorLocalizeFactory.Get().Localize(errorType, langCode)))
+        public static IList<ResultError> FoundFieldsToErrors(string langCode, ResultErrorType errorType, List<Field> list) => list.Select(x => new ResultError(errorType, x.Name, ErrorLocalizeFactory.Get().Localize(errorType, langCode)))
                        .ToList();
-        }
 
         public static T RunProtected<T>(SemaphoreSlim semaphore, Func<T> func)
         {
@@ -57,97 +51,58 @@ namespace Deve
             }
         }
 
-        public static Task<T> RunProtectedAsync<T>(SemaphoreSlim semaphore, Func<T> func)
-        {
-            return Task.Run(() =>
-            {
-                return RunProtected(semaphore, func);
-            });
-        }
+        public static Task<T> RunProtectedAsync<T>(SemaphoreSlim semaphore, Func<T> func) => Task.Run(() => { return RunProtected(semaphore, func); });
 
-        public static Result ResultOk()
-        {
-            return new Result();
-        }
+        public static Result ResultOk() => new();
 
-        public static Result ResultError(string langCode, ResultErrorType errorType, string? fieldName = null)
-        {
-            return new Result(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
-        }
+        public static Result ResultError(string langCode, ResultErrorType errorType, string? fieldName) => new(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
 
-        public static Result ResultError(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
-        {
-            return new Result(errorType, fieldName, errorDescription);
-        }
+        public static Result ResultError(string langCode, ResultErrorType errorType) => new(errorType, null, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
 
-        public static Result ResultError(IList<ResultError> errors)
-        {
-            return new Result(errors);
-        }
+        public static Result ResultError(ResultErrorType errorType, string? fieldName, string? errorDescription) => new(errorType, fieldName, errorDescription);
 
-        public static Result ResultError(Result result)
-        {
-            return new Result(result);
-        }
+        public static Result ResultError(ResultErrorType errorType, string? fieldName) => new(errorType, fieldName);
 
-        public static ResultGet<T> ResultGetOk<T>(T data)
-        {
-            return new ResultGet<T>(data);
-        }
+        public static Result ResultError(IList<ResultError> errors) => new(errors);
 
-        public static ResultGet<T> ResultGetError<T>(string langCode, ResultErrorType errorType, string? fieldName = null)
-        {
-            return new ResultGet<T>(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
-        }
+        public static Result ResultError(Result result) => new(result);
 
-        public static ResultGet<T> ResultGetError<T>(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
-        {
-            return new ResultGet<T>(errorType, fieldName, errorDescription);
-        }
+        public static ResultGet<T> ResultGetOk<T>(T data) => new(data);
 
-        public static ResultGet<T> ResultGetError<T>(Result result)
-        {
-            return new ResultGet<T>(result);
-        }
+        public static ResultGet<T> ResultGetError<T>(string langCode, ResultErrorType errorType, string? fieldName) => new(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
 
-        public static ResultGet<T> ResultGetError<T>(IList<ResultError> errors)
-        {
-            return new ResultGet<T>(errors);
-        }
+        public static ResultGet<T> ResultGetError<T>(string langCode, ResultErrorType errorType) => ResultGetError<T>(langCode, errorType, null);
 
-        public static ResultGetList<T> ResultGetListOk<T>(List<T> data, int? offset, int? limit, string orderBy, int totalCount)
-        {
-            return new ResultGetList<T>(data, offset, limit, orderBy, totalCount);
-        }
+        public static ResultGet<T> ResultGetError<T>(ResultErrorType errorType, string? fieldName, string? errorDescription) => new(errorType, fieldName, errorDescription);
 
-        public static ResultGetList<T> ResultGetListError<T>(string langCode, ResultErrorType errorType, string? fieldName = null)
-        {
-            return new ResultGetList<T>(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
-        }
+        public static ResultGet<T> ResultGetError<T>(ResultErrorType errorType, string? fieldName) => ResultGetError<T>(errorType, fieldName, null);
 
-        public static ResultGetList<T> ResultGetListError<T>(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
-        {
-            return new ResultGetList<T>(errorType, fieldName, errorDescription);
-        }
+        public static ResultGet<T> ResultGetError<T>(ResultErrorType errorType) => ResultGetError<T>(errorType, null, null);
 
-        public static ResultGetList<T> ResultGetListError<T>(Result result)
-        {
-            return new ResultGetList<T>(result);
-        }
+        public static ResultGet<T> ResultGetError<T>(Result result) => new(result);
 
-        public static ResultGetList<T> ResultGetListError<T>(IList<ResultError> errors)
-        {
-            return new ResultGetList<T>(errors);
-        }
+        public static ResultGet<T> ResultGetError<T>(IList<ResultError> errors) => new(errors);
 
-        public static T? CreateInstance<T>()
-        {
-            return (T?)Activator.CreateInstance(typeof(T));
-        }
+        public static ResultGetList<T> ResultGetListOk<T>(List<T> data, int? offset, int? limit, string orderBy, int totalCount) => new(data, offset, limit, orderBy, totalCount);
 
-        public static string ErrorsToString(IList<ResultError> errors, char separator = ',')
-        {
-            return string.Join(separator, errors.Select(x => string.IsNullOrEmpty(x.FieldName) ? x.Description : $"{x.Description} ({x.FieldName})"));
-        }
+        public static ResultGetList<T> ResultGetListError<T>(string langCode, ResultErrorType errorType, string? fieldName) => new(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
+
+        public static ResultGetList<T> ResultGetListError<T>(string langCode, ResultErrorType errorType) => ResultGetListError<T>(langCode, errorType, null);
+
+        public static ResultGetList<T> ResultGetListError<T>(ResultErrorType errorType, string? fieldName, string? errorDescription) => new(errorType, fieldName, errorDescription);
+
+        public static ResultGetList<T> ResultGetListError<T>(ResultErrorType errorType, string? fieldName) => ResultGetListError<T>(errorType, fieldName, null);
+
+        public static ResultGetList<T> ResultGetListError<T>(ResultErrorType errorType) => ResultGetListError<T>(errorType, null, null);
+
+        public static ResultGetList<T> ResultGetListError<T>(Result result) => new(result);
+
+        public static ResultGetList<T> ResultGetListError<T>(IList<ResultError> errors) => new(errors);
+
+        public static T? CreateInstance<T>() => (T?)Activator.CreateInstance(typeof(T));
+
+        public static string ErrorsToString(IList<ResultError> errors, char separator) => string.Join(separator, errors.Select(x => string.IsNullOrEmpty(x.FieldName) ? x.Description : $"{x.Description} ({x.FieldName})"));
+
+        public static string ErrorsToString(IList<ResultError> errors) => ErrorsToString(errors, ',');
     }
 }

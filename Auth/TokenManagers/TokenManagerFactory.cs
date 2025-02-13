@@ -25,7 +25,7 @@ namespace Deve.Auth.TokenManagers
         /// </summary>
         /// <param name="scheme">The sheme to get the ITokenManager.</param>
         /// <returns>The ITokenManager implementation associated to the scheme or the default TokenManager if none is defined.</returns>
-        public static ITokenManager Get(string scheme = ApiConstants.AuthDefaultScheme)
+        public static ITokenManager Get(string scheme)
         {
             if (_tokenManagers.TryGetValue(scheme, out ITokenManager? tokenManager))
                 return tokenManager;
@@ -38,5 +38,7 @@ namespace Deve.Auth.TokenManagers
                     return new TokenManagerCrypt(new CryptAes());
             }
         }
+
+        public static ITokenManager Get() => Get(ApiConstants.AuthDefaultScheme);
     }
 }

@@ -19,15 +19,29 @@
         public ResultGet(Result result)
             : base(result)
         {
+            Data = default;
         }
 
         public ResultGet(IList<ResultError> errors)
             : base(errors)
         {
+            Data = default;
         }
 
-        public ResultGet(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
+        public ResultGet(ResultErrorType errorType, string? fieldName, string? errorDescription)
             : base(errorType, fieldName, errorDescription)
+        {
+            Data = default;
+        }
+
+        public ResultGet(ResultErrorType errorType, string? fieldName)
+            : base(errorType, fieldName)
+        {
+            Data = default;
+        }
+
+        public ResultGet(ResultErrorType errorType)
+            : base(errorType)
         {
             Data = default;
         }

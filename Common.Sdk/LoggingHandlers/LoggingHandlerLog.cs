@@ -7,13 +7,23 @@ namespace Deve.Sdk.LoggingHandlers
     /// </summary>
     public class LoggingHandlerLog : LoggingHandlerBase
     {
-        public LoggingHandlerLog(string outputPrefix = "")
+        public LoggingHandlerLog()
+            : base()
+        {
+        }
+
+        public LoggingHandlerLog(string outputPrefix)
             : base(outputPrefix)
         {
         }
 
         public LoggingHandlerLog(HttpMessageHandler innerHandler)
             : base(innerHandler)
+        {
+        }
+
+        public LoggingHandlerLog(HttpMessageHandler innerHandler, string outputPrefix)
+            : base(innerHandler, outputPrefix)
         {
         }
 

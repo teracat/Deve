@@ -17,7 +17,10 @@ namespace Deve.DataSource
         #endregion
 
         #region IDataGet
-        public abstract Task<ResultGetList<ModelList>> Get(Criteria? criteria = default);
+        public abstract Task<ResultGetList<ModelList>> Get(Criteria? criteria);
+
+        public Task<ResultGetList<ModelList>> Get() => Get(default(Criteria));
+
         public abstract Task<ResultGet<Model>> Get(long id);
         #endregion
     }

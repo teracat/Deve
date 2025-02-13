@@ -35,7 +35,7 @@ namespace Deve.Auth.TokenManagers.Jwt
             _encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionSecretKey);
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -58,6 +58,8 @@ namespace Deve.Auth.TokenManagers.Jwt
 
             return new UserToken(subject, expires, token, scheme);
         }
+
+        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
 
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {

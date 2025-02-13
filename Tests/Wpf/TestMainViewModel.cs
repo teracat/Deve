@@ -63,7 +63,7 @@ namespace Deve.Tests.Wpf
 
             await mainViewModel.AddState.ExecuteAsync(null);
 
-            navigationService.Verify(x => x.NavigateModalTo<StateView>(null), Times.Once);
+            navigationService.Verify(x => x.NavigateModalTo<StateView>(), Times.Once);
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace Deve.Tests.Wpf
 
             await mainViewModel.AddCountry.ExecuteAsync(null);
 
-            navigationService.Verify(x => x.NavigateModalTo<CountryView>(null), Times.Once);
+            navigationService.Verify(x => x.NavigateModalTo<CountryView>(), Times.Once);
         }
 
         [Fact]

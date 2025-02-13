@@ -20,7 +20,7 @@ namespace Deve.Core.DataSourceWrappers
         #endregion
 
         #region IDataAll
-        public async Task<ResultGetList<UserBase>> Get(CriteriaUser? criteria = null)
+        public async Task<ResultGetList<UserBase>> Get(CriteriaUser? criteria)
         {
             var resUsers = await Core.DataSource.Users.Get(criteria);
             if (!resUsers.Success)
@@ -32,6 +32,8 @@ namespace Deve.Core.DataSourceWrappers
 
             return Utils.ResultGetListOk(usersBase, resUsers.Offset, resUsers.Limit, resUsers.OrderBy, resUsers.TotalCount);
         }
+
+        public async Task<ResultGetList<UserBase>> Get() => await Get(null);
 
         public async Task<ResultGet<UserPlainPassword>> Get(long id)
         {

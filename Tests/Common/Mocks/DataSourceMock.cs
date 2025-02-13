@@ -13,6 +13,7 @@ namespace Deve.Tests.Mocks
         {
             // Users
             Setup(d => d.Users.Get(It.IsAny<CriteriaUser?>())).Returns<CriteriaUser>((c) => GetListUser(DataMock.Users, c));
+            Setup(d => d.Users.Get()).Returns(() => GetListUser(DataMock.Users, null));
             Setup(d => d.Users.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Users, id));
             Setup(d => d.Users.Add(It.IsAny<User>())).Returns<User>((c) => Add(DataMock.Users, c));
             Setup(d => d.Users.Update(It.IsAny<User>())).Returns<User>((c) => Update(DataMock.Users, c.Id));
@@ -20,6 +21,7 @@ namespace Deve.Tests.Mocks
 
             // Countries
             Setup(d => d.Countries.Get(It.IsAny<CriteriaCountry?>())).Returns<CriteriaCountry>((c) => GetList(DataMock.Countries));
+            Setup(d => d.Countries.Get()).Returns(() => GetList(DataMock.Countries));
             Setup(d => d.Countries.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Countries, id));
             Setup(d => d.Countries.Add(It.IsAny<Country>())).Returns<Country>((c) => Add(DataMock.Countries, c));
             Setup(d => d.Countries.Update(It.IsAny<Country>())).Returns<Country>((c) => Update(DataMock.Countries, c.Id));
@@ -27,6 +29,7 @@ namespace Deve.Tests.Mocks
 
             // States
             Setup(d => d.States.Get(It.IsAny<CriteriaState?>())).Returns<CriteriaState>((c) => GetList(DataMock.States));
+            Setup(d => d.States.Get()).Returns(() => GetList(DataMock.States));
             Setup(d => d.States.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.States, id));
             Setup(d => d.States.Add(It.IsAny<State>())).Returns<State>((c) => Add(DataMock.States, c));
             Setup(d => d.States.Update(It.IsAny<State>())).Returns<State>((c) => Update(DataMock.States, c.Id));
@@ -34,6 +37,7 @@ namespace Deve.Tests.Mocks
 
             // Cities
             Setup(d => d.Cities.Get(It.IsAny<CriteriaCity?>())).Returns<CriteriaCity>((c) => GetList(DataMock.Cities));
+            Setup(d => d.Cities.Get()).Returns(() => GetList(DataMock.Cities));
             Setup(d => d.Cities.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Cities, id));
             Setup(d => d.Cities.Add(It.IsAny<City>())).Returns<City>((c) => Add(DataMock.Cities, c));
             Setup(d => d.Cities.Update(It.IsAny<City>())).Returns<City>((c) => Update(DataMock.Cities, c.Id));
@@ -41,6 +45,7 @@ namespace Deve.Tests.Mocks
 
             // Clients
             Setup(d => d.Clients.Get(It.IsAny<CriteriaClient?>())).Returns<CriteriaClient>((c) => GetList(DataMock.Clients));
+            Setup(d => d.Clients.Get()).Returns(() => GetList(DataMock.Clients));
             Setup(d => d.Clients.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Clients, id));
             Setup(d => d.Clients.Add(It.IsAny<Client>())).Returns<Client>((c) => Add(DataMock.Clients, c));
             Setup(d => d.Clients.Update(It.IsAny<Client>())).Returns<Client>((c) => Update(DataMock.Clients, c.Id));
@@ -60,6 +65,7 @@ namespace Deve.Tests.Mocks
                 Longitude = x.Location.Longitude,
             }).ToList();
             Setup(d => d.ClientsBasic.Get(It.IsAny<CriteriaClientBasic?>())).Returns<CriteriaClientBasic>((c) => GetList(clientsBasic));
+            Setup(d => d.ClientsBasic.Get()).Returns(() => GetList(clientsBasic));
             Setup(d => d.ClientsBasic.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Clients.Select(x => x as External.Model.Client).ToList(), id));
         }
 

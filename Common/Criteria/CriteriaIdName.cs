@@ -8,7 +8,12 @@
         {
         }
 
-        public CriteriaIdName(long? id, string? name = null)
+        public CriteriaIdName(long? id)
+        {
+            Id = id;
+        }
+
+        public CriteriaIdName(long? id, string? name)
         {
             Id = id;
             Name = name;

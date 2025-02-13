@@ -9,16 +9,30 @@ namespace Deve.Clients.Wpf.Helpers
         private readonly Func<bool>? _canExecute;
         private bool _isExecuting = false;
 
-        public AsyncCommand(Func<Task> execute, Func<bool>? canExecute = null)
+        public AsyncCommand(Func<Task> execute, Func<bool>? canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
             _canExecute = canExecute;
         }
 
-        public AsyncCommand(Func<object?, Task> execute, Func<bool>? canExecute = null)
+        public AsyncCommand(Func<Task> execute)
         {
-            _executeWithParam = execute ?? throw new ArgumentNullException(nameof(execute));
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
+        }
+
+        public AsyncCommand(Func<object?, Task> execute, Func<bool>? canExecute)
+        {
+            ArgumentNullException.ThrowIfNull(execute);
+            _executeWithParam = execute;
             _canExecute = canExecute;
+        }
+
+        public AsyncCommand(Func<object?, Task> execute)
+        {
+            ArgumentNullException.ThrowIfNull(execute);
+            _executeWithParam = execute;
         }
 
         public event EventHandler? CanExecuteChanged

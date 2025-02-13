@@ -6,7 +6,7 @@ namespace Deve.Localize
 {
     internal class ErrorLocalize : IErrorLocalize
     {
-        private Dictionary<string, CultureInfo> _cultureInfos = [];
+        private readonly Dictionary<string, CultureInfo> _cultureInfos = [];
 
         public string Localize(ResultErrorType errorType, string langCode)
         {

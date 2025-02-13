@@ -35,6 +35,8 @@ namespace Deve.Auth.TokenManagers
             return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
+        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
+
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;

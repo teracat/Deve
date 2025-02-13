@@ -140,7 +140,10 @@ namespace Deve.Core
             _isSharedInstance = isSharedInstance;
             _dataSource = dataSource ?? DataSourceFactory.Get(options);
             _options = options ?? new DataOptions();
-            _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
+            if (tokenManager is null)
+                _auth = AuthFactory.Get(_dataSource, _options);
+            else
+                _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
             _shouldDisposeDataSource = dataSource is null;
         }
         #endregion

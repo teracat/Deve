@@ -14,7 +14,7 @@ namespace Deve.Clients.Wpf.Services
             _serviceProvider = serviceProvider;
         }
 
-        public void NavigateTo<TView>(object? parameter = null) where TView : BaseView
+        public void NavigateTo<TView>(object? parameter) where TView : BaseView
         {
             try
             {
@@ -31,7 +31,9 @@ namespace Deve.Clients.Wpf.Services
             }
         }
 
-        public bool NavigateModalTo<TView>(object? parameter = null) where TView : BaseView
+        public void NavigateTo<TView>() where TView : BaseView => NavigateTo<TView>(null);
+
+        public bool NavigateModalTo<TView>(object? parameter) where TView : BaseView
         {
             try
             {
@@ -48,6 +50,8 @@ namespace Deve.Clients.Wpf.Services
                 return false;
             }
         }
+
+        public bool NavigateModalTo<TView>() where TView : BaseView => NavigateModalTo<TView>(null);
 
         public void NavigateTo<TView, TParamType>(TParamType parameter) where TView : BaseView where TParamType : class
         {

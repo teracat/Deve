@@ -19,7 +19,7 @@ namespace Deve.Core
         #endregion
 
         #region IDataGet Methods
-        public virtual async Task<ResultGetList<ModelList>> Get(Criteria? criteria = default)
+        public virtual async Task<ResultGetList<ModelList>> Get(Criteria? criteria)
         {
             var resPerm = await CheckPermission(PermissionType.GetList);
             if (!resPerm.Success)
@@ -27,6 +27,8 @@ namespace Deve.Core
 
             return await DataGet.Get(criteria);
         }
+
+        public virtual async Task<ResultGetList<ModelList>> Get() => await Get(default(Criteria));
 
         public virtual async Task<ResultGet<Model>> Get(long id)
         {

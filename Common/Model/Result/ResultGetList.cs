@@ -30,8 +30,20 @@
             TotalCount = totalCount;
         }
 
-        public ResultGetList(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
+        public ResultGetList(ResultErrorType errorType, string? fieldName, string? errorDescription)
             : base(errorType, fieldName, errorDescription)
+        {
+            Data = [];
+        }
+
+        public ResultGetList(ResultErrorType errorType, string? fieldName)
+            : base(errorType, fieldName)
+        {
+            Data = [];
+        }
+
+        public ResultGetList(ResultErrorType errorType)
+            : base(errorType)
         {
             Data = [];
         }

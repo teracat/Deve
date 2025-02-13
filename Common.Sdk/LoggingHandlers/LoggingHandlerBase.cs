@@ -5,9 +5,14 @@
     /// </summary>
     public abstract class LoggingHandlerBase : DelegatingHandler
     {
-        private string _outputPrefix = string.Empty;
+        private readonly string _outputPrefix = string.Empty;
 
-        public LoggingHandlerBase(string outputPrefix = "")
+        public LoggingHandlerBase()
+            : base(new HttpClientHandler())
+        {
+        }
+
+        public LoggingHandlerBase(string outputPrefix)
             : base(new HttpClientHandler())
         {
             _outputPrefix = outputPrefix;
@@ -16,6 +21,12 @@
         public LoggingHandlerBase(HttpMessageHandler innerHandler)
             : base(innerHandler)
         {
+        }
+
+        public LoggingHandlerBase(HttpMessageHandler innerHandler, string outputPrefix)
+            : base(innerHandler)
+        {
+            _outputPrefix = outputPrefix;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

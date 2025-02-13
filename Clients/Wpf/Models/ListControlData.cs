@@ -46,7 +46,11 @@ namespace Deve.Clients.Wpf.Models
         #endregion
 
         #region Constructors
-        public ListControlData(Func<Task>? funcWhenSearch = null)
+        public ListControlData()
+        {
+        }
+
+        public ListControlData(Func<Task>? funcWhenSearch)
         {
             _funcWhenSearch = funcWhenSearch;
         }

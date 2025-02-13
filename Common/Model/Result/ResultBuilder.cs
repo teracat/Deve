@@ -22,10 +22,15 @@ namespace Deve.Model
         }
         #endregion
 
-        #region Constructor
-        public ResultBuilder(string langCode = Constants.DefaultLangCode)
+        #region Constructors
+        public ResultBuilder(string langCode)
         {
             _langCode = langCode;
+        }
+
+        public ResultBuilder()
+        {
+            _langCode = Constants.DefaultLangCode;
         }
         #endregion
 
@@ -36,11 +41,15 @@ namespace Deve.Model
             return this;
         }
 
-        public ResultBuilder Add(ResultErrorType type, string? fieldName = null, string? description = null)
+        public ResultBuilder Add(ResultErrorType type, string? fieldName, string? description)
         {
             Errors.Add(new ResultError(type, fieldName, description ?? ErrorLocalizeFactory.Get().Localize(type, _langCode)));
             return this;
         }
+
+        public ResultBuilder Add(ResultErrorType type, string? fieldName) => Add(type, fieldName, null);
+
+        public ResultBuilder Add(ResultErrorType type) => Add(type, null, null);
 
         public ResultBuilder AddRange(IEnumerable<ResultError> errors)
         {
@@ -50,7 +59,12 @@ namespace Deve.Model
         #endregion
 
         #region Checks Methods
-        public void CheckNotNull(object? value, [CallerArgumentExpression(nameof(value))] string fieldName = "", ResultErrorType errorType = ResultErrorType.InvalidId)
+        public void CheckNotNull(object? value, [CallerArgumentExpression(nameof(value))] string fieldName = "")
+        {
+            CheckNotNull(value, ResultErrorType.InvalidId, fieldName);
+        }
+
+        public void CheckNotNull(object? value, ResultErrorType errorType, [CallerArgumentExpression(nameof(value))] string fieldName = "")
         {
             if (value is null)
                 Add(errorType, fieldName);
