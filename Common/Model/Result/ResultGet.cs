@@ -5,13 +5,11 @@
         public T? Data { get; set; }
 
         public ResultGet()
-            : base()
         {
             Data = default;
         }
 
         public ResultGet(T data)
-            : base()
         {
             Data = data;
         }

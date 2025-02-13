@@ -9,7 +9,6 @@
         public int TotalCount { get; set; }
 
         public ResultGetList()
-            : base()
         {
             Data = [];
         }
@@ -21,7 +20,6 @@
         }
 
         public ResultGetList(IList<T> data, int? offset, int? limit, string orderBy, int totalCount)
-            : base()
         {
             Data = data;
             Offset = offset;

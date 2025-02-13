@@ -23,12 +23,6 @@ namespace Deve.Clients.Wpf.Views
         }
         #endregion
 
-        #region Constructor
-        public BaseEditView()
-        {
-        }
-        #endregion
-
         #region Overrides
         protected override void OnKeyDown(KeyEventArgs e)
         {
