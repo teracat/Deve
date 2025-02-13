@@ -23,7 +23,9 @@ namespace Deve.Sdk
                 queryBuidler.AddParameter("password", credentials.Password);
                 var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.PathAuth + ApiConstants.MethodLogin + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
+                {
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
 
                 Sdk.UserToken = res.Data;
                 return res;
@@ -42,7 +44,10 @@ namespace Deve.Sdk
                 queryBuidler.AddParameter("token", token);
                 var res = await Sdk.Client.GetFromJsonAsync<ResultGet<UserToken>>(ApiConstants.PathAuth + ApiConstants.MethodRefreshToken + queryBuidler.ToQueryString(), SerializerOptions);
                 if (res is null)
+                {
                     return Utils.ResultGetError<UserToken>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
                 return res;
             }
             catch (Exception ex)

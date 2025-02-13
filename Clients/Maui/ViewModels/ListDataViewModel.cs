@@ -26,14 +26,17 @@ namespace Deve.Clients.Maui.ViewModels
             set
             {
                 if (value is not null)
+                {
                     DoSelected(value);
+                }
+
                 OnPropertyChanged();
             }
         }
         #endregion
 
         #region Constructor
-        public ListDataViewModel(INavigationService navigationService, IDataService dataService)
+        protected ListDataViewModel(INavigationService navigationService, IDataService dataService)
             : base(navigationService, dataService)
         {
             Initialization = InitializeAsync();
@@ -41,7 +44,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected virtual async Task InitializeAsync()
+        protected async Task InitializeAsync()
         {
             await LoadData();
         }

@@ -7,7 +7,7 @@ namespace Deve.Tests
     public abstract class TestState<TDataType> : TestBaseDataAll<TDataType, State, State, CriteriaState> where TDataType : IDataCommon
     {
         #region Constructor
-        public TestState(IFixtureData<TDataType> fixture)
+        protected TestState(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

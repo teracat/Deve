@@ -11,7 +11,7 @@ namespace Deve.Tests.Api
     {
         protected FixtureApiClients<TEntryPoint> Fixture { get; private set; }
 
-        public TestApiBase(FixtureApiClients<TEntryPoint> fixture)
+        protected TestApiBase(FixtureApiClients<TEntryPoint> fixture)
         {
             Fixture = fixture;
         }

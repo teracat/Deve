@@ -11,7 +11,9 @@ namespace Deve.Tests
     {
         public static IDataSource CreateDataSourceMock() => new DataSourceMock().Object;
 
-        public static IAuth CreateAuth(IDataSource? dataSource = null) => AuthFactory.Get(dataSource ?? CreateDataSourceMock());
+        public static IAuth CreateAuth(IDataSource dataSource) => AuthFactory.Get(dataSource);
+
+        public static IAuth CreateAuth() => AuthFactory.Get( CreateDataSourceMock());
 
         /// <summary>
         /// Set the TokenManagerJwt (which is used in the Api) as the default ITokenManager implementation and creates a valid token using it.

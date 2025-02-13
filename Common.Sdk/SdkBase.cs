@@ -37,15 +37,21 @@ namespace Deve.Sdk
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
+                    {
                         return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     string content = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrWhiteSpace(content))
+                    {
                         return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     var res = JsonSerializer.Deserialize<ResultGetList<T>>(content, SerializerOptions);
                     if (res is null)
+                    {
                         return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     return res;
                 }
@@ -65,15 +71,21 @@ namespace Deve.Sdk
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
+                    {
                         return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     string content = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrWhiteSpace(content))
+                    {
                         return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     var res = JsonSerializer.Deserialize<ResultGet<T>>(content, SerializerOptions);
                     if (res is null)
+                    {
                         return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     return res;
                 }
@@ -121,15 +133,21 @@ namespace Deve.Sdk
                 {
                     var response = await _sdk.Client.SendAsync(request);
                     if (response is null)
+                    {
                         return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     string content = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrWhiteSpace(content))
+                    {
                         return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     var res = JsonSerializer.Deserialize<ResultGet<ResultType>>(content, SerializerOptions);
                     if (res is null)
+                    {
                         return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                    }
 
                     return res;
                 }

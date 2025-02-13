@@ -10,11 +10,22 @@
         {
         }
 
-        public ResultError(ResultErrorType type, string? fieldName = null, string? description = null)
+        public ResultError(ResultErrorType type, string? fieldName, string? description)
         {
             Type = type;
             FieldName = fieldName;
             Description = description;
+        }
+
+        public ResultError(ResultErrorType type, string? fieldName)
+        {
+            Type = type;
+            FieldName = fieldName;
+        }
+
+        public ResultError(ResultErrorType type)
+        {
+            Type = type;
         }
     }
 }

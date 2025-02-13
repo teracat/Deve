@@ -169,7 +169,9 @@ namespace Deve.Clients.Wpf.ViewModels
         private async Task DoAddState()
         {
             if (NavigationService.NavigateModalTo<StateView>())
+            {
                 await LoadDataStates();
+            }
         }
 
         private async Task DoEditState(ListData? listData)
@@ -194,7 +196,9 @@ namespace Deve.Clients.Wpf.ViewModels
         private async Task DoAddCountry()
         {
             if (NavigationService.NavigateModalTo<CountryView>())
+            {
                 await LoadDataCountries();
+            }
         }
 
         private async Task DoEditCountry(ListData? listData)

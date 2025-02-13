@@ -15,6 +15,8 @@ namespace Deve.Api.DataSourceBuilder
             return this;
         }
 
-        public IDataSource Create(DataOptions? options = null) => DataSourceFactory.Get(options);
+        public IDataSource Create(DataOptions? options) => DataSourceFactory.Get(options);
+
+        public IDataSource Create() => Create(null);
     }
 }

@@ -22,22 +22,30 @@
             {
                 string res = Address ?? string.Empty;
                 if (!string.IsNullOrWhiteSpace(res) && (!string.IsNullOrWhiteSpace(PostalCode) || !string.IsNullOrWhiteSpace(City)))
+                {
                     res += ". ";
+                }
 
                 res += PostalCode;
 
                 if (!string.IsNullOrWhiteSpace(PostalCode) && !string.IsNullOrWhiteSpace(City))
+                {
                     res += " ";
+                }
 
                 res += City;
 
                 if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(State))
+                {
                     res += ", ";
+                }
 
                 res += State;
 
                 if (!string.IsNullOrWhiteSpace(res) && !string.IsNullOrWhiteSpace(Country))
+                {
                     res += $" ({Country})";
+                }
 
                 return res;
             }

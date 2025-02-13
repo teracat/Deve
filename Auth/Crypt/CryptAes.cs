@@ -20,7 +20,9 @@ namespace Deve.Auth.Crypt
         public string Encrypt(string text)
         {
             if (string.IsNullOrEmpty(text))
+            {
                 return text;
+            }
 
             byte[] encrypted;
 
@@ -53,7 +55,9 @@ namespace Deve.Auth.Crypt
         public string Decrypt(string encryptedText)
         {
             if (string.IsNullOrEmpty(encryptedText))
+            {
                 return encryptedText;
+            }
 
             string decrypted;
 
@@ -85,6 +89,7 @@ namespace Deve.Auth.Crypt
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }

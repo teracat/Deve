@@ -8,6 +8,8 @@ namespace Deve.Api.DataSourceBuilder
     {
         IDataSourceBuilder SetConfig(DataSourceConfig config);
 
-        IDataSource Create(DataOptions? options = null);
+        IDataSource Create(DataOptions? options);
+
+        IDataSource Create();
     }
 }

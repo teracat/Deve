@@ -10,7 +10,7 @@ namespace Deve.Tests.Auth
     {
         private readonly IFixtureTokenManager _fixtureTokenManager;
 
-        public TestTokenManagerBase(IFixtureTokenManager fixtureTokenManager)
+        protected TestTokenManagerBase(IFixtureTokenManager fixtureTokenManager)
         {
             _fixtureTokenManager = fixtureTokenManager;
         }

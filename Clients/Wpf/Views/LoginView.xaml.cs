@@ -42,9 +42,13 @@ namespace Deve.Clients.Wpf.Views
         {
             base.OnWindowLoaded();
             if (string.IsNullOrEmpty(uxUsername.Text))
+            {
                 uxUsername.Focus();
+            }
             else
+            {
                 uxPassword.Focus();
+            }
         }
         #endregion
 
@@ -59,14 +63,18 @@ namespace Deve.Clients.Wpf.Views
         private void OnUsernameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 uxPassword.Focus();
+            }
         }
 
         private void OnPasswordKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 _ = _viewModel.DoLogin(uxPassword.Password);
+            }
         }
 
         private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)

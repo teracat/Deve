@@ -8,7 +8,7 @@ namespace Deve.Tests
     public abstract class TestUser<TDataType> : TestBaseDataAll<TDataType, UserBase, UserPlainPassword, CriteriaUser> where TDataType : IData
     {
         #region Constructor
-        public TestUser(IFixtureData<TDataType> fixture)
+        protected TestUser(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

@@ -16,7 +16,9 @@ namespace Deve.Auth.TokenManagers
             lock (_tokenManagers)
             {
                 if (!_tokenManagers.TryAdd(scheme, tokenManager))
+                {
                     _tokenManagers[scheme] = tokenManager;
+                }
             }
         }
 
@@ -25,18 +27,18 @@ namespace Deve.Auth.TokenManagers
         /// </summary>
         /// <param name="scheme">The sheme to get the ITokenManager.</param>
         /// <returns>The ITokenManager implementation associated to the scheme or the default TokenManager if none is defined.</returns>
-        public static ITokenManager Get(string scheme = ApiConstants.AuthDefaultScheme)
+        public static ITokenManager Get(string scheme)
         {
             if (_tokenManagers.TryGetValue(scheme, out ITokenManager? tokenManager))
-                return tokenManager;
-
-            switch (scheme)
             {
-                case ApiConstants.AuthDefaultScheme:
-                default:
-                    //Return the default TokenManager
-                    return new TokenManagerCrypt(new CryptAes());
+                return tokenManager;
             }
+
+            // Return the default TokenManager
+            // sheme paramater should be be taken into account here if you add new TokenManagers
+            return new TokenManagerCrypt(new CryptAes());
         }
+
+        public static ITokenManager Get() => Get(ApiConstants.AuthDefaultScheme);
     }
 }

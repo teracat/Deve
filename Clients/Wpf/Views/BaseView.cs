@@ -37,7 +37,9 @@ namespace Deve.Clients.Wpf.Views
         {
             base.OnClosing(e);
             if (_viewModel is not null && _viewModel.IsBusy)
+            {
                 e.Cancel = true;
+            }
         }
         #endregion
 

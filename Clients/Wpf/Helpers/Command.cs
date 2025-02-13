@@ -12,16 +12,30 @@ namespace Deve.Clients.Wpf.Helpers
         private readonly ICommandWithParamOnExecute? _executeWithParam;
         private readonly ICommandOnCanExecute? _canExecute;
 
-        public Command(ICommandOnExecute onExecuteMethod, ICommandOnCanExecute? onCanExecuteMethod = null)
+        public Command(ICommandOnExecute execute, ICommandOnCanExecute? onCanExecuteMethod)
         {
-            _execute = onExecuteMethod;
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
             _canExecute = onCanExecuteMethod;
         }
 
-        public Command(ICommandWithParamOnExecute onExecuteWithParamMethod, ICommandOnCanExecute? onCanExecuteMethod = null)
+        public Command(ICommandOnExecute execute)
         {
-            _executeWithParam = onExecuteWithParamMethod;
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
+        }
+
+        public Command(ICommandWithParamOnExecute executeWithParam, ICommandOnCanExecute? onCanExecuteMethod)
+        {
+            ArgumentNullException.ThrowIfNull(executeWithParam);
+            _executeWithParam = executeWithParam;
             _canExecute = onCanExecuteMethod;
+        }
+
+        public Command(ICommandWithParamOnExecute executeWithParam)
+        {
+            ArgumentNullException.ThrowIfNull(executeWithParam);
+            _executeWithParam = executeWithParam;
         }
 
         #region ICommand Members
@@ -39,9 +53,13 @@ namespace Deve.Clients.Wpf.Helpers
         public void Execute(object? parameter)
         {
             if (_execute is not null)
+            {
                 _execute.Invoke();
+            }
             else
+            {
                 _executeWithParam?.Invoke(parameter);
+            }
         }
         #endregion
     }

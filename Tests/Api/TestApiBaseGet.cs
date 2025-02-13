@@ -13,7 +13,7 @@ namespace Deve.Tests.Api
         #endregion
 
         #region Constructor
-        public TestApiBaseGet(FixtureApiClients<TEntryPoint> fixture)
+        protected TestApiBaseGet(FixtureApiClients<TEntryPoint> fixture)
             : base(fixture)
         {
         }

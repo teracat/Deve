@@ -70,7 +70,10 @@ namespace Deve.Sdk
         internal RequestBuilder Add(string name, object? obj)
         {
             if (obj is not null)
+            {
                 _collection.Add(name, Convert.ToString(obj));
+            }
+
             return this;
         }
 
@@ -95,7 +98,9 @@ namespace Deve.Sdk
             }
 
             if (_collection.Count == 0)
+            {
                 return string.Empty;
+            }
 
             return "?" + string.Join("&", _collection.AllKeys.Select(key => key + "=" + HttpUtility.UrlEncode(_collection[key])));
         }
@@ -103,9 +108,13 @@ namespace Deve.Sdk
         private string ToJson()
         {
             if (_value is not null)
+            {
                 return JsonSerializer.Serialize(_value);
+            }
             else
+            {
                 return JsonSerializer.Serialize(_collection);
+            }
         }
 
         public HttpRequestMessage Build()

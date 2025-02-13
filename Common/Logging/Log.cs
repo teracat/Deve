@@ -1,4 +1,7 @@
-﻿namespace Deve.Logging
+﻿using System.Linq;
+using System.Text;
+
+namespace Deve.Logging
 {
     /// <summary>
     /// Helper class to write some text to the log.
@@ -38,14 +41,15 @@
         /// <param name="exception">The exception to be written to the log.</param>
         public static void Error(Exception exception)
         {
-            string text = exception.Message;
+            var text = new StringBuilder(exception.Message);
             Exception? innerEx = exception.InnerException;
             while (innerEx is not null)
             {
-                text += " | " + innerEx.Message;
+                text.Append(" | ").Append(innerEx.Message);
                 innerEx = innerEx.InnerException;
             }
-            Error(text);
+            Error(text.ToString());
+
         }
         #endregion
     }

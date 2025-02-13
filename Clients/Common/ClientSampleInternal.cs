@@ -1,6 +1,7 @@
 ﻿using Deve.Model;
 using Deve.Authenticate;
 using Deve.Internal.Data;
+using System.Text;
 
 namespace Deve.Clients
 {
@@ -32,10 +33,15 @@ namespace Deve.Clients
             ShowClientStats().Wait();
             var newCountryId = AddCountry().Result;
             if (newCountryId > 0)
+            {
                 ShowCountry(newCountryId).Wait();
+            }
+
             ShowCountries().Wait();
             if (newCountryId > 0)
+            {
                 DeleteCountry(newCountryId).Wait();
+            }
         }
 
         private async Task DoLogin()
@@ -86,12 +92,12 @@ Expires: {loginRes.Data.Expires}");
                 }
                 else
                 {
-                    string result = string.Empty;
+                    var result = new StringBuilder();
                     foreach (var country in countriesRes.Data)
                     {
-                        result += $"{country.Id} - {country.IsoCode} - {country.Name}\n";
+                        result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
                     }
-                    LogResult(result);
+                    LogResult(result.ToString());
                 }
             }
             catch (Exception ex)
@@ -117,12 +123,12 @@ Expires: {loginRes.Data.Expires}");
                 }
                 else
                 {
-                    string result = string.Empty;
+                    var result = new StringBuilder();
                     foreach (var client in clientsRes.Data)
                     {
-                        result += $"{client.Id} - {client.DisplayName} (Balance: {client.Balance}) (Status: {client.Status}) [{client.Location.Latitude},{client.Location.Longitude}]\n";
+                        result.AppendLine($"{client.Id} - {client.DisplayName} (Balance: {client.Balance}) (Status: {client.Status}) [{client.Location.Latitude},{client.Location.Longitude}]");
                     }
-                    LogResult(result);
+                    LogResult(result.ToString());
                 }
             }
             catch (Exception ex)

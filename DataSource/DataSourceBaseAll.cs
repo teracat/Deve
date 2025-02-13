@@ -3,10 +3,10 @@ using Deve.Internal.Data;
 
 namespace Deve.DataSource
 {
-    internal abstract class DataSourceBaseAll<ModelList, Model, Criteria> : DataSourceBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria>
+    internal abstract class DataSourceBaseAll<ModelList, Model, Criteria> : DataSourceBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria> where Criteria: Deve.Criteria.Criteria
     {
         #region Constructor
-        public DataSourceBaseAll(DataSourceMain dataSourceMain)
+        protected DataSourceBaseAll(DataSourceMain dataSourceMain)
             : base(dataSourceMain)
         {
         }

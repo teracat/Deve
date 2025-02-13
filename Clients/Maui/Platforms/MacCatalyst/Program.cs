@@ -3,7 +3,7 @@ using UIKit;
 
 namespace Deve.Clients.Maui
 {
-    public class Program
+    public static class Program
     {
         // This is the main entry point of the application.
         static void Main(string[] args)

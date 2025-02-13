@@ -8,7 +8,9 @@
     {
         Task InitializeAsync();
 
-        Task NavigateToAsync(string route, INavigationParameters? routeParameters = null);
+        Task NavigateToAsync(string route, INavigationParameters routeParameters);
+
+        Task NavigateToAsync(string route);
 
         Task PopAsync();
     }

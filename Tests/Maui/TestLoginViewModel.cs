@@ -69,7 +69,7 @@ namespace Deve.Tests.Maui
 
             await loginViewModel.Login.ExecuteAsync(null);
 
-            navigationService.Verify(x => x.NavigateToAsync("//clients", null), Times.Once);
+            navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
         }
     }
 }

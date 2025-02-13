@@ -10,7 +10,7 @@ namespace Deve.Tests.Api
     public abstract class TestApiBaseAuth<TEntryPoint> : TestApiBase<TEntryPoint> where TEntryPoint : class
     {
         #region Constructor
-        public TestApiBaseAuth(FixtureApiClients<TEntryPoint> fixture)
+        protected TestApiBaseAuth(FixtureApiClients<TEntryPoint> fixture)
             : base(fixture)
         {
         }

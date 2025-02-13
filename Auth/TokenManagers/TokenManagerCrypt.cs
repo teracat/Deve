@@ -23,7 +23,7 @@ namespace Deve.Auth.TokenManagers
             _crypt = crypt;
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -35,21 +35,29 @@ namespace Deve.Auth.TokenManagers
             return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
+        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
+
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
+            {
                 return TokenParseResult.NotValid;
+            }
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
                 var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
                 if (tokenData is null)
+                {
                     return TokenParseResult.NotValid;
+                }
 
                 if (tokenData.Expires < DateTime.UtcNow)
+                {
                     return TokenParseResult.Expired;
+                }
 
                 userIdentity = tokenData.Subject;
 
@@ -64,6 +72,7 @@ namespace Deve.Auth.TokenManagers
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }

@@ -3,7 +3,7 @@ using Deve.Authenticate;
 
 namespace Deve.Clients.Wpf
 {
-    public static class Globals
+    internal static class Globals
     {
         #region Constants
         public const string AmountStringFormat = "{0:###,###,##0.##}€";

@@ -19,7 +19,9 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.Get, PermissionDataType.Stats);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetError<ClientStats>(resPerm);
+            }
 
             var clients = await Source.Clients.Get();
             var result = new ClientStats

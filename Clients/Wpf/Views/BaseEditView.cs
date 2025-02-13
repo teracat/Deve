@@ -23,18 +23,14 @@ namespace Deve.Clients.Wpf.Views
         }
         #endregion
 
-        #region Constructor
-        public BaseEditView()
-        {
-        }
-        #endregion
-
         #region Overrides
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
             if (e.Key == Key.Escape)
+            {
                 _viewModel?.DoCancel();
+            }
         }
         #endregion
     }

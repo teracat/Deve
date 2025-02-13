@@ -3,7 +3,7 @@ using Deve.Model;
 
 namespace Deve.DataSource
 {
-    internal class Data
+    internal static class Data
     {
         //Countries
         public static readonly List<Country> Countries =

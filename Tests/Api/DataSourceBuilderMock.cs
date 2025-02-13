@@ -12,6 +12,8 @@ namespace Deve.Tests.Api
     {
         public IDataSourceBuilder SetConfig(DataSourceConfig config) => this;
 
-        public IDataSource Create(DataOptions? options = null) => TestsHelpers.CreateDataSourceMock();
+        public IDataSource Create(DataOptions? options) => TestsHelpers.CreateDataSourceMock();
+
+        public IDataSource Create() => Create(null);
     }
 }

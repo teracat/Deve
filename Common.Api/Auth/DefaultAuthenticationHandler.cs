@@ -36,24 +36,34 @@ namespace Deve.Api.Auth
                     string? langCode = UtilsApi.GetLangCodeFromRequest(Request);
                     var options = new DataOptions();
                     if (!string.IsNullOrWhiteSpace(langCode))
+                    {
                         options.LangCode = langCode;
+                    }
 
                     if (!Request.Headers.TryGetValue("Authorization", out Microsoft.Extensions.Primitives.StringValues authorizationHeader))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     string? authHeaderString = authorizationHeader;
                     if (string.IsNullOrWhiteSpace(authHeaderString))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     var parts = authHeaderString.Split(' ');
                     if (parts.Length != 2)
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     string scheme = parts[0] ?? string.Empty;
                     string token = parts[1] ?? string.Empty;
 
                     if (Utils.SomeIsNullOrWhiteSpace(scheme, token))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     return ValidateToken(scheme, token, options);
                 }

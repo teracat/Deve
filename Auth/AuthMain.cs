@@ -47,16 +47,24 @@ namespace Deve.Auth
         private PermissionResult HasUser(UserIdentity? user)
         {
             if (user is null)
+            {
                 return PermissionResult.Unauthorized;
+            }
             return PermissionResult.Granted;
         }
 
         private PermissionResult HasUserAdmin(UserIdentity? user)
         {
             if (user is null)
+            {
                 return PermissionResult.Unauthorized;
+            }
+
             if (user.Role != Role.Admin)
+            {
                 return PermissionResult.NotGranted;
+            }
+
             return PermissionResult.Granted;
         }
         #endregion
@@ -65,7 +73,9 @@ namespace Deve.Auth
         public async Task<ResultGet<User>> LoginUser(UserCredentials userCredentials)
         {
             if (userCredentials is null || Utils.SomeIsNullOrWhiteSpace(userCredentials.Username, userCredentials.Password))
+            {
                 return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
+            }
 
             var passwordHash = Hash.Calc(userCredentials.Password);
             var resUsers = await DataSource.Users.Get(new CriteriaUser()
@@ -75,11 +85,15 @@ namespace Deve.Auth
                 OnlyActive = CriteriaActiveType.OnlyActive,
             });
             if (!resUsers.Success)
+            {
                 return Utils.ResultGetError<User>(resUsers);
+            }
 
             var user = resUsers.Data.FirstOrDefault();
             if (user is null)
+            {
                 return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
+            }
 
             return Utils.ResultGetOk(user);
         }
@@ -105,7 +119,9 @@ namespace Deve.Auth
                     case PermissionDataType.Country:
                         //Anyone can Get City, State & Country
                         if (type == PermissionType.Get || type == PermissionType.GetList)
+                        {
                             return PermissionResult.Granted;
+                        }
 
                         //Only Admins can Add, Update & Delete them
                         return HasUserAdmin(user);
@@ -122,9 +138,14 @@ namespace Deve.Auth
         {
             var resLogin = await LoginUser(userCredentials);
             if (!resLogin.Success)
+            {
                 return Utils.ResultGetError<UserToken>(resLogin);
+            }
+
             if (resLogin.Data is null)
+            {
                 return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+            }
 
             var userToken = TokenManager.CreateToken(resLogin.Data);
             return Utils.ResultGetOk(userToken);
@@ -136,14 +157,20 @@ namespace Deve.Auth
             {
                 var validateRes = TokenManager.ValidateToken(token, out var userIdentity);
                 if (validateRes != TokenParseResult.Valid || userIdentity is null)
+                {
                     return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                }
 
                 var resUsers = await DataSource.Users.Get(userIdentity.Id);
                 if (!resUsers.Success || resUsers.Data is null)
+                {
                     return Utils.ResultGetError<UserToken>(resUsers);
+                }
 
                 if (!resUsers.Data.IsActive)
+                {
                     return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                }
 
                 var newUserToken = TokenManager.CreateToken(resUsers.Data);
                 return Utils.ResultGetOk(newUserToken);
@@ -157,7 +184,9 @@ namespace Deve.Auth
             Hash.Dispose();
             Crypt.Dispose();
             if (_shouldDisposeTokenManager)
+            {
                 TokenManager.Dispose();
+            }
         }
         #endregion
     }

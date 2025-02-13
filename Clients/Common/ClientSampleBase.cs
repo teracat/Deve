@@ -1,4 +1,5 @@
-﻿using Deve.Logging;
+﻿using System.Text;
+using Deve.Logging;
 using Deve.Model;
 
 namespace Deve.Clients
@@ -28,10 +29,12 @@ namespace Deve.Clients
 
         public static void LogError(Result result)
         {
-            var msg = "Errors: ";
+            var msg = new StringBuilder("Errors: ");
             foreach (var error in result.Errors)
-                msg += $"{error.Type} - {error.Description} [{error.FieldName}]\n";
-            LogResult(msg);
+            {
+                msg.AppendLine($"{error.Type} - {error.Description} [{error.FieldName}]");
+            }
+            LogResult(msg.ToString());
         }
 
         public abstract void Execute();

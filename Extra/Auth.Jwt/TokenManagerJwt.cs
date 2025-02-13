@@ -35,7 +35,7 @@ namespace Deve.Auth.TokenManagers.Jwt
             _encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionSecretKey);
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
+        public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -59,11 +59,15 @@ namespace Deve.Auth.TokenManagers.Jwt
             return new UserToken(subject, expires, token, scheme);
         }
 
+        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
+
         public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
+            {
                 return TokenParseResult.NotValid;
+            }
 
             try
             {
@@ -79,7 +83,9 @@ namespace Deve.Auth.TokenManagers.Jwt
 
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 if (principal is null)
+                {
                     return TokenParseResult.NotValid;
+                }
 
                 userIdentity = UserConverter.ToUserIdentity(principal);
 
@@ -98,6 +104,7 @@ namespace Deve.Auth.TokenManagers.Jwt
 
         public void Dispose()
         {
+            // Nothing to dispose
         }
     }
 }

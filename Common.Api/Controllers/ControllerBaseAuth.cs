@@ -19,7 +19,9 @@ namespace Deve.Api.Controllers
         private UserIdentity? CreateUserIdentity(ClaimsPrincipal? user)
         {
             if (user is null || user.Identity is null || !user.Identity.IsAuthenticated)
+            {
                 return null;
+            }
 
             return UserConverter.ToUserIdentity(user);
         }

@@ -6,7 +6,7 @@ namespace Deve.Tests
     {
         protected IFixtureData<TDataType> Fixture { get; private set; }
 
-        public TestBase(IFixtureData<TDataType> fixture)
+        protected TestBase(IFixtureData<TDataType> fixture)
         {
             Fixture = fixture;
         }

@@ -37,8 +37,8 @@ namespace Deve.Sdk
         public IAuthenticate Authenticate => _sdkAuth ??= new SdkAuth(this);
         #endregion
 
-        #region Constructor
-        public SdkMainBase(EnvironmentType environment = EnvironmentType.Production, DataOptions? options = null, LoggingHandlerBase? handler = null)
+        #region Constructors
+        protected SdkMainBase(EnvironmentType environment = EnvironmentType.Production, DataOptions? options = null, LoggingHandlerBase? handler = null)
         {
             _environment = environment;
             _options = options ?? new DataOptions();
@@ -49,7 +49,7 @@ namespace Deve.Sdk
             UpdatedOptions();
         }
 
-        internal SdkMainBase(HttpClient client, DataOptions? options = null)
+        protected SdkMainBase(HttpClient client, DataOptions? options = null)
         {
             _client = client;
             _options = options ?? new DataOptions();

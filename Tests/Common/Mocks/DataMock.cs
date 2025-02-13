@@ -9,7 +9,7 @@ namespace Deve.Tests.Mocks
     /// Id 1 will also be used to test Update methods (check the overriden method CreateValidDataToUpdate in every Tests.TestXXX).
     /// Id 3 will be used to test Delete methods (check the virtual property defined in Tests.TestBaseDataAll.ValidIdDelete).
     /// </summary>
-    public class DataMock
+    public static class DataMock
     {
         // Countries
         public static readonly List<Country> Countries =

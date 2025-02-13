@@ -10,7 +10,7 @@ namespace Deve.Core
     internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         #region Fields
-        private DataSourceWrapperUser _wrapperUser;
+        private readonly DataSourceWrapperUser _wrapperUser;
         #endregion
 
         #region CoreBaseAll Abstract Properties
@@ -39,9 +39,13 @@ namespace Deve.Core
                     case ChecksActionType.Add:
                         resultBuilder.CheckNotNullOrEmpty(new Field(data.Password));
                         break;
-                    
+
                     case ChecksActionType.Update:
                         resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                        break;
+
+                    default:
+                        // Nothing to be checked
                         break;
                 }
 
@@ -57,19 +61,25 @@ namespace Deve.Core
                 {
                     var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
                     if (resCheckId is not null)
+                    {
                         return resCheckId;
+                    }
                 }
 
                 if (!string.IsNullOrWhiteSpace(data.Username))
                 {
                     if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Username) && x.Username.Equals(data.Username, StringComparison.InvariantCultureIgnoreCase)))
+                    {
                         return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Username));
+                    }
                 }
 
                 if (!string.IsNullOrWhiteSpace(data.Email))
                 {
                     if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Email) && x.Email.Equals(data.Email, StringComparison.InvariantCultureIgnoreCase)))
+                    {
                         return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Email));
+                    }
                 }
 
                 return Utils.ResultOk();
@@ -80,11 +90,15 @@ namespace Deve.Core
         {
             var result = await base.CheckDelete(id);
             if (!result.Success)
+            {
                 return result;
+            }
 
             //A User can't delete its own user
             if (Core.UserIdentity is not null && Core.UserIdentity.Id == id)
+            {
                 return Utils.ResultError(Core.Options.LangCode, ResultErrorType.NotAllowed, nameof(id));
+            }
 
             return Utils.ResultOk();
         }

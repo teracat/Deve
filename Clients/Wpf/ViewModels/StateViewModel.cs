@@ -50,7 +50,9 @@ namespace Deve.Clients.Wpf.ViewModels
         internal async override Task DoSave()
         {
             if (_state is null)
+            {
                 return;
+            }
 
             if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
             {
@@ -67,9 +69,13 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 Result res;
                 if (_state.Id == 0)
+                {
                     res = await DataService.Data.States.Add(_state);
+                }
                 else
+                {
                     res = await DataService.Data.States.Update(_state);
+                }
 
                 if (!res.Success)
                 {
@@ -127,7 +133,9 @@ namespace Deve.Clients.Wpf.ViewModels
 
             Countries = res.Data;
             if (_state is not null && _state.CountryId > 0)
+            {
                 SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+            }
         }
         #endregion
 

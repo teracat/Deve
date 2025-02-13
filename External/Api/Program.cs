@@ -6,5 +6,7 @@ namespace Deve.External.Api
         {
             Deve.Api.Program.Main(args);
         }
+
+        protected Program() { }
     }
 }

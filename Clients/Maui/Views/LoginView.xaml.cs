@@ -4,7 +4,7 @@ namespace Deve.Clients.Maui.Views
 {
     public partial class LoginView : BaseView
     {
-        private LoginViewModel _viewModel;
+        private readonly LoginViewModel _viewModel;
 
         public LoginView(LoginViewModel viewModel)
             : base(viewModel)

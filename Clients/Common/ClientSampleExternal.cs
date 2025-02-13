@@ -1,4 +1,5 @@
-﻿using Deve.Authenticate;
+﻿using System.Text;
+using Deve.Authenticate;
 using Deve.External.Data;
 
 namespace Deve.Clients
@@ -77,12 +78,12 @@ Expires: {loginRes.Data.Expires}");
                 }
                 else
                 {
-                    string result = string.Empty;
+                    var result = new StringBuilder();
                     foreach (var country in countriesRes.Data)
                     {
-                        result += $"{country.Id} - {country.IsoCode} - {country.Name}\n";
+                        result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
                     }
-                    LogResult(result);
+                    LogResult(result.ToString());
                 }
             }
             catch (Exception ex)
@@ -108,12 +109,12 @@ Expires: {loginRes.Data.Expires}");
                 }
                 else
                 {
-                    string result = string.Empty;
+                    var result = new StringBuilder();
                     foreach (var client in clientsRes.Data)
                     {
-                        result += $"{client.Id} - {client.DisplayName} [{client.Latitude},{client.Longitude}]\n";
+                        result.AppendLine($"{client.Id} - {client.DisplayName} [{client.Latitude},{client.Longitude}]");
                     }
-                    LogResult(result);
+                    LogResult(result.ToString());
                 }
             }
             catch (Exception ex)

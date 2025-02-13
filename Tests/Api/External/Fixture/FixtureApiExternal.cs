@@ -5,8 +5,5 @@ namespace Deve.Tests.Api.External.Fixture
 {
     public class FixtureApiExternal : FixtureApiClients<Program>
     {
-        public FixtureApiExternal()
-        {
-        }
     }
 }
