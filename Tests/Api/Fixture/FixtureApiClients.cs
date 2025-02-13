@@ -26,5 +26,13 @@ namespace Deve.Tests.Api.Fixture
             ClientValidAuth.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenValid.Scheme, UserTokenValid.Token);
             ClientInvalidUser.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenInactiveUser.Scheme, UserTokenInactiveUser.Token);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            ClientNoAuth.Dispose();
+            ClientValidAuth.Dispose();
+            ClientInvalidUser.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

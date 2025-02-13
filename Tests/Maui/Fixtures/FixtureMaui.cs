@@ -5,7 +5,7 @@ using Deve.Tests.Maui.Mocks;
 
 namespace Deve.Tests.Maui.Fixtures
 {
-    public class FixtureMaui
+    public class FixtureMaui : IAsyncLifetime
     {
         public MockNavigationService NavigationService { get; private set; }
         public IDataService DataServiceNoAuth { get; private set; }
@@ -20,10 +20,21 @@ namespace Deve.Tests.Maui.Fixtures
 
             // IsSharedInstance is set to true so the Login stores the User authenticated to avoid permissions errors
             var dataValidAuth = CoreFactory.Get(true, TestsHelpers.CreateDataSourceMock(), null);
-            dataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid)).Wait();
-
+            
             DataServiceNoAuth = new FixtureDataService(dataNoAuth);
             DataServiceValidAuth = new FixtureDataService(dataValidAuth);
+        }
+
+        public async Task InitializeAsync()
+        {
+            await DataServiceValidAuth.Data.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
+        }
+
+        public Task DisposeAsync()
+        {
+            DataServiceNoAuth.Dispose();
+            DataServiceValidAuth.Dispose();
+            return Task.CompletedTask;
         }
     }
 }
