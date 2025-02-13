@@ -39,9 +39,13 @@ namespace Deve.Core
                     case ChecksActionType.Add:
                         resultBuilder.CheckNotNullOrEmpty(new Field(data.Password));
                         break;
-                    
+
                     case ChecksActionType.Update:
                         resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                        break;
+
+                    default:
+                        // Nothing to be checked
                         break;
                 }
 

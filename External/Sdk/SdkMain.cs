@@ -18,19 +18,7 @@ namespace Deve.External.Sdk
         #endregion
 
         #region Properties
-        internal override string Url
-        {
-            get
-            {
-                switch (_environment)
-                {
-                    case EnvironmentType.Staging:
-                        return ApiConstants.UrlStagingExternal;
-                    default:
-                        return ApiConstants.UrlProductionExternal;
-                }
-            }
-        }
+        internal override string Url => _environment == EnvironmentType.Staging ? ApiConstants.UrlStagingExternal : ApiConstants.UrlProductionExternal;
         #endregion
 
         #region Constructor

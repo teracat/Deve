@@ -196,20 +196,16 @@ namespace Deve.Core.Shield
                     if (methodData.NumAttemptsInvalid >= config.MaxInvalidAttempts)
                     {
                         methodData.NumAttemptsInvalid = 0;
-                        switch (config.MaxAttemptsLockType)
+                        if (config.MaxAttemptsLockType == ShieldMaxAttemptsLockType.OnlyMethod)
                         {
-                            case ShieldMaxAttemptsLockType.Origin:
-                                if (originData.Status != ShieldLockStatus.Locked)
-                                {
-                                    originData.Status = ShieldLockStatus.Locked;
-                                }
-                                break;
-                            case ShieldMaxAttemptsLockType.OnlyMethod:
-                                if (methodData.Status != ShieldLockStatus.Locked)
-                                {
-                                    methodData.Status = ShieldLockStatus.Locked;
-                                }
-                                break;
+                            if (methodData.Status != ShieldLockStatus.Locked)
+                            {
+                                methodData.Status = ShieldLockStatus.Locked;
+                            }
+                        }
+                        else if (originData.Status != ShieldLockStatus.Locked)
+                        {
+                            originData.Status = ShieldLockStatus.Locked;
                         }
                     }
                 }

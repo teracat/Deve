@@ -34,13 +34,9 @@ namespace Deve.Auth.TokenManagers
                 return tokenManager;
             }
 
-            switch (scheme)
-            {
-                case ApiConstants.AuthDefaultScheme:
-                default:
-                    //Return the default TokenManager
-                    return new TokenManagerCrypt(new CryptAes());
-            }
+            // Return the default TokenManager
+            // sheme paramater should be be taken into account here if you add new TokenManagers
+            return new TokenManagerCrypt(new CryptAes());
         }
 
         public static ITokenManager Get() => Get(ApiConstants.AuthDefaultScheme);

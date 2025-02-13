@@ -49,6 +49,10 @@ namespace Deve.DataSource
                     case CriteriaActiveType.OnlyInactive:
                         qry = qry.Where(x => !x.IsActive);
                         break;
+                    case CriteriaActiveType.All:
+                    default:
+                        // Filter by IsActive is not needed
+                        break;
                 }   
 
                 if (!string.IsNullOrWhiteSpace(criteria.Username))
@@ -188,10 +192,7 @@ namespace Deve.DataSource
         #endregion
 
         #region Methods
-        private User? FindLocal(long id)
-        {
-            return Data.Users.FirstOrDefault(x => x.Id == id);
-        }
+        private User? FindLocal(long id) => Data.Users.FirstOrDefault(x => x.Id == id);
         #endregion
     }
 }

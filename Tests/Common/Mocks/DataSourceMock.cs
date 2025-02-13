@@ -89,6 +89,10 @@ namespace Deve.Tests.Mocks
                         case CriteriaActiveType.OnlyInactive:
                             qry = qry.Where(x => !x.IsActive);
                             break;
+                        case CriteriaActiveType.All:
+                        default:
+                            // Filter by IsActive is not needed
+                            break;
                     }
 
                     if (!string.IsNullOrWhiteSpace(criteria.Username))

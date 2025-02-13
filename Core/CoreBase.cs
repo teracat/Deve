@@ -22,13 +22,12 @@ namespace Deve.Core
         protected async virtual Task<Result> CheckPermission(PermissionType type, PermissionDataType dataType)
         {
             var permissionResult = await Core.Auth.IsGranted(Core.UserIdentity, type, dataType);
-            switch (permissionResult)
+            if (permissionResult == PermissionResult.Granted)
             {
-                case PermissionResult.Granted:
-                    return Utils.ResultOk();
-                default:
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultOk();
             }
+
+            return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unauthorized);
         }
         #endregion
     }
