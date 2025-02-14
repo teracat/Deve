@@ -9,7 +9,10 @@ namespace Deve.Clients.Maui.Helpers
 
         protected virtual void OnPropertyChanged([CallerMemberName] string name = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (PropertyChanged is not null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
 
         protected virtual bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")

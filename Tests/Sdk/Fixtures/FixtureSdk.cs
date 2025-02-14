@@ -4,23 +4,21 @@ using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Sdk.Fixtures
 {
-    public abstract class FixtureSdk<TEntryPoint, TDataType> : FixtureApi<TEntryPoint>, IFixtureData<TDataType>, IAsyncLifetime where TEntryPoint : class where TDataType : IDataCommon
+    public class FixtureSdk<TEntryPoint, TDataType> : FixtureApi<TEntryPoint>, IFixtureData<TDataType>, IAsyncLifetime where TEntryPoint : class where TDataType : IDataCommon
     {
         public TDataType DataNoAuth { get; private set; }
         public TDataType DataValidAuth { get; private set; }
 
-        protected FixtureSdk()
+        protected FixtureSdk(IFixtureSdkDataTypeBuilderExternal<TEntryPoint, TDataType> builder)
         {
-            DataNoAuth = CreateData();
-            DataValidAuth = CreateData();
+            DataNoAuth = builder.CreateData(_factory);
+            DataValidAuth = builder.CreateData(_factory);
         }
-
-        protected abstract TDataType CreateData();
 
         protected override void Dispose(bool disposing)
         {
-            DataNoAuth.Dispose();
-            DataValidAuth.Dispose();
+            DataNoAuth?.Dispose();
+            DataValidAuth?.Dispose();
             base.Dispose(disposing);
         }
 

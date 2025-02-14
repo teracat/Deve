@@ -73,7 +73,8 @@ namespace Deve.Model
 
         public ResultBuilder CheckNotNullOrEmpty(params Field[] fields)
         {
-            if (Utils.FindNullOrWhiteSpace(out var found, fields))
+            var found = Utils.FindNullOrWhiteSpace(fields);
+            if (found.Count > 0)
             {
                 AddRange(Utils.FoundFieldsToErrors(_langCode, ResultErrorType.MissingRequiredField, found));
             }

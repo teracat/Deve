@@ -1,6 +1,6 @@
 ﻿namespace Deve.Clients.Wpf.Interfaces
 {
-    public interface INavigationAwareWithType<TParamType> where TParamType : class
+    public interface INavigationAwareWithType<in TParamType> where TParamType : class
     {
         void OnNavigatedToWithType(TParamType parameter);
     }

@@ -7,9 +7,9 @@ namespace Deve
     {
         public static bool SomeIsNullOrWhiteSpace(params string?[] values) => values.Any(x => string.IsNullOrWhiteSpace(x));
 
-        public static bool FindNullOrWhiteSpace(out List<Field> found, params Field[] fields)
+        public static List<Field> FindNullOrWhiteSpace(params Field[] fields)
         {
-            found = [];
+            List<Field> found = [];
             foreach (var field in fields)
             {
                 if (IsEmptyValue(field.Value))
@@ -17,7 +17,7 @@ namespace Deve
                     found.Add(field);
                 }
             }
-            return found.Count > 0;
+            return found;
         }
 
         public static bool IsEmptyValue(object? value)
