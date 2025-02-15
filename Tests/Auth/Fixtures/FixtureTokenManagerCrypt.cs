@@ -6,11 +6,11 @@ namespace Deve.Tests.Auth.Fixtures
     public class FixtureTokenManagerCrypt : IFixtureTokenManager
     {
         public ITokenManager TokenManager { get; private set; }
-        public string TokenExpired => "P83hovvDJI9+6LMyV9Tv/BtOITQB7fVvmMl2jvomZW5IpkmGq36VHUlx52Pygkn1+PiypZ6VinBVRdh9BPPX0lLg4kA6vIJjlxRN1h/EF+kx2PSjqlXSfnI0Bu2G1IFqyzQacf2JEPAyaCQuw+M/xQ==";
+        public string TokenExpired => "XlaXyKNhgfNLFgpODxlfo/t6d92bvlhrExOpXDGsLGQtCt559Gd82kF7NST+hw1PtuFQt4EEa2fwAo6HrZ81LNt5WNjndvAK3F+84ZrDZ4dEvVWhB0B4huiiVfKTmB5R4mH+jThsKprNds1W6movzw==";
 
         public FixtureTokenManagerCrypt()
         {
-            TokenManager = new TokenManagerCrypt(new CryptAes());
+            TokenManager = new TokenManagerCrypt(new CryptAes(TestsConstants.CryptAesKey, TestsConstants.CryptAesIV), true);
         }
     }
 }

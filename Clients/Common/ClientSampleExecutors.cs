@@ -1,4 +1,6 @@
-﻿using Deve.Data;
+﻿using Deve.Auth.Crypt;
+using Deve.Auth.TokenManagers;
+using Deve.Data;
 using Deve.Sdk;
 using Deve.Sdk.LoggingHandlers;
 
@@ -29,7 +31,8 @@ namespace Deve.Clients
 
         public static void InternalEmbedded(DataOptions? options)
         {
-            using var data = Core.CoreFactory.Get(true, null, options);
+            using var tokenManager = new TokenManagerCrypt();
+            using var data = Core.CoreFactory.Get(true, tokenManager, options);
             InternalData(data);
         }
 

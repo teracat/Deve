@@ -1,5 +1,6 @@
 using System.Net;
 using System.Globalization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 using Deve.Logging;
@@ -9,6 +10,8 @@ using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Swagger;
 using Deve.Api.DataSourceBuilder;
+using Deve.Api.Settings;
+using Deve.Api.Crypt;
 
 namespace Deve.Api
 {
@@ -18,14 +21,17 @@ namespace Deve.Api
 
         public static void Main(string[] args)
         {
+            var builder = WebApplication.CreateBuilder(args);
+
+            var appSettings = new AppSettings();
+            builder.Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
+
             //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
             /*var config = new DataSourceConfig()
             {
                 ConnectionString = ""
             };
             DataSourceFactory.SetConfig(config);*/
-
-            var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
@@ -96,10 +102,17 @@ namespace Deve.Api
             builder.Services.AddSingleton<IDataSourceBuilder, DataSourceBuilderFactory>();
 
             // Authentication
-            // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the class TokenManagerJwt)
+            // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the appsettings.json in the External.Api & Internal.Api projects)
             // If you don't want to use Jwt, you can remove the next line and remove the referenced projecte Deve.Auth.Jwt
-            // If none is defined here, the default TokenManagerCrypt will be used (you should change the keys used to encrypt in AuthConstants)
-            TokenManagerFactory.Set(ApiConstants.AuthDefaultScheme, new TokenManagerJwt());
+            // If none is defined here, the default TokenManagerCrypt will be used (you should change the keys used to encrypt in AuthConstants).
+            var tokenManagerJwt = new TokenManagerJwt(appSettings.JwtKeys.SigningSecretKey, appSettings.JwtKeys.EncryptionSecretKey);
+            builder.Services.AddSingleton<ITokenManager>(tokenManagerJwt);
+
+            // If you want to use the TokenManagerCrypt with DataProtection, uncomment the next lines
+            /* var dataProtectionProvider = DataProtectionProvider.Create(nameof(Program));
+            var tokenManagerCrypt = new TokenManagerCrypt(new CryptDataProtect(dataProtectionProvider), true);
+            builder.Services.AddSingleton<ITokenManager>(tokenManagerCrypt); */
+
             builder.Services.AddAuthentication((o) =>
             {
                 o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.AuthDefaultScheme, ApiConstants.AuthDefaultScheme);

@@ -5,7 +5,6 @@ using Deve.Authenticate;
 using Deve.Criteria;
 using Deve.Auth.TokenManagers;
 using Deve.Auth.Hash;
-using Deve.Auth.Crypt;
 using Deve.Auth.Permissions;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
@@ -16,7 +15,6 @@ namespace Deve.Auth
     {
         #region Fields
         private DataOptions _options;
-        private readonly bool _shouldDisposeTokenManager;
         #endregion
 
         #region Properties
@@ -28,18 +26,15 @@ namespace Deve.Auth
         public IDataSource DataSource { get; }
         public ITokenManager TokenManager { get; }
         public IHash Hash { get; }
-        public ICrypt Crypt { get; }
         #endregion
 
         #region Constructor
-        public AuthMain(IDataSource dataSource, DataOptions? options = null, ITokenManager? tokenManager = null)
+        public AuthMain(ITokenManager tokenManager, IDataSource dataSource, DataOptions? options = null)
         {
             _options = options ?? new DataOptions();
+            TokenManager = tokenManager;
             DataSource = dataSource;
             Hash = new HashSha512();
-            Crypt = new CryptAes();
-            TokenManager = tokenManager ?? TokenManagerFactory.Get();
-            _shouldDisposeTokenManager = tokenManager is null;
         }
         #endregion
 
@@ -182,11 +177,6 @@ namespace Deve.Auth
         public void Dispose()
         {
             Hash.Dispose();
-            Crypt.Dispose();
-            if (_shouldDisposeTokenManager)
-            {
-                TokenManager.Dispose();
-            }
         }
         #endregion
     }

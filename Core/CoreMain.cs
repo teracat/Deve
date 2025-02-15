@@ -1,14 +1,15 @@
 ﻿using Deve.Model;
-using Deve.Auth;
 using Deve.Authenticate;
 using Deve.Criteria;
-using Deve.Auth.TokenManagers;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Core.Shield;
+using Deve.Auth;
+using Deve.Auth.Crypt;
+using Deve.Auth.TokenManagers;
 using Deve.Internal.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
+using Deve.Core.Shield;
 
 namespace Deve.Core
 {
@@ -147,20 +148,12 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreMain(bool isSharedInstance = true, IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
+        public CoreMain(bool isSharedInstance, ITokenManager tokenManager, IDataSource? dataSource = null, DataOptions? options = null)
         {
             _isSharedInstance = isSharedInstance;
             _dataSource = dataSource ?? DataSourceFactory.Get(options);
             _options = options ?? new DataOptions();
-            if (tokenManager is null)
-            {
-                _auth = AuthFactory.Get(_dataSource, _options);
-            }
-            else
-            {
-                _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
-            }
-
+            _auth = AuthFactory.Get(tokenManager, _dataSource, _options);
             _shouldDisposeDataSource = dataSource is null;
         }
         #endregion

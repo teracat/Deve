@@ -100,7 +100,7 @@ namespace Deve.Tests
         [Fact]
         public async Task RefreshToken_InactiveUser_ReturnFalse()
         {
-            var userToken = TestsHelpers.CreateTokenInactiveUser();
+            var userToken = TestsHelpers.CreateTokenInactiveUser(Fixture.TokenManager);
 
             var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(userToken.Token);
 
@@ -110,7 +110,7 @@ namespace Deve.Tests
         [Fact]
         public async Task RefreshToken_Valid_ReturnTrue()
         {
-            var userToken = TestsHelpers.CreateTokenValid();
+            var userToken = TestsHelpers.CreateTokenValid(Fixture.TokenManager);
 
             var result = await Fixture.DataNoAuth.Authenticate.RefreshToken(userToken.Token);
 

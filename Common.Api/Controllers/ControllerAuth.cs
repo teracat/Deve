@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Authenticate;
 using Deve.Model;
+using Deve.Auth.TokenManagers;
 using Deve.Api.DataSourceBuilder;
 
 namespace Deve.Api.Controllers
@@ -9,8 +10,8 @@ namespace Deve.Api.Controllers
     [Route(ApiConstants.PathAuth)]
     public class ControllerAuth : ControllerBaseDeve
     {
-        public ControllerAuth(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
-            : base(contextAccessor, dataSourceBuilder)
+        public ControllerAuth(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
+            : base(contextAccessor, dataSourceBuilder, tokenManager)
         {
         }
 

@@ -10,17 +10,43 @@ namespace Deve.Auth.TokenManagers
     /// <summary>
     /// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
     /// </summary>
-    internal class TokenManagerCrypt : ITokenManager
+    public class TokenManagerCrypt : ITokenManager
     {
         private readonly ICrypt _crypt;
+        private readonly bool _disposeCrypt;
         private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = false,
         };
 
+        /// <summary>
+        /// Constructor. It uses a new CryptAes instance with auto generated Key and IV to encrypt/decrypt data.
+        /// </summary>
+        public TokenManagerCrypt()
+        {
+            _crypt = new CryptAes();
+            _disposeCrypt = true;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
+        /// <param name="autoDisposeCrypt">If true, the crypt will be disposed when this instance is disposed.</param>
+        public TokenManagerCrypt(ICrypt crypt, bool autoDisposeCrypt)
+        {
+            _crypt = crypt;
+            _disposeCrypt = autoDisposeCrypt;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
         public TokenManagerCrypt(ICrypt crypt)
         {
             _crypt = crypt;
+            _disposeCrypt = false;
         }
 
         public UserToken CreateToken(User user, string scheme)
@@ -72,7 +98,10 @@ namespace Deve.Auth.TokenManagers
 
         public void Dispose()
         {
-            // Nothing to dispose
+            if (_disposeCrypt)
+            {
+                _crypt.Dispose();
+            }
         }
     }
 }

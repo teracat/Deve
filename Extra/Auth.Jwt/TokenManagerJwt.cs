@@ -14,25 +14,18 @@ namespace Deve.Auth.TokenManagers.Jwt
     /// </summary>
     public class TokenManagerJwt : ITokenManager
     {
-        /// <summary>
-        /// The SigningSecretKey is used to ensure the integrity and authenticity of the token.
-        /// IMPORTANT: You shoud change this value for your own key.
-        /// </summary>
-        private const string SigningSecretKey = "73b€27f9ce1e4@e789.977cO9feB6ae!";  //Must be 32 bytes
-
-        /// <summary>
-        /// The EncryptionSecretKey is used to protect the confidentiality of the token's data.
-        /// IMPORTANT: You shoud also change this value for your own key (different from the previous key).
-        /// </summary>
-        private const string EncryptionSecretKey = "7Gb86@04136b42!a85fa646b73b29f-d";  //Must be 32 bytes
-
         private readonly byte[] _signingKeyBytes;
         private readonly byte[] _encryptionKeyBytes;
 
-        public TokenManagerJwt()
+        /// <summary>
+        /// Creates a new instance of TokenManagerJwt.
+        /// </summary>
+        /// <param name="signingSecretKey">The signingSecretKey is used to ensure the integrity and authenticity of the token (must be 32 bytes).</param>
+        /// <param name="encryptionSecretKey">The encryptionSecretKey is used to protect the confidentiality of the token's data (must be 32 bytes).</param>
+        public TokenManagerJwt(string signingSecretKey, string encryptionSecretKey)
         {
-            _signingKeyBytes = Encoding.ASCII.GetBytes(SigningSecretKey);
-            _encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionSecretKey);
+            _signingKeyBytes = Encoding.ASCII.GetBytes(signingSecretKey);
+            _encryptionKeyBytes = Encoding.ASCII.GetBytes(encryptionSecretKey);
         }
 
         public UserToken CreateToken(User user, string scheme)

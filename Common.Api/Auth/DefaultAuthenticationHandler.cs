@@ -19,10 +19,15 @@ namespace Deve.Api.Auth
 
     public class DefaultAuthenticationHandler : AuthenticationHandler<DefaultAuthenticationOptions>
     {
+        #region Fields
+        private readonly ITokenManager _tokenManager;
+        #endregion
+
         #region Constructor
-        public DefaultAuthenticationHandler(IOptionsMonitor<DefaultAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+        public DefaultAuthenticationHandler(IOptionsMonitor<DefaultAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenManager tokenManager)
             : base(options, logger, encoder)
         {
+            _tokenManager = tokenManager;
         }
         #endregion
 
@@ -79,8 +84,7 @@ namespace Deve.Api.Auth
         #region Methods
         private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
-            var tokenManager = TokenManagerFactory.Get(scheme);
-            var res = tokenManager.ValidateToken(token, out var userIdentity);
+            var res = _tokenManager.ValidateToken(token, out var userIdentity);
             if (res == TokenParseResult.Valid && userIdentity is not null)
             {
                 var principal = UserConverter.ToClaimsPrincipal(scheme, userIdentity);
