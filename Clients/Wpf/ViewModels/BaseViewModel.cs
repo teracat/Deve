@@ -34,7 +34,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+        protected BaseViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
         {
             _navigationService = navigationService;
             _dataService = dataService;

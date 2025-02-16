@@ -19,10 +19,15 @@ namespace Deve.Api.Auth
 
     public class DefaultAuthenticationHandler : AuthenticationHandler<DefaultAuthenticationOptions>
     {
+        #region Fields
+        private readonly ITokenManager _tokenManager;
+        #endregion
+
         #region Constructor
-        public DefaultAuthenticationHandler(IOptionsMonitor<DefaultAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+        public DefaultAuthenticationHandler(IOptionsMonitor<DefaultAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenManager tokenManager)
             : base(options, logger, encoder)
         {
+            _tokenManager = tokenManager;
         }
         #endregion
 
@@ -36,24 +41,34 @@ namespace Deve.Api.Auth
                     string? langCode = UtilsApi.GetLangCodeFromRequest(Request);
                     var options = new DataOptions();
                     if (!string.IsNullOrWhiteSpace(langCode))
+                    {
                         options.LangCode = langCode;
+                    }
 
                     if (!Request.Headers.TryGetValue("Authorization", out Microsoft.Extensions.Primitives.StringValues authorizationHeader))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     string? authHeaderString = authorizationHeader;
                     if (string.IsNullOrWhiteSpace(authHeaderString))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     var parts = authHeaderString.Split(' ');
                     if (parts.Length != 2)
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     string scheme = parts[0] ?? string.Empty;
                     string token = parts[1] ?? string.Empty;
 
                     if (Utils.SomeIsNullOrWhiteSpace(scheme, token))
+                    {
                         return GetResultUnauthorized(options.LangCode);
+                    }
 
                     return ValidateToken(scheme, token, options);
                 }
@@ -69,9 +84,7 @@ namespace Deve.Api.Auth
         #region Methods
         private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
-            var tokenManager = TokenManagerFactory.Get(scheme);
-            var res = tokenManager.ValidateToken(token, out var userIdentity);
-            if (res == TokenParseResult.Valid && userIdentity is not null)
+            if (_tokenManager.TryValidateToken(token, out var userIdentity) && userIdentity is not null)
             {
                 var principal = UserConverter.ToClaimsPrincipal(scheme, userIdentity);
                 var ticket = new AuthenticationTicket(principal, scheme);

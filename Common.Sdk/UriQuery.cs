@@ -7,7 +7,7 @@ namespace Deve.Sdk
     /// </summary>
     internal class UriQuery
     {
-        private NameValueCollection collection;
+        private readonly NameValueCollection collection;
 
         public UriQuery()
         {

@@ -5,7 +5,7 @@ namespace Deve.Tests.Api.External
 {
     public abstract class TestExternalApiBaseGet : TestApiBaseGet<Program>
     {
-        public TestExternalApiBaseGet(FixtureApiExternal fixture)
+        protected TestExternalApiBaseGet(FixtureApiExternal fixture)
             : base(fixture)
         {
         }

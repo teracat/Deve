@@ -25,7 +25,9 @@ namespace Deve.Clients.Wpf.Views
         private void OnNameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 uxCountry.Focus();
+            }
         }
 
         private void OnCountryKeyDown(object sender, System.Windows.Input.KeyEventArgs e)

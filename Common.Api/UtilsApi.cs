@@ -13,7 +13,9 @@
         public static string? GetLangCodeFromRequest(HttpRequest? request)
         {
             if (request is null)
+            {
                 return null;
+            }
 
             string? langCode;
             // Quality defines priority from 0 to 1, where 1 is the highest.
@@ -33,7 +35,9 @@
 
                 //If none found, we'll use the first language received
                 if (string.IsNullOrEmpty(langCode))
+                {
                     langCode = languages.FirstOrDefault();
+                }
             }
             return langCode;
         }

@@ -11,7 +11,7 @@
         #endregion
 
         #region Constructor
-        public DataSourceBase(DataSourceMain dataSourceMain)
+        protected DataSourceBase(DataSourceMain dataSourceMain)
         {
             _dataSourceMain = dataSourceMain;
         }

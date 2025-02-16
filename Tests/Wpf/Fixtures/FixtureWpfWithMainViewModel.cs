@@ -8,13 +8,6 @@ namespace Deve.Tests.Wpf.Fixtures
         public MainViewModel? MainViewModel { get; private set; }
         #endregion
 
-        #region Constructor
-        public FixtureWpfWithMainViewModel()
-            : base()
-        {
-        }
-        #endregion
-
         #region IAsyncLifetime
         public override async Task InitializeAsync()
         {
