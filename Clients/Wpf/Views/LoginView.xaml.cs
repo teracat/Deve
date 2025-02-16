@@ -74,6 +74,7 @@ namespace Deve.Clients.Wpf.Views
         {
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 _ = _viewModel.Login(uxPassword.Password);
             }
         }
