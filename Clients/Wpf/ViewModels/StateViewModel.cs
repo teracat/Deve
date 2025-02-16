@@ -48,7 +48,9 @@ namespace Deve.Clients.Wpf.ViewModels
             }
 
             if (!Validate())
+            {
                 return;
+            }
 
             IsBusy = true;
             try
@@ -127,7 +129,9 @@ namespace Deve.Clients.Wpf.ViewModels
 
             Countries = res.Data;
             if (_state is not null && _state.CountryId > 0)
+            {
                 SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+            }
         }
         #endregion
 

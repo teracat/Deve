@@ -69,7 +69,9 @@ namespace Deve.Clients.Wpf.ViewModels
             }
 
             if (!Validate())
+            {
                 return;
+            }
 
             IsBusy = true;
             try
