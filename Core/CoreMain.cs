@@ -1,14 +1,15 @@
 ﻿using Deve.Model;
-using Deve.Auth;
 using Deve.Authenticate;
 using Deve.Criteria;
-using Deve.Auth.TokenManagers;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Core.Shield;
+using Deve.Auth;
+using Deve.Auth.Crypt;
+using Deve.Auth.TokenManagers;
 using Deve.Internal.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
+using Deve.Core.Shield;
 
 namespace Deve.Core
 {
@@ -22,10 +23,12 @@ namespace Deve.Core
         #endregion
 
         #region Fields
-        private bool _isSharedInstance;
-        private DataOptions _options;
+        private readonly bool _isSharedInstance;
         private readonly IDataSource _dataSource;
         private readonly IAuth _auth;
+        private DataOptions _options;
+
+        private readonly bool _shouldDisposeDataSource;
 
         private UserIdentity? _userIdentity;
         private User? _user;
@@ -77,7 +80,9 @@ namespace Deve.Core
                 {
                     //If the user Id has changed, we set the _user to null to force its data to be fetched again (if accessed)
                     if (_userIdentity is not null && value is not null && _userIdentity.Id != value.Id)
+                    {
                         _user = null;
+                    }
 
                     _userIdentity = value;
                 }
@@ -94,15 +99,21 @@ namespace Deve.Core
             get
             {
                 if (_user is not null)
+                {
                     return _user;
+                }
 
                 if (_userIdentity is null)
+                {
                     return null;
+                }
 
                 var resUser = _dataSource.Users.Get(_userIdentity.Id).Result;
                 if (!resUser.Success)
+                {
                     return null;
-                
+                }
+
                 _user = resUser.Data;
                 return _user;
             }
@@ -110,9 +121,13 @@ namespace Deve.Core
             {
                 _user = value;
                 if (value is null)
+                {
                     _userIdentity = null;
+                }
                 else
+                {
                     _userIdentity = new UserIdentity(value);
+                }
             }
         }
 
@@ -133,12 +148,24 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreMain(bool isSharedInstance = true, IDataSource? dataSource = null, DataOptions? options = null, ITokenManager? tokenManager = null)
+        public CoreMain(bool isSharedInstance, ITokenManager tokenManager, IDataSource? dataSource = null, DataOptions? options = null)
         {
             _isSharedInstance = isSharedInstance;
-            _dataSource = dataSource ?? DataSourceFactory.Get();
+            _dataSource = dataSource ?? DataSourceFactory.Get(options);
             _options = options ?? new DataOptions();
-            _auth = AuthFactory.Get(_dataSource, _options, tokenManager);
+            _auth = AuthFactory.Get(tokenManager, _dataSource, _options);
+            _shouldDisposeDataSource = dataSource is null;
+        }
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            _auth.Dispose();
+            if (_shouldDisposeDataSource)
+            {
+                DataSource.Dispose();
+            }
         }
         #endregion
     }

@@ -1,9 +1,11 @@
-﻿using Deve.Data;
+﻿using Deve.Auth.TokenManagers;
+using Deve.Data;
 
 namespace Deve.Tests
 {
-    public interface IFixtureData<TDataType> where TDataType : IDataCommon
+    public interface IFixtureData<out TDataType> where TDataType : IDataCommon
     {
+        ITokenManager TokenManager { get; }
         TDataType DataNoAuth { get; }
         TDataType DataValidAuth { get; }
     }

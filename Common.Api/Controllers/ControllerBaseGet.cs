@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.External.Data;
 using Deve.Model;
+using Deve.Auth.TokenManagers;
 using Deve.Api.DataSourceBuilder;
 
 namespace Deve.Api.Controllers
@@ -12,8 +13,8 @@ namespace Deve.Api.Controllers
         #endregion
 
         #region Constructor
-        public ControllerBaseGet(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
-            : base(contextAccessor, dataSourceBuilder)
+        protected ControllerBaseGet(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
+            : base(contextAccessor, dataSourceBuilder, tokenManager)
         {
         }
         #endregion

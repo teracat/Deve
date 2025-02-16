@@ -6,11 +6,11 @@ namespace Deve.Tests.Auth.Fixtures
     public class FixtureTokenManagerJwt : IFixtureTokenManager
     {
         public ITokenManager TokenManager { get; private set; }
-        public string TokenExpired => "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiSldUIiwiY3R5IjoiSldUIn0.NNvfJlOsjd7QAu1PT_pAf_3IgXbMFFuIyXFuxWEdbtmVZQ1Ps9T2sIMkHR7rkQjJndz-Z93s5RJkfxagIHOMjSCykGjK9ctk.0vO2AZ9lEPwIsv3NjpkPBQ.lUGt4nU0hm0XOhzU4_u1T8HNxg7BZ8LvLVhkJ3mrwaY4JQDh53xcEh-FfRRWYeuUZ-vMVFGwKs8qmsqHagM9wikf4p-EfD1HwwK05FmB7-YD_9fmo-5ShZHJyd9Pmpwu11kJ7wHKyBcdwEuYLa3E6A4rZRiZH--EupdIJanO2C8tBCb9AB5Et_XrzO8oBKPbJVnl37daqnXFllYcVehTLfSqSDqZF9-ebIkdLHhyM62W0FQeNI35ps-rt5y8-jHQ30GDPmrNHBlp1H3SFw1SD3UDVghDzyNpk00UPfw8GK8.5NOvQb3k6gUAjDPvqr0z27iR1dEAIIZJUzbMRSLIC9M";
+        public string TokenExpired => "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiSldUIiwiY3R5IjoiSldUIn0.FXnhHRO0INpPQnXD5sAl2jPdAs_ad05QAOmlus6e-kqTgluMuZXWuD2tpucLvt_jWSy346hEicyHPd9BnuaF-VawB0Y7k-go.9wmOEJCWCnuWzT1eIGAkDA.UfiZxAQlMiWQ0cHlWWVG8lObbYxhk7SjpVSiXa92fHBFGIk7mfR37Y7b6bqLCkQoc0DEfQPAOaJd-Zv73_MmCtpOiPYLXp5IE8lTQktS-HbrkJidSzrEH2svBZovaoHbqPjvmb41RWf5EbMA8MHkad76jhla4YaJ0yRdD4csEh0UiiiFIUC95jIUMPfzxWG-xvWwBL0_XcvLkLJ9HqvA0yJ4JrkqvFtiaR_ICmUnvvn3DY3M22QiJwxYRcz81iULXspcZEWjH1cR99XMAMKGDdFLc_vBkg2K_J4YDjNmUko.7qnrYgudVryIWs2Q7sG4CKdyGdgwaWuvbOB1dMsJyhI";
 
         public FixtureTokenManagerJwt()
         {
-            TokenManager = new TokenManagerJwt();
+            TokenManager = new TokenManagerJwt(TestsConstants.JwtSigningSecretKey, TestsConstants.JwtEncryptionSecretKey);
         }
     }
 }

@@ -3,7 +3,7 @@
     internal abstract class DataSourceBase
     {
         #region Fields
-        private DataSourceMain _dataSourceMain;
+        private readonly DataSourceMain _dataSourceMain;
         #endregion
 
         #region Properties
@@ -11,7 +11,7 @@
         #endregion
 
         #region Constructor
-        public DataSourceBase(DataSourceMain dataSourceMain)
+        protected DataSourceBase(DataSourceMain dataSourceMain)
         {
             _dataSourceMain = dataSourceMain;
         }

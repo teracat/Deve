@@ -1,7 +1,7 @@
+using Moq;
 using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
 using Deve.Tests.Maui.Mocks;
-using Moq;
 
 namespace Deve.Tests.Maui
 {
@@ -69,7 +69,7 @@ namespace Deve.Tests.Maui
 
             await loginViewModel.LoginCommand.ExecuteAsync(null);
 
-            navigationService.Verify(x => x.NavigateToAsync("//clients", null), Times.Once);
+            navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
         }
     }
 }

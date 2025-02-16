@@ -30,7 +30,7 @@ namespace Deve.Tests
         #endregion
 
         #region Constructor
-        public TestBaseDataAll(IFixtureData<TDataType> fixture)
+        protected TestBaseDataAll(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

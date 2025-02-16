@@ -9,6 +9,8 @@ namespace Deve.DataSource
 
         public static void SetConfig(DataSourceConfig config) => _config = config;
 
-        public static IDataSource Get(DataOptions? options = null) => new DataSourceMain(_config, options);
+        public static IDataSource Get(DataOptions? options) => new DataSourceMain(_config, options);
+
+        public static IDataSource Get() => Get(null);
     }
 }

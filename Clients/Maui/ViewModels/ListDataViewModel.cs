@@ -1,4 +1,5 @@
-﻿using Deve.Clients.Maui.Helpers;
+﻿using Deve.Clients.Interfaces;
+using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -31,7 +32,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ListDataViewModel(INavigationService navigationService, IDataService dataService)
+        protected ListDataViewModel(INavigationService navigationService, IDataService dataService)
             : base(navigationService, dataService)
         {
             Initialization = InitializeAsync();
@@ -39,7 +40,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected virtual async Task InitializeAsync()
+        protected async Task InitializeAsync()
         {
             await LoadData();
         }

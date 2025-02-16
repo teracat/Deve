@@ -5,7 +5,7 @@ namespace Deve.Clients.Maui
 {
     public partial class AppShell : Shell
     {
-        private INavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
         public AppShell(INavigationService navigationService)
         {

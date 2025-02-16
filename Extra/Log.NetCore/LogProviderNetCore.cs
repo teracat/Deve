@@ -8,7 +8,7 @@ namespace Deve.Logging
     /// </summary>
     internal class LogProviderNetCore : ILogProvider
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public LogProviderNetCore(ILogger logger)
         {

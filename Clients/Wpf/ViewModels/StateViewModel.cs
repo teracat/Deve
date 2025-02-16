@@ -27,8 +27,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public StateViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public StateViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+            : base(navigationService, dataService, messageHandler)
         {
         }
         #endregion
@@ -43,7 +43,9 @@ namespace Deve.Clients.Wpf.ViewModels
         internal async override Task Save()
         {
             if (_state is null)
+            {
                 return;
+            }
 
             if (!Validate())
                 return;
@@ -57,13 +59,17 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 Result res;
                 if (_state.Id == 0)
+                {
                     res = await DataService.Data.States.Add(_state);
+                }
                 else
+                {
                     res = await DataService.Data.States.Update(_state);
+                }
 
                 if (!res.Success)
                 {
-                    Globals.ShowError(res.Errors);
+                    MessageHandler.ShowError(res.Errors);
                     return;
                 }
             }
@@ -91,7 +97,7 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await DataService.Data.States.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        Globals.ShowError(res.Errors);
+                        MessageHandler.ShowError(res.Errors);
                         IsBusy = false; // When IsBusy=true the Window will not be closed
                         Close();
                         return;
@@ -113,7 +119,7 @@ namespace Deve.Clients.Wpf.ViewModels
             var res = await DataService.Data.Countries.Get();
             if (!res.Success)
             {
-                Globals.ShowError(res.Errors);
+                MessageHandler.ShowError(res.Errors);
                 IsBusy = false; // When IsBusy=true the Window will not be closed
                 Close();
                 return;

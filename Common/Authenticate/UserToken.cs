@@ -48,7 +48,15 @@
             Subject = new UserSubject(other.Subject);
         }
 
-        public UserToken(UserSubject subject, DateTimeOffset expires, string token, string scheme = ApiConstants.AuthDefaultScheme)
+        public UserToken(UserSubject subject, DateTimeOffset expires, string token)
+        {
+            Subject = subject;
+            Expires = expires;
+            Token = token;
+            Scheme = ApiConstants.AuthDefaultScheme;
+        }
+
+        public UserToken(UserSubject subject, DateTimeOffset expires, string token, string scheme)
         {
             Subject = subject;
             Expires = expires;

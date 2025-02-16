@@ -16,7 +16,7 @@ namespace Deve.Tests
         #endregion
 
         #region Constructor
-        public TestBaseDataGet(IFixtureData<TDataType> fixture)
+        protected TestBaseDataGet(IFixtureData<TDataType> fixture)
             : base(fixture)
         {
         }

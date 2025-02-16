@@ -10,20 +10,36 @@ namespace Deve.Auth.TokenManagers
     /// <summary>
     /// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
     /// </summary>
-    internal class TokenManagerCrypt : ITokenManager
+    public class TokenManagerCrypt : ITokenManager
     {
         private readonly ICrypt _crypt;
+        private readonly bool _disposeCrypt;
         private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = false,
         };
 
-        public TokenManagerCrypt(ICrypt crypt)
+        /// <summary>
+        /// Constructor. It uses a new CryptAes instance with auto generated Key and IV to encrypt/decrypt data.
+        /// </summary>
+        public TokenManagerCrypt()
         {
-            _crypt = crypt;
+            _crypt = new CryptAes();
+            _disposeCrypt = true;
         }
 
-        public UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
+        /// <param name="autoDisposeCrypt">If true, the crypt will be disposed when this instance is disposed.</param>
+        public TokenManagerCrypt(ICrypt crypt, bool autoDisposeCrypt)
+        {
+            _crypt = crypt;
+            _disposeCrypt = autoDisposeCrypt;
+        }
+
+        public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -35,30 +51,41 @@ namespace Deve.Auth.TokenManagers
             return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
-        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
+        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
+
+        public bool TryValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
-                return TokenParseResult.NotValid;
+            {
+                return false;
+            }
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
                 var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
-                if (tokenData is null)
-                    return TokenParseResult.NotValid;
-
-                if (tokenData.Expires < DateTime.UtcNow)
-                    return TokenParseResult.Expired;
+                if (tokenData is null || tokenData.Expires < DateTime.UtcNow)
+                {
+                    return false;
+                }
 
                 userIdentity = tokenData.Subject;
 
-                return TokenParseResult.Valid;
+                return true;
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return TokenParseResult.NotValid;
+                return false;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_disposeCrypt)
+            {
+                _crypt.Dispose();
             }
         }
     }

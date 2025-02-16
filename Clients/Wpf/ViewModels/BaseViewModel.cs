@@ -8,6 +8,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Fields
         private readonly INavigationService _navigationService;
         private readonly IDataService _dataService;
+        private readonly IMessageHandler _messageHandler;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
@@ -22,6 +23,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
         protected IDataService DataService => _dataService;
 
+        protected IMessageHandler MessageHandler => _messageHandler;
         public bool IsIdle => !IsBusy;
 
         public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
@@ -32,10 +34,11 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IDataService dataService)
+        protected BaseViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
         {
             _navigationService = navigationService;
             _dataService = dataService;
+            _messageHandler = messageHandler;
         }
         #endregion
 

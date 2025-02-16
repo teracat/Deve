@@ -53,7 +53,7 @@ namespace Deve.Clients.Maui
 #endif
 //+:cnd
                 });
-            //-:cnd
+//-:cnd
 #if DEBUG
             Log.Providers.AddDebug();
 #endif

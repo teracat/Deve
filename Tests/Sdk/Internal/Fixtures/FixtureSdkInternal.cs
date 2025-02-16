@@ -4,12 +4,11 @@ using Deve.Tests.Sdk.Fixtures;
 
 namespace Deve.Tests.Sdk.Internal.Fixtures
 {
-    public class FixtureSdkInternal : FixtureSdk<Program, ISdk>, IFixtureData<ISdk>
+    public class FixtureSdkInternal : FixtureSdk<Program, ISdk>
     {
         public FixtureSdkInternal()
+            : base(new FixtureSdkDataTypeBuilderInternal())
         {
         }
-
-        protected override ISdk CreateData() => new SdkMain(_factory.CreateClient());
     }
 }
