@@ -34,7 +34,9 @@ namespace Deve.Tests.Wpf
             SecureString ret = new SecureString();
 
             foreach (char chr in pass.ToCharArray())
+            {
                 ret.AppendChar(chr);
+            }
 
             return ret;
         }
