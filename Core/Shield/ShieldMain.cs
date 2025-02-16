@@ -102,7 +102,7 @@ namespace Deve.Core.Shield
             return methodData;
         }
 
-        private void CleanOldData(object? state)
+        private void CleanOldData(object? _)
         {
             foreach (var origin in _origins)
             {
