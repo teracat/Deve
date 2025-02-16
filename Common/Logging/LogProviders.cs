@@ -18,13 +18,16 @@
         /// <returns>True if the provider was added.</returns>
         public bool Add(ILogProvider provider)
         {
-            if (_list.Any(x => x.GetType() == provider.GetType()))
+            lock (_list)
             {
-                return false;
-            }
+                if (_list.Any(x => x.GetType() == provider.GetType()))
+                {
+                    return false;
+                }
 
-            _list.Add(provider);
-            return true;
+                _list.Add(provider);
+                return true;
+            }
         }
 
         /// <summary>
@@ -34,7 +37,10 @@
         /// <returns>True if the provider was removed.</returns>
         public bool Remove(ILogProvider provider)
         {
-            return _list.Remove(provider);
+            lock (_list)
+            {
+                return _list.Remove(provider);
+            }
         }
         #endregion
     }
