@@ -1,8 +1,8 @@
-﻿using Deve.Clients.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Clients.Interfaces;
 using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Deve.Clients.Maui.ViewModels
 {
@@ -24,7 +24,9 @@ namespace Deve.Clients.Maui.ViewModels
         partial void OnSelectedDataChanged(ListData? value)
         {
             if (value is not null)
+            {
                 DoSelected(value);
+            }
 
             // Clear the selection to allow the same item to be selected again
             SelectedData = null;
