@@ -80,7 +80,7 @@ namespace Deve.Tests.Wpf
 
             await loginViewModel.Login(TestsConstants.UserPasswordValid);
 
-            navigationService.Verify(x => x.NavigateTo<MainView>(null), Times.Once);
+            navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
         }
     }
 }

@@ -9,7 +9,6 @@
         public int TotalCount { get; set; }
 
         public ResultGetList()
-            : base()
         {
             Data = [];
         }
@@ -21,7 +20,6 @@
         }
 
         public ResultGetList(IList<T> data, int? offset, int? limit, string orderBy, int totalCount)
-            : base()
         {
             Data = data;
             Offset = offset;
@@ -30,8 +28,20 @@
             TotalCount = totalCount;
         }
 
-        public ResultGetList(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
+        public ResultGetList(ResultErrorType errorType, string? fieldName, string? errorDescription)
             : base(errorType, fieldName, errorDescription)
+        {
+            Data = [];
+        }
+
+        public ResultGetList(ResultErrorType errorType, string? fieldName)
+            : base(errorType, fieldName)
+        {
+            Data = [];
+        }
+
+        public ResultGetList(ResultErrorType errorType)
+            : base(errorType)
         {
             Data = [];
         }

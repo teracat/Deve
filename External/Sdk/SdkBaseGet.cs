@@ -23,15 +23,11 @@ namespace Deve.External.Sdk
         #endregion
 
         #region IDataGet Methods
-        public async Task<ResultGetList<ModelList>> Get(Criteria? criteria = default)
-        {
-            return await GetList<ModelList, Criteria>(Path, criteria, RequestAuthType.Default);
-        }
+        public async Task<ResultGetList<ModelList>> Get(Criteria? criteria) => await GetList<ModelList, Criteria>(Path, criteria, RequestAuthType.Default);
 
-        public async Task<ResultGet<Model>> Get(long id)
-        {
-            return await Get<Model>(Path, RequestAuthType.Default, id);
-        }
+        public async Task<ResultGetList<ModelList>> Get() => await Get(default(Criteria));
+
+        public async Task<ResultGet<Model>> Get(long id) => await Get<Model>(Path, RequestAuthType.Default, id);
         #endregion
     }
 }

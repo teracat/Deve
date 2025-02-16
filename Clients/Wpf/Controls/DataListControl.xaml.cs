@@ -151,15 +151,21 @@ namespace Deve.Clients.Wpf.Controls
             var errorText = (string)e.NewValue;
             control.uxErrorTextLabel.Content = errorText;
             if (string.IsNullOrWhiteSpace(errorText))
+            {
                 control.uxErrorTextLabel.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 control.uxErrorTextLabel.Visibility = Visibility.Visible;
+            }
         }
 
         private void OnSearchTextBoxKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return && SearchCommand is not null && SearchCommand.CanExecute(this))
+            {
                 SearchCommand.Execute(this);
+            }
         }
         #endregion
     }

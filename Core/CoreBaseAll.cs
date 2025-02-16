@@ -15,7 +15,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreBaseAll(CoreMain core)
+        protected CoreBaseAll(CoreMain core)
             : base(core)
         {
         }
@@ -26,27 +26,39 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.Add);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetError<ModelId>(resPerm);
+            }
 
             //Some basic checks
             if (data is null)
+            {
                 return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+            }
 
             var resRequired = await CheckRequired(data, ChecksActionType.Add);
             if (!resRequired.Success)
+            {
                 return Utils.ResultGetError<ModelId>(resRequired);
+            }
 
             //Check duplicated
             var resList = await DataAll.Get();
             if (!resList.Success)
+            {
                 return Utils.ResultGetError<ModelId>(resList);
+            }
 
             if (resList.Data is null)
+            {
                 return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.Unknown);
+            }
 
             var resDuplicated = await CheckDuplicated(data, resList.Data, ChecksActionType.Add);
             if (!resDuplicated.Success)
+            {
                 return Utils.ResultGetError<ModelId>(resDuplicated);
+            }
 
             //Add
             return await DataAll.Add(data);
@@ -56,27 +68,39 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.Update);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetError<Model>(resPerm);
+            }
 
             //Some basic checks
             if (data is null)
+            {
                 return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+            }
 
             var result = await CheckRequired(data, ChecksActionType.Update);
             if (!result.Success)
+            {
                 return result;
+            }
 
             //Check duplicated
             var resList = await DataAll.Get();
             if (!resList.Success)
+            {
                 return resList;
+            }
 
             if (resList.Data is null)
+            {
                 return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unknown);
+            }
 
             var resChecksAdd = await CheckDuplicated(data, resList.Data, ChecksActionType.Update);
             if (!resChecksAdd.Success)
+            {
                 return resChecksAdd;
+            }
 
             //Update
             return await DataAll.Update(data);
@@ -86,17 +110,23 @@ namespace Deve.Core
         {
             var resPerm = await CheckPermission(PermissionType.Delete);
             if (!resPerm.Success)
+            {
                 return Utils.ResultGetError<Model>(resPerm);
+            }
 
             //Some basic checks
             var errorBuilder = ResultBuilder.Create(Core.Options.LangCode)
                                             .CheckNotNullOrEmpty(new Field(id));
             if (errorBuilder.HasErrors)
+            {
                 return errorBuilder.ToResult();
+            }
 
             var result = await CheckDelete(id);
             if (!result.Success)
+            {
                 return result;
+            }
 
             //Remove
             return await DataAll.Delete(id);

@@ -64,7 +64,9 @@ namespace Deve.Clients.Wpf.ViewModels
         internal async override Task Save()
         {
             if (_country is null)
+            {
                 return;
+            }
 
             if (!Validate())
                 return;
@@ -77,9 +79,13 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 Result res;
                 if (_country.Id == 0)
+                {
                     res = await DataService.Data.Countries.Add(_country);
+                }
                 else
+                {
                     res = await DataService.Data.Countries.Update(_country);
+                }
 
                 if (!res.Success)
                 {

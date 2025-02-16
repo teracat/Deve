@@ -2,13 +2,13 @@
 {
     public static class Constants
     {
-        public const int DefaultCriteriaLimit               = 50;
+        public static readonly int DefaultCriteriaLimit               = 50;
 
         //Languages
-        public const string LanguageCodeEnglish             = "en";
-        public const string LanguageCodeSpanish             = "es";
-        public const string LanguageCodeCatalan             = "ca";
-        public const string DefaultLangCode                 = LanguageCodeEnglish;
+        public static readonly string LanguageCodeEnglish             = "en";
+        public static readonly string LanguageCodeSpanish             = "es";
+        public static readonly string LanguageCodeCatalan             = "ca";
+        public static readonly string DefaultLangCode                 = LanguageCodeEnglish;
         public static readonly string[] AvailableLanguages  = [LanguageCodeEnglish, LanguageCodeSpanish, LanguageCodeCatalan];
     }
 }

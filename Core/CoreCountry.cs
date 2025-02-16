@@ -28,7 +28,9 @@ namespace Deve.Core
                                                  .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.IsoCode));
 
                 if (action == ChecksActionType.Update)
+                {
                     resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                }
 
                 return resultBuilder.ToResult();
             });
@@ -42,14 +44,20 @@ namespace Deve.Core
                 {
                     var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
                     if (resCheckId is not null)
+                    {
                         return resCheckId;
+                    }
                 }
 
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
+                {
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
+                }
 
                 if (list.Any(x => x.Id != data.Id && x.IsoCode.Equals(data.IsoCode, StringComparison.InvariantCultureIgnoreCase)))
+                {
                     return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.IsoCode));
+                }
 
                 return Utils.ResultOk();
             });

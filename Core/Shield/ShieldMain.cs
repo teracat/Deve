@@ -32,7 +32,9 @@ namespace Deve.Core.Shield
         {
             //If we receive the CallerFilePath, get the Filename to have the class name
             if (Path.IsPathFullyQualified(category))
+            {
                 category = Path.GetFileNameWithoutExtension(category);
+            }
 
             return category + "-" + method;
         }
@@ -48,9 +50,14 @@ namespace Deve.Core.Shield
 
             ShieldItemConfig config;
             if (ShieldConfig.Items.TryGetValue(configKey, out ShieldItemConfig? notDefaultConfig))
+            {
                 config = notDefaultConfig;
+            }
             else
+            {
                 config = new ShieldItemConfig();
+            }
+
             return config;
         }
         #endregion
@@ -67,7 +74,9 @@ namespace Deve.Core.Shield
         {
             ShieldOriginData originata;
             if (_origins.TryGetValue(originId, out ShieldOriginData? existingOrigin))
+            {
                 originata = existingOrigin;
+            }
             else
             {
                 originata = new ShieldOriginData();
@@ -82,7 +91,9 @@ namespace Deve.Core.Shield
 
             ShieldOriginMethodData methodData;
             if (_originsMethods.TryGetValue(itemKey, out ShieldOriginMethodData? existingItem))
+            {
                 methodData = existingItem;
+            }
             else
             {
                 methodData = new ShieldOriginMethodData();
@@ -91,7 +102,7 @@ namespace Deve.Core.Shield
             return methodData;
         }
 
-        private void CleanOldData(object? state)
+        private void CleanOldData(object? _)
         {
             foreach (var origin in _origins)
             {
@@ -116,7 +127,9 @@ namespace Deve.Core.Shield
             return Task.Run(() =>
             {
                 if (Utils.SomeIsNullOrWhiteSpace(options.OriginId, category, method))
+                {
                     return Utils.ResultOk();
+                }
 
                 var config = GetItemConfig(category, method);
                 var originData = GetOriginData(options.OriginId);
@@ -128,7 +141,9 @@ namespace Deve.Core.Shield
                     //Check if it should be unlocked
                     var secondsLocked = (int)(DateTimeOffset.UtcNow - originData.LastAttempt).TotalSeconds;
                     if (secondsLocked > config.LockSeconds)
+                    {
                         originData.Status = ShieldLockStatus.Unlocked;
+                    }
                     else
                     {
                         string lockedMsg = string.Format(ErrorLocalizeFactory.Get().Localize(ResultErrorType.Locked, options.LangCode), config.LockSeconds - secondsLocked);
@@ -142,7 +157,9 @@ namespace Deve.Core.Shield
                     //Check if it should be unlocked
                     var secondsLocked = (int)(DateTimeOffset.UtcNow - methodData.LastAttempt).TotalSeconds;
                     if (secondsLocked > config.LockSeconds)
+                    {
                         methodData.Status = ShieldLockStatus.Unlocked;
+                    }
                     else
                     {
                         string lockedMsg = string.Format(ErrorLocalizeFactory.Get().Localize(ResultErrorType.Locked, options.LangCode), config.LockSeconds - secondsLocked);
@@ -159,7 +176,9 @@ namespace Deve.Core.Shield
             return Task.Run(() =>
             {
                 if (Utils.SomeIsNullOrWhiteSpace(options.OriginId, category, method))
+                {
                     return;
+                }
 
                 var originData = GetOriginData(options.OriginId);
                 var methodData = GetOriginMethodData(options.OriginId, category, method);
@@ -177,20 +196,13 @@ namespace Deve.Core.Shield
                     if (methodData.NumAttemptsInvalid >= config.MaxInvalidAttempts)
                     {
                         methodData.NumAttemptsInvalid = 0;
-                        switch (config.MaxAttemptsLockType)
+                        if (config.MaxAttemptsLockType == ShieldMaxAttemptsLockType.OnlyMethod)
                         {
-                            case ShieldMaxAttemptsLockType.Origin:
-                                if (originData.Status != ShieldLockStatus.Locked)
-                                {
-                                    originData.Status = ShieldLockStatus.Locked;
-                                }
-                                break;
-                            case ShieldMaxAttemptsLockType.OnlyMethod:
-                                if (methodData.Status != ShieldLockStatus.Locked)
-                                {
-                                    methodData.Status = ShieldLockStatus.Locked;
-                                }
-                                break;
+                            methodData.Status = ShieldLockStatus.Locked;
+                        }
+                        else
+                        {
+                            originData.Status = ShieldLockStatus.Locked;
                         }
                     }
                 }

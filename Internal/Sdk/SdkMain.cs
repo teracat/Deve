@@ -26,19 +26,7 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region Properties
-        internal override string Url
-        {
-            get
-            {
-                switch (_environment)
-                {
-                    case EnvironmentType.Staging:
-                        return ApiInternalConstants.UrlStaging;
-                    default:
-                        return ApiInternalConstants.UrlProduction;
-                }
-            }
-        }
+        internal override string Url => _environment == EnvironmentType.Staging ? ApiInternalConstants.UrlStaging : ApiInternalConstants.UrlProduction;
         #endregion
 
         #region Constructor

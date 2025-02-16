@@ -11,7 +11,7 @@ namespace Deve.Tests.Maui
     {
         private readonly FixtureMaui _fixture;
 
-        public TestListDataViewModel(FixtureMaui fixture)
+        protected TestListDataViewModel(FixtureMaui fixture)
         {
             _fixture = fixture;
         }

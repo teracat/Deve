@@ -144,7 +144,9 @@ namespace Deve.Clients.Wpf.ViewModels
         private async Task AddState()
         {
             if (NavigationService.NavigateModalTo<StateView>())
+            {
                 await LoadDataStates();
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
@@ -172,7 +174,9 @@ namespace Deve.Clients.Wpf.ViewModels
         private async Task AddCountry()
         {
             if (NavigationService.NavigateModalTo<CountryView>())
+            {
                 await LoadDataCountries();
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
