@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Deve.Auth.TokenManagers;
 using Deve.Api.DataSourceBuilder;
 
@@ -15,10 +17,11 @@ namespace Deve.Tests.Api.Fixture
             _tokenManager = TestsHelpers.CreateTokenManager();
             _factory = WithWebHostBuilder(builder =>
             {
+                builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build());
                 builder.ConfigureServices(services =>
                 {
                     services.AddSingleton<IDataSourceBuilder, DataSourceBuilderMock>();
-                    services.AddSingleton<ITokenManager>(_tokenManager);
+                    services.AddSingleton(_tokenManager);
                 });
             });
         }
