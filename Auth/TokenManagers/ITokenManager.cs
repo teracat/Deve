@@ -5,7 +5,10 @@ namespace Deve.Auth.TokenManagers
 {
     public interface ITokenManager : IDisposable
     {
-        UserToken CreateToken(User user, string scheme = ApiConstants.AuthDefaultScheme);
-        TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity);
+        UserToken CreateToken(User user, string scheme);
+
+        UserToken CreateToken(User user);
+
+        bool TryValidateToken(string token, out UserIdentity? userIdentity);
     }
 }

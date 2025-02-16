@@ -44,7 +44,9 @@ namespace Deve.Clients.Maui.ViewModels
             set
             {
                 if (SetProperty(ref _errorText, value))
+                {
                     OnPropertyChanged(nameof(HasError));
+                }
             }
         }
 
@@ -52,7 +54,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public BaseViewModel(INavigationService navigationService, IDataService dataService)
+        protected BaseViewModel(INavigationService navigationService, IDataService dataService)
         {
             _navigationService = navigationService;
             _dataService = dataService;
@@ -65,7 +67,10 @@ namespace Deve.Clients.Maui.ViewModels
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)
+            {
                 return true;
+            }
+
             return false;
         }
         #endregion

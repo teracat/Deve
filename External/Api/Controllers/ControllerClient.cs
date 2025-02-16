@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
+using Deve.Auth.TokenManagers;
 using Deve.External.Model;
 using Deve.External.Data;
 using Deve.Api.Controllers;
@@ -14,8 +15,8 @@ namespace Deve.External.Api.Controllers
     {
         protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> DataGet => Core.ClientsBasic;
 
-        public ControllerClient(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
-            : base(contextAccessor, dataSourceBuilder)
+        public ControllerClient(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
+            : base(contextAccessor, dataSourceBuilder, tokenManager)
         {
         }
     }

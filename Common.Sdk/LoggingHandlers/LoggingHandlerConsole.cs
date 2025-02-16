@@ -5,13 +5,22 @@
     /// </summary>
     public class LoggingHandlerConsole : LoggingHandlerBase
     {
-        public LoggingHandlerConsole(string outputPrefix = "")
+        public LoggingHandlerConsole()
+        {
+        }
+
+        public LoggingHandlerConsole(string outputPrefix)
             : base(outputPrefix)
         {
         }
 
         public LoggingHandlerConsole(HttpMessageHandler innerHandler)
             : base(innerHandler)
+        {
+        }
+
+        public LoggingHandlerConsole(HttpMessageHandler innerHandler, string outputPrefix)
+            : base(innerHandler, outputPrefix)
         {
         }
 

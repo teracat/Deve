@@ -37,14 +37,22 @@
         /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
         /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
         /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-        public LogProviderSimpleBase(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+        protected LogProviderSimpleBase(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
         {
             if (dateFormat is not null)
+            {
                 DateFormat = dateFormat;
+            }
+
             if (debugStringFormat is not null)
+            {
                 DebugStringFormat = debugStringFormat;
+            }
+
             if (errorStringFormat is not null)
+            {
                 ErrorStringFormat = errorStringFormat;
+            }
         }
         #endregion
 

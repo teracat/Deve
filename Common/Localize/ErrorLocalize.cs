@@ -6,7 +6,7 @@ namespace Deve.Localize
 {
     internal class ErrorLocalize : IErrorLocalize
     {
-        private Dictionary<string, CultureInfo> _cultureInfos = [];
+        private readonly Dictionary<string, CultureInfo> _cultureInfos = [];
 
         public string Localize(ResultErrorType errorType, string langCode)
         {
@@ -20,6 +20,8 @@ namespace Deve.Localize
                 }
                 catch
                 {
+                    // If the langCode is invalid, use the default culture
+                    cultureInfo = CultureInfo.InvariantCulture;
                 }
             }
             return ErrorTypesResource.ResourceManager.GetString(errorType.ToString(), cultureInfo) ?? errorType.ToString();

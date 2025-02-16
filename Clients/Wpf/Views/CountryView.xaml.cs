@@ -25,13 +25,17 @@ namespace Deve.Clients.Wpf.Views
         private void OnNameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 uxIsoCode.Focus();
+            }
         }
 
         private void OnIsoCodeKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
+            {
                 _ = _viewModel.DoSave();
+            }
         }
         #endregion
     }

@@ -19,7 +19,7 @@ namespace Deve.Tests.Auth
         public void Encrypt_Null_ReturnsNull()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var encrypted = _fixtureAuth.Auth.Crypt.Encrypt(null);
+            var encrypted = _fixtureAuth.Crypt.Encrypt(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.Null(encrypted);
@@ -28,7 +28,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Encrypt_Empty_ReturnsEmpty()
         {
-            var encrypted = _fixtureAuth.Auth.Crypt.Encrypt(string.Empty);
+            var encrypted = _fixtureAuth.Crypt.Encrypt(string.Empty);
 
             Assert.Empty(encrypted);
         }
@@ -36,18 +36,17 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Encrypt_Valid_Equal()
         {
-            var encrypted = _fixtureAuth.Auth.Crypt.Encrypt("Original Text");
+            var encrypted = _fixtureAuth.Crypt.Encrypt(TestsConstants.CryptDecryptedText);
             System.Diagnostics.Debug.WriteLine(encrypted);
 
-            //You should change this value when you have changed the Crypt implementation or the keys used to encrypt/decrypt.
-            Assert.Equal("yX0oNH+mCQ0P+vP2Qe9Tug==", encrypted);
+            Assert.Equal(TestsConstants.CryptEncryptedText, encrypted);
         }
 
         [Fact]
         public void Decrypt_Null_ReturnsNull()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var decrypted = _fixtureAuth.Auth.Crypt.Decrypt(null);
+            var decrypted = _fixtureAuth.Crypt.Decrypt(null);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             Assert.Null(decrypted);
@@ -56,7 +55,7 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_Empty_ReturnsEmpty()
         {
-            var decrypted = _fixtureAuth.Auth.Crypt.Decrypt(string.Empty);
+            var decrypted = _fixtureAuth.Crypt.Decrypt(string.Empty);
 
             Assert.Empty(decrypted);
         }
@@ -64,16 +63,15 @@ namespace Deve.Tests.Auth
         [Fact]
         public void Decrypt_NotValid_ThrowsException()
         {
-            Assert.Throws<CryptographicException>(() => _fixtureAuth.Auth.Crypt.Decrypt("aaaa"));
+            Assert.Throws<CryptographicException>(() => _fixtureAuth.Crypt.Decrypt("aaaa"));
         }
 
         [Fact]
         public void Decrypt_Valid_Equal()
         {
-            //You should change this value when you have changed the Crypt implementation or the keys used to encrypt/decrypt.
-            var decrypted = _fixtureAuth.Auth.Crypt.Decrypt("yX0oNH+mCQ0P+vP2Qe9Tug==");
+            var decrypted = _fixtureAuth.Crypt.Decrypt(TestsConstants.CryptEncryptedText);
 
-            Assert.Equal("Original Text", decrypted);
+            Assert.Equal(TestsConstants.CryptDecryptedText, decrypted);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Deve.Clients
     /// Main Sdk Client Service program.
     /// https://learn.microsoft.com/en-us/dotnet/core/extensions/windows-service
     /// </summary>
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

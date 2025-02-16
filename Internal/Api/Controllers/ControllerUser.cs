@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Deve.Auth.TokenManagers;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
@@ -13,8 +14,8 @@ namespace Deve.Internal.Api.Controllers
     {
         protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
 
-        public ControllerUser(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder)
-            : base(contextAccessor, dataSourceBuilder)
+        public ControllerUser(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
+            : base(contextAccessor, dataSourceBuilder, tokenManager)
         {
         }
     }

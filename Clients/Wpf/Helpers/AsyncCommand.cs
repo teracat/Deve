@@ -9,16 +9,30 @@ namespace Deve.Clients.Wpf.Helpers
         private readonly Func<bool>? _canExecute;
         private bool _isExecuting = false;
 
-        public AsyncCommand(Func<Task> execute, Func<bool>? canExecute = null)
+        public AsyncCommand(Func<Task> execute, Func<bool>? canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
             _canExecute = canExecute;
         }
 
-        public AsyncCommand(Func<object?, Task> execute, Func<bool>? canExecute = null)
+        public AsyncCommand(Func<Task> execute)
         {
-            _executeWithParam = execute ?? throw new ArgumentNullException(nameof(execute));
+            ArgumentNullException.ThrowIfNull(execute);
+            _execute = execute;
+        }
+
+        public AsyncCommand(Func<object?, Task> execute, Func<bool>? canExecute)
+        {
+            ArgumentNullException.ThrowIfNull(execute);
+            _executeWithParam = execute;
             _canExecute = canExecute;
+        }
+
+        public AsyncCommand(Func<object?, Task> execute)
+        {
+            ArgumentNullException.ThrowIfNull(execute);
+            _executeWithParam = execute;
         }
 
         public event EventHandler? CanExecuteChanged
@@ -31,7 +45,10 @@ namespace Deve.Clients.Wpf.Helpers
 
         public async Task ExecuteAsync(object? parameter)
         {
-            if (!CanExecute(null)) return;
+            if (!CanExecute(null))
+            {
+                return;
+            }
 
             _isExecuting = true;
             CommandManager.InvalidateRequerySuggested();
@@ -39,9 +56,13 @@ namespace Deve.Clients.Wpf.Helpers
             try
             {
                 if (_execute is not null)
+                {
                     await _execute();
+                }
                 else if (_executeWithParam is not null)
+                {
                     await _executeWithParam(parameter);
+                }
             }
             finally
             {

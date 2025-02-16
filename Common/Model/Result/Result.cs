@@ -17,10 +17,22 @@
             Errors = result.Errors;
         }
 
-        public Result(ResultErrorType errorType, string? fieldName = null, string? errorDescription = null)
+        public Result(ResultErrorType errorType, string? fieldName, string? errorDescription)
         {
             Success = false;
             Errors = [new ResultError(errorType, fieldName, errorDescription)];
+        }
+
+        public Result(ResultErrorType errorType, string? fieldName)
+        {
+            Success = false;
+            Errors = [new ResultError(errorType, fieldName)];
+        }
+
+        public Result(ResultErrorType errorType)
+        {
+            Success = false;
+            Errors = [new ResultError(errorType)];
         }
 
         public Result(IList<ResultError> errors)
