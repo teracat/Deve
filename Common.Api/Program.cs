@@ -1,6 +1,5 @@
 using System.Net;
 using System.Globalization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 using Deve.Logging;
@@ -11,7 +10,6 @@ using Deve.Api.Helpers;
 using Deve.Api.Swagger;
 using Deve.Api.DataSourceBuilder;
 using Deve.Api.Settings;
-using Deve.Api.Crypt;
 
 namespace Deve.Api
 {
@@ -26,12 +24,17 @@ namespace Deve.Api
             var appSettings = new AppSettings();
             builder.Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
-            //Uncomment the following lines and set the ConnectionString for your DataSource, if needed
-            /*var config = new DataSourceConfig()
-            {
-                ConnectionString = ""
-            };
-            DataSourceFactory.SetConfig(config);*/
+            // Uncomment the following lines and set the DefaultConnection in appsettings.json, if needed
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            //if (string.IsNullOrWhiteSpace(connectionString))
+            //{
+            //    throw new Exception("The ConnectionString is empty. Please set the ConnectionString in the appsettings.json file.");
+            //}
+            //var config = new DataSource.Config.DataSourceConfig()
+            //{
+            //    ConnectionString = connectionString
+            //};
+            //DataSource.DataSourceFactory.SetConfig(config);
 
             // Add services to the container.
 
@@ -105,13 +108,30 @@ namespace Deve.Api
             // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the appsettings.json in the External.Api & Internal.Api projects)
             // If you don't want to use Jwt, you can remove the next line and remove the referenced projecte Deve.Auth.Jwt
             // If none is defined here, the default TokenManagerCrypt will be used (you should change the keys used to encrypt in AuthConstants).
+            if (appSettings.JwtKeys is null || Utils.SomeIsNullOrWhiteSpace(appSettings.JwtKeys.SigningSecretKey, appSettings.JwtKeys.EncryptionSecretKey))
+            {
+                throw new Exception("The JwtKeys is empty. Please set the JwtKeys in the appsettings.json file.");
+            }
+            if (appSettings.JwtKeys.SigningSecretKey.Length != 32 || appSettings.JwtKeys.EncryptionSecretKey.Length != 32)
+            {
+                throw new Exception("The JwtKeys are not valid. The SigningSecretKey and EncryptionSecretKey must have 32 characters.");
+            }
+            if (appSettings.JwtKeys.SigningSecretKey == "YouShouldChangeThisKey_MustBe32B" || appSettings.JwtKeys.EncryptionSecretKey == "YouShouldChangeThisKey_MustBe32B")
+            {
+                throw new Exception("The JwtKeys are not valid. The SigningSecretKey and EncryptionSecretKey must be different from the default keys. Change them in appsettings.json.");
+            }
+            if (appSettings.JwtKeys.SigningSecretKey == appSettings.JwtKeys.EncryptionSecretKey)
+            {
+                throw new Exception("The JwtKeys are not valid. The SigningSecretKey and EncryptionSecretKey must be different.");
+            }
+
             var tokenManagerJwt = new TokenManagerJwt(appSettings.JwtKeys.SigningSecretKey, appSettings.JwtKeys.EncryptionSecretKey);
             builder.Services.AddSingleton<ITokenManager>(tokenManagerJwt);
 
             // If you want to use the TokenManagerCrypt with DataProtection, uncomment the next lines
-            /* var dataProtectionProvider = DataProtectionProvider.Create(nameof(Program));
-            var tokenManagerCrypt = new TokenManagerCrypt(new CryptDataProtect(dataProtectionProvider), true);
-            builder.Services.AddSingleton<ITokenManager>(tokenManagerCrypt); */
+            //var dataProtectionProvider = Microsoft.AspNetCore.DataProtection.DataProtectionProvider.Create(nameof(Program));
+            //var tokenManagerCrypt = new TokenManagerCrypt(new Crypt.CryptDataProtect(dataProtectionProvider), true);
+            //builder.Services.AddSingleton<ITokenManager>(tokenManagerCrypt);
 
             builder.Services.AddAuthentication((o) =>
             {
