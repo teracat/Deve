@@ -84,7 +84,9 @@ namespace Deve.Clients.Wpf.ViewModels
         public async Task Login(string password)
         {
             if (!Validate())
+            {
                 return;
+            }
 
             IsBusy = true;
             try

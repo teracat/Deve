@@ -39,7 +39,9 @@ namespace Deve.Clients.Maui.ViewModels
         internal async Task Login()
         {
             if (!Validate())
+            {
                 return;
+            }
 
             IsBusy = true;
             try
