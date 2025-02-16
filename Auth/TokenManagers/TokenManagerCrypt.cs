@@ -39,16 +39,6 @@ namespace Deve.Auth.TokenManagers
             _disposeCrypt = autoDisposeCrypt;
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
-        public TokenManagerCrypt(ICrypt crypt)
-        {
-            _crypt = crypt;
-            _disposeCrypt = false;
-        }
-
         public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
@@ -63,36 +53,31 @@ namespace Deve.Auth.TokenManagers
 
         public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
 
-        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
+        public bool TryValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
             {
-                return TokenParseResult.NotValid;
+                return false;
             }
 
             try
             {
                 var decrypted = _crypt.Decrypt(token);
                 var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
-                if (tokenData is null)
+                if (tokenData is null || tokenData.Expires < DateTime.UtcNow)
                 {
-                    return TokenParseResult.NotValid;
-                }
-
-                if (tokenData.Expires < DateTime.UtcNow)
-                {
-                    return TokenParseResult.Expired;
+                    return false;
                 }
 
                 userIdentity = tokenData.Subject;
 
-                return TokenParseResult.Valid;
+                return true;
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return TokenParseResult.NotValid;
+                return false;
             }
         }
 

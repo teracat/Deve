@@ -32,47 +32,57 @@ namespace Deve.Tests.Auth
         }
 
         [Fact]
-        public void ValidateToken_Null_NotValid()
+        public void ValidateToken_Null_ReturnsFalse()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            var result = _fixtureTokenManager.TokenManager.ValidateToken(null, out _);
+            var result = _fixtureTokenManager.TokenManager.TryValidateToken(null, out _);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
-            Assert.Equal(TokenParseResult.NotValid, result);
+            Assert.False(result);
         }
 
         [Fact]
-        public void ValidateToken_Empty_NotValid()
+        public void ValidateToken_Empty_ReturnsFalse()
         {
-            var result = _fixtureTokenManager.TokenManager.ValidateToken(string.Empty, out _);
+            var result = _fixtureTokenManager.TokenManager.TryValidateToken(string.Empty, out _);
 
-            Assert.Equal(TokenParseResult.NotValid, result);
+            Assert.False(result);
         }
 
         [Fact]
-        public void ValidateToken_String_NotValid()
+        public void ValidateToken_InvalidString_ReturnsFalse()
         {
-            var result = _fixtureTokenManager.TokenManager.ValidateToken("not valid", out _);
+            var result = _fixtureTokenManager.TokenManager.TryValidateToken("not valid", out _);
 
-            Assert.Equal(TokenParseResult.NotValid, result);
+            Assert.False(result);
         }
 
         [Fact]
-        public void ValidateToken_ExpiredToken_Expired()
+        public void ValidateToken_ExpiredToken_ReturnsFalse()
         {
-            var result = _fixtureTokenManager.TokenManager.ValidateToken(_fixtureTokenManager.TokenExpired, out _);
+            var result = _fixtureTokenManager.TokenManager.TryValidateToken(_fixtureTokenManager.TokenExpired, out _);
 
-            Assert.Equal(TokenParseResult.Expired, result);
+            Assert.False(result);
         }
 
         [Fact]
-        public void ValidateToken_User_Valid()
+        public void ValidateToken_ValidUser_ReturnsTrue()
         {
             var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
 
-            var result = _fixtureTokenManager.TokenManager.ValidateToken(userToken.Token, out _);
+            var result = _fixtureTokenManager.TokenManager.TryValidateToken(userToken.Token, out _);
 
-            Assert.Equal(TokenParseResult.Valid, result);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ValidateToken_ValidUserNotNullToken()
+        {
+            var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
+
+            _fixtureTokenManager.TokenManager.TryValidateToken(userToken.Token, out var userIdentity);
+
+            Assert.NotNull(userIdentity);
         }
     }
 }

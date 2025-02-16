@@ -54,12 +54,12 @@ namespace Deve.Auth.TokenManagers.Jwt
 
         public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
 
-        public TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity)
+        public bool TryValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;
             if (string.IsNullOrWhiteSpace(token))
             {
-                return TokenParseResult.NotValid;
+                return false;
             }
 
             try
@@ -77,21 +77,21 @@ namespace Deve.Auth.TokenManagers.Jwt
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 if (principal is null)
                 {
-                    return TokenParseResult.NotValid;
+                    return false;
                 }
 
                 userIdentity = UserConverter.ToUserIdentity(principal);
 
-                return TokenParseResult.Valid;
+                return true;
             }
             catch (SecurityTokenExpiredException)
             {
-                return TokenParseResult.Expired;
+                return false;
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return TokenParseResult.NotValid;
+                return false;
             }
         }
 

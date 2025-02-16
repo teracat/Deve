@@ -150,8 +150,7 @@ namespace Deve.Auth
         {
             return Task.Run(async () =>
             {
-                var validateRes = TokenManager.ValidateToken(token, out var userIdentity);
-                if (validateRes != TokenParseResult.Valid || userIdentity is null)
+                if (!TokenManager.TryValidateToken(token, out var userIdentity) || userIdentity is null)
                 {
                     return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
                 }

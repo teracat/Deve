@@ -84,8 +84,7 @@ namespace Deve.Api.Auth
         #region Methods
         private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
-            var res = _tokenManager.ValidateToken(token, out var userIdentity);
-            if (res == TokenParseResult.Valid && userIdentity is not null)
+            if (_tokenManager.TryValidateToken(token, out var userIdentity) && userIdentity is not null)
             {
                 var principal = UserConverter.ToClaimsPrincipal(scheme, userIdentity);
                 var ticket = new AuthenticationTicket(principal, scheme);

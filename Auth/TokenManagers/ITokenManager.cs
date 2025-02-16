@@ -9,6 +9,6 @@ namespace Deve.Auth.TokenManagers
 
         UserToken CreateToken(User user);
 
-        TokenParseResult ValidateToken(string token, out UserIdentity? userIdentity);
+        bool TryValidateToken(string token, out UserIdentity? userIdentity);
     }
 }
