@@ -58,7 +58,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
             await mainViewModel.AddStateCommand.ExecuteAsync(null);
@@ -71,7 +71,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
             var stateId = state?.Id ?? 0;
@@ -86,7 +86,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var messageHandler = new Mock<IMessageHandler>();
-            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth, messageHandler.Object);
+            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object);
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
 
@@ -102,7 +102,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
             await mainViewModel.AddCountryCommand.ExecuteAsync(null);
@@ -115,7 +115,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
@@ -129,7 +129,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var messageHandler = new Mock<IMessageHandler>();
-            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth, messageHandler.Object);
+            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object);
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 

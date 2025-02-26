@@ -3,7 +3,6 @@ using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Helpers;
 using Deve.Tests.Maui.Fixtures;
-using Deve.Tests.Maui.Mocks;
 
 namespace Deve.Tests.Maui
 {
@@ -16,12 +15,12 @@ namespace Deve.Tests.Maui
             _fixture = fixture;
         }
 
-        protected abstract ListDataViewModel CreateViewModel(INavigationService navigationService, IDataService dataService);
+        protected abstract ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data);
 
         [Fact]
         public async Task Initialization_ValidAuth_HasNoError()
         {
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataServiceValidAuth);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
 
             await viewModel.Initialization;
 
@@ -31,7 +30,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Initialization_ValidAuth_DataNotNull()
         {
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataServiceValidAuth);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
 
             await viewModel.Initialization;
 
@@ -41,7 +40,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Initialization_ValidAuth_DataNotNullAndHasItems()
         {
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataServiceValidAuth);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
             
             await viewModel.Initialization;
 
@@ -52,7 +51,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task SelectedData_Null_NoException()
         {
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataServiceValidAuth);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
             await viewModel.Initialization;
 
             var exception = Record.Exception(() => viewModel.SelectedData = null);
@@ -63,9 +62,9 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task SelectedData_NotNull_NavigatesToDetails()
         {
-            // We use a new instance of FixtureNavigationService so other tests does not interfere with this one
-            var navigationService = new MockNavigationService();
-            var viewModel = CreateViewModel(navigationService.Object, _fixture.DataServiceValidAuth);
+            // We use a new instance so other tests does not interfere with this one
+            var navigationService = new Mock<INavigationService>();
+            var viewModel = CreateViewModel(navigationService.Object, _fixture.DataValidAuth);
             await viewModel.Initialization;
             var selectedItem = viewModel.ListData!.First();
 

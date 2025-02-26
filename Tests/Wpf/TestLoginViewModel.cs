@@ -19,7 +19,7 @@ namespace Deve.Tests.Wpf
         [Fact]
         public async Task Login_EmptyUsernamePassword_HasErrors()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object)
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = string.Empty,
             };
@@ -44,7 +44,7 @@ namespace Deve.Tests.Wpf
         [Fact]
         public async Task Login_InvalidUsernamePassword_HasError()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object)
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameInactive,
                 Password = SecureStringConverter(TestsConstants.UserPasswordInactive),  // To avoid Validation errors
@@ -58,7 +58,7 @@ namespace Deve.Tests.Wpf
         [Fact]
         public async Task Login_ValidUsernamePassword_HasNoError()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object)
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameValid,
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
@@ -74,7 +74,7 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataServiceNoAuth, _fixture.MessageHandler.Object)
+            var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameValid,
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors

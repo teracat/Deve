@@ -122,7 +122,7 @@ namespace Deve.Core.Shield
         #endregion
 
         #region IShield
-        public Task<Result> Protect(DataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
+        public Task<Result> Protect(IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
         {
             return Task.Run(() =>
             {
@@ -171,7 +171,7 @@ namespace Deve.Core.Shield
             });
         }
 
-        public Task SetAttemptResult(bool succeeded, DataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
+        public Task SetAttemptResult(bool succeeded, IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
         {
             return Task.Run(() =>
             {

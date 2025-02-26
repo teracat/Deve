@@ -3,16 +3,16 @@
     /// <summary>
     /// Options related to the user requesting the data.
     /// </summary>
-    public class DataOptions : IDataOptions
+    public interface IDataOptions
     {
         /// <summary>
         /// Preferred language.
         /// </summary>
-        public string LangCode { get; set; } = Constants.DefaultLangCode;
+        string LangCode { get; }
 
         /// <summary>
         /// Origin device Id.
         /// </summary>
-        public string OriginId { get; set; } = string.Empty;
+        string OriginId { get; }
     }
 }

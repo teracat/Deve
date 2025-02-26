@@ -13,7 +13,7 @@ namespace Deve.Core.DataSourceWrappers
     internal class DataSourceWrapperUser : DataSourceWrapperBase, IDataAll<UserBase, UserPlainPassword, CriteriaUser>
     {
         #region Constructor
-        public DataSourceWrapperUser(CoreMain core)
+        public DataSourceWrapperUser(ICore core)
             : base(core)
         {
         }

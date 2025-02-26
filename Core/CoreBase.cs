@@ -7,12 +7,12 @@ namespace Deve.Core
     internal abstract class CoreBase
     {
         #region Properties
-        protected CoreMain Core { get; }
+        protected ICore Core { get; }
         protected IDataSource Source => Core.DataSource;
         #endregion
 
         #region Constructor
-        protected CoreBase(CoreMain core)
+        protected CoreBase(ICore core)
         {
             Core = core;
         }

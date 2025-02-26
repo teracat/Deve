@@ -13,7 +13,7 @@ namespace Deve.Tests.Wpf.Fixtures
         {
             await base.InitializeAsync();
 
-            MainViewModel = new MainViewModel(NavigationService.Object, DataServiceValidAuth, MessageHandler.Object);
+            MainViewModel = new MainViewModel(NavigationService.Object, DataValidAuth, MessageHandler.Object);
             await MainViewModel.Initialization;
         }
 

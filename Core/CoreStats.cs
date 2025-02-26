@@ -8,7 +8,7 @@ namespace Deve.Core
     internal class CoreStats : CoreBase, IDataStats
     {
         #region Constructor
-        public CoreStats(CoreMain core)
+        public CoreStats(ICore core)
             : base(core)
         {
         }

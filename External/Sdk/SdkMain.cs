@@ -8,7 +8,7 @@ using Deve.External.Data;
 
 namespace Deve.External.Sdk
 {
-    internal class SdkMain : SdkMainBase, ISdk
+    public class SdkMain : SdkMainBase, ISdk
     {
         #region Fields
         private SdkBaseGet<Country, Country, CriteriaCountry, ISdk>? _sdkCountry;
@@ -22,13 +22,33 @@ namespace Deve.External.Sdk
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment = EnvironmentType.Production, DataOptions? options = null, LoggingHandlerBase? handler = null)
+        public SdkMain(EnvironmentType environment, DataOptions options, LoggingHandlerBase handler)
             : base(environment, options, handler)
         {
         }
 
-        internal SdkMain(HttpClient client, DataOptions? options = null)
+        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+            : base(environment, handler)
+        {
+        }
+
+        public SdkMain(EnvironmentType environment, DataOptions options)
+            : base(environment, options)
+        {
+        }
+
+        public SdkMain(EnvironmentType environment)
+            : base(environment)
+        {
+        }
+
+        internal SdkMain(HttpClient client, DataOptions options)
             : base(client, options)
+        {
+        }
+
+        internal SdkMain(HttpClient client)
+            : base(client)
         {
         }
         #endregion

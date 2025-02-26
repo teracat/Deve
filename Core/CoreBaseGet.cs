@@ -12,7 +12,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        protected CoreBaseGet(CoreMain core)
+        protected CoreBaseGet(ICore core)
             : base(core)
         {
         }

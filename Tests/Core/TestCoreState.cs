@@ -6,9 +6,9 @@ using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreState : TestState<ICore>, IClassFixture<FixtureDataCore>
+    public class TestCoreState : TestState<ICore>, IClassFixture<FixtureCore>
     {
-        public TestCoreState(FixtureDataCore fixtureDataCore)
+        public TestCoreState(FixtureCore fixtureDataCore)
             : base(fixtureDataCore)
         {
         }

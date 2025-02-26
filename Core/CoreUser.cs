@@ -19,7 +19,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreUser(CoreMain core)
+        public CoreUser(ICore core)
             : base(core)
         {
             _wrapperUser = new DataSourceWrapperUser(core);

@@ -13,7 +13,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreCity(CoreMain core)
+        public CoreCity(ICore core)
             : base(core)
         {
         }

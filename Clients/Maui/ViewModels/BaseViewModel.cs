@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Internal.Data;
 using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels
@@ -7,7 +8,7 @@ namespace Deve.Clients.Maui.ViewModels
     {
         #region Fields
         private readonly INavigationService _navigationService;
-        private readonly IDataService _dataService;
+        private readonly IData _data;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
@@ -20,7 +21,7 @@ namespace Deve.Clients.Maui.ViewModels
         #region Properties
         protected INavigationService NavigationService => _navigationService;
 
-        protected IDataService DataService => _dataService;
+        protected IData Data => _data;
 
         public bool IsIdle => !IsBusy;
 
@@ -28,10 +29,10 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IDataService dataService)
+        protected BaseViewModel(INavigationService navigationService, IData data)
         {
             _navigationService = navigationService;
-            _dataService = dataService;
+            _data = data;
         }
         #endregion
 

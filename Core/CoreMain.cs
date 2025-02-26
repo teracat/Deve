@@ -4,32 +4,23 @@ using Deve.Criteria;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Auth;
-using Deve.Auth.Crypt;
-using Deve.Auth.TokenManagers;
+using Deve.Core.Shield;
 using Deve.Internal.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
-using Deve.Core.Shield;
 
 namespace Deve.Core
 {
     /// <summary>
     /// Main Core class.
     /// </summary>
-    internal class CoreMain : ICore
+    public class CoreMain : ICore
     {
         #region Static Fields
         private static readonly IShield _shield = new ShieldMain();
         #endregion
 
         #region Fields
-        private readonly bool _isSharedInstance;
-        private readonly IDataSource _dataSource;
-        private readonly IAuth _auth;
-        private DataOptions _options;
-
-        private readonly bool _shouldDisposeDataSource;
-
         private UserIdentity? _userIdentity;
         private User? _user;
 
@@ -47,12 +38,12 @@ namespace Deve.Core
         /// <summary>
         /// Source to get the data.
         /// </summary>
-        public IDataSource DataSource => _dataSource;
+        public IDataSource DataSource { get; private set; }
 
         /// <summary>
         /// Access to the Auth.
         /// </summary>
-        public IAuth Auth => _auth;
+        public IAuth Auth { get; private set; }
 
         /// <summary>
         /// Access to the Shield.
@@ -62,11 +53,7 @@ namespace Deve.Core
         /// <summary>
         /// Global options.
         /// </summary>
-        public DataOptions Options
-        {
-            get => _options;
-            set => _options = value;
-        }
+        public IDataOptions Options { get; set; }
 
         /// <summary>
         /// Information to identify the user.
@@ -108,7 +95,7 @@ namespace Deve.Core
                     return null;
                 }
 
-                var resUser = _dataSource.Users.Get(_userIdentity.Id).Result;
+                var resUser = DataSource.Users.Get(_userIdentity.Id).Result;
                 if (!resUser.Success)
                 {
                     return null;
@@ -131,11 +118,6 @@ namespace Deve.Core
             }
         }
 
-        /// <summary>
-        /// Is this a shared instance.
-        /// </summary>
-        public bool IsSharedInstance => _isSharedInstance;
-
         public IAuthenticate Authenticate => _coreAuth ??= new CoreAuth(this);
         public IDataAll<Country, Country, CriteriaCountry> Countries => _coreCountry ??= new CoreCountry(this);
         public IDataAll<State, State, CriteriaState> States => _coreState ??= new CoreState(this);
@@ -148,24 +130,18 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreMain(bool isSharedInstance, ITokenManager tokenManager, IDataSource? dataSource = null, DataOptions? options = null)
+        public CoreMain(IDataSource dataSource, IAuth auth, IDataOptions options)
         {
-            _isSharedInstance = isSharedInstance;
-            _dataSource = dataSource ?? DataSourceFactory.Get(options);
-            _options = options ?? new DataOptions();
-            _auth = AuthFactory.Get(tokenManager, _dataSource, _options);
-            _shouldDisposeDataSource = dataSource is null;
+            DataSource = dataSource;
+            Auth = auth;
+            Options = options;
         }
         #endregion
 
         #region IDisposable
         public void Dispose()
         {
-            _auth.Dispose();
-            if (_shouldDisposeDataSource)
-            {
-                DataSource.Dispose();
-            }
+            // Nothing to dispose
         }
         #endregion
     }
