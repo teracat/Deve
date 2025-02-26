@@ -2,6 +2,9 @@
 
 namespace Deve.Logging
 {
+    /// <summary>
+    /// A logging provider that sends log messages to the trace output.
+    /// </summary>
     internal class LogProviderTrace : LogProviderSimpleBase, ILogProvider
     {
         #region Constructor

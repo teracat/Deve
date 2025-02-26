@@ -1,14 +1,14 @@
-﻿using Deve.Criteria;
+﻿using System.Globalization;
+using Deve.Criteria;
 using Deve.Model;
-using System.Globalization;
 
 namespace Deve.DataSource
 {
     internal class DataSourceState : DataSourceBaseAll<State, State, CriteriaState>
     {
         #region Constructor
-        public DataSourceState(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        public DataSourceState(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion
@@ -47,7 +47,7 @@ namespace Deve.DataSource
 
                 if (!string.IsNullOrWhiteSpace(criteria.IsoCode))
                 {
-                    var countriesRes = DataSourceMain.Countries.Get(new CriteriaCountry()
+                    var countriesRes = DataSource.Countries.Get(new CriteriaCountry()
                     {
                         IsoCode = criteria.IsoCode
                     }).Result;
@@ -89,7 +89,7 @@ namespace Deve.DataSource
                 var state = Data.States.FirstOrDefault(x => x.Id == id);
                 if (state is null)
                 {
-                    return Utils.ResultGetError<State>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultGetError<State>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultGetOk(state);
@@ -114,7 +114,7 @@ namespace Deve.DataSource
                 var found = FindLocal(state.Id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Update
@@ -134,13 +134,13 @@ namespace Deve.DataSource
                 var found = FindLocal(id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Remove
                 if (!Data.States.Remove(found))
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.Unknown);
                 }
 
                 return Utils.ResultOk();

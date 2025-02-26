@@ -1,14 +1,14 @@
-﻿using Deve.Criteria;
+﻿using System.Globalization;
+using Deve.Criteria;
 using Deve.Model;
-using System.Globalization;
 
 namespace Deve.DataSource
 {
     internal class DataSourceCity : DataSourceBaseAll<City, City, CriteriaCity>
     {
         #region Constructor
-        public DataSourceCity(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        public DataSourceCity(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion
@@ -52,7 +52,7 @@ namespace Deve.DataSource
 
                 if (!string.IsNullOrWhiteSpace(criteria.IsoCode))
                 {
-                    var countriesRes = DataSourceMain.Countries.Get(new CriteriaCountry()
+                    var countriesRes = DataSource.Countries.Get(new CriteriaCountry()
                     {
                         IsoCode = criteria.IsoCode
                     }).Result;
@@ -70,7 +70,7 @@ namespace Deve.DataSource
 
                 if (!string.IsNullOrWhiteSpace(criteria.State))
                 {
-                    var statesRes = DataSourceMain.States.Get(new CriteriaState()
+                    var statesRes = DataSource.States.Get(new CriteriaState()
                     {
                         Name = criteria.State
                     }).Result;
@@ -115,7 +115,7 @@ namespace Deve.DataSource
                 var city = Data.Cities.FirstOrDefault(x => x.Id == id);
                 if (city is null)
                 {
-                    return Utils.ResultGetError<City>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultGetError<City>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultGetOk(city);
@@ -139,7 +139,7 @@ namespace Deve.DataSource
                 var found = FindLocal(city.Id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Update
@@ -161,13 +161,13 @@ namespace Deve.DataSource
                 var found = FindLocal(id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Remove
                 if (!Data.Cities.Remove(found))
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultOk();

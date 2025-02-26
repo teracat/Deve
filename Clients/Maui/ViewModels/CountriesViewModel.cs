@@ -7,8 +7,8 @@ namespace Deve.Clients.Maui.ViewModels
     public class CountriesViewModel : ListDataViewModel
     {
         #region Constructor
-        public CountriesViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public CountriesViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion
@@ -17,7 +17,7 @@ namespace Deve.Clients.Maui.ViewModels
         protected override async Task GetListData()
         {
             CriteriaCountry? criteria = null;
-            var res = await DataService.Data.Countries.Get(criteria);
+            var res = await Data.Countries.Get(criteria);
             if (!res.Success)
             {
                 ErrorText = Utils.ErrorsToString(res.Errors);

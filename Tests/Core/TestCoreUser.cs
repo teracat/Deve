@@ -3,9 +3,9 @@ using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreUser : TestUser<ICore>, IClassFixture<FixtureDataCore>
+    public class TestCoreUser : TestUser<ICore>, IClassFixture<FixtureCore>
     {
-        public TestCoreUser(FixtureDataCore fixtureDataCore)
+        public TestCoreUser(FixtureCore fixtureDataCore)
            : base(fixtureDataCore)
         {
         }

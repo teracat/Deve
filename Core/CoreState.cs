@@ -13,7 +13,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreState(CoreMain core)
+        public CoreState(ICore core)
             : base(core)
         {
         }

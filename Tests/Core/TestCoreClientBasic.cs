@@ -7,9 +7,9 @@ using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreClientBasic : TestBaseDataGet<ICore, ClientBasic, Client, CriteriaClientBasic>, IClassFixture<FixtureDataCore>
+    public class TestCoreClientBasic : TestBaseDataGet<ICore, ClientBasic, Client, CriteriaClientBasic>, IClassFixture<FixtureCore>
     {
-        public TestCoreClientBasic(FixtureDataCore fixtureDataCore)
+        public TestCoreClientBasic(FixtureCore fixtureDataCore)
             : base(fixtureDataCore)
         {
         }

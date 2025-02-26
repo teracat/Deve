@@ -97,6 +97,9 @@ namespace Deve.Auth.Crypt
             return decrypted;
         }
 
+        /// <summary>
+        /// Releases any resources used by the instance. (Not needed for this implementation).
+        /// </summary>
         public void Dispose()
         {
             _aes.Dispose();

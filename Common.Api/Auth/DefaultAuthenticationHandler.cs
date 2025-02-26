@@ -11,19 +11,33 @@ using Deve.Auth.Converters;
 namespace Deve.Api.Auth
 {
     /// <summary>
+    /// Represents authentication scheme options for the default authentication handler.
     /// https://dotnetcorecentral.com/blog/authentication-handler-in-asp-net-core/
     /// </summary>
     public class DefaultAuthenticationOptions : AuthenticationSchemeOptions
     {
     }
 
+    /// <summary>
+    /// Handles authentication by validating tokens provided in the Authorization header.
+    /// </summary>
     public class DefaultAuthenticationHandler : AuthenticationHandler<DefaultAuthenticationOptions>
     {
         #region Fields
+        // <summary>
+        /// Manages token validation and authentication.
+        /// </summary>
         private readonly ITokenManager _tokenManager;
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
+        /// <param name="options">The authentication scheme options.</param>
+        /// <param name="logger">The logger factory used for logging.</param>
+        /// <param name="encoder">The URL encoder.</param>
+        /// <param name="tokenManager">The token manager used for token validation.</param>
         public DefaultAuthenticationHandler(IOptionsMonitor<DefaultAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenManager tokenManager)
             : base(options, logger, encoder)
         {
@@ -32,6 +46,12 @@ namespace Deve.Api.Auth
         #endregion
 
         #region AuthenticationHandler
+        /// <summary>
+        /// Handles authentication by extracting and validating the token from the Authorization header.
+        /// </summary>
+        /// <returns>
+        /// An authentication result indicating whether authentication was successful or failed.
+        /// </returns>
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             return Task.Run(() =>
@@ -82,6 +102,15 @@ namespace Deve.Api.Auth
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Validates the provided token using the token manager.
+        /// </summary>
+        /// <param name="scheme">The authentication scheme.</param>
+        /// <param name="token">The token to validate.</param>
+        /// <param name="options">Additional options such as the language code.</param>
+        /// <returns>
+        /// A successful authentication result if the token is valid; otherwise, an unauthorized result.
+        /// </returns>
         private AuthenticateResult ValidateToken(string scheme, string token, DataOptions options)
         {
             if (_tokenManager.TryValidateToken(token, out var userIdentity) && userIdentity is not null)
@@ -93,6 +122,11 @@ namespace Deve.Api.Auth
             return GetResultUnauthorized(options.LangCode);
         }
 
+        /// <summary>
+        /// Returns an unauthorized authentication result with a localized error message.
+        /// </summary>
+        /// <param name="langCode">The language code for localization.</param>
+        /// <returns>An authentication failure result.</returns>
         private AuthenticateResult GetResultUnauthorized(string langCode)
         {
             return AuthenticateResult.Fail(ErrorLocalizeFactory.Get().Localize(ResultErrorType.Unauthorized, langCode));

@@ -6,8 +6,8 @@ namespace Deve.DataSource
     internal abstract class DataSourceBaseAll<ModelList, Model, Criteria> : DataSourceBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria> where Criteria: Deve.Criteria.Criteria
     {
         #region Constructor
-        protected DataSourceBaseAll(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        protected DataSourceBaseAll(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion

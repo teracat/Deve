@@ -1,14 +1,14 @@
-﻿using Deve.Criteria;
+﻿using System.Globalization;
+using Deve.Criteria;
 using Deve.Model;
-using System.Globalization;
 
 namespace Deve.DataSource
 {
     internal class DataSourceCountry : DataSourceBaseAll<Country, Country, CriteriaCountry>
     {
         #region Constructor
-        public DataSourceCountry(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        public DataSourceCountry(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion
@@ -71,7 +71,7 @@ namespace Deve.DataSource
                 var country = Data.Countries.FirstOrDefault(x => x.Id == id);
                 if (country is null)
                 {
-                    return Utils.ResultGetError<Country>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultGetError<Country>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultGetOk(country);
@@ -96,7 +96,7 @@ namespace Deve.DataSource
                 var found = FindLocal(country.Id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Update
@@ -115,13 +115,13 @@ namespace Deve.DataSource
                 var found = FindLocal(id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Remove
                 if (!Data.Countries.Remove(found))
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.Unknown);
                 }
 
                 return Utils.ResultOk();

@@ -1,5 +1,8 @@
 ﻿namespace Deve.Logging
 {
+    /// <summary>
+    /// Manages and retains the collection of logging providers used for handling log messages.
+    /// </summary>
     public class LogProviders
     {
         #region Fields

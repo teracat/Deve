@@ -1,16 +1,16 @@
-﻿using Deve.DataSource.CriteriaHandlers;
+﻿using Deve.Model;
+using Deve.DataSource.CriteriaHandlers;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
-using Deve.Model;
 
 namespace Deve.DataSource
 {
     internal class DataSourceClient : DataSourceBaseAll<Client, Client, CriteriaClient>, IDataClient
     {
         #region Constructor
-        public DataSourceClient(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        public DataSourceClient(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion
@@ -43,7 +43,7 @@ namespace Deve.DataSource
                 var client = Data.Clients.FirstOrDefault(x => x.Id == id);
                 if (client is null)
                 {
-                    return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultGetError<Client>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultGetOk(client);
@@ -68,7 +68,7 @@ namespace Deve.DataSource
                 var found = FindLocal(client.Id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Update
@@ -100,13 +100,13 @@ namespace Deve.DataSource
                 var found = FindLocal(id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Remove
                 if (!Data.Clients.Remove(found))
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.Unknown);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.Unknown);
                 }
 
                 return Utils.ResultOk();
@@ -123,7 +123,7 @@ namespace Deve.DataSource
                 var found = FindLocal(id);
                 if (found is null)
                 {
-                    return Utils.ResultError(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultError(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 //Update Status

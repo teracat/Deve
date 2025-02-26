@@ -1,5 +1,8 @@
 ﻿namespace Deve.Logging
 {
+    /// <summary>
+    /// A logging provider that outputs log messages to the console.
+    /// </summary>
     internal class LogProviderConsole : LogProviderSimpleBase, ILogProvider
     {
         #region Constructor

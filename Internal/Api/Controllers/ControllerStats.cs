@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
-using Deve.Auth.TokenManagers;
+using Deve.Core;
 using Deve.Internal.Model;
 using Deve.Api.Controllers;
-using Deve.Api.DataSourceBuilder;
 
 namespace Deve.Internal.Api.Controllers
 {
@@ -12,8 +11,8 @@ namespace Deve.Internal.Api.Controllers
     public class ControllerStats : ControllerBaseAuth
     {
         #region Constructor
-        public ControllerStats(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
-            : base( contextAccessor, dataSourceBuilder, tokenManager)
+        public ControllerStats(IHttpContextAccessor contextAccessor, ICore core)
+            : base(contextAccessor, core)
         {
         }
         #endregion
