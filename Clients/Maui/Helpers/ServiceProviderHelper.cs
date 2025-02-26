@@ -1,4 +1,7 @@
 ﻿using System.Reflection;
+using Deve.Internal.Data;
+using Deve.Internal.Sdk;
+using Deve.Sdk.LoggingHandlers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Services;
 using Deve.Clients.Maui.Views;
@@ -11,7 +14,7 @@ namespace Deve.Clients.Maui.Helpers
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<INavigationService, MauiNavigationService>();
-            services.AddSingleton<IDataService, DataService>();
+            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
         }
 
         public static void RegisterViewModels(IServiceCollection services)

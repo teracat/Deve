@@ -8,8 +8,8 @@ namespace Deve.DataSource
     internal class DataSourceClientBasic : DataSourceBaseGet<ClientBasic, Client, CriteriaClientBasic>
     {
         #region Constructor
-        public DataSourceClientBasic(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        public DataSourceClientBasic(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion
@@ -70,13 +70,13 @@ namespace Deve.DataSource
             {
                 if (id <= 0)
                 {
-                    return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(ClientBasic.Id));
+                    return Utils.ResultGetError<Client>(DataSource.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(ClientBasic.Id));
                 }
 
                 var client = Data.Clients.FirstOrDefault(x => x.Id == id) as Client;
                 if (client is null)
                 {
-                    return Utils.ResultGetError<Client>(DataSourceMain.Options.LangCode, ResultErrorType.NotFound);
+                    return Utils.ResultGetError<Client>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }
 
                 return Utils.ResultGetOk(client);

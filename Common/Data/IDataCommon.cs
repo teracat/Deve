@@ -8,7 +8,7 @@ namespace Deve.Data
     /// </summary>
     public interface IDataCommon : IDisposable
     {
-        DataOptions Options { get; set; }
+        IDataOptions Options { get; set; }
 
         IAuthenticate Authenticate { get; }
     }

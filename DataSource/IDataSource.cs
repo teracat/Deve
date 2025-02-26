@@ -15,8 +15,8 @@ namespace Deve.DataSource
     /// </summary>
     public interface IDataSource : IDisposable
     {
-        DataSourceConfig? Config { get; }
-        DataOptions Options { get; set; }
+        IDataSourceConfig? Config { get; }
+        IDataOptions Options { get; set; }
 
         IDataAll<Country, Country, CriteriaCountry> Countries { get; }
         IDataAll<State, State, CriteriaState> States { get; }

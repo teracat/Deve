@@ -18,8 +18,8 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public ClientDetailsViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public ClientDetailsViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion
@@ -27,7 +27,7 @@ namespace Deve.Clients.Maui.ViewModels
         #region Methods
         protected override async Task GetData()
         {
-            var res = await DataService.Data.Clients.Get(Id);
+            var res = await Data.Clients.Get(Id);
             if (!res.Success)
             {
                 ErrorText = Utils.ErrorsToString(res.Errors);

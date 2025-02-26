@@ -11,30 +11,25 @@ using Deve.Internal.Criteria;
 
 namespace Deve.Auth
 {
-    internal class AuthMain : IAuth
+    /// <summary>
+    /// Auth implementation.
+    /// </summary>
+    public class AuthMain : IAuth
     {
-        #region Fields
-        private DataOptions _options;
-        #endregion
-
         #region Properties
-        public DataOptions Options
-        {
-            get => _options;
-            set => _options = value;
-        }
+        public IDataOptions Options { get; set; }
         public IDataSource DataSource { get; }
         public ITokenManager TokenManager { get; }
         public IHash Hash { get; }
         #endregion
 
         #region Constructor
-        public AuthMain(ITokenManager tokenManager, IDataSource dataSource, DataOptions? options = null)
+        public AuthMain(ITokenManager tokenManager, IDataSource dataSource, IHash hash, IDataOptions options)
         {
-            _options = options ?? new DataOptions();
             TokenManager = tokenManager;
             DataSource = dataSource;
-            Hash = new HashSha512();
+            Hash = hash;
+            Options = options;
         }
         #endregion
 
@@ -69,7 +64,7 @@ namespace Deve.Auth
         {
             if (userCredentials is null || Utils.SomeIsNullOrWhiteSpace(userCredentials.Username, userCredentials.Password))
             {
-                return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultGetError<User>(Options.LangCode, ResultErrorType.Unauthorized);
             }
 
             var passwordHash = Hash.Calc(userCredentials.Password);
@@ -87,7 +82,7 @@ namespace Deve.Auth
             var user = resUsers.Data.FirstOrDefault();
             if (user is null)
             {
-                return Utils.ResultGetError<User>(_options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultGetError<User>(Options.LangCode, ResultErrorType.Unauthorized);
             }
 
             return Utils.ResultGetOk(user);
@@ -139,7 +134,7 @@ namespace Deve.Auth
 
             if (resLogin.Data is null)
             {
-                return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                return Utils.ResultGetError<UserToken>(Options.LangCode, ResultErrorType.Unauthorized);
             }
 
             var userToken = TokenManager.CreateToken(resLogin.Data);
@@ -152,7 +147,7 @@ namespace Deve.Auth
             {
                 if (!TokenManager.TryValidateToken(token, out var userIdentity) || userIdentity is null)
                 {
-                    return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                    return Utils.ResultGetError<UserToken>(Options.LangCode, ResultErrorType.Unauthorized);
                 }
 
                 var resUsers = await DataSource.Users.Get(userIdentity.Id);
@@ -163,7 +158,7 @@ namespace Deve.Auth
 
                 if (!resUsers.Data.IsActive)
                 {
-                    return Utils.ResultGetError<UserToken>(_options.LangCode, ResultErrorType.Unauthorized);
+                    return Utils.ResultGetError<UserToken>(Options.LangCode, ResultErrorType.Unauthorized);
                 }
 
                 var newUserToken = TokenManager.CreateToken(resUsers.Data);
@@ -175,7 +170,6 @@ namespace Deve.Auth
         #region IDisposable
         public void Dispose()
         {
-            Hash.Dispose();
         }
         #endregion
     }

@@ -17,8 +17,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseEditViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
-            : base(navigationService, dataService, messageHandler)
+        protected BaseEditViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
         }
         #endregion

@@ -1,24 +1,17 @@
-﻿using Moq;
+﻿using Deve.Core;
 using Deve.Authenticate;
-using Deve.Core;
-using Deve.Internal.Data;
-using Deve.Clients.Maui.Interfaces;
 
-namespace Deve.Tests.Maui.Fixtures
+namespace Deve.Tests.Core.Fixtures
 {
-    public class FixtureMaui : FixtureCommon
+    public class FixtureCore : FixtureCommon, IFixtureData<ICore>
     {
-        public IData DataNoAuth { get; }
-        public IData DataValidAuth { get; }
+        public ICore DataNoAuth { get; private set; }
+        public ICore DataValidAuth { get; private set; }
 
-        public Mock<INavigationService> NavigationService { get; private set; }
-
-        public FixtureMaui()
+        public FixtureCore()
         {
             DataNoAuth = new CoreMain(DataSource, Auth, Options);
             DataValidAuth = new CoreMain(DataSource, Auth, Options);
-
-            NavigationService = new Mock<INavigationService>();
         }
 
         public override async Task InitializeAsync()
@@ -30,7 +23,7 @@ namespace Deve.Tests.Maui.Fixtures
         {
             DataNoAuth.Dispose();
             DataValidAuth.Dispose();
-            return Task.CompletedTask;
+            return base.DisposeAsync();
         }
     }
 }

@@ -3,9 +3,9 @@ using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core
 {
-    public class TestCoreClient : TestClient<ICore>, IClassFixture<FixtureDataCore>
+    public class TestCoreClient : TestClient<ICore>, IClassFixture<FixtureCore>
     {
-        public TestCoreClient(FixtureDataCore fixtureDataCore)
+        public TestCoreClient(FixtureCore fixtureDataCore)
             : base(fixtureDataCore)
         {
         }

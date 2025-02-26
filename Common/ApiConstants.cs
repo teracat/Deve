@@ -1,21 +1,40 @@
 ﻿namespace Deve
 {
+    /// <summary>
+    /// Defines API-related constant values, including external URLs, authentication settings, paths, and method names.
+    /// </summary>
     public static class ApiConstants
     {
         #region Url External
+        /// <summary>
+        /// The external production API URL.
+        /// </summary>
 //-:cnd
 #if DEBUG
         public static readonly string UrlProductionExternal   = "https://localhost:7175";
-        public static readonly string UrlStagingExternal      = "https://localhost:7175";
 #else
         //TODO: change with real URLs
         public static readonly string UrlProductionExternal   = "https://api.deve.com/v1";
+#endif
+//+:cnd
+
+        /// <summary>
+        /// The external staging API URL.
+        /// </summary>
+//-:cnd
+#if DEBUG
+        public static readonly string UrlStagingExternal      = "https://localhost:7175";
+#else
+        //TODO: change with real URLs
         public static readonly string UrlStagingExternal      = "https://dev.api.deve.com/v1";
 #endif
 //+:cnd
         #endregion
 
         #region Auth
+        /// <summary>
+        /// The default authentication scheme used for API requests.
+        /// </summary>
         public static readonly string AuthDefaultScheme    = "Bearer";
         #endregion
 

@@ -39,6 +39,12 @@ namespace Deve.Auth.TokenManagers
             _disposeCrypt = autoDisposeCrypt;
         }
 
+        /// <summary>
+        /// Generates a new token.
+        /// </summary>
+        /// <param name="user">Generates a new token for the specified user.</param>
+        /// <param name="scheme">Scheme used to generate the token.</param>
+        /// <returns>The new token.</returns>
         public UserToken CreateToken(User user, string scheme)
         {
             ArgumentNullException.ThrowIfNull(user);
@@ -51,8 +57,19 @@ namespace Deve.Auth.TokenManagers
             return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
         }
 
+        /// <summary>
+        /// Generates a new token
+        /// </summary>
+        /// <param name="user">Generates a new token for the specified user.</param>
+        /// <returns>The new token.</returns>
         public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
 
+        /// <summary>
+        /// Attempts to validate the token and retrieve the associated UserIdentity.
+        /// </summary>
+        /// <param name="token">The token to validate.</param>
+        /// <param name="userIdentity">The associated UserIdentity.</param>
+        /// <returns>If the validation is successful.</returns>
         public bool TryValidateToken(string token, out UserIdentity? userIdentity)
         {
             userIdentity = null;

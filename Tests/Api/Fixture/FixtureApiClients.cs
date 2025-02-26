@@ -5,7 +5,7 @@ namespace Deve.Tests.Api.Fixture
 {
     public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint: class
     {
-        private readonly ITokenManager _tokenManager;
+        public ITokenManager TokenManager { get; }
 
         public HttpClient ClientNoAuth { get; private set; }
         public HttpClient ClientValidAuth { get; private set; }
@@ -17,11 +17,11 @@ namespace Deve.Tests.Api.Fixture
         public FixtureApiClients()
         {
             // TokenManager
-            _tokenManager = TestsHelpers.CreateTokenManager();
+            TokenManager = TestsHelpers.CreateTokenManager();
 
             // Tokens
-            UserTokenInactiveUser = TestsHelpers.CreateTokenInactiveUser(_tokenManager);
-            UserTokenValid = TestsHelpers.CreateTokenValid(_tokenManager);
+            UserTokenInactiveUser = TestsHelpers.CreateTokenInactiveUser(TokenManager);
+            UserTokenValid = TestsHelpers.CreateTokenValid(TokenManager);
 
             // Clients
             ClientNoAuth = _factory.CreateClient();
@@ -38,7 +38,7 @@ namespace Deve.Tests.Api.Fixture
             ClientNoAuth.Dispose();
             ClientValidAuth.Dispose();
             ClientInvalidUser.Dispose();
-            _tokenManager.Dispose();
+            TokenManager.Dispose();
             base.Dispose(disposing);
         }
     }
