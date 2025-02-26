@@ -141,6 +141,7 @@ namespace Deve.Core
         #region IDisposable
         public void Dispose()
         {
+            // Nothing to dispose
         }
         #endregion
     }

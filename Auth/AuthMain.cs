@@ -170,6 +170,7 @@ namespace Deve.Auth
         #region IDisposable
         public void Dispose()
         {
+            // Nothing to dispose
         }
         #endregion
     }

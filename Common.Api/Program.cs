@@ -34,15 +34,12 @@ namespace Deve.Api
             builder.Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
             // Uncomment the following lines and set the DefaultConnection in appsettings.json, if needed
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            //if (string.IsNullOrWhiteSpace(connectionString))
-            //{
-            //    throw new Exception("The ConnectionString is empty. Please set the ConnectionString in the appsettings.json file.");
-            //}
-            var dsConfig = new DataSourceConfig()
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(connectionString))
             {
-                //ConnectionString = connectionString
-            };
+                throw new Exception("The ConnectionString is empty. Please set the ConnectionString in the appsettings.json file.");
+            }
+            var dsConfig = new DataSourceConfig(connectionString);
 
             // Configures localization settings for the application.
             builder.Services.Configure<RequestLocalizationOptions>(config =>
