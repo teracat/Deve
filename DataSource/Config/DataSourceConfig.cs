@@ -1,6 +1,9 @@
 ﻿namespace Deve.DataSource.Config
 {
-    public class DataSourceConfig
+    /// <summary>
+    /// DataSource configuration parameters.
+    /// </summary>
+    public class DataSourceConfig : IDataSourceConfig
     {
         public string ConnectionString { get; set; }
 

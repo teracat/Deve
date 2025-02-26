@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Clients.Interfaces;
 using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
@@ -34,8 +33,8 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        protected ListDataViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        protected ListDataViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
             Initialization = InitializeAsync();
         }

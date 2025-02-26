@@ -62,8 +62,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
-            : base(navigationService, dataService, messageHandler)
+        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
             _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
             _username = Properties.Settings.Default.Username;
@@ -91,7 +91,7 @@ namespace Deve.Clients.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(Username, password));
+                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);

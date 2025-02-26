@@ -6,7 +6,7 @@ namespace Deve.Core
     internal class CoreAuth : CoreBase, IAuthenticate
     {
         #region Constructor
-        public CoreAuth(CoreMain core)
+        public CoreAuth(ICore core)
             : base(core)
         {
         }
@@ -36,7 +36,8 @@ namespace Deve.Core
                 return Utils.ResultGetError<UserToken>(Core.Options.LangCode, ResultErrorType.Unauthorized);
             }
 
-            if (res.Success && Core.IsSharedInstance)
+            // If the Login succeeded, we store the User in the Core instance (usefull for embedded clients)
+            if (res.Success)
             {
                 Core.User = res.Data;
             }

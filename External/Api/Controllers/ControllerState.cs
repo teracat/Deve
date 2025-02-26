@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Auth.TokenManagers;
+using Deve.Core;
 using Deve.External.Data;
 using Deve.Api.Controllers;
-using Deve.Api.DataSourceBuilder;
 
 namespace Deve.External.Api.Controllers
 {
@@ -14,8 +13,8 @@ namespace Deve.External.Api.Controllers
     {
         protected override IDataGet<State, State, CriteriaState> DataGet => Core.States;
 
-        public ControllerState(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
-            : base(contextAccessor, dataSourceBuilder, tokenManager)
+        public ControllerState(IHttpContextAccessor contextAccessor, ICore core)
+            : base(contextAccessor, core)
         {
         }
     }

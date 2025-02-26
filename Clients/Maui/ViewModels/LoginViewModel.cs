@@ -22,8 +22,8 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
 //-:cnd
 #if DEBUG
@@ -46,7 +46,7 @@ namespace Deve.Clients.Maui.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await DataService.Data.Authenticate.Login(new UserCredentials(Username, Password));
+                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, Password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);

@@ -1,5 +1,13 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Deve.Data;
+using Deve.DataSource;
+using Deve.DataSource.Config;
+using Deve.Auth;
+using Deve.Auth.Hash;
+using Deve.Auth.TokenManagers;
+using Deve.Core;
+using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Services;
 using Deve.Clients.Wpf.Views;
@@ -12,8 +20,19 @@ namespace Deve.Clients.Wpf.Helpers
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IMessageHandler, MessageHandlerMessageBox>();
+
+            services.AddSingleton<IHash, HashSha512>();
+            services.AddSingleton<IDataOptions>(new DataOptions()
+            {
+                LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
+            });
+            // TokenManager that uses CryptAes with auto generated Key and IV.
+            // Due to the auto-generation of the Key and IV, tokens are only valid during a single program execution.
+            services.AddSingleton<ITokenManager, TokenManagerCrypt>();
+            services.AddSingleton<IDataSource>(new DataSourceMain(new DataSourceConfig()));
+            services.AddSingleton<IAuth, AuthMain>();
+            services.AddSingleton<IData, CoreMain>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)

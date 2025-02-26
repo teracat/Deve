@@ -7,8 +7,8 @@ namespace Deve.Clients.Maui.ViewModels
     public partial class ClientsViewModel : ListDataViewModel
     {
         #region Constructor
-        public ClientsViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion
@@ -17,7 +17,7 @@ namespace Deve.Clients.Maui.ViewModels
         protected override async Task GetListData()
         {
             CriteriaClient? criteria = null;
-            var res = await DataService.Data.Clients.Get(criteria);
+            var res = await Data.Clients.Get(criteria);
             if (!res.Success)
             {
                 ErrorText = Utils.ErrorsToString(res.Errors);

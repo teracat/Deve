@@ -1,5 +1,5 @@
-﻿using Deve.External.Data;
-using Deve.Model;
+﻿using Deve.Model;
+using Deve.External.Data;
 
 namespace Deve.DataSource
 {
@@ -10,8 +10,8 @@ namespace Deve.DataSource
         #endregion
 
         #region Constructor
-        protected DataSourceBaseGet(DataSourceMain dataSourceMain)
-            : base(dataSourceMain)
+        protected DataSourceBaseGet(IDataSource dataSource)
+            : base(dataSource)
         {
         }
         #endregion

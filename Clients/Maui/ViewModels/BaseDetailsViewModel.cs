@@ -9,8 +9,8 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseDetailsViewModel(INavigationService navigationService, IDataService dataService)
-            : base(navigationService, dataService)
+        protected BaseDetailsViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion

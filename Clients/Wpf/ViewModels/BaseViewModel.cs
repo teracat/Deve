@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
@@ -7,7 +8,7 @@ namespace Deve.Clients.Wpf.ViewModels
     {
         #region Fields
         private readonly INavigationService _navigationService;
-        private readonly IDataService _dataService;
+        private readonly IData _data;
         private readonly IMessageHandler _messageHandler;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
@@ -21,7 +22,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Properties
         protected INavigationService NavigationService => _navigationService;
 
-        protected IDataService DataService => _dataService;
+        protected IData Data => _data;
 
         protected IMessageHandler MessageHandler => _messageHandler;
         public bool IsIdle => !IsBusy;
@@ -34,10 +35,10 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
+        protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
         {
             _navigationService = navigationService;
-            _dataService = dataService;
+            _data = data;
             _messageHandler = messageHandler;
         }
         #endregion
