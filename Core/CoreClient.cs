@@ -14,7 +14,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreClient(CoreMain core)
+        public CoreClient(ICore core)
             : base(core)
         {
         }

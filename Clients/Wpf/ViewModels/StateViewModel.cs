@@ -27,8 +27,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public StateViewModel(INavigationService navigationService, IDataService dataService, IMessageHandler messageHandler)
-            : base(navigationService, dataService, messageHandler)
+        public StateViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
         }
         #endregion
@@ -62,11 +62,11 @@ namespace Deve.Clients.Wpf.ViewModels
                 Result res;
                 if (_state.Id == 0)
                 {
-                    res = await DataService.Data.States.Add(_state);
+                    res = await Data.States.Add(_state);
                 }
                 else
                 {
-                    res = await DataService.Data.States.Update(_state);
+                    res = await Data.States.Update(_state);
                 }
 
                 if (!res.Success)
@@ -96,7 +96,7 @@ namespace Deve.Clients.Wpf.ViewModels
                 }
                 else
                 {
-                    var res = await DataService.Data.States.Get(Id);
+                    var res = await Data.States.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
                         MessageHandler.ShowError(res.Errors);
@@ -118,7 +118,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
         private async Task GetDataCountries()
         {
-            var res = await DataService.Data.Countries.Get();
+            var res = await Data.Countries.Get();
             if (!res.Success)
             {
                 MessageHandler.ShowError(res.Errors);

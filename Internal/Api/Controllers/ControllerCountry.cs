@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Auth.TokenManagers;
+using Deve.Core;
 using Deve.Internal.Data;
 using Deve.Api.Controllers;
-using Deve.Api.DataSourceBuilder;
 
 namespace Deve.Internal.Api.Controllers
 {
@@ -14,8 +13,8 @@ namespace Deve.Internal.Api.Controllers
     {
         protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Core.Countries;
 
-        public ControllerCountry(IHttpContextAccessor contextAccessor, IDataSourceBuilder dataSourceBuilder, ITokenManager tokenManager)
-            : base(contextAccessor, dataSourceBuilder, tokenManager)
+        public ControllerCountry(IHttpContextAccessor contextAccessor, ICore core)
+            : base(contextAccessor, core)
         {
         }
     }

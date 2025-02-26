@@ -4,12 +4,12 @@ using Deve.Sdk.LoggingHandlers;
 
 namespace Deve.Sdk
 {
-    internal abstract class SdkMainBase : ISdkCommon
+    public abstract class SdkMainBase : ISdkCommon
     {
         #region Fields
         protected readonly EnvironmentType _environment = EnvironmentType.Production;
         protected readonly HttpClient _client;
-        protected DataOptions _options;
+        protected IDataOptions _options;
 
         private SdkAuth? _sdkAuth;
         #endregion
@@ -20,7 +20,7 @@ namespace Deve.Sdk
 
         #region IDataCommon
         public HttpClient Client => _client;
-        public DataOptions Options
+        public IDataOptions Options
         {
             get => _options;
             set
@@ -38,27 +38,55 @@ namespace Deve.Sdk
         #endregion
 
         #region Constructors
-        protected SdkMainBase(EnvironmentType environment = EnvironmentType.Production, DataOptions? options = null, LoggingHandlerBase? handler = null)
+        protected SdkMainBase(EnvironmentType environment, IDataOptions options, LoggingHandlerBase handler)
         {
             _environment = environment;
-            _options = options ?? new DataOptions();
-
-            _client = handler is null ? new HttpClient() : new HttpClient(handler);
-            _client.BaseAddress = new Uri(Url);
-
+            _options = options;
+            _client = new HttpClient(handler);
             UpdatedOptions();
         }
 
-        protected SdkMainBase(HttpClient client, DataOptions? options = null)
+        protected SdkMainBase(EnvironmentType environment, LoggingHandlerBase handler)
+        {
+            _environment = environment;
+            _options = new DataOptions();
+            _client = new HttpClient(handler);
+            UpdatedOptions();
+        }
+
+        protected SdkMainBase(EnvironmentType environment, IDataOptions options)
+        {
+            _environment = environment;
+            _options = options;
+            _client = new HttpClient();
+            UpdatedOptions();
+        }
+
+        protected SdkMainBase(EnvironmentType environment)
+        {
+            _environment = environment;
+            _options = new DataOptions();
+            _client = new HttpClient();
+            UpdatedOptions();
+        }
+
+        protected SdkMainBase(HttpClient client, DataOptions options)
         {
             _client = client;
-            _options = options ?? new DataOptions();
+            _options = options;
+        }
+
+        protected SdkMainBase(HttpClient client)
+        {
+            _client = client;
+            _options = new DataOptions();
         }
         #endregion
 
         #region Methods
         private void UpdatedOptions()
         {
+            _client.BaseAddress = new Uri(Url);
             _client.DefaultRequestHeaders.AcceptLanguage.Clear();
             _client.DefaultRequestHeaders.AcceptLanguage.Add(new System.Net.Http.Headers.StringWithQualityHeaderValue(_options.LangCode));
         }

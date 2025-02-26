@@ -11,7 +11,7 @@ namespace Deve.Core
         protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> DataGet => Source.ClientsBasic;
         protected override PermissionDataType DataType => PermissionDataType.ClientBasic;
 
-        public CoreClientBasic(CoreMain core)
+        public CoreClientBasic(ICore core)
             : base(core)
         {
         }

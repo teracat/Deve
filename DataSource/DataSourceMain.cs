@@ -8,7 +8,10 @@ using Deve.Model;
 
 namespace Deve.DataSource
 {
-    internal class DataSourceMain : IDataSource
+    /// <summary>
+    /// DataSource sample that uses in-memory data.
+    /// </summary>
+    public class DataSourceMain : IDataSource
     {
         #region Fields
         private DataSourceCountry? _dsCountry;
@@ -20,8 +23,8 @@ namespace Deve.DataSource
         #endregion
 
         #region Properties
-        public DataSourceConfig? Config { get; }
-        public DataOptions Options { get; set; }
+        public IDataSourceConfig? Config { get; }
+        public IDataOptions Options { get; set; }
         #endregion
 
         #region IDataSource
@@ -35,10 +38,16 @@ namespace Deve.DataSource
         #endregion
 
         #region Constructor
-        public DataSourceMain(DataSourceConfig? config = null, DataOptions? options = null)
+        public DataSourceMain(IDataSourceConfig config, IDataOptions? options)
         {
             Config = config;   //The Config is not used in this implementation
             Options = options ?? new DataOptions();
+        }
+
+        public DataSourceMain(IDataSourceConfig config)
+        {
+            Config = config;   //The Config is not used in this implementation
+            Options = new DataOptions();
         }
         #endregion
 

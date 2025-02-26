@@ -1,5 +1,8 @@
 ﻿namespace Deve.Logging
 {
+    /// <summary>
+    /// Base class for simple logging providers such as Console, Trace, and Debug.
+    /// </summary>
     internal abstract class LogProviderSimpleBase : ILogProvider
     {
         #region Constants

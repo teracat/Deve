@@ -6,9 +6,9 @@ namespace Deve.Tests.Core
     /// <summary>
     /// Authenticate Tests for Core.
     /// </summary>
-    public class TestCoreAuthenticate : TestAuthenticate<ICore>, IClassFixture<FixtureDataCore>
+    public class TestCoreAuthenticate : TestAuthenticate<ICore>, IClassFixture<FixtureCore>
     {
-        public TestCoreAuthenticate(FixtureDataCore fixtureDataCore)
+        public TestCoreAuthenticate(FixtureCore fixtureDataCore)
             : base(fixtureDataCore)
         {
         }

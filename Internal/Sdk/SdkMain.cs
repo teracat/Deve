@@ -13,7 +13,7 @@ namespace Deve.Internal.Sdk
     /// <summary>
     /// Internal Sdk implementation.
     /// </summary>
-    internal class SdkMain : SdkMainBase, ISdk
+    public class SdkMain : SdkMainBase, ISdk
     {
         #region Fields
         private SdkBaseAll<Country, Country, CriteriaCountry>? _sdkCountry;
@@ -30,13 +30,33 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment = EnvironmentType.Production, DataOptions? options = null, LoggingHandlerBase? handler = null)
+        public SdkMain(EnvironmentType environment, IDataOptions options, LoggingHandlerBase handler)
             : base(environment, options, handler)
         {
         }
 
-        internal SdkMain(HttpClient client, DataOptions? options = null)
+        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+            : base(environment, handler)
+        {
+        }
+
+        public SdkMain(EnvironmentType environment, IDataOptions options)
+            : base(environment, options)
+        {
+        }
+
+        public SdkMain(EnvironmentType environment)
+            : base(environment)
+        {
+        }
+
+        internal SdkMain(HttpClient client, DataOptions options)
             : base(client, options)
+        {
+        }
+
+        internal SdkMain(HttpClient client)
+            : base(client)
         {
         }
         #endregion
