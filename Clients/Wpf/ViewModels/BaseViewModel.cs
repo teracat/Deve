@@ -1,33 +1,37 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using ReactiveUI.Validation.Helpers;
 using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public abstract partial class BaseViewModel : ObservableValidator
+    public abstract partial class BaseViewModel : ReactiveValidationObject
     {
         #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
-        private readonly IMessageHandler _messageHandler;
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsIdle))]
+        [Reactive]
         private bool _isBusy = false;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasError))]
+        [Reactive] 
+        private bool _shouldValidate = false;
+
+        [Reactive]
         private string _errorText = string.Empty;
+
+        [ObservableAsProperty]
+        private bool _isIdle;
+
+        [ObservableAsProperty]
+        private bool _hasError;
         #endregion
 
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
-        protected IMessageHandler MessageHandler => _messageHandler;
-        public bool IsIdle => !IsBusy;
-
-        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+        protected IMessageHandler MessageHandler { get; }
 
         public Action<bool>? SetResultAction { get; set; }
 
@@ -35,27 +39,29 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
+        protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
         {
-            _navigationService = navigationService;
-            _data = data;
-            _messageHandler = messageHandler;
+            NavigationService = navigationService;
+            Data = data;
+            MessageHandler = messageHandler;
+
+            // Properties
+            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
+                                .Select(isBusy => !isBusy)
+                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.TaskPool);
+
+            _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
+                                  .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
+                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.TaskPool);
         }
         #endregion
 
-        #region OnPropertyChanged
-        partial void OnIsBusyChanged(bool value) => OnIsBusyChanged();
-        #endregion
-
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
-
         protected virtual bool Validate()
         {
             ErrorText = string.Empty;
-            ClearErrors();
-            ValidateAllProperties();
-            return !HasErrors;
+            ShouldValidate = true;
+            return ValidationContext.IsValid;
         }
         #endregion
 

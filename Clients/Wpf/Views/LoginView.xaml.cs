@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Globalization;
+using System.Reactive.Linq;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 
@@ -75,16 +76,16 @@ namespace Deve.Clients.Wpf.Views
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.Login(uxPassword.Password);
+                _ = _viewModel.LoginCommand.Execute(uxPassword.Password).FirstAsync();
             }
         }
 
-        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
+        private async void OnLoginClick(object sender, RoutedEventArgs e)
         {
-            _ = _viewModel.Login(uxPassword.Password);
+            await _viewModel.LoginCommand.Execute(uxPassword.Password).FirstAsync();
         }
 
-        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             var passwordBox = (PasswordBox)sender;
             _viewModel.Password = passwordBox.SecurePassword;
