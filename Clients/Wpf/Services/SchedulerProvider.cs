@@ -7,7 +7,7 @@ namespace Deve.Clients.Wpf.Services
     public sealed class SchedulerProvider : ISchedulerProvider
     {
         public IScheduler MainThread => RxApp.MainThreadScheduler;
-        public IScheduler CurrentThread => Scheduler.CurrentThread;
-        public IScheduler TaskPool => TaskPoolScheduler.Default;
+        public IScheduler CurrentThread => CurrentThreadScheduler.Instance;
+        public IScheduler TaskPool => RxApp.TaskpoolScheduler;
     }
 }

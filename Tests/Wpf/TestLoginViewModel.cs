@@ -1,5 +1,5 @@
 using System.Security;
-using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Moq;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
@@ -18,7 +18,7 @@ namespace Deve.Tests.Wpf
         }
 
         [Fact]
-        public void Login_EmptyUsernamePassword_HasErrors()
+        public async Task Login_EmptyUsernamePassword_HasErrors()
         {
             var schedulerProvider = new TestSchedulers();
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object, schedulerProvider)
@@ -26,10 +26,9 @@ namespace Deve.Tests.Wpf
                 Username = string.Empty,
             };
 
-            loginViewModel.LoginCommand.Execute(string.Empty).Subscribe(res =>
-            {
-                Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
-            });
+            await loginViewModel.LoginCommand.Execute(string.Empty).ToTask();
+
+            Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
         }
 
         private static SecureString SecureStringConverter(string pass)
@@ -45,7 +44,7 @@ namespace Deve.Tests.Wpf
         }
 
         [Fact]
-        public void Login_InvalidUsernamePassword_HasError()
+        public async Task Login_InvalidUsernamePassword_HasError()
         {
             var schedulerProvider = new TestSchedulers();
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object, schedulerProvider)
@@ -54,14 +53,13 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordInactive),  // To avoid Validation errors
             };
 
-            loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordInactive).Subscribe(res =>
-            {
-                Assert.True(loginViewModel.HasError);   // HasError is a custom property for other types of errors
-            });
+            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordInactive).ToTask();
+
+            Assert.True(loginViewModel.HasError);   // HasError is a custom property for other types of errors
         }
 
         [Fact]
-        public void Login_ValidUsernamePassword_HasNoError()
+        public async Task Login_ValidUsernamePassword_HasNoError()
         {
             var schedulerProvider = new TestSchedulers();
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object, schedulerProvider)
@@ -70,14 +68,13 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).Subscribe(res =>
-            {
-                Assert.False(loginViewModel.HasError);
-            });
+            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
+
+            Assert.False(loginViewModel.HasError);
         }
 
         [Fact]
-        public void Login_ValidUsernamePassword_NavigatesToClients()
+        public async Task Login_ValidUsernamePassword_NavigatesToClients()
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
@@ -88,10 +85,9 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).Subscribe(res =>
-            {
-                navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
-            });
+            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
+
+            navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
         }
     }
 }
