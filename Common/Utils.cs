@@ -23,11 +23,14 @@ namespace Deve
         public static List<Field> FindNullOrWhiteSpace(params Field[] fields)
         {
             List<Field> found = [];
-            foreach (var field in fields)
+            if (fields is not null)
             {
-                if (IsEmptyValue(field.Value))
+                foreach (var field in fields)
                 {
-                    found.Add(field);
+                    if (field is not null && IsEmptyValue(field.Value))
+                    {
+                        found.Add(field);
+                    }
                 }
             }
             return found;
@@ -70,8 +73,16 @@ namespace Deve
         /// <param name="errorType">The error type.</param>
         /// <param name="list">The list of fields with errors.</param>
         /// <returns>A list of result errors.</returns>
-        public static IList<ResultError> FoundFieldsToErrors(string langCode, ResultErrorType errorType, List<Field> list) => list.Select(x => new ResultError(errorType, x.Name, ErrorLocalizeFactory.Get().Localize(errorType, langCode)))
+        public static IList<ResultError> FoundFieldsToErrors(string langCode, ResultErrorType errorType, List<Field> list)
+        {
+            if (list is null)
+            {
+                return [];
+            }
+
+            return list.Select(x => new ResultError(errorType, x.Name, ErrorLocalizeFactory.Get().Localize(errorType, langCode)))
                        .ToList();
+        }
 
         /// <summary>
         /// Executes a function within a semaphore lock.
@@ -100,7 +111,7 @@ namespace Deve
         /// <param name="semaphore">The semaphore to control concurrent execution.</param>
         /// <param name="func">The function to execute.</param>
         /// <returns>A task representing the asynchronous execution.</returns>
-        public static Task<T> RunProtectedAsync<T>(SemaphoreSlim semaphore, Func<T> func) => Task.Run(() => { return RunProtected(semaphore, func); });
+        public static Task<T> RunProtectedAsync<T>(SemaphoreSlim semaphore, Func<T> func) => Task.Run(() => RunProtected(semaphore, func) );
 
         public static Result ResultOk() => new();
 
@@ -163,7 +174,14 @@ namespace Deve
         /// <param name="errors">The list of result errors.</param>
         /// <param name="separator">The character used to separate error messages.</param>
         /// <returns>A formatted string containing all errors.</returns>
-        public static string ErrorsToString(IList<ResultError> errors, char separator) => string.Join(separator, errors.Select(x => string.IsNullOrEmpty(x.FieldName) ? x.Description : $"{x.Description} ({x.FieldName})"));
+        public static string ErrorsToString(IList<ResultError> errors, char separator)
+        {
+            if (errors is null)
+            {
+                return string.Empty;
+            }
+            return string.Join(separator, errors.Select(x => string.IsNullOrEmpty(x.FieldName) ? x.Description : $"{x.Description} ({x.FieldName})"));
+        }
 
         /// <summary>
         /// Converts a list of result errors into a single string, separated by commas.

@@ -24,7 +24,11 @@ namespace Deve.Localize
         /// </returns>
         public string Localize(ResultErrorType errorType, string langCode)
         {
-            _cultureInfos.TryGetValue(langCode, out CultureInfo? cultureInfo);
+            CultureInfo? cultureInfo = null;
+            if (!string.IsNullOrWhiteSpace(langCode) && langCode.Length > 1)
+            {
+                _cultureInfos.TryGetValue(langCode, out cultureInfo);
+            }
             if (cultureInfo is null)
             {
                 try
@@ -41,5 +45,4 @@ namespace Deve.Localize
             return ErrorTypesResource.ResourceManager.GetString(errorType.ToString(), cultureInfo) ?? errorType.ToString();
         }
     }
-
 }
