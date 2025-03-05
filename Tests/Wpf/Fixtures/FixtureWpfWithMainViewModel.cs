@@ -7,7 +7,7 @@ namespace Deve.Tests.Wpf.Fixtures
         #region Properties
         public MainViewModel? MainViewModel { get; private set; }
 
-        public TestSchedulers Schedulers { get; private set; }
+        public TestSchedulers Schedulers { get; private set; } = new TestSchedulers();
         #endregion
 
         #region IAsyncLifetime
@@ -15,7 +15,6 @@ namespace Deve.Tests.Wpf.Fixtures
         {
             await base.InitializeAsync();
 
-            Schedulers = new TestSchedulers();
             MainViewModel = new MainViewModel(NavigationService.Object, DataValidAuth, MessageHandler.Object, Schedulers);
             await MainViewModel.Initialization;
         }
