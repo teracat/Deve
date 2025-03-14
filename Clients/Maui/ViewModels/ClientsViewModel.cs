@@ -7,8 +7,8 @@ namespace Deve.Clients.Maui.ViewModels
     public partial class ClientsViewModel : ListDataViewModel
     {
         #region Constructor
-        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
+        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
+            : base(navigationService, data, scheduler)
         {
         }
         #endregion

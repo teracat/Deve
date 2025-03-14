@@ -7,8 +7,8 @@ namespace Deve.Clients.Maui.ViewModels
     public class StatesViewModel : ListDataViewModel
     {
         #region Constructor
-        public StatesViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
+        public StatesViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
+            : base(navigationService, data, scheduler)
         {
         }
         #endregion
