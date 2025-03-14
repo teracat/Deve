@@ -12,15 +12,19 @@ namespace Deve.Clients.Wpf
     public partial class App : Application
     {
         #region Fields
-        private readonly ServiceProvider _serviceProvider;
+        private ServiceProvider _serviceProvider;
         #endregion
 
         #region Constructor
         public App()
         {
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            if (Wpf.Properties.Settings.Default.LangCode > 0)
+            {
+                var culture = new CultureInfo(Wpf.Properties.Settings.Default.LangCode);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
+            _serviceProvider = CreateServiceProvider();
         }
         #endregion
 
@@ -28,14 +32,6 @@ namespace Deve.Clients.Wpf
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            if (Wpf.Properties.Settings.Default.LangCode > 0)
-            {
-                var culture = new CultureInfo(Wpf.Properties.Settings.Default.LangCode);
-                Thread.CurrentThread.CurrentCulture = culture;
-                Thread.CurrentThread.CurrentUICulture = culture;
-            }
-
             var loginView = _serviceProvider.GetRequiredService<LoginView>();
             loginView.Show();
         }
@@ -48,6 +44,13 @@ namespace Deve.Clients.Wpf
         #endregion
 
         #region Methods
+        private ServiceProvider CreateServiceProvider()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            return services.BuildServiceProvider();
+        }
+
         private void ConfigureServices(ServiceCollection services)
         {
             ServiceProviderHelper.RegisterServices(services);
@@ -59,6 +62,8 @@ namespace Deve.Clients.Wpf
         {
             Thread.CurrentThread.CurrentCulture = newCulture;
             Thread.CurrentThread.CurrentUICulture = newCulture;
+
+            _serviceProvider = CreateServiceProvider();
 
             var oldWindow = Current.MainWindow;
 
