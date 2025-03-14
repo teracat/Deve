@@ -48,11 +48,11 @@ namespace Deve.Clients.Wpf.ViewModels
             // Properties
             _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
                                 .Select(isBusy => !isBusy)
-                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.TaskPool);
+                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.MainThread);
 
             _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
                                   .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
-                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.TaskPool);
+                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.MainThread);
         }
         #endregion
 

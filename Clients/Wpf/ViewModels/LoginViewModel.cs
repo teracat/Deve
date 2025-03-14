@@ -78,13 +78,13 @@ namespace Deve.Clients.Wpf.ViewModels
             // Subscriptions
             this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)
                 .SubscribeOn(scheduler.TaskPool)
-                .ObserveOn(scheduler.TaskPool)
+                .ObserveOn(scheduler.MainThread)
                 .DistinctUntilChanged()
                 .Subscribe(isExecuting => IsBusy = isExecuting);
 
             _passwordValidation.ValidationChanged
                                .SubscribeOn(scheduler.TaskPool)
-                               .ObserveOn(scheduler.TaskPool)
+                               .ObserveOn(scheduler.MainThread)
                                .Subscribe(_ => this.RaisePropertyChanged(nameof(HasErrorPassword)));
 
             this.WhenAnyValue(vm => vm.SelectedLanguage)
