@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Linq;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using ReactiveUI.Validation.Helpers;
@@ -66,6 +67,15 @@ namespace Deve.Clients.Maui.ViewModels
         {
             ErrorText = string.Empty;
             ShouldValidate = true;
+            if (HasErrors)
+            {
+                var errors = GetErrors(null);
+                if (errors is string[] arrayErrors)
+                {
+                    ErrorText = string.Join("\n", arrayErrors);
+                }
+                return false;
+            }
             return ValidationContext.IsValid;
         }
         #endregion

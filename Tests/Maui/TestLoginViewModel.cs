@@ -27,7 +27,7 @@ namespace Deve.Tests.Maui
 
             await loginViewModel.LoginCommand.Execute().ToTask();
 
-            Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
+            Assert.True(loginViewModel.HasError);
         }
 
         [Fact]
