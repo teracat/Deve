@@ -1,6 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using System.Reactive;
+using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using ReactiveUI.Validation.Extensions;
+using Deve.Model;
 using Deve.Authenticate;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Resources.Strings;
@@ -10,21 +13,68 @@ namespace Deve.Clients.Maui.ViewModels
     public partial class LoginViewModel : BaseViewModel
     {
         #region Fields
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
+        [Reactive]
         private string _username = string.Empty;
 
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
+        [Reactive]
         private string _password = string.Empty;
         #endregion
 
+        #region Properties
+        public ReactiveCommand<Unit, ResultGet<UserToken>?> LoginCommand { get; }
+        #endregion
+
         #region Constructor
-        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
+        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
+            : base(navigationService, data, scheduler)
         {
+            // Commands
+            var canExecuteLogin = this.WhenAnyValue(vm => vm.IsIdle);
+            LoginCommand = ReactiveCommand.CreateFromTask(Login, canExecuteLogin, outputScheduler: scheduler.MainThread);
+
+            // Validation Rules
+            this.ValidationRule(vm => vm.Username,
+                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Username,
+                                                  (shouldValidate, username) => !shouldValidate || !string.IsNullOrWhiteSpace(username)),
+                                AppResources.MissingUsername);
+            this.ValidationRule(vm => vm.Password,
+                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Password,
+                                                  (shouldValidate, password) => !shouldValidate || !string.IsNullOrWhiteSpace(password)),
+                                AppResources.MissingPassword);
+
+            // Subscriptions
+            this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)
+                .SubscribeOn(scheduler.TaskPool)
+                .ObserveOn(scheduler.MainThread)
+                .DistinctUntilChanged()
+                .Subscribe(isExecuting => IsBusy = isExecuting);
+
+            // When the login command completes, check the result and navigate to the main view if successful.
+            // It waits for the command to complete and then checks if it was successful.
+            LoginCommand
+                .CombineLatest(this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting))
+                .Where(tuple => !tuple.Second && tuple.First is not null)  // Waits until IsExecuting becomes false
+                .SubscribeOn(scheduler.TaskPool)
+                .ObserveOn(scheduler.MainThread)   // Ensures execution on the UI thread
+                .DistinctUntilChanged()
+                .Subscribe(tuple =>
+                {
+                    var res = tuple.First;
+                    if (res is not null)
+                    {
+                        if (!res.Success)
+                        {
+                            ErrorText = Utils.ErrorsToString(res.Errors);
+                        }
+                        else
+                        {
+                            Globals.UserToken = res.Data;
+
+                            _ = NavigationService.NavigateToAsync("//clients");
+                        }
+                    }
+                });
+
 //-:cnd
 #if DEBUG
             Username = "teracat";
@@ -35,32 +85,14 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        [RelayCommand(CanExecute = nameof(IsIdle))]
-        internal async Task Login()
+        private async Task<ResultGet<UserToken>?> Login()
         {
             if (!Validate())
             {
-                return;
+                return null;
             }
 
-            IsBusy = true;
-            try
-            {
-                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, Password));
-                if (!resLogin.Success || resLogin.Data is null)
-                {
-                    ErrorText = Utils.ErrorsToString(resLogin.Errors);
-                    return;
-                }
-
-                Globals.UserToken = resLogin.Data;
-
-                await NavigationService.NavigateToAsync("//clients");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            return await Data.Authenticate.Login(new UserCredentials(Username, Password));
         }
         #endregion
     }

@@ -1,46 +1,43 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Deve.Clients.Wpf.Helpers;
+﻿using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Deve.Clients.Wpf.Models
 {
-    public partial class ListControlData : ObservableObject
+    public partial class ListControlData : ReactiveObject
     {
         #region Fields
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsIdle))]
+        [Reactive]
         private bool _isBusy = false;
 
-        [ObservableProperty]
+        [Reactive]
         private string _searchText = string.Empty;
 
-        [ObservableProperty]
+        [Reactive]
         private string _errorText = string.Empty;
 
-        [ObservableProperty]
+        [Reactive]
         private IEnumerable<ListData>? _items;
 
-        private Func<Task>? _funcWhenSearch;
-        #endregion
+        private readonly Func<Task>? _funcWhenSearch;
 
-        #region Properties
-        public bool IsIdle => !IsBusy;
+        [ObservableAsProperty]
+        private bool _isIdle;
         #endregion
 
         #region Methods
-        [RelayCommand(CanExecute = nameof(IsIdle))]
+        [ReactiveCommand(CanExecute = nameof(IsIdle))]
         public void Search() => _funcWhenSearch?.Invoke();
         #endregion
 
         #region Constructors
-        public ListControlData()
-        {
-        }
-
         public ListControlData(Func<Task>? funcWhenSearch)
         {
             _funcWhenSearch = funcWhenSearch;
+
+            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
+                                .Select(isBusy => !isBusy)
+                                .ToProperty(this, x => x.IsIdle);
         }
         #endregion
     }
