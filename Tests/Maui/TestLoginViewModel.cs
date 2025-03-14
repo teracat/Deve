@@ -1,3 +1,4 @@
+using System.Reactive.Threading.Tasks;
 using Moq;
 using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Interfaces;
@@ -17,27 +18,29 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Login_EmptyUsernamePassword_HasError()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth)
+            var schedulerProvider = new TestSchedulers();
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, schedulerProvider)
             {
                 Username = string.Empty,
                 Password = string.Empty
             };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.Execute().ToTask();
 
-            Assert.True(loginViewModel.HasError);
+            Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
         }
 
         [Fact]
         public async Task Login_InvalidUsernamePassword_HasError()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth)
+            var schedulerProvider = new TestSchedulers();
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, schedulerProvider)
             {
                 Username = TestsConstants.UserUsernameInactive,
                 Password = TestsConstants.UserPasswordInactive
             };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.Execute().ToTask();
 
             Assert.True(loginViewModel.HasError);
         }
@@ -45,13 +48,14 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Login_ValidUsernamePassword_HasNoError()
         {
-            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth)
+            var schedulerProvider = new TestSchedulers();
+            var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, schedulerProvider)
             {
                 Username = TestsConstants.UserUsernameValid,
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.Execute().ToTask();
 
             Assert.False(loginViewModel.HasError);
         }
@@ -61,13 +65,14 @@ namespace Deve.Tests.Maui
         {
             // We use a new instance so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataNoAuth)
+            var schedulerProvider = new TestSchedulers();
+            var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataNoAuth, schedulerProvider)
             {
                 Username = TestsConstants.UserUsernameValid,
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.Execute().ToTask();
 
             navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
         }
