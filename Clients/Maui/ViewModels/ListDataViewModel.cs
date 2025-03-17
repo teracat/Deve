@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
+using Deve.Model;
 using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
@@ -62,12 +63,16 @@ namespace Deve.Clients.Maui.ViewModels
         public async Task LoadData()
         {
             ErrorText = string.Empty;
-            await GetListData();
+            var res = await GetListData();
+            if (!res.Success)
+            {
+                ErrorText = Utils.ErrorsToString(res.Errors);
+            }
         }
         #endregion
 
         #region Abstract/Virtual Methods
-        protected abstract Task GetListData();
+        protected abstract Task<Result> GetListData();
 
         protected virtual void DoSelected(ListData data)
         {
