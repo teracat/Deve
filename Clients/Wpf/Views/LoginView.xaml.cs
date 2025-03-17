@@ -1,10 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Globalization;
-using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
-using System.Reactive.Threading.Tasks;
 
 namespace Deve.Clients.Wpf.Views
 {
@@ -45,7 +44,7 @@ namespace Deve.Clients.Wpf.Views
         protected override void OnWindowLoaded()
         {
             base.OnWindowLoaded();
-            if (string.IsNullOrEmpty(uxUsername.Text))
+            if (string.IsNullOrEmpty(_viewModel.Username))
             {
                 uxUsername.Focus();
             }
