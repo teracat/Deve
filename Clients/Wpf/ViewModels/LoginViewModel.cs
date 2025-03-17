@@ -52,11 +52,7 @@ namespace Deve.Clients.Wpf.ViewModels
             _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
 
             // Commands
-            var canExecuteLogin = this.WhenAnyValue(
-                vm => vm.IsIdle,
-                vm => vm.ValidationContext.IsValid,
-                (isIdle, isValid) => isIdle && isValid
-            );
+            var canExecuteLogin = this.WhenAnyValue(vm => vm.IsIdle);
             LoginCommand = ReactiveCommand.CreateFromTask<string, ResultGet<UserToken>?>(Login, canExecuteLogin, outputScheduler: scheduler.MainThread);
 
             // Validation Rules
