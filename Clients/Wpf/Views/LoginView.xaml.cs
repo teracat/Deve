@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reactive.Linq;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
+using System.Reactive.Threading.Tasks;
 
 namespace Deve.Clients.Wpf.Views
 {
@@ -76,13 +77,13 @@ namespace Deve.Clients.Wpf.Views
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.LoginCommand.Execute(uxPassword.Password).FirstAsync();
+                _ = _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
             }
         }
 
         private async void OnLoginClick(object sender, RoutedEventArgs e)
         {
-            await _viewModel.LoginCommand.Execute(uxPassword.Password).FirstAsync();
+            await _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
         }
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)

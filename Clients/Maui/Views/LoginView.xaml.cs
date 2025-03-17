@@ -1,4 +1,4 @@
-﻿using System.Reactive.Linq;
+﻿using System.Reactive.Threading.Tasks;
 using Deve.Clients.Maui.ViewModels;
 
 namespace Deve.Clients.Maui.Views
@@ -17,6 +17,6 @@ namespace Deve.Clients.Maui.Views
 
         private void OnUsernameCompleted(object sender, EventArgs e) => uxPassword.Focus();
 
-        private void OnPasswordCompleted(object sender, EventArgs e) => _ = _viewModel.LoginCommand.Execute().FirstAsync();
+        private void OnPasswordCompleted(object sender, EventArgs e) => _ = _viewModel.LoginCommand.Execute().ToTask();
     }
 }
