@@ -29,14 +29,6 @@ namespace Deve.Clients.Wpf.Views
                 uxIsoCode.Focus();
             }
         }
-
-        private void OnIsoCodeKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return)
-            {
-                _ = _viewModel.SaveCommand.Execute().Subscribe();
-            }
-        }
         #endregion
     }
 }

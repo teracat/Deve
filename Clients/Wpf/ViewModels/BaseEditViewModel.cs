@@ -4,6 +4,8 @@ using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
+using Deve.Clients.Wpf.Views;
+using Deve.Internal.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -33,10 +35,14 @@ namespace Deve.Clients.Wpf.ViewModels
                 .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
 
             // Subscriptions
-            LoadCommand.SubscribeOn(scheduler.TaskPool)
+            LoadCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
+                       .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true (it allows to set the focus to the initial control)
+                       .SubscribeOn(scheduler.TaskPool)
                        .ObserveOn(scheduler.MainThread)
-                       .Subscribe(res =>
+                       .DistinctUntilChanged()
+                       .Subscribe(tuple =>
                         {
+                            var res = tuple.First;
                             if (res is not null)
                             {
                                 if (!res.Success)
@@ -50,11 +56,14 @@ namespace Deve.Clients.Wpf.ViewModels
                             LoadDataDoneAction?.Invoke();
                         });
 
-            SaveCommand.SubscribeOn(scheduler.TaskPool)
+            SaveCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
+                       .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true
+                       .SubscribeOn(scheduler.TaskPool)
                        .ObserveOn(scheduler.MainThread)
-                       .Subscribe(res =>
-                        {
-                            if (!res.Success)
+                       .Subscribe(tuple =>
+                       {
+                           var res = tuple.First;
+                           if (!res.Success)
                             {
                                 if (res.Errors is not null && res.Errors.Count > 0)
                                 {
