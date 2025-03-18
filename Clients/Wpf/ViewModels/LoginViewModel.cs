@@ -69,7 +69,7 @@ namespace Deve.Clients.Wpf.ViewModels
             // Properties
             _hasErrorPasswordHelper = this.WhenAnyValue(vm => vm._passwordValidation.IsValid)
                                           .Select(isValid => !isValid)
-                                          .ToProperty(this, vm => vm.HasErrorPassword, scheduler: scheduler.TaskPool);
+                                          .ToProperty(this, vm => vm.HasErrorPassword, scheduler: scheduler.TaskPool, initialValue: false);
 
             // Subscriptions
             this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)

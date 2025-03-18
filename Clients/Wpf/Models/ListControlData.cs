@@ -37,7 +37,7 @@ namespace Deve.Clients.Wpf.Models
 
             _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
                                 .Select(isBusy => !isBusy)
-                                .ToProperty(this, x => x.IsIdle);
+                                .ToProperty(this, x => x.IsIdle, initialValue: true);
         }
         #endregion
     }
