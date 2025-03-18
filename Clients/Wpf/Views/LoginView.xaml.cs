@@ -29,21 +29,7 @@ namespace Deve.Clients.Wpf.Views
             }
 #endif
 //+:cnd
-        }
-        #endregion
-
-        #region Methods
-        public void SetUsernamePassword(string username, string password)
-        {
-            _viewModel.Username = username;
-            uxPassword.Password = password;
-        }
-        #endregion
-
-        #region Overrides
-        protected override void OnWindowLoaded()
-        {
-            base.OnWindowLoaded();
+            
             if (string.IsNullOrEmpty(_viewModel.Username))
             {
                 uxUsername.Focus();
@@ -52,6 +38,14 @@ namespace Deve.Clients.Wpf.Views
             {
                 uxPassword.Focus();
             }
+        }
+        #endregion
+
+        #region Methods
+        public void SetUsernamePassword(string username, string password)
+        {
+            _viewModel.Username = username;
+            uxPassword.Password = password;
         }
         #endregion
 

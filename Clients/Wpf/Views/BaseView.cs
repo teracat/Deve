@@ -19,6 +19,11 @@ namespace Deve.Clients.Wpf.Views
                 if (_viewModel != value)
                 {
                     DataContext = _viewModel = value;
+                    if (_viewModel is not null)
+                    {
+                        _viewModel.SetResultAction = SetResult;
+                        _viewModel.CloseAction = Close;
+                    }
                 }
             }
         }
@@ -27,8 +32,6 @@ namespace Deve.Clients.Wpf.Views
         #region Constructor
         public BaseView()
         {
-            Loaded += OnViewLoaded;
-            Unloaded += OnViewUnloaded;
         }
         #endregion
 
@@ -41,26 +44,6 @@ namespace Deve.Clients.Wpf.Views
                 e.Cancel = true;
             }
         }
-        #endregion
-
-        #region Methods
-        protected virtual void OnWindowLoaded()
-        {
-            if (_viewModel is not null)
-            {
-                _viewModel.SetResultAction = SetResult;
-                _viewModel.CloseAction = Close;
-            }
-        }
-
-        protected virtual void OnWindowUnloaded()
-        {
-        }
-        #endregion
-
-        #region Events
-        private void OnViewLoaded(object sender, RoutedEventArgs e) => OnWindowLoaded();
-        private void OnViewUnloaded(object sender, RoutedEventArgs e) => OnWindowUnloaded();
         #endregion
 
         #region IView
