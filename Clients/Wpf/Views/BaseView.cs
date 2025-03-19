@@ -29,12 +29,6 @@ namespace Deve.Clients.Wpf.Views
         }
         #endregion
 
-        #region Constructor
-        public BaseView()
-        {
-        }
-        #endregion
-
         #region Overrides
         protected override void OnClosing(CancelEventArgs e)
         {
