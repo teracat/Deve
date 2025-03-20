@@ -11,6 +11,12 @@
             Errors = [];
         }
 
+        public Result(bool success)
+        {
+            Success = success;
+            Errors = [];
+        }
+
         public Result(Result result)
         {
             Success = result.Success;

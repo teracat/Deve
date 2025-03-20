@@ -29,14 +29,6 @@ namespace Deve.Clients.Wpf.Views
                 uxCountry.Focus();
             }
         }
-
-        private void OnCountryKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return)
-            {
-                _ = _viewModel.Save();
-            }
-        }
         #endregion
     }
 }

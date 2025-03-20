@@ -33,6 +33,8 @@ namespace Deve.Clients.Wpf.Helpers
             services.AddSingleton<IDataSource>(new DataSourceMain(new DataSourceConfig()));
             services.AddSingleton<IAuth, AuthMain>();
             services.AddSingleton<IData, CoreMain>();
+
+            services.AddSingleton<ISchedulerProvider, SchedulerProvider>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)
