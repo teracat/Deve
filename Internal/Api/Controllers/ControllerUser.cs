@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Core;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
@@ -11,11 +10,13 @@ namespace Deve.Internal.Api.Controllers
     [Route(ApiConstants.PathUser)]
     public class ControllerUser : ControllerBaseAll<UserBase, UserPlainPassword, CriteriaUser>
     {
-        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => Core.Users;
+        private readonly IDataUser _data;
 
-        public ControllerUser(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataAll<UserBase, UserPlainPassword, CriteriaUser> DataAll => _data;
+
+        public ControllerUser(IDataUser data)
         {
+            _data = data;
         }
     }
 }

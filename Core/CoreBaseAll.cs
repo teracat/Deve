@@ -1,10 +1,13 @@
 ﻿using Deve.Model;
+using Deve.Auth;
 using Deve.Auth.Permissions;
+using Deve.Data;
+using Deve.DataSource;
 using Deve.Internal.Data;
 
 namespace Deve.Core
 {
-    internal abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria>
+    public abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria>
     {
         #region Abstract Property
         protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }
@@ -15,8 +18,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        protected CoreBaseAll(ICore core)
-            : base(core)
+        public CoreBaseAll(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+            : base(dataSource, auth, options, userIdentity)
         {
         }
         #endregion
@@ -33,7 +36,7 @@ namespace Deve.Core
             //Some basic checks
             if (data is null)
             {
-                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+                return Utils.ResultGetError<ModelId>(Options.LangCode, ResultErrorType.MissingRequiredField);
             }
 
             var resRequired = await CheckRequired(data, ChecksActionType.Add);
@@ -51,7 +54,7 @@ namespace Deve.Core
 
             if (resList.Data is null)
             {
-                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.Unknown);
+                return Utils.ResultGetError<ModelId>(Options.LangCode, ResultErrorType.Unknown);
             }
 
             var resDuplicated = await CheckDuplicated(data, resList.Data, ChecksActionType.Add);
@@ -75,7 +78,7 @@ namespace Deve.Core
             //Some basic checks
             if (data is null)
             {
-                return Utils.ResultGetError<ModelId>(Core.Options.LangCode, ResultErrorType.MissingRequiredField);
+                return Utils.ResultGetError<ModelId>(Options.LangCode, ResultErrorType.MissingRequiredField);
             }
 
             var result = await CheckRequired(data, ChecksActionType.Update);
@@ -93,7 +96,7 @@ namespace Deve.Core
 
             if (resList.Data is null)
             {
-                return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unknown);
+                return Utils.ResultError(Options.LangCode, ResultErrorType.Unknown);
             }
 
             var resChecksAdd = await CheckDuplicated(data, resList.Data, ChecksActionType.Update);
@@ -115,7 +118,7 @@ namespace Deve.Core
             }
 
             //Some basic checks
-            var errorBuilder = ResultBuilder.Create(Core.Options.LangCode)
+            var errorBuilder = ResultBuilder.Create(Options.LangCode)
                                             .CheckNotNullOrEmpty(new Field(id));
             if (errorBuilder.HasErrors)
             {
@@ -140,7 +143,7 @@ namespace Deve.Core
         {
             return Task.Run(() =>
             {
-                return ResultBuilder.Create(Core.Options.LangCode)
+                return ResultBuilder.Create(Options.LangCode)
                                     .CheckNotNullOrEmpty(new Field(id))
                                     .ToResult();
             });

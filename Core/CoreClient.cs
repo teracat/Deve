@@ -3,27 +3,39 @@ using Deve.Auth.Permissions;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreClient : CoreBaseAll<Client, Client, CriteriaClient>, IDataClient
+    public class CoreClient : CoreBaseAll<Client, Client, CriteriaClient>, IDataClient
     {
+        #region Fields
+        private readonly IDataCity _dataCity;
+        private readonly IDataState _dataState;
+        private readonly IDataCountry _dataCountry;
+        #endregion
+
         #region CoreBaseAll Abstract Properties
         protected override IDataAll<Client, Client, CriteriaClient> DataAll => Source.Clients;
         protected override PermissionDataType DataType => PermissionDataType.Client;
         #endregion
 
         #region Constructor
-        public CoreClient(ICore core)
-            : base(core)
+        public CoreClient(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IDataCity dataCity, IDataState dataState, IDataCountry dataCountry)
+            : base(dataSource, auth, options, userIdentity)
         {
+            _dataCity = dataCity;
+            _dataState = dataState;
+            _dataCountry = dataCountry;
         }
         #endregion
 
         #region CoreBaseAll Implementation
         protected override async Task<Result> CheckRequired(Client data, ChecksActionType action)
         {
-            var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+            var resultBuilder = ResultBuilder.Create(Options.LangCode)
                                 .CheckNotNullOrEmpty(new Field(data.Name));
 
             if (action == ChecksActionType.Update)
@@ -35,7 +47,7 @@ namespace Deve.Core
             City? city = null;
             if (data.Location.CityId.HasValue)
             {
-                var cityRes = await Source.Cities.Get(data.Location.CityId.Value);
+                var cityRes = await _dataCity.Get(data.Location.CityId.Value);
                 if (!cityRes.Success)
                 {
                     return cityRes;
@@ -49,7 +61,7 @@ namespace Deve.Core
             State? state = null;
             if (data.Location.StateId.HasValue)
             {
-                var stateRes = await Source.States.Get(data.Location.StateId.Value);
+                var stateRes = await _dataState.Get(data.Location.StateId.Value);
                 if (!stateRes.Success)
                 {
                     return stateRes;
@@ -63,7 +75,7 @@ namespace Deve.Core
             Country? country = null;
             if (data.Location.CountryId.HasValue)
             {
-                var countryRes = await Source.Countries.Get(data.Location.CountryId.Value);
+                var countryRes = await _dataCountry.Get(data.Location.CountryId.Value);
                 if (!countryRes.Success)
                 {
                     return countryRes;
@@ -87,7 +99,7 @@ namespace Deve.Core
             {
                 if (action == ChecksActionType.Add)
                 {
-                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Options, data, list);
                     if (resCheckId is not null)
                     {
                         return resCheckId;
@@ -96,7 +108,7 @@ namespace Deve.Core
 
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
+                    return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
                 }
 
                 return Utils.ResultOk();

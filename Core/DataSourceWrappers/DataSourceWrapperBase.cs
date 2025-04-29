@@ -4,12 +4,11 @@ namespace Deve.Core.DataSourceWrappers
 {
     internal class DataSourceWrapperBase
     {
-        protected ICore Core { get; }
-        protected IDataSource Source => Core.DataSource;
+        protected IDataSource Source { get; }
 
-        public DataSourceWrapperBase(ICore core)
+        public DataSourceWrapperBase(IDataSource dataSource)
         {
-            Core = core;
+            Source = dataSource;
         }
     }
 }

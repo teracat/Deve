@@ -7,9 +7,9 @@ namespace Deve.External.Data
 {
     public interface IData : IDataCommon
     {
-        IDataGet<Country, Country, CriteriaCountry> Countries { get; }
-        IDataGet<State, State, CriteriaState> States { get; }
-        IDataGet<City, City, CriteriaCity> Cities { get; }
-        IDataGet<ClientBasic, Client, CriteriaClientBasic> Clients { get; }
+        IDataCountry Countries { get; }
+        IDataState States { get; }
+        IDataCity Cities { get; }
+        IDataClientBasic Clients { get; }
     }
 }

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
-using Deve.Core;
 using Deve.Internal.Model;
 using Deve.Api.Controllers;
+using Deve.Internal.Data;
 
 namespace Deve.Internal.Api.Controllers
 {
@@ -10,19 +10,17 @@ namespace Deve.Internal.Api.Controllers
     [Route(ApiConstants.PathStats)]
     public class ControllerStats : ControllerBaseAuth
     {
-        #region Constructor
-        public ControllerStats(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
-        {
-        }
-        #endregion
+        private readonly IDataStats _data;
 
-        #region Methods
+        public ControllerStats(IDataStats data)
+        {
+            _data = data;
+        }
+
         [HttpGet(), Route(ApiConstants.MethodGetClientStats)]
         public async Task<ResultGet<ClientStats>> GetClientStats()
         {
-            return await Core.Stats.GetClientStats();
+            return await _data.GetClientStats();
         }
-        #endregion
     }
 }
