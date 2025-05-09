@@ -6,18 +6,15 @@ using Deve.Logging;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.DataSource.Config;
-using Deve.Authenticate;
 using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
 using Deve.Auth.TokenManagers.Jwt;
-using Deve.Core;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Swagger;
 using Deve.Api.Settings;
 using Deve.Core.Shield;
-using Deve.Internal.Data;
 
 namespace Deve.Api
 {
@@ -201,18 +198,8 @@ namespace Deve.Api
 
             // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
             // A new instance is created per request.
-            builder.Services.AddScoped<IAuthenticate, CoreAuth>();
-            builder.Services.AddScoped<IDataCountry, CoreCountry>();
-            builder.Services.AddScoped<IDataState, CoreState>();
-            builder.Services.AddScoped<IDataCity, CoreCity>();
-            builder.Services.AddScoped<IDataUser, CoreUser>();
-            builder.Services.AddScoped<IDataStats, CoreStats>();
-            builder.Services.AddScoped<IDataClient, CoreClient>();
-
-            builder.Services.AddScoped<External.Data.IDataCountry, CoreCountry>();
-            builder.Services.AddScoped<External.Data.IDataState, CoreState>();
-            builder.Services.AddScoped<External.Data.IDataCity, CoreCity>();
-            builder.Services.AddScoped<External.Data.IDataClientBasic, CoreClientBasic>();
+            // See Helpers/ServiceCollectionExtensions class for the implementation.
+            builder.Services.RegisterCoreClasses();
 
             // Logging
             builder.Logging.AddDebug();
