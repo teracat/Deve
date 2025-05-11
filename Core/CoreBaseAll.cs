@@ -18,7 +18,7 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreBaseAll(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+        protected CoreBaseAll(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
             : base(dataSource, auth, options, userIdentity)
         {
         }
