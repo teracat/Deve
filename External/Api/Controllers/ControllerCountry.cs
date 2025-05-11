@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Core;
 using Deve.External.Data;
 using Deve.Api.Controllers;
 
@@ -11,11 +10,13 @@ namespace Deve.External.Api.Controllers
     [Route(ApiConstants.PathCountry)]
     public class ControllerCountry : ControllerBaseGet<Country, Country, CriteriaCountry>
     {
-        protected override IDataGet<Country, Country, CriteriaCountry> DataGet => Core.Countries;
+        private readonly IDataCountry _data;
 
-        public ControllerCountry(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataGet<Country, Country, CriteriaCountry> DataGet => _data;
+
+        public ControllerCountry(IDataCountry data)
         {
+            _data = data;
         }
     }
 }

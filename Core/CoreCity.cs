@@ -2,27 +2,37 @@
 using Deve.Criteria;
 using Deve.Auth.Permissions;
 using Deve.Internal.Data;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreCity : CoreBaseAll<City, City, CriteriaCity>
+    public class CoreCity : CoreBaseAll<City, City, CriteriaCity>, IDataCity, External.Data.IDataCity
     {
+        #region Fields
+        private readonly IDataState _dataState;
+        private readonly IDataCountry _dataCountry;
+        #endregion
+
         #region CoreBaseAll Abstract Properties
         protected override IDataAll<City, City, CriteriaCity> DataAll => Source.Cities;
         protected override PermissionDataType DataType => PermissionDataType.City;
         #endregion
 
         #region Constructor
-        public CoreCity(ICore core)
-            : base(core)
+        public CoreCity(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IDataState dataState, IDataCountry dataCountry)
+            : base(dataSource, auth, options, userIdentity)
         {
+            _dataState = dataState;
+            _dataCountry = dataCountry;
         }
         #endregion
 
         #region CoreBaseAll Implementation
         protected override async Task<Result> CheckRequired(City data, ChecksActionType action)
         {
-            var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+            var resultBuilder = ResultBuilder.Create(Options.LangCode)
                                 .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.StateId), new Field(data.CountryId));
 
             if (action == ChecksActionType.Update)
@@ -33,7 +43,7 @@ namespace Deve.Core
             //Check Valid StateId
             if (!Utils.IsEmptyValue(data.StateId))
             {
-                var stateRes = await Source.States.Get(data.StateId);
+                var stateRes = await _dataState.Get(data.StateId);
                 if (!stateRes.Success)
                 {
                     return stateRes;
@@ -51,7 +61,7 @@ namespace Deve.Core
             //Check Valid CountryId
             if (!Utils.IsEmptyValue(data.CountryId))
             {
-                var countryRes = await Source.Countries.Get(data.CountryId);
+                var countryRes = await _dataCountry.Get(data.CountryId);
                 if (!countryRes.Success)
                 {
                     return countryRes;
@@ -75,7 +85,7 @@ namespace Deve.Core
             {
                 if (action == ChecksActionType.Add)
                 {
-                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Options, data, list);
                     if (resCheckId is not null)
                     {
                         return resCheckId;
@@ -84,7 +94,7 @@ namespace Deve.Core
 
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
+                    return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
                 }
 
                 return Utils.ResultOk();
