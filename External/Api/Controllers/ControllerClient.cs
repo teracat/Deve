@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Core;
 using Deve.External.Model;
 using Deve.External.Data;
 using Deve.Api.Controllers;
@@ -12,11 +11,13 @@ namespace Deve.External.Api.Controllers
     [Route(ApiConstants.PathClient)]
     public class ControllerClient : ControllerBaseGet<ClientBasic, Client, CriteriaClientBasic>
     {
-        protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> DataGet => Core.ClientsBasic;
+        private readonly IDataClientBasic _data;
 
-        public ControllerClient(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataGet<ClientBasic, Client, CriteriaClientBasic> DataGet => _data;
+
+        public ControllerClient(IDataClientBasic data)
         {
+            _data = data;
         }
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Core;
 using Deve.Model;
 using Deve.Internal.Data;
 
@@ -9,13 +8,6 @@ namespace Deve.Api.Controllers
     {
         #region Abstract Property
         protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }
-        #endregion
-
-        #region Constructor
-        protected ControllerBaseAll(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
-        {
-        }
         #endregion
 
         #region Methods

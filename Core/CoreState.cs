@@ -2,27 +2,35 @@
 using Deve.Criteria;
 using Deve.Auth.Permissions;
 using Deve.Internal.Data;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreState : CoreBaseAll<State, State, CriteriaState>
+    public class CoreState : CoreBaseAll<State, State, CriteriaState>, IDataState, External.Data.IDataState
     {
+        #region Fields
+        private readonly IDataCountry _dataCountry;
+        #endregion
+
         #region CoreBaseAll Abstract Properties
         protected override IDataAll<State, State, CriteriaState> DataAll => Source.States;
         protected override PermissionDataType DataType => PermissionDataType.State;
         #endregion
 
         #region Constructor
-        public CoreState(ICore core)
-            : base(core)
+        public CoreState(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IDataCountry dataCountry)
+            : base(dataSource, auth, options, userIdentity)
         {
+            _dataCountry = dataCountry;
         }
         #endregion
 
         #region CoreBaseAll Implementation
         protected override async Task<Result> CheckRequired(State data, ChecksActionType action)
         {
-            var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+            var resultBuilder = ResultBuilder.Create(Options.LangCode)
                                              .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.CountryId));
 
             if (action == ChecksActionType.Update)
@@ -33,7 +41,7 @@ namespace Deve.Core
             //Check Valid CountryId
             if (!Utils.IsEmptyValue(data.CountryId))
             {
-                var countryRes = await Source.Countries.Get(data.CountryId);
+                var countryRes = await _dataCountry.Get(data.CountryId);
                 if (!countryRes.Success)
                 {
                     return countryRes;
@@ -57,7 +65,7 @@ namespace Deve.Core
             {
                 if (action == ChecksActionType.Add)
                 {
-                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Options, data, list);
                     if (resCheckId is not null)
                     {
                         return resCheckId;
@@ -66,7 +74,7 @@ namespace Deve.Core
 
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
+                    return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
                 }
 
                 return Utils.ResultOk();

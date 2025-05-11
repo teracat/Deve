@@ -4,10 +4,13 @@ using Deve.Core.DataSourceWrappers;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>
+    public class CoreUser : CoreBaseAll<UserBase, UserPlainPassword, CriteriaUser>, IDataUser
     {
         #region Fields
         private readonly DataSourceWrapperUser _wrapperUser;
@@ -19,10 +22,10 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreUser(ICore core)
-            : base(core)
+        public CoreUser(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+            : base(dataSource, auth, options, userIdentity)
         {
-            _wrapperUser = new DataSourceWrapperUser(core);
+            _wrapperUser = new DataSourceWrapperUser(dataSource, auth);
         }
         #endregion
 
@@ -31,7 +34,7 @@ namespace Deve.Core
         {
             return Task.Run(() =>
             {
-                var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+                var resultBuilder = ResultBuilder.Create(Options.LangCode)
                                                  .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.Username));
 
                 switch (action)
@@ -59,7 +62,7 @@ namespace Deve.Core
             {
                 if (action == ChecksActionType.Add)
                 {
-                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Options, data, list);
                     if (resCheckId is not null)
                     {
                         return resCheckId;
@@ -70,7 +73,7 @@ namespace Deve.Core
                 {
                     if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Username) && x.Username.Equals(data.Username, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Username));
+                        return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Username));
                     }
                 }
 
@@ -78,7 +81,7 @@ namespace Deve.Core
                 {
                     if (list.Any(x => x.Id != data.Id && !string.IsNullOrWhiteSpace(x.Email) && x.Email.Equals(data.Email, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Email));
+                        return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Email));
                     }
                 }
 
@@ -95,9 +98,9 @@ namespace Deve.Core
             }
 
             //A User can't delete its own user
-            if (Core.UserIdentity is not null && Core.UserIdentity.Id == id)
+            if (UserIdentity is not null && UserIdentity.Id == id)
             {
-                return Utils.ResultError(Core.Options.LangCode, ResultErrorType.NotAllowed, nameof(id));
+                return Utils.ResultError(Options.LangCode, ResultErrorType.NotAllowed, nameof(id));
             }
 
             return Utils.ResultOk();

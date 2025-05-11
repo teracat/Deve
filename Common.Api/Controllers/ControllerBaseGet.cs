@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
-using Deve.Core;
 using Deve.External.Data;
 
 namespace Deve.Api.Controllers
@@ -9,13 +8,6 @@ namespace Deve.Api.Controllers
     {
         #region Abstract Property
         protected abstract IDataGet<ModelList, Model, Criteria> DataGet { get; }
-        #endregion
-
-        #region Constructor
-        protected ControllerBaseGet(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
-        {
-        }
         #endregion
 
         #region Methods
