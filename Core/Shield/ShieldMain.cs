@@ -5,7 +5,7 @@ using Deve.Model;
 
 namespace Deve.Core.Shield
 {
-    internal class ShieldMain : IShield
+    public class ShieldMain : IShield
     {
         #region Constants
         /// <summary>

@@ -36,6 +36,6 @@ namespace Deve.Auth
         /// <returns>
         /// A <see cref="PermissionResult"/> indicating whether the permission is granted.
         /// </returns>
-        Task<PermissionResult> IsGranted(UserIdentity? user, PermissionType type, PermissionDataType dataType);
+        Task<PermissionResult> IsGranted(IUserIdentity? user, PermissionType type, PermissionDataType dataType);
     }
 }

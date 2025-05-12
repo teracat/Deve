@@ -1,4 +1,6 @@
 ﻿using Deve.Model;
+using Deve.DataSource;
+using Deve.Auth;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
@@ -12,17 +14,22 @@ namespace Deve.Core.DataSourceWrappers
     /// </summary>
     internal class DataSourceWrapperUser : DataSourceWrapperBase, IDataAll<UserBase, UserPlainPassword, CriteriaUser>
     {
+        #region Properties
+        public IAuth Auth { get; }
+        #endregion
+
         #region Constructor
-        public DataSourceWrapperUser(ICore core)
-            : base(core)
+        public DataSourceWrapperUser(IDataSource dataSource, IAuth auth)
+            : base(dataSource)
         {
+            Auth = auth;
         }
         #endregion
 
         #region IDataAll
         public async Task<ResultGetList<UserBase>> Get(CriteriaUser? criteria)
         {
-            var resUsers = await Core.DataSource.Users.Get(criteria);
+            var resUsers = await Source.Users.Get(criteria);
             if (!resUsers.Success)
             {
                 return Utils.ResultGetListError<UserBase>(resUsers);
@@ -39,7 +46,7 @@ namespace Deve.Core.DataSourceWrappers
 
         public async Task<ResultGet<UserPlainPassword>> Get(long id)
         {
-            var resUser = await Core.DataSource.Users.Get(id);
+            var resUser = await Source.Users.Get(id);
             if (!resUser.Success || resUser.Data is null)
             {
                 return Utils.ResultGetError<UserPlainPassword>(resUser);
@@ -53,10 +60,10 @@ namespace Deve.Core.DataSourceWrappers
             //The password will not be null because is already checked in the CoreUser.CheckRequired
             var user = new User(data)
             {
-                PasswordHash = Core.Auth.Hash.Calc(data.Password ?? data.Username)
+                PasswordHash = Auth.Hash.Calc(data.Password ?? data.Username)
             };
 
-            return await Core.DataSource.Users.Add(user);
+            return await Source.Users.Add(user);
         }
 
         public async Task<Result> Update(UserPlainPassword data)
@@ -65,7 +72,7 @@ namespace Deve.Core.DataSourceWrappers
             string newPasswordHash = string.Empty;
             if (!string.IsNullOrWhiteSpace(data.Password))
             {
-                newPasswordHash = Core.Auth.Hash.Calc(data.Password);
+                newPasswordHash = Auth.Hash.Calc(data.Password);
             }
 
             var user = new User(data)
@@ -73,12 +80,12 @@ namespace Deve.Core.DataSourceWrappers
                 PasswordHash = newPasswordHash
             };
 
-            return await Core.DataSource.Users.Update(user);
+            return await Source.Users.Update(user);
         }
 
         public async Task<Result> Delete(long id)
         {
-            return await Core.DataSource.Users.Delete(id);
+            return await Source.Users.Delete(id);
         }
         #endregion
     }

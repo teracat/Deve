@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Core;
 using Deve.External.Data;
 using Deve.Api.Controllers;
 
@@ -11,11 +10,13 @@ namespace Deve.External.Api.Controllers
     [Route(ApiConstants.PathCity)]
     public class ControllerCity : ControllerBaseGet<City, City, CriteriaCity>
     {
-        protected override IDataGet<City, City, CriteriaCity> DataGet => Core.Cities;
+        private readonly IDataCity _data;
 
-        public ControllerCity(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataGet<City, City, CriteriaCity> DataGet => _data;
+
+        public ControllerCity(IDataCity data)
         {
+            _data = data;
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using Deve.Auth.Permissions;
+﻿using Deve.Model;
+using Deve.Auth;
+using Deve.Auth.Permissions;
+using Deve.Data;
+using Deve.DataSource;
 using Deve.External.Data;
-using Deve.Model;
 
 namespace Deve.Core
 {
-    internal abstract class CoreBaseGet<ModelList, Model, Criteria> : CoreBase, IDataGet<ModelList, Model, Criteria>
+    public abstract class CoreBaseGet<ModelList, Model, Criteria> : CoreBase, IDataGet<ModelList, Model, Criteria>
     {
         #region Abstract Property
         protected abstract IDataGet<ModelList, Model, Criteria> DataGet { get; }
@@ -12,8 +15,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        protected CoreBaseGet(ICore core)
-            : base(core)
+        protected CoreBaseGet(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+            : base(dataSource, auth, options, userIdentity)
         {
         }
         #endregion
@@ -42,7 +45,7 @@ namespace Deve.Core
 
             if (id <= 0)
             {
-                return Utils.ResultGetError<Model>(Core.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(id));
+                return Utils.ResultGetError<Model>(Options.LangCode, ResultErrorType.MissingRequiredField, nameof(id));
             }
 
             return await DataGet.Get(id);
