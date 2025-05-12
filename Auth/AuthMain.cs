@@ -34,7 +34,7 @@ namespace Deve.Auth
         #endregion
 
         #region Methods
-        private PermissionResult HasUser(UserIdentity? user)
+        private PermissionResult HasUser(IUserIdentity? user)
         {
             if (user is null)
             {
@@ -43,7 +43,7 @@ namespace Deve.Auth
             return PermissionResult.Granted;
         }
 
-        private PermissionResult HasUserAdmin(UserIdentity? user)
+        private PermissionResult HasUserAdmin(IUserIdentity? user)
         {
             if (user is null)
             {
@@ -88,7 +88,7 @@ namespace Deve.Auth
             return Utils.ResultGetOk(user);
         }
 
-        public Task<PermissionResult> IsGranted(UserIdentity? user, PermissionType type, PermissionDataType dataType)
+        public Task<PermissionResult> IsGranted(IUserIdentity? user, PermissionType type, PermissionDataType dataType)
         {
             return Task.Run(() =>
             {

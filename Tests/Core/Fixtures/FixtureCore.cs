@@ -1,5 +1,5 @@
-﻿using Deve.Core;
-using Deve.Authenticate;
+﻿using Deve.Authenticate;
+using Deve.Core;
 
 namespace Deve.Tests.Core.Fixtures
 {

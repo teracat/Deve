@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
-using Deve.Core;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
@@ -12,17 +11,19 @@ namespace Deve.Internal.Api.Controllers
     [Route(ApiConstants.PathClient)]
     public class ControllerClient : ControllerBaseAll<Client, Client, CriteriaClient>
     {
-        protected override IDataAll<Client, Client, CriteriaClient> DataAll => Core.Clients;
+        private readonly IDataClient _data;
 
-        public ControllerClient(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataAll<Client, Client, CriteriaClient> DataAll => _data;
+
+        public ControllerClient(IDataClient data)
         {
+            _data = data;
         }
 
         [HttpPut, Route(ApiConstants.MethodUpdateStatus + "/{id}/{newStatus}")]
         public async Task<Result> UpdateStatus(long id, ClientStatus newStatus)
         {
-            return await Core.Clients.UpdateStatus(id, newStatus);
+            return await _data.UpdateStatus(id, newStatus);
         }
     }
 }

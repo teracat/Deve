@@ -2,10 +2,13 @@
 using Deve.Criteria;
 using Deve.Auth.Permissions;
 using Deve.Internal.Data;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreCountry : CoreBaseAll<Country, Country, CriteriaCountry>
+    public class CoreCountry : CoreBaseAll<Country, Country, CriteriaCountry>, IDataCountry, External.Data.IDataCountry
     {
         #region CoreBaseAll Abstract Properties
         protected override IDataAll<Country, Country, CriteriaCountry> DataAll => Source.Countries;
@@ -13,8 +16,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreCountry(ICore core)
-            : base(core)
+        public CoreCountry(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+            : base(dataSource, auth, options, userIdentity)
         {
         }
         #endregion
@@ -24,7 +27,7 @@ namespace Deve.Core
         {
             return await Task.Run(() =>
             {
-                var resultBuilder = ResultBuilder.Create(Core.Options.LangCode)
+                var resultBuilder = ResultBuilder.Create(Options.LangCode)
                                                  .CheckNotNullOrEmpty(new Field(data.Name), new Field(data.IsoCode));
 
                 if (action == ChecksActionType.Update)
@@ -42,7 +45,7 @@ namespace Deve.Core
             {
                 if (action == ChecksActionType.Add)
                 {
-                    var resCheckId = UtilsCore.CheckIdWhenAdding(Core, data, list);
+                    var resCheckId = UtilsCore.CheckIdWhenAdding(Options, data, list);
                     if (resCheckId is not null)
                     {
                         return resCheckId;
@@ -51,12 +54,12 @@ namespace Deve.Core
 
                 if (list.Any(x => x.Id != data.Id && x.Name.Equals(data.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
+                    return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.Name));
                 }
 
                 if (list.Any(x => x.Id != data.Id && x.IsoCode.Equals(data.IsoCode, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return Utils.ResultError(Core.Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.IsoCode));
+                    return Utils.ResultError(Options.LangCode, ResultErrorType.DuplicatedValue, nameof(data.IsoCode));
                 }
 
                 return Utils.ResultOk();

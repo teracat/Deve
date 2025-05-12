@@ -1,13 +1,10 @@
-﻿using Deve.Model;
-using Deve.Authenticate;
-using Deve.Criteria;
+﻿using Deve.Authenticate;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Auth;
 using Deve.Core.Shield;
 using Deve.Internal.Model;
 using Deve.Internal.Data;
-using Deve.Internal.Criteria;
 
 namespace Deve.Core
 {
@@ -118,15 +115,15 @@ namespace Deve.Core
             }
         }
 
-        public IAuthenticate Authenticate => _coreAuth ??= new CoreAuth(this);
-        public IDataAll<Country, Country, CriteriaCountry> Countries => _coreCountry ??= new CoreCountry(this);
-        public IDataAll<State, State, CriteriaState> States => _coreState ??= new CoreState(this);
-        public IDataAll<City, City, CriteriaCity> Cities => _coreCity ??= new CoreCity(this);
-        public IDataClient Clients => _coreClient ??= new CoreClient(this);
-        public IDataAll<UserBase, UserPlainPassword, CriteriaUser> Users => _coreUser ??= new CoreUser(this);
-        public IDataStats Stats => _coreStats ??= new CoreStats(this);
+        public IAuthenticate Authenticate => _coreAuth ??= new CoreAuth(DataSource, Auth, Options, UserIdentity, this);
+        public IDataCountry Countries => _coreCountry ??= new CoreCountry(DataSource, Auth, Options, UserIdentity);
+        public IDataState States => _coreState ??= new CoreState(DataSource, Auth, Options, UserIdentity, Countries);
+        public IDataCity Cities => _coreCity ??= new CoreCity(DataSource, Auth, Options, UserIdentity, States, Countries);
+        public IDataClient Clients => _coreClient ??= new CoreClient(DataSource, Auth, Options, UserIdentity, Cities, States, Countries);
+        public IDataUser Users => _coreUser ??= new CoreUser(DataSource, Auth, Options, UserIdentity);
+        public IDataStats Stats => _coreStats ??= new CoreStats(DataSource, Auth, Options, UserIdentity);
 
-        public External.Data.IDataGet<ClientBasic, External.Model.Client, CriteriaClientBasic> ClientsBasic => _coreClientBasic ??= new CoreClientBasic(this);
+        public External.Data.IDataClientBasic ClientsBasic => _coreClientBasic ??= new CoreClientBasic(DataSource, Auth, Options, UserIdentity);
         #endregion
 
         #region Constructor

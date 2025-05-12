@@ -7,7 +7,7 @@ namespace Deve.Auth
     /// User information used internally (can contain private information).
     /// When new properties are needed, you should also change the UserConverter methods.
     /// </summary>
-    public class UserIdentity
+    public class UserIdentity : IUserIdentity
     {
         /// <summary>
         /// Unique identifier of the user.

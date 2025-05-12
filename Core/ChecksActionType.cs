@@ -1,6 +1,6 @@
 ﻿namespace Deve.Core
 {
-    internal enum ChecksActionType
+    public enum ChecksActionType
     {
         Add, 
         Update

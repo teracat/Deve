@@ -1,20 +1,17 @@
-﻿using Deve.Criteria;
-using Deve.Data;
-using Deve.Model;
+﻿using Deve.Data;
+using Deve.External.Data;
 using Deve.Sdk;
 using Deve.Sdk.LoggingHandlers;
-using Deve.External.Model;
-using Deve.External.Data;
 
 namespace Deve.External.Sdk
 {
     public class SdkMain : SdkMainBase, ISdk
     {
         #region Fields
-        private SdkBaseGet<Country, Country, CriteriaCountry, ISdk>? _sdkCountry;
-        private SdkBaseGet<State, State, CriteriaState, ISdk>? _sdkState;
-        private SdkBaseGet<City, City, CriteriaCity, ISdk>? _sdkCity;
-        private SdkBaseGet<ClientBasic, Client, CriteriaClientBasic, ISdkCommon>? _sdkClient;
+        private IDataCountry? _sdkCountry;
+        private IDataState? _sdkState;
+        private IDataCity? _sdkCity;
+        private IDataClientBasic? _sdkClient;
         #endregion
 
         #region Properties
@@ -54,13 +51,13 @@ namespace Deve.External.Sdk
         #endregion
 
         #region IData
-        public IDataGet<Country, Country, CriteriaCountry> Countries => _sdkCountry ??= new SdkBaseGet<Country, Country, CriteriaCountry, ISdk>(ApiConstants.PathCountry, this);
+        public IDataCountry Countries => _sdkCountry ??= new SdkCountry(this);
 
-        public IDataGet<State, State, CriteriaState> States => _sdkState ??= new SdkBaseGet<State, State, CriteriaState, ISdk>(ApiConstants.PathState, this);
+        public IDataState States => _sdkState ??= new SdkState(this);
 
-        public IDataGet<City, City, CriteriaCity> Cities => _sdkCity ??= new SdkBaseGet<City, City, CriteriaCity, ISdk>(ApiConstants.PathCity, this);
+        public IDataCity Cities => _sdkCity ??= new SdkCity(this);
 
-        public IDataGet<ClientBasic, Client, CriteriaClientBasic> Clients => _sdkClient ??= new SdkBaseGet<ClientBasic, Client, CriteriaClientBasic, ISdkCommon>(ApiConstants.PathClient, this);
+        public IDataClientBasic Clients => _sdkClient ??= new SdkClient(this);
         #endregion
     }
 }

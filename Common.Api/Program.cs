@@ -10,11 +10,11 @@ using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
 using Deve.Auth.TokenManagers.Jwt;
-using Deve.Core;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Swagger;
 using Deve.Api.Settings;
+using Deve.Core.Shield;
 
 namespace Deve.Api
 {
@@ -31,7 +31,9 @@ namespace Deve.Api
             var appSettings = new AppSettings();
 
             // Binds the "AppSettings" section from the configuration file to the appSettings instance.
-            builder.Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
+            builder.Configuration
+                   .GetSection(nameof(AppSettings))
+                   .Bind(appSettings);
 
             // Uncomment the following lines and set the DefaultConnection in appsettings.json, if needed
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
@@ -73,7 +75,6 @@ namespace Deve.Api
                 // Comment the next line if you don't want to modify the response status code.
                 options.Filters.Add<ResultResponseFilter>();
             });
-
 
             // Adds API explorer support.
             builder.Services.AddEndpointsApiExplorer();
@@ -183,13 +184,22 @@ namespace Deve.Api
             // A new instance is created for each request, based on the current HTTP context.
             builder.Services.AddScoped<IDataOptions, DataOptionsFromContextAccessor>();
 
+            // Registers UserIdentityFromContextAccessor as the implementation for IUserIdentity with a scoped lifetime.
+            // A new instance is created for each request, based on the current HTTP context.
+            builder.Services.AddScoped<IUserIdentity, UserIdentityFromContextAccessor>();
+
             // Registers AuthMain as the implementation for IAuth with a scoped lifetime.
             // A new instance is created per request to handle authentication operations.
             builder.Services.AddScoped<IAuth, AuthMain>();
 
-            // Registers CoreMain as the implementation for ICore with scoped lifetime.
+            // Registers ShieldMain as the implementation for IShield with singleton lifetime.
+            // A single instance is created and shared across the entire application.
+            builder.Services.AddSingleton<IShield, ShieldMain>();
+
+            // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
             // A new instance is created per request.
-            builder.Services.AddScoped<ICore, CoreMain>();
+            // See Helpers/ServiceCollectionExtensions class for the implementation.
+            builder.Services.RegisterCoreClasses();
 
             // Logging
             builder.Logging.AddDebug();
