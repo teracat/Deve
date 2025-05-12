@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Model;
 using Deve.Criteria;
-using Deve.Core;
 using Deve.Internal.Data;
 using Deve.Api.Controllers;
 
@@ -11,11 +10,13 @@ namespace Deve.Internal.Api.Controllers
     [Route(ApiConstants.PathState)]
     public class ControllerState : ControllerBaseAll<State, State, CriteriaState>
     {
-        protected override IDataAll<State, State, CriteriaState> DataAll => Core.States;
+        private readonly IDataState _data;
 
-        public ControllerState(IHttpContextAccessor contextAccessor, ICore core)
-            : base(contextAccessor, core)
+        protected override IDataAll<State, State, CriteriaState> DataAll => _data;
+
+        public ControllerState(IDataState data)
         {
+            _data = data;
         }
     }
 }

@@ -4,7 +4,7 @@ using Deve.Internal.Data;
 
 namespace Deve.Internal.Sdk
 {
-    internal class SdkBaseAll<ModelList, Model, Criteria> : External.Sdk.SdkBaseGet<ModelList, Model, Criteria, ISdk>, IDataAll<ModelList, Model, Criteria>
+    internal class SdkBaseAll<ModelList, Model, Criteria> : External.Sdk.SdkBaseGet<ModelList, Model, Criteria, ISdk>
     {
         #region Constructor
         public SdkBaseAll(string path, ISdk sdk)

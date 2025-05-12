@@ -1,33 +1,40 @@
 ﻿using Deve.Model;
-using Deve.DataSource;
 using Deve.Auth.Permissions;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal abstract class CoreBase
+    public abstract class CoreBase
     {
         #region Properties
-        protected ICore Core { get; }
-        protected IDataSource Source => Core.DataSource;
+        protected IDataSource Source { get; }
+        protected IAuth Auth { get; }
+        protected IDataOptions Options { get; }
+        protected IUserIdentity? UserIdentity { get; }
         #endregion
 
         #region Constructor
-        protected CoreBase(ICore core)
+        protected CoreBase(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
         {
-            Core = core;
+            Source = dataSource;
+            Auth = auth;
+            Options = options;
+            UserIdentity = userIdentity;
         }
         #endregion
 
         #region Methods
         protected async virtual Task<Result> CheckPermission(PermissionType type, PermissionDataType dataType)
         {
-            var permissionResult = await Core.Auth.IsGranted(Core.UserIdentity, type, dataType);
+            var permissionResult = await Auth.IsGranted(UserIdentity, type, dataType);
             if (permissionResult == PermissionResult.Granted)
             {
                 return Utils.ResultOk();
             }
 
-            return Utils.ResultError(Core.Options.LangCode, ResultErrorType.Unauthorized);
+            return Utils.ResultError(Options.LangCode, ResultErrorType.Unauthorized);
         }
         #endregion
     }

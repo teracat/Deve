@@ -2,14 +2,17 @@
 using Deve.Auth.Permissions;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Auth;
+using Deve.Data;
+using Deve.DataSource;
 
 namespace Deve.Core
 {
-    internal class CoreStats : CoreBase, IDataStats
+    public class CoreStats : CoreBase, IDataStats
     {
         #region Constructor
-        public CoreStats(ICore core)
-            : base(core)
+        public CoreStats(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
+            : base(dataSource, auth, options, userIdentity)
         {
         }
         #endregion
