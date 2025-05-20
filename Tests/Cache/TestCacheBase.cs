@@ -6,7 +6,7 @@ namespace Cache
     {
         private readonly IFixtureCache _fixtureCache;
 
-        public TestCacheBase(IFixtureCache fixtureCache)
+        protected TestCacheBase(IFixtureCache fixtureCache)
         {
             _fixtureCache = fixtureCache;
         }
