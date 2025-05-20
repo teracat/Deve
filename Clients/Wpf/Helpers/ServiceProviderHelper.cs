@@ -35,7 +35,7 @@ namespace Deve.Clients.Wpf.Helpers
             services.AddSingleton<IDataSource>(new DataSourceMain(new DataSourceConfig()));
             services.AddSingleton<IAuth, AuthMain>();
             services.AddSingleton<ICache, SimpleInMemoryCache>();
-            services.AddSingleton<IUserIdentityService, DefaultUserIdentityService>();
+            services.AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>();
             services.AddSingleton<IData, CoreMain>();
         }
 

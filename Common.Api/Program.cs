@@ -186,9 +186,10 @@ namespace Deve.Api
             // A new instance is created for each request, based on the current HTTP context.
             builder.Services.AddScoped<IDataOptions, DataOptionsFromContextAccessor>();
 
-            // Registers UserIdentityFromContextAccessor as the implementation for IUserIdentity with a scoped lifetime.
+            // Registers ContextAccessorUserIdentityService as the implementation for IUserIdentityService with a scoped lifetime.
             // A new instance is created for each request, based on the current HTTP context.
-            builder.Services.AddScoped<IUserIdentityService, UserIdentityServiceContextAccessor>();
+            // This service is used to retrieve user identity information from the HTTP context.
+            builder.Services.AddScoped<IUserIdentityService, ContextAccessorUserIdentityService>();
 
             // Registers AuthMain as the implementation for IAuth with a scoped lifetime.
             // A new instance is created per request to handle authentication operations.

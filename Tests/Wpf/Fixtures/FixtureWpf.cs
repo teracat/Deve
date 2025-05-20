@@ -25,8 +25,8 @@ namespace Deve.Tests.Wpf.Fixtures
         public FixtureWpf()
         {
             Cache = new SimpleInMemoryCache();
-            UserIdentityServiceNoAuth = new DefaultUserIdentityService();
-            UserIdentityServiceAuth = new DefaultUserIdentityService();
+            UserIdentityServiceNoAuth = new EmbeddedUserIdentityService();
+            UserIdentityServiceAuth = new EmbeddedUserIdentityService();
             DataNoAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceNoAuth, Cache);
             DataValidAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceAuth, Cache);
 

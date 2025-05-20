@@ -2,16 +2,17 @@
 {
     /// <summary>
     /// Service to get the current user identity.
+    /// Used for embedded application (see WPF client sample).
     /// </summary>
-    public class DefaultUserIdentityService : IUserIdentityService
+    public class EmbeddedUserIdentityService : IUserIdentityService
     {
         public IUserIdentity? UserIdentity { get; set; }
 
-        public DefaultUserIdentityService()
+        public EmbeddedUserIdentityService()
         {
         }
 
-        public DefaultUserIdentityService(IUserIdentity? userIdentity)
+        public EmbeddedUserIdentityService(IUserIdentity? userIdentity)
         {
             UserIdentity = userIdentity;
         }

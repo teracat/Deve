@@ -42,7 +42,7 @@ namespace Deve.Clients
             using var tokenManager = new TokenManagerCrypt();
             using var auth = new AuthMain(tokenManager, dataSource, hash, options);
             using var cache = new SimpleInMemoryCache();
-            using var data = new CoreMain(dataSource, auth, options, new DefaultUserIdentityService(), cache);
+            using var data = new CoreMain(dataSource, auth, options, new EmbeddedUserIdentityService(), cache);
             InternalData(data);
         }
 
