@@ -10,8 +10,6 @@ namespace Deve.Core
     {
         IDataSource DataSource { get; }
         IAuth Auth { get; }
-        UserIdentity? UserIdentity { get; set; }
-        User? User { get; set; }
         IShield Shield { get; }
     }
 }

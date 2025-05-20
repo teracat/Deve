@@ -1,9 +1,11 @@
 ﻿using Deve.Model;
 using Deve.Auth;
 using Deve.Auth.Permissions;
+using Deve.Auth.UserIdentityService;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Internal.Data;
+using Deve.Cache;
 
 namespace Deve.Core
 {
@@ -18,8 +20,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        protected CoreBaseAll(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
-            : base(dataSource, auth, options, userIdentity)
+        protected CoreBaseAll(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, ICache? cache)
+            : base(dataSource, auth, options, userIdentityService, cache)
         {
         }
         #endregion
