@@ -10,11 +10,13 @@ using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
 using Deve.Auth.TokenManagers.Jwt;
+using Deve.Auth.UserIdentityService;
+using Deve.Cache;
+using Deve.Core.Shield;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Swagger;
 using Deve.Api.Settings;
-using Deve.Core.Shield;
 
 namespace Deve.Api
 {
@@ -35,13 +37,13 @@ namespace Deve.Api
                    .GetSection(nameof(AppSettings))
                    .Bind(appSettings);
 
-            // Uncomment the following lines and set the DefaultConnection in appsettings.json, if needed
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(connectionString))
+            // Set the DataSourceConnection in appsettings.json. If you don't need it, you can remove this lines.
+            var dsConnectionString = builder.Configuration.GetConnectionString("DataSourceConnection") ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(dsConnectionString))
             {
-                throw new Exception("The ConnectionString is empty. Please set the ConnectionString in the appsettings.json file.");
+                throw new Exception("The DataSourceConnection is empty. Please set the DataSourceConnection in the appsettings.json file.");
             }
-            var dsConfig = new DataSourceConfig(connectionString);
+            var dsConfig = new DataSourceConfig(dsConnectionString);
 
             // Configures localization settings for the application.
             builder.Services.Configure<RequestLocalizationOptions>(config =>
@@ -186,7 +188,7 @@ namespace Deve.Api
 
             // Registers UserIdentityFromContextAccessor as the implementation for IUserIdentity with a scoped lifetime.
             // A new instance is created for each request, based on the current HTTP context.
-            builder.Services.AddScoped<IUserIdentity, UserIdentityFromContextAccessor>();
+            builder.Services.AddScoped<IUserIdentityService, UserIdentityServiceContextAccessor>();
 
             // Registers AuthMain as the implementation for IAuth with a scoped lifetime.
             // A new instance is created per request to handle authentication operations.
@@ -195,6 +197,28 @@ namespace Deve.Api
             // Registers ShieldMain as the implementation for IShield with singleton lifetime.
             // A single instance is created and shared across the entire application.
             builder.Services.AddSingleton<IShield, ShieldMain>();
+
+            // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
+            // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
+            builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
+
+            // Registers InMemoryCache as the implementation for ICache with singleton lifetime.
+            // The cache is configured with a 15-minute expiration scan frequency and a size limit of 50 MB.
+            // This is an alternative and it's included in the Extra/Cache.Memory project (you should add it if you want to use this implementation).
+            //builder.Services.AddSingleton<ICache>(new InMemoryCache(new MemoryCacheOptions()
+            //{
+            //    ExpirationScanFrequency = TimeSpan.FromMinutes(15),
+            //}));
+
+            // Registers RedisCache as the implementation for ICache with singleton lifetime.
+            // The RedisCacheConnection string is retrieved from the configuration file.
+            // This is an alternative and it's included in the Extra/Cache.Redis project (you should add it if you want to use this implementation).
+            //var redisConnection = builder.Configuration.GetConnectionString("RedisCacheConnection") ?? string.Empty;
+            //if (string.IsNullOrWhiteSpace(redisConnection))
+            //{
+            //    throw new Exception("The RedisCacheConnection is empty. Please set the RedisCacheConnection in the appsettings.json file.");
+            //}
+            //builder.Services.AddSingleton<ICache>(new RedisCache(redisConnection));
 
             // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
             // A new instance is created per request.

@@ -1,8 +1,9 @@
 ﻿using Deve.Model;
 using Deve.Criteria;
-using Deve.Auth.Permissions;
-using Deve.Internal.Data;
 using Deve.Auth;
+using Deve.Auth.Permissions;
+using Deve.Auth.UserIdentityService;
+using Deve.Internal.Data;
 using Deve.Data;
 using Deve.DataSource;
 
@@ -21,8 +22,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreCity(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IDataState dataState, IDataCountry dataCountry)
-            : base(dataSource, auth, options, userIdentity)
+        public CoreCity(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, IDataState dataState, IDataCountry dataCountry)
+            : base(dataSource, auth, options, userIdentityService, null)
         {
             _dataState = dataState;
             _dataCountry = dataCountry;

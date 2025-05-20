@@ -1,26 +1,34 @@
 ﻿using Moq;
 using Deve.Authenticate;
 using Deve.Core;
+using Deve.Cache;
 using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
+using Deve.Auth.UserIdentityService;
 
 namespace Deve.Tests.Wpf.Fixtures
 {
     public class FixtureWpf : FixtureCommon
     {
         #region Properties
-        public IData DataNoAuth { get; private set; }        
-        public IData DataValidAuth { get; private set; }
+        public IData DataNoAuth { get; }        
+        public IData DataValidAuth { get; }
 
-        public Mock<IMessageHandler> MessageHandler { get; private set; }
-        public Mock<INavigationService> NavigationService { get; private set; }
+        public Mock<IMessageHandler> MessageHandler { get; }
+        public Mock<INavigationService> NavigationService { get; }
+        private ICache Cache { get; }
+        private IUserIdentityService UserIdentityServiceNoAuth { get; }
+        private IUserIdentityService UserIdentityServiceAuth { get; }
         #endregion
 
         #region Constructor
         public FixtureWpf()
         {
-            DataNoAuth = new CoreMain(DataSource, Auth, Options);
-            DataValidAuth = new CoreMain(DataSource, Auth, Options);
+            Cache = new SimpleInMemoryCache();
+            UserIdentityServiceNoAuth = new DefaultUserIdentityService();
+            UserIdentityServiceAuth = new DefaultUserIdentityService();
+            DataNoAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceNoAuth, Cache);
+            DataValidAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceAuth, Cache);
 
             NavigationService = new Mock<INavigationService>();
             MessageHandler = new Mock<IMessageHandler>();
@@ -37,6 +45,7 @@ namespace Deve.Tests.Wpf.Fixtures
         {
             DataNoAuth.Dispose();
             DataValidAuth.Dispose();
+            Cache.Dispose();
             return base.DisposeAsync();
         }
         #endregion
