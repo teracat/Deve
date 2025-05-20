@@ -6,7 +6,9 @@ using Deve.DataSource.Config;
 using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
+using Deve.Auth.UserIdentityService;
 using Deve.Core;
+using Deve.Cache;
 using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Services;
@@ -32,6 +34,8 @@ namespace Deve.Clients.Wpf.Helpers
             services.AddSingleton<ITokenManager, TokenManagerCrypt>();
             services.AddSingleton<IDataSource>(new DataSourceMain(new DataSourceConfig()));
             services.AddSingleton<IAuth, AuthMain>();
+            services.AddSingleton<ICache, SimpleInMemoryCache>();
+            services.AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>();
             services.AddSingleton<IData, CoreMain>();
         }
 

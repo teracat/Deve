@@ -21,5 +21,7 @@ namespace Deve.Core
             }
             return null;
         }
+
+        public static string GetCacheKeyForType<T>(long id) => $"{nameof(T)}-{id}";
     }
 }

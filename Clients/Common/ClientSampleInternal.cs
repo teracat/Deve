@@ -1,7 +1,7 @@
-﻿using Deve.Model;
+﻿using System.Text;
+using Deve.Model;
 using Deve.Authenticate;
 using Deve.Internal.Data;
-using System.Text;
 
 namespace Deve.Clients
 {

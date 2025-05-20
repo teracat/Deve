@@ -1,10 +1,11 @@
 ﻿using Deve.Model;
+using Deve.Auth;
 using Deve.Auth.Permissions;
+using Deve.Auth.UserIdentityService;
 using Deve.Core.DataSourceWrappers;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
-using Deve.Auth;
 using Deve.Data;
 using Deve.DataSource;
 
@@ -22,8 +23,8 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreUser(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity)
-            : base(dataSource, auth, options, userIdentity)
+        public CoreUser(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService)
+            : base(dataSource, auth, options, userIdentityService, null)
         {
             _wrapperUser = new DataSourceWrapperUser(dataSource, auth);
         }
@@ -98,7 +99,7 @@ namespace Deve.Core
             }
 
             //A User can't delete its own user
-            if (UserIdentity is not null && UserIdentity.Id == id)
+            if (UserIdentityService.UserIdentity is not null && UserIdentityService.UserIdentity.Id == id)
             {
                 return Utils.ResultError(Options.LangCode, ResultErrorType.NotAllowed, nameof(id));
             }
