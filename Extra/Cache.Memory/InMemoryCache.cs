@@ -16,7 +16,7 @@ namespace Deve.Cache
 
         #region Properties
         /// <inheritdoc />
-        public TimeSpan? DefaultExpiry { get; set; } = TimeSpan.FromMinutes(5);
+        public TimeSpan? DefaultExpiry { get; set; }
         #endregion
 
         #region Constructors
@@ -26,6 +26,7 @@ namespace Deve.Cache
         public InMemoryCache()
         {
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            DefaultExpiry = TimeSpan.FromMinutes(5);
         }
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace Deve.Cache
         public InMemoryCache(MemoryCacheOptions options)
         {
             _memoryCache = new MemoryCache(options);
+            DefaultExpiry = TimeSpan.FromMinutes(5);
         }
 
         /// <summary>

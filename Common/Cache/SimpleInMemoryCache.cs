@@ -46,12 +46,12 @@ namespace Deve.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleInMemoryCache"/> class with a default expiration time of 5 minutes and automatic cleanup every .
+        /// Initializes a new instance of the <see cref="SimpleInMemoryCache"/> class with a default expiration time of 5 minutes and automatic cleanup every 5 minutes.
         /// </summary>
         public SimpleInMemoryCache()
         {
             DefaultExpiry = TimeSpan.FromMinutes(5);
-            _cleanupTimer = new Timer(_ => CleanExpiredEntries(), null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
+            _cleanupTimer = new Timer(_ => CleanExpiredEntries(), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
         }
         #endregion
 

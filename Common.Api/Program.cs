@@ -204,11 +204,11 @@ namespace Deve.Api
             builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
 
             // Registers InMemoryCache as the implementation for ICache with singleton lifetime.
-            // The cache is configured with a 15-minute expiration scan frequency and a size limit of 50 MB.
+            // The cache is configured with a 5-minute expiration scan frequency.
             // This is an alternative and it's included in the Extra/Cache.Memory project (you should add it if you want to use this implementation).
             //builder.Services.AddSingleton<ICache>(new InMemoryCache(new MemoryCacheOptions()
             //{
-            //    ExpirationScanFrequency = TimeSpan.FromMinutes(15),
+            //    ExpirationScanFrequency = TimeSpan.FromMinutes(5),
             //}));
 
             // Registers RedisCache as the implementation for ICache with singleton lifetime.
