@@ -9,7 +9,7 @@ using Deve.Cache;
 
 namespace Deve.Core
 {
-    public abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria>
+    public abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria> where Model: ModelId
     {
         #region Abstract Property
         protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }
@@ -66,7 +66,12 @@ namespace Deve.Core
             }
 
             //Add
-            return await DataAll.Add(data);
+            var res = await DataAll.Add(data);
+            if (res.Success)
+            {
+                await Added();
+            }
+            return res;
         }
 
         public virtual async Task<Result> Update(Model data)
@@ -108,7 +113,12 @@ namespace Deve.Core
             }
 
             //Update
-            return await DataAll.Update(data);
+            var res = await DataAll.Update(data);
+            if (res.Success)
+            {
+                await Updated(data.Id);
+            }
+            return res;
         }
 
         public virtual async Task<Result> Delete(long id)
@@ -134,13 +144,23 @@ namespace Deve.Core
             }
 
             //Remove
-            return await DataAll.Delete(id);
+            var res = await DataAll.Delete(id);
+            if (res.Success)
+            {
+                await Deleted(id);
+            }
+            return res;
         }
         #endregion
 
         #region Helper Methods
+        // This method must be overridden in derived classes to perform checks on the data before adding or updating.
         protected abstract Task<Result> CheckRequired(Model data, ChecksActionType action);
+
+        // This method must be overridden in derived classes to check for duplicates in the data.
         protected abstract Task<Result> CheckDuplicated(Model data, IList<ModelList> list, ChecksActionType action);
+
+        // This method can be overridden in derived classes to perform additional checks before deleting an item.
         protected virtual Task<Result> CheckDelete(long id)
         {
             return Task.Run(() =>
@@ -150,6 +170,32 @@ namespace Deve.Core
                                     .ToResult();
             });
         }
+
+        // This method can be overridden in derived classes to perform additional actions when the data changes (called when added, updated or deleted).
+        protected virtual Task Changed() => Task.CompletedTask;
+
+        // This method can be overridden in derived classes to perform additional actions after an item is added.
+        protected virtual Task Added() => Changed();
+
+        // This method can be overridden in derived classes to perform additional actions after an item is updated.
+        protected virtual async Task Updated(long id)
+        {
+            await Changed();
+            await RemoveFromCache(id);
+        }
+
+        // This method can be overridden in derived classes to perform additional actions after an item is deleted.
+        protected virtual async Task Deleted(long id)
+        {
+            await Changed();
+            await RemoveFromCache(id);
+        }
+
+        // If the cache is used, this method removes the item from the cache after it's updated or deleted.
+        private Task RemoveFromCache(long id) => Task.Run(() =>
+        {
+            Cache?.Remove(UtilsCore.GetCacheKeyForType<Model>(id));
+        });
         #endregion
     }
 }
