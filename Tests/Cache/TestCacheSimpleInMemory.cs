@@ -1,6 +1,6 @@
 using Deve.Tests.Cache.Fixtures;
 
-namespace Cache
+namespace Deve.Tests.Cache
 {
     public class TestCacheSimpleInMemory : TestCacheBase, IClassFixture<FixtureSimpleInMemoryCache>
     {
