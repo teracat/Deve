@@ -34,6 +34,15 @@ namespace Deve.Core
         }
         #endregion
 
+        #region Overrides
+        protected override Task Changed()
+        {
+            // Clear the cache for ClientStats when cient data changes
+            Cache?.Remove(nameof(ClientStats));
+            return base.Changed();
+        }
+        #endregion
+
         #region CoreBaseAll Implementation
         protected override async Task<Result> CheckRequired(Client data, ChecksActionType action)
         {
