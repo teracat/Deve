@@ -48,35 +48,20 @@ namespace Deve.Auth.Converters
         /// </returns>
         public static UserIdentity? ToUserIdentity(ClaimsPrincipal identity)
         {
-            var user = new UserIdentity();
-            if (ToUserIdentity(identity, user))
-            {
-                return user;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Attempts to convert a <see cref="ClaimsPrincipal"/> into a <see cref="UserIdentity"/>.
-        /// </summary>
-        /// <param name="identity">The <see cref="ClaimsPrincipal"/> containing the user claims.</param>
-        /// <param name="user">When this method returns, contains the populated <see cref="UserIdentity"/> if the conversion succeeded; otherwise, <c>null</c>.
-        /// </param>
-        /// <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
-        public static bool ToUserIdentity(ClaimsPrincipal identity, UserIdentity user)
-        {
             var idStr = GetClaimValue(identity, AuthConstants.UserClaimId);
             var username = GetClaimValue(identity, AuthConstants.UserClaimUsername);
             var role = GetClaimValue(identity, AuthConstants.UserClaimRole);
             if (Utils.SomeIsNullOrWhiteSpace(idStr, username, role) || !long.TryParse(idStr, out long id))
             {
-                return false;
+                return null;
             }
 
-            user.Id = id;
-            user.Username = username;
-            user.Role = RoleConverter.ToRole(role);
-            return true;
+            return new UserIdentity
+            {
+                Id = id,
+                Username = username,
+                Role = RoleConverter.ToRole(role)
+            };
         }
 
         /// <summary>

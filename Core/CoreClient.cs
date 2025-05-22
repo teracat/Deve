@@ -1,11 +1,13 @@
 ﻿using Deve.Model;
+using Deve.Auth;
 using Deve.Auth.Permissions;
+using Deve.Auth.UserIdentityService;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
 using Deve.Internal.Criteria;
-using Deve.Auth;
 using Deve.Data;
 using Deve.DataSource;
+using Deve.Cache;
 
 namespace Deve.Core
 {
@@ -23,12 +25,21 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreClient(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IDataCity dataCity, IDataState dataState, IDataCountry dataCountry)
-            : base(dataSource, auth, options, userIdentity)
+        public CoreClient(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, IDataCity dataCity, IDataState dataState, IDataCountry dataCountry, ICache cache)
+            : base(dataSource, auth, options, userIdentityService, cache)
         {
             _dataCity = dataCity;
             _dataState = dataState;
             _dataCountry = dataCountry;
+        }
+        #endregion
+
+        #region Overrides
+        protected override Task Changed()
+        {
+            // Clear the cache for ClientStats when cient data changes
+            Cache?.Remove(nameof(ClientStats));
+            return base.Changed();
         }
         #endregion
 

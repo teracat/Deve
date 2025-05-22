@@ -1,6 +1,8 @@
 ﻿using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
+using Deve.Auth.UserIdentityService;
+using Deve.Cache;
 using Deve.Core;
 using Deve.Data;
 using Deve.DataSource;
@@ -39,7 +41,8 @@ namespace Deve.Clients
             using var dataSource = new DataSourceMain(new DataSourceConfig());
             using var tokenManager = new TokenManagerCrypt();
             using var auth = new AuthMain(tokenManager, dataSource, hash, options);
-            using var data = new CoreMain(dataSource, auth, options);
+            using var cache = new SimpleInMemoryCache();
+            using var data = new CoreMain(dataSource, auth, options, new EmbeddedUserIdentityService(), cache);
             InternalData(data);
         }
 
