@@ -76,6 +76,8 @@ namespace Deve.DataSource
                 found.TaxName = client.TaxName;
                 found.TaxId = client.TaxId;
                 found.TradeName = client.TradeName;
+                found.Balance = client.Balance;
+                found.Status = client.Status;
 
                 found.Location.Address = client.Location.Address;
                 found.Location.CountryId = client.Location.CountryId;

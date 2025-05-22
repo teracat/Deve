@@ -2,9 +2,10 @@
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Auth;
+using Deve.Auth.UserIdentityService;
 using Deve.Core.Shield;
-using Deve.Internal.Model;
 using Deve.Internal.Data;
+using Deve.Cache;
 
 namespace Deve.Core
 {
@@ -18,9 +19,6 @@ namespace Deve.Core
         #endregion
 
         #region Fields
-        private UserIdentity? _userIdentity;
-        private User? _user;
-
         private CoreAuth? _coreAuth;
         private CoreCountry? _coreCountry;
         private CoreState? _coreState;
@@ -53,85 +51,34 @@ namespace Deve.Core
         public IDataOptions Options { get; set; }
 
         /// <summary>
-        /// Information to identify the user.
+        /// Service to get the user identity.
         /// </summary>
-        public UserIdentity? UserIdentity
-        {
-            get => _userIdentity;
-            set
-            {
-                if (_userIdentity != value)
-                {
-                    //If the user Id has changed, we set the _user to null to force its data to be fetched again (if accessed)
-                    if (_userIdentity is not null && value is not null && _userIdentity.Id != value.Id)
-                    {
-                        _user = null;
-                    }
-
-                    _userIdentity = value;
-                }
-            }
-        }
+        public IUserIdentityService UserIdentityService { get; }
 
         /// <summary>
-        /// If needed, get the full User information.
-        /// It will only get the User data from the DataSource if it's accessed.
-        /// It can also be set and the UserIdentity will be updated.
+        /// Cache to store data.
         /// </summary>
-        public User? User
-        {
-            get
-            {
-                if (_user is not null)
-                {
-                    return _user;
-                }
+        public ICache Cache { get; }
 
-                if (_userIdentity is null)
-                {
-                    return null;
-                }
+        public IAuthenticate Authenticate => _coreAuth ??= new CoreAuth(DataSource, Auth, Options, UserIdentityService, this);
+        public IDataCountry Countries => _coreCountry ??= new CoreCountry(DataSource, Auth, Options, UserIdentityService);
+        public IDataState States => _coreState ??= new CoreState(DataSource, Auth, Options, UserIdentityService, Countries);
+        public IDataCity Cities => _coreCity ??= new CoreCity(DataSource, Auth, Options, UserIdentityService, States, Countries);
+        public IDataClient Clients => _coreClient ??= new CoreClient(DataSource, Auth, Options, UserIdentityService, Cities, States, Countries, Cache);
+        public IDataUser Users => _coreUser ??= new CoreUser(DataSource, Auth, Options, UserIdentityService);
+        public IDataStats Stats => _coreStats ??= new CoreStats(DataSource, Auth, Options, UserIdentityService, Cache);
 
-                var resUser = DataSource.Users.Get(_userIdentity.Id).Result;
-                if (!resUser.Success)
-                {
-                    return null;
-                }
-
-                _user = resUser.Data;
-                return _user;
-            }
-            set
-            {
-                _user = value;
-                if (value is null)
-                {
-                    _userIdentity = null;
-                }
-                else
-                {
-                    _userIdentity = new UserIdentity(value);
-                }
-            }
-        }
-
-        public IAuthenticate Authenticate => _coreAuth ??= new CoreAuth(DataSource, Auth, Options, UserIdentity, this);
-        public IDataCountry Countries => _coreCountry ??= new CoreCountry(DataSource, Auth, Options, UserIdentity);
-        public IDataState States => _coreState ??= new CoreState(DataSource, Auth, Options, UserIdentity, Countries);
-        public IDataCity Cities => _coreCity ??= new CoreCity(DataSource, Auth, Options, UserIdentity, States, Countries);
-        public IDataClient Clients => _coreClient ??= new CoreClient(DataSource, Auth, Options, UserIdentity, Cities, States, Countries);
-        public IDataUser Users => _coreUser ??= new CoreUser(DataSource, Auth, Options, UserIdentity);
-        public IDataStats Stats => _coreStats ??= new CoreStats(DataSource, Auth, Options, UserIdentity);
-
-        public External.Data.IDataClientBasic ClientsBasic => _coreClientBasic ??= new CoreClientBasic(DataSource, Auth, Options, UserIdentity);
+        public External.Data.IDataClientBasic ClientsBasic => _coreClientBasic ??= new CoreClientBasic(DataSource, Auth, Options, UserIdentityService, Cache);
         #endregion
 
         #region Constructor
-        public CoreMain(IDataSource dataSource, IAuth auth, IDataOptions options)
+        public CoreMain(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, ICache cache)
         {
             DataSource = dataSource;
             Auth = auth;
             Options = options;
+            UserIdentityService = userIdentityService;
+            Cache = cache;
         }
         #endregion
 
