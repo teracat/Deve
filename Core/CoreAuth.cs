@@ -1,4 +1,5 @@
 ﻿using Deve.Auth;
+using Deve.Auth.UserIdentityService;
 using Deve.Authenticate;
 using Deve.Core.Shield;
 using Deve.Data;
@@ -15,15 +16,15 @@ namespace Deve.Core
         #endregion
 
         #region Constructor
-        public CoreAuth(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, IShield shield)
-            : base(dataSource, auth, options, userIdentity)
+        public CoreAuth(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, IShield shield)
+            : base(dataSource, auth, options, userIdentityService)
         {
             _core = null;
             _shield = shield;
         }
 
-        public CoreAuth(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentity? userIdentity, ICore core)
-            : base(dataSource, auth, options, userIdentity)
+        public CoreAuth(IDataSource dataSource, IAuth auth, IDataOptions options, IUserIdentityService userIdentityService, ICore core)
+            : base(dataSource, auth, options, userIdentityService)
         {
             _core = core;
             _shield = core.Shield;
@@ -54,10 +55,10 @@ namespace Deve.Core
                 return Utils.ResultGetError<UserToken>(Options.LangCode, ResultErrorType.Unauthorized);
             }
 
-            // If the Login succeeded, we store the User in the Core instance (usefull for embedded clients)
+            // If the Core is null, we assume it's not an embedded implementation so we don't store the User
             if (res.Success && _core is not null)
             {
-                _core.User = res.Data;
+                UserIdentityService.UserIdentity = new UserIdentity(res.Data);
             }
 
             UserToken userToken = Auth.TokenManager.CreateToken(res.Data);

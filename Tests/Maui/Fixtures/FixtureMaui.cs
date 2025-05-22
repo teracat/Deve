@@ -1,8 +1,10 @@
 ﻿using Moq;
 using Deve.Authenticate;
 using Deve.Core;
+using Deve.Cache;
 using Deve.Internal.Data;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Auth.UserIdentityService;
 
 namespace Deve.Tests.Maui.Fixtures
 {
@@ -11,12 +13,18 @@ namespace Deve.Tests.Maui.Fixtures
         public IData DataNoAuth { get; }
         public IData DataValidAuth { get; }
 
-        public Mock<INavigationService> NavigationService { get; private set; }
+        public Mock<INavigationService> NavigationService { get; }
+        private ICache Cache { get; }
+        private IUserIdentityService UserIdentityServiceNoAuth { get; }
+        private IUserIdentityService UserIdentityServiceAuth { get; }
 
         public FixtureMaui()
         {
-            DataNoAuth = new CoreMain(DataSource, Auth, Options);
-            DataValidAuth = new CoreMain(DataSource, Auth, Options);
+            Cache = new SimpleInMemoryCache();
+            UserIdentityServiceNoAuth = new EmbeddedUserIdentityService();
+            UserIdentityServiceAuth = new EmbeddedUserIdentityService();
+            DataNoAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceNoAuth, Cache);
+            DataValidAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceAuth, Cache);
 
             NavigationService = new Mock<INavigationService>();
         }
@@ -30,6 +38,7 @@ namespace Deve.Tests.Maui.Fixtures
         {
             DataNoAuth.Dispose();
             DataValidAuth.Dispose();
+            Cache.Dispose();
             return Task.CompletedTask;
         }
     }
