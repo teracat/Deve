@@ -4,7 +4,7 @@ using Deve.External.Data;
 
 namespace Deve.Api.Controllers
 {
-    public abstract class ControllerBaseGet<ModelList, Model, Criteria> : ControllerBaseAuth
+    public abstract class ControllerBaseGet<ModelList, Model, Criteria> : ControllerBaseDeve
     {
         #region Abstract Property
         protected abstract IDataGet<ModelList, Model, Criteria> DataGet { get; }
