@@ -40,15 +40,16 @@
 
         #region Paths
         public const string BasePath             = "/";
+        public const string BasePathV1           = BasePath + "v1/";
 
-        public const string PathAuth             = BasePath + "Auth/";
-        public const string PathCountry          = BasePath + "Country/";
-        public const string PathState            = BasePath + "State/";
-        public const string PathCity             = BasePath + "City/";
-        public const string PathClient           = BasePath + "Client/";
-        public const string PathClientBasic      = BasePath + "ClientBasic/";
-        public const string PathUser             = BasePath + "User/";
-        public const string PathStats            = BasePath + "Stats/";
+        public const string PathAuth             = BasePathV1 + "Auth/";
+        public const string PathCountry          = BasePathV1 + "Country/";
+        public const string PathState            = BasePathV1 + "State/";
+        public const string PathCity             = BasePathV1 + "City/";
+        public const string PathClient           = BasePathV1 + "Client/";
+        public const string PathClientBasic      = BasePathV1 + "ClientBasic/";
+        public const string PathUser             = BasePathV1 + "User/";
+        public const string PathStats            = BasePathV1 + "Stats/";
         #endregion
 
         #region Methods
