@@ -8,7 +8,7 @@ namespace Deve.Internal.Api.Controllers
 {
     [ApiController]
     [Route(ApiConstants.PathStats)]
-    public class ControllerStats : ControllerBaseAuth
+    public class ControllerStats : ControllerBaseDeve
     {
         private readonly IDataStats _data;
 

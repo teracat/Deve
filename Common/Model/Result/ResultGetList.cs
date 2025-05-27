@@ -6,7 +6,7 @@
         public int? Offset { get; set; }
         public int? Limit { get; set; }
         public string OrderBy { get; set; } = string.Empty;
-        public int TotalCount { get; set; }
+        public int TotalCount { get; set; } = 0;
 
         public ResultGetList()
         {
