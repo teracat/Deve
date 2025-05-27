@@ -4,7 +4,7 @@ using Deve.Internal.Data;
 
 namespace Deve.Api.Controllers
 {
-    public abstract class ControllerBaseAll<ModelList, Model, Criteria> : ControllerBaseAuth
+    public abstract class ControllerBaseAll<ModelList, Model, Criteria> : ControllerBaseDeve
     {
         #region Abstract Property
         protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }

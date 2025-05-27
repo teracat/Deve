@@ -86,7 +86,7 @@ namespace Deve.Api
             builder.Services.AddSwaggerGen(options =>
             {
                 // Registers a new OpenAPI document (optional, if multiple versions are needed).
-                //options.SwaggerDoc("v1", new OpenApiInfo { Title = "Deve.Api", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Deve.Api v1", Version = "v1" });
 
                 // Defines the authentication scheme for Swagger UI.
                 options.AddSecurityDefinition(ApiConstants.AuthDefaultScheme, new OpenApiSecurityScheme
@@ -124,6 +124,12 @@ namespace Deve.Api
 
                 // Ensures unique schema IDs by using the full class name.
                 options.CustomSchemaIds(i => i.FullName);
+
+                // Condition to include controllers in the corresponding Swagger document.
+                options.DocInclusionPredicate((version, apiDesc) =>
+                {
+                    return apiDesc.RelativePath!.Contains($"{version}/");
+                });
             });
 
             // Registers the IHttpContextAccessor service, allowing access to the current HTTP context.
@@ -244,7 +250,11 @@ namespace Deve.Api
             //if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    // Adds a Swagger UI endpoint for the API documentation.
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Deve.Api v1");
+                });
             }
 
             // Add TooManyRequestsMiddleware

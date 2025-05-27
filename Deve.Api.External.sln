@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.External.Api", "External\Api\Deve.External.Api.csproj", "{35E77C73-2772-4249-993C-367EA5DCF800}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Common", "Common\Deve.Common.csproj", "{12D3177A-D3C8-46B0-84E5-189A9BD15221}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.DataSource", "DataSource\Deve.DataSource.csproj", "{00F0952A-1DE9-4695-A629-47FEF8EA66FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.External.Common", "External\Common\Deve.External.Common.csproj", "{AB5E9A3E-D35C-400C-9CD1-FA0FB304F2AD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.External.Api", "External\Api\Deve.External.Api.csproj", "{35E77C73-2772-4249-993C-367EA5DCF800}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deve.Core", "Core\Deve.Core.csproj", "{7E63D1D6-18D6-45D6-8224-38DE4A4D0D4A}"
 EndProject
