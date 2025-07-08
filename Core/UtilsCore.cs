@@ -7,6 +7,8 @@ namespace Deve.Core
     {
         public static Result? CheckIdWhenAdding<Model>(IDataOptions options, Model data, IList<Model> list) where Model: ModelId
         {
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
+
             if (data.Id > 0)
             {
                 if (list.Any(x => x.Id == data.Id))
@@ -22,6 +24,6 @@ namespace Deve.Core
             return null;
         }
 
-        public static string GetCacheKeyForType<T>(long id) => $"{nameof(T)}-{id}";
+        public static string GetCacheKeyForType<T>(long id) => $"{typeof(T).Name}-{id}";
     }
 }
