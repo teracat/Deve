@@ -54,7 +54,7 @@ namespace Deve.Auth.TokenManagers
             var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
             var token = _crypt.Encrypt(content);
             var subject = UserConverter.ToUserSubject(user);
-            return new UserToken(subject, expires, token, ApiConstants.AuthDefaultScheme);
+            return new UserToken(subject, expires, token, scheme);
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace Deve.Tests.Auth
         }
         #endregion
 
-        #region RefershToken
+        #region RefreshToken
         [Fact]
         public async Task RefreshToken_Null_ReturnFalse()
         {
