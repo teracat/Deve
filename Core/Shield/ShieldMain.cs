@@ -16,7 +16,7 @@ namespace Deve.Core.Shield
         /// <summary>
         /// If the last attempt was made before the minutes specified here, it will be removed from memory.
         /// Take into account to set a value big enough to keep the locks active.
-        /// The lock of the Login method lasts 5 minutes, so it can be removed after 15 minuts from the last call.
+        /// The lock of the Login method lasts 5 minutes, so it can be removed after 15 minutes from the last call.
         /// </summary>
         private const int RemoveAfterMinutesLastAttempt = 15;
         #endregion
@@ -104,19 +104,30 @@ namespace Deve.Core.Shield
 
         private void CleanOldData(object? _)
         {
+            var originsToRemove = new List<string>();
             foreach (var origin in _origins)
             {
                 if ((DateTimeOffset.UtcNow - origin.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
-                    _origins.Remove(origin.Key);
+                    originsToRemove.Add(origin.Key);
                 }
             }
+            foreach (var originKey in originsToRemove)
+            {
+                _origins.Remove(originKey);
+            }
+
+            var originMethodsToRemove = new List<string>();
             foreach (var originMethod in _originsMethods)
             {
                 if ((DateTimeOffset.UtcNow - originMethod.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
-                    _originsMethods.Remove(originMethod.Key);
+                    originMethodsToRemove.Add(originMethod.Key);
                 }
+            }
+            foreach (var originMethodKey in originMethodsToRemove)
+            {
+                _originsMethods.Remove(originMethodKey);
             }
         }
         #endregion
