@@ -82,7 +82,7 @@ namespace Deve.Cache
             return true;
         }
 
-        /// <inheritdoc />am>
+        /// <inheritdoc />
         public void Set<T>(string key, T value) => Set(key, value, DefaultExpiry);
 
         /// <inheritdoc />
