@@ -104,19 +104,30 @@ namespace Deve.Core.Shield
 
         private void CleanOldData(object? _)
         {
+            var originsToRemove = new List<string>();
             foreach (var origin in _origins)
             {
                 if ((DateTimeOffset.UtcNow - origin.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
-                    _origins.Remove(origin.Key);
+                    originsToRemove.Add(origin.Key);
                 }
             }
+            foreach (var originKey in originsToRemove)
+            {
+                _origins.Remove(originKey);
+            }
+
+            var originMethodsToRemove = new List<string>();
             foreach (var originMethod in _originsMethods)
             {
                 if ((DateTimeOffset.UtcNow - originMethod.Value.LastAttempt).TotalMinutes >= RemoveAfterMinutesLastAttempt)
                 {
-                    _originsMethods.Remove(originMethod.Key);
+                    originMethodsToRemove.Add(originMethod.Key);
                 }
+            }
+            foreach (var originMethodKey in originMethodsToRemove)
+            {
+                _originsMethods.Remove(originMethodKey);
             }
         }
         #endregion
