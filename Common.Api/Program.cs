@@ -205,27 +205,31 @@ namespace Deve.Api
             // A single instance is created and shared across the entire application.
             builder.Services.AddSingleton<IShield, ShieldMain>();
 
-            // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
-            // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
-            builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
-
-            // Registers InMemoryCache as the implementation for ICache with singleton lifetime.
-            // The cache is configured with a 5-minute expiration scan frequency.
-            // This is an alternative and it's included in the Extra/Cache.Memory project (you should add it if you want to use this implementation).
-            //builder.Services.AddSingleton<ICache>(new InMemoryCache(new MemoryCacheOptions()
-            //{
-            //    ExpirationScanFrequency = TimeSpan.FromMinutes(5),
-            //}));
-
-            // Registers RedisCache as the implementation for ICache with singleton lifetime.
+            // Registers RedisCache as the implementation for ICache with singleton lifetime (only if the RedisCacheConnection is set in the appsettings.json file).
             // The RedisCacheConnection string is retrieved from the configuration file.
-            // This is an alternative and it's included in the Extra/Cache.Redis project (you should add it if you want to use this implementation).
-            //var redisConnection = builder.Configuration.GetConnectionString("RedisCacheConnection") ?? string.Empty;
-            //if (string.IsNullOrWhiteSpace(redisConnection))
-            //{
-            //    throw new Exception("The RedisCacheConnection is empty. Please set the RedisCacheConnection in the appsettings.json file.");
-            //}
-            //builder.Services.AddSingleton<ICache>(new RedisCache(redisConnection));
+            // The RedisCache class is defined in the Extra/Cache.Redis project (you can remove it if you don't use it).
+            var redisConnection = builder.Configuration.GetConnectionString("RedisCacheConnection") ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(redisConnection))
+            {
+                // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
+                // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
+                builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
+
+                // Registers InMemoryCache as the implementation for ICache with singleton lifetime.
+                // The cache is configured with a 5-minute expiration scan frequency.
+                // This is an alternative and it's included in the Extra/Cache.Memory project (you should add it if you want to use this implementation).
+                //builder.Services.AddSingleton<ICache>(new InMemoryCache(new MemoryCacheOptions()
+                //{
+                //    ExpirationScanFrequency = TimeSpan.FromMinutes(5),
+                //}));
+
+                // If you want to throw an exception when the RedisCacheConnection is not set, uncomment the next line.
+                //throw new Exception("The RedisCacheConnection is empty. Please set the RedisCacheConnection in the appsettings.json file.");
+            }
+            else
+            {
+                builder.Services.AddSingleton<ICache>(new RedisCache(redisConnection));
+            }   
 
             // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
             // A new instance is created per request.
