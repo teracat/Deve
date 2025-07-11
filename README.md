@@ -59,6 +59,7 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [Internal vs External](https://github.com/teracat/Deve/wiki#internal-vs-external)
   - [Client Embedded vs Sdk](https://github.com/teracat/Deve/wiki#client-embedded-vs-sdk)
   - [Publishable Projects](https://github.com/teracat/Deve/wiki#publishable-projects)
+  - [Docker](https://github.com/teracat/Deve/wiki#docker)
 - [Installation](https://github.com/teracat/Deve/wiki/Installation)
   - [Prerequisites](https://github.com/teracat/Deve/wiki/Installation#prerequisites)
   - [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide)
