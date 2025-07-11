@@ -1,0 +1,27 @@
+name: deve-dev
+services:
+  api-internal:
+    ports:
+      - "8080:80"
+      - "7245:443"
+    environment:
+      AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
+      AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
+    volumes:
+      - ./https:/https:ro
+  
+  api-external:
+    ports:
+      - "8081:80"
+      - "7175:443"
+    environment:
+      AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
+      AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
+    volumes:
+      - ./https:/https:ro
