@@ -1,14 +1,11 @@
 name: deve
 services:
   api-internal:
-    container_name: api-internal
     build:
       context: ../
       dockerfile: ./.docker/Dockerfile.ApiInternal
     depends_on:
       - cache-redis
-    ports:
-      - "8080:80"
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
@@ -17,14 +14,11 @@ services:
       - deve-network
 
   api-external:
-    container_name: api-external
     build:
       context: ../
       dockerfile: ./.docker/Dockerfile.ApiExternal
     depends_on:
       - cache-redis
-    ports:
-      - "8081:80"
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
@@ -33,7 +27,6 @@ services:
       - deve-network
 
   cache-redis:
-    container_name: cache-redis
     image: redis
     networks:
       - deve-network

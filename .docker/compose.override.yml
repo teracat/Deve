@@ -1,6 +1,10 @@
 name: deve-dev
 services:
   api-internal:
+    container_name: dev-api-internal
+    expose:
+      - "80"
+      - "443"
     ports:
       - "8080:80"
       - "7245:443"
@@ -8,12 +12,17 @@ services:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
     volumes:
       - ./https:/https:ro
   
   api-external:
+    container_name: dev-api-external
+    expose:
+      - "80"
+      - "443"
     ports:
       - "8081:80"
       - "7175:443"
@@ -21,7 +30,11 @@ services:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
     volumes:
       - ./https:/https:ro
+
+  cache-redis:
+    container_name: dev-cache-redis

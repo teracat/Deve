@@ -1,19 +1,28 @@
 name: deve-prod
 services:
   api-internal:
-    container_name: api-internal
+    container_name: prod-api-internal
+    expose:
+      - "80"
     ports:
       - "80:80"
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "change this key (32 bytes)"
       AppSettings__JwtKeys__EncryptionSecretKey: "change this key (32 bytes)"
       ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:80"
   
   api-external:
-    container_name: api-external
+    container_name: prod-api-external
+    expose:
+      - "80"
     ports:
       - "81:80"
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "change this key (32 bytes)"
       AppSettings__JwtKeys__EncryptionSecretKey: "change this key (32 bytes)"
       ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:80"
+
+  cache-redis:
+    container_name: prod-cache-redis
