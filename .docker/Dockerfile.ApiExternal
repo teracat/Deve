@@ -8,8 +8,5 @@ RUN dotnet publish ./External/Api/Deve.External.Api.csproj -c Release -o /app --
 # Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:80;https://+:443
 COPY --from=build /app .
-EXPOSE 80
-EXPOSE 443
 ENTRYPOINT ["dotnet", "Deve.External.Api.dll"]
