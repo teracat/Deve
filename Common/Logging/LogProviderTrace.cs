@@ -5,29 +5,45 @@ namespace Deve.Logging
     /// <summary>
     /// A logging provider that sends log messages to the trace output.
     /// </summary>
-    internal class LogProviderTrace : LogProviderSimpleBase, ILogProvider
+    internal class LogProviderTrace : ILogProvider
     {
-        #region Constructor
-        /// <summary>
-        /// Used to write log messages to the Trace.
-        /// </summary>
-        /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
-        /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
-        /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-        public LogProviderTrace(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
-            : base(dateFormat, debugStringFormat, errorStringFormat)
-        {
-        }
-        #endregion
-
         #region ILogProvider
-        /// <summary>
-        /// Write the text to the Trace.
-        /// </summary>
-        /// <param name="text">The text to be written.</param>
-        protected override void Write(string text)
+        /// <inheritdoc/>
+        public void Debug(string text)
         {
-            Trace.WriteLine(text);
+            Trace.TraceInformation(text);
+        }
+
+        /// <inheritdoc/>
+        public void Debug(string format, params object[] args)
+        {
+            // Trace does not accept name arguments, so we need to convert it to indexed arguments
+            Trace.TraceInformation(Utils.ConvertNameArgumentsToIndexed(format), args);
+        }
+
+        /// <inheritdoc/>
+        public void Error(string text)
+        {
+            Trace.TraceError(text);
+        }
+
+        /// <inheritdoc/>
+        public void Error(Exception exception)
+        {
+            Trace.TraceError(exception.ToString());
+        }
+
+        /// <inheritdoc/>
+        public void Error(Exception exception, string message)
+        {
+            Trace.TraceError("{0} --> {1}", message, exception);
+        }
+
+        /// <inheritdoc/>
+        public void Error(string format, params object[] args)
+        {
+            // Trace does not accept name arguments, so we need to convert it to indexed arguments
+            Trace.TraceError(Utils.ConvertNameArgumentsToIndexed(format), args);
         }
         #endregion
     }

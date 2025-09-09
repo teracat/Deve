@@ -18,7 +18,7 @@
         }
         #endregion
 
-        #region ILogProvider
+        #region LogProviderSimpleBase
         /// <summary>
         /// Write the text to the Debug.
         /// </summary>
@@ -26,6 +26,21 @@
         protected override void Write(string text)
         {
             System.Diagnostics.Debug.WriteLine(text);
+        }
+
+        /// <summary>
+        /// Write a formatted debug text to the Debug.
+        /// </summary>
+        /// <param name="format">The text to be written with zero or more format items,
+        /// which correspond to objects in the args array</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        protected override void Write(string format, params object[] args)
+        {
+            // Debug.WriteLine does not handle null args well
+            if (args is null)
+                System.Diagnostics.Debug.WriteLine(format, [null]);
+            else
+                System.Diagnostics.Debug.WriteLine(format, args);
         }
         #endregion
     }
