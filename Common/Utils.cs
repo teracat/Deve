@@ -117,6 +117,8 @@ namespace Deve
 
         public static Result ResultOk() => new();
 
+        public static Result ResultError() => new(false);
+
         public static Result ResultError(string langCode, ResultErrorType errorType, string? fieldName) => new(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
 
         public static Result ResultError(string langCode, ResultErrorType errorType) => new(errorType, null, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
