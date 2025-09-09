@@ -8,13 +8,18 @@ namespace Deve.Logging
     /// </summary>
     internal class LogProviderNetCore : ILogProvider
     {
+        #region Fields
         private readonly ILogger _logger;
+        #endregion
 
+        #region Constructors
         public LogProviderNetCore(ILogger logger)
         {
             _logger = logger;
         }
+        #endregion
 
+        #region ILogProvider
         public void Debug(string text)
         {
             _logger.LogDebug(text);
@@ -44,6 +49,7 @@ namespace Deve.Logging
         {
             _logger.LogError(format, args);
         }
+        #endregion
     }
 
     public static class LogProviderNetCoreExtension

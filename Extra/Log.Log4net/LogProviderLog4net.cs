@@ -1,6 +1,6 @@
-﻿using log4net;
+﻿using System.Reflection;
+using log4net;
 using log4net.Config;
-using System.Reflection;
 
 namespace Deve.Logging
 {
@@ -10,45 +10,57 @@ namespace Deve.Logging
     /// </summary>
     internal class LogProviderLog4net : ILogProvider
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(LogProviderLog4net));
+        #region Fields
+        private readonly ILog _logger;
+        #endregion
 
+        #region Constructors
         public LogProviderLog4net()
         {
             var logRepository = LogManager.GetRepository(Assembly.GetCallingAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            _logger = LogManager.GetLogger(typeof(LogProviderLog4net));
         }
 
+        public LogProviderLog4net(ILog logger)
+        {
+            _logger = logger;
+        }
+        #endregion
+
+        #region ILogProvider
         public void Debug(string text)
         {
-            Logger.Debug(text);
+            _logger.Debug(text);
         }
 
         public void Debug(string format, params object[] args)
         {
             // Log4net does not accept name arguments, so we need to convert it to indexed arguments
-            Logger.DebugFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
+            _logger.DebugFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
         }
 
         public void Error(string text)
         {
-            Logger.Error(text);
+            _logger.Error(text);
         }
 
         public void Error(Exception exception)
         {
-            Logger.Error(null, exception);
+            _logger.Error(null, exception);
         }
 
         public void Error(Exception exception, string message)
         {
-            Logger.Error(message, exception);
+            _logger.Error(message, exception);
         }
 
         public void Error(string format, params object[] args)
         {
             // Log4net does not accept name arguments, so we need to convert it to indexed arguments
-            Logger.ErrorFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
+            _logger.ErrorFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
         }
+        #endregion
     }
 
     public static class LogProviderLog4netExtension
