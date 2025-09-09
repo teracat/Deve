@@ -4,7 +4,7 @@ using Deve.Clients.Maui.Models;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public class CountriesViewModel : ListDataViewModel
+    public partial class CountriesViewModel : ListDataViewModel
     {
         #region Constructor
         public CountriesViewModel(INavigationService navigationService, Internal.Data.IData data)

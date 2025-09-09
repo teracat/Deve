@@ -1,15 +1,20 @@
-﻿using Deve.Internal.Data;
-using Deve.Clients.Maui.Helpers;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Internal.Data;
 using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public abstract class BaseViewModel : UIBase
+    public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
         private readonly INavigationService _navigationService;
         private readonly IData _data;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasError))]
         private string _errorText = string.Empty;
         #endregion
 
@@ -18,40 +23,9 @@ namespace Deve.Clients.Maui.ViewModels
 
         protected IData Data => _data;
 
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                if (_isBusy != value)
-                {
-                    _isBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
-                    OnPropertyChanged(nameof(IsIdle));
-                    OnIsBusyChanged();
-                }
-            }
-        }
+        public bool IsIdle => !IsBusy;
 
-        public bool IsIdle
-        {
-            get => !IsBusy;
-            set => IsBusy = !value;
-        }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                {
-                    OnPropertyChanged(nameof(HasError));
-                }
-            }
-        }
-
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
         #endregion
 
         #region Constructor
@@ -63,8 +37,6 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
-
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)
@@ -73,6 +45,19 @@ namespace Deve.Clients.Maui.ViewModels
             }
 
             return false;
+        }
+
+        protected virtual bool Validate()
+        {
+            ErrorText = string.Empty;
+            ClearErrors();
+            ValidateAllProperties();
+            if (HasErrors)
+            {
+                ErrorText = string.Join("\n", GetErrors());
+                return false;
+            }
+            return true;
         }
         #endregion
 

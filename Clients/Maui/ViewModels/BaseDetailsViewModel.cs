@@ -2,7 +2,7 @@
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public abstract class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
+    public abstract partial class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
         #region Properties
         public long Id { get; private set; }

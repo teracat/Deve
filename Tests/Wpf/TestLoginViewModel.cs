@@ -3,6 +3,7 @@ using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Tests.Wpf.Fixtures;
+using System.Security;
 
 namespace Deve.Tests.Wpf
 {
@@ -16,16 +17,28 @@ namespace Deve.Tests.Wpf
         }
 
         [Fact]
-        public async Task Login_EmptyUsernamePassword_HasError()
+        public async Task Login_EmptyUsernamePassword_HasErrors()
         {
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = string.Empty,
             };
 
-            await loginViewModel.DoLogin(string.Empty);
+            await loginViewModel.Login(string.Empty);
 
-            Assert.True(loginViewModel.HasError);
+            Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
+        }
+
+        private static SecureString SecureStringConverter(string pass)
+        {
+            SecureString ret = new SecureString();
+
+            foreach (char chr in pass.ToCharArray())
+            {
+                ret.AppendChar(chr);
+            }
+
+            return ret;
         }
 
         [Fact]
@@ -34,11 +47,12 @@ namespace Deve.Tests.Wpf
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameInactive,
+                Password = SecureStringConverter(TestsConstants.UserPasswordInactive),  // To avoid Validation errors
             };
 
-            await loginViewModel.DoLogin(TestsConstants.UserPasswordInactive);
+            await loginViewModel.Login(TestsConstants.UserPasswordInactive);
 
-            Assert.True(loginViewModel.HasError);
+            Assert.True(loginViewModel.HasError);   // HasError is a custom property for other types of errors
         }
 
         [Fact]
@@ -47,9 +61,10 @@ namespace Deve.Tests.Wpf
             var loginViewModel = new LoginViewModel(_fixture.NavigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameValid,
+                Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            await loginViewModel.DoLogin(TestsConstants.UserPasswordValid);
+            await loginViewModel.Login(TestsConstants.UserPasswordValid);
 
             Assert.False(loginViewModel.HasError);
         }
@@ -62,9 +77,10 @@ namespace Deve.Tests.Wpf
             var loginViewModel = new LoginViewModel(navigationService.Object, _fixture.DataNoAuth, _fixture.MessageHandler.Object)
             {
                 Username = TestsConstants.UserUsernameValid,
+                Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            await loginViewModel.DoLogin(TestsConstants.UserPasswordValid);
+            await loginViewModel.Login(TestsConstants.UserPasswordValid);
 
             navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
         }

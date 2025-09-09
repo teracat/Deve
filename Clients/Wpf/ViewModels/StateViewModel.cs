@@ -1,36 +1,29 @@
-﻿using Deve.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Model;
+using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
+    public partial class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
     {
         #region Fields
         private State? _state;
+
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
         private string? _name;
+
+        [ObservableProperty]
         private IList<Country>? _countries;
+
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [GreaterThanOrEqual(nameof(SelectedCountry.Id), 1, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
         private Country? _selectedCountry;
-        #endregion
-
-        #region Properties
-        public string? Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
-
-        public IList<Country>? Countries
-        {
-            get => _countries;
-            set => SetProperty(ref _countries, value);
-        }
-
-        public Country? SelectedCountry
-        {
-            get => _selectedCountry;
-            set => SetProperty(ref _selectedCountry, value);
-        }
         #endregion
 
         #region Constructor
@@ -47,25 +40,24 @@ namespace Deve.Clients.Wpf.ViewModels
             await GetDataCountries();
         }
 
-        internal async override Task DoSave()
+        internal async override Task Save()
         {
             if (_state is null)
             {
                 return;
             }
 
-            if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
+            if (!Validate())
             {
-                MessageHandler.ShowError(AppResources.MissingField);
                 return;
             }
 
             IsBusy = true;
             try
             {
-                _state.Name = _name!.Trim();
-                _state.CountryId = _selectedCountry.Id;
-                _state.Country = _selectedCountry.Name;
+                _state.Name = Name!.Trim();
+                _state.CountryId = SelectedCountry!.Id;
+                _state.Country = SelectedCountry.Name;
 
                 Result res;
                 if (_state.Id == 0)
@@ -117,7 +109,11 @@ namespace Deve.Clients.Wpf.ViewModels
                 }
             }
 
-            Name = _state.Name;
+            // Only assign values if it's not a new state to avoid validation errors
+            if (_state.Id > 0)
+            {
+                Name = _state.Name;
+            }
         }
 
         private async Task GetDataCountries()
@@ -134,7 +130,7 @@ namespace Deve.Clients.Wpf.ViewModels
             Countries = res.Data;
             if (_state is not null && _state.CountryId > 0)
             {
-                SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+                SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
         }
         #endregion

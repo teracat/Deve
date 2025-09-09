@@ -23,7 +23,7 @@ namespace Deve.Tests.Maui
                 Password = string.Empty
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.ExecuteAsync(null);
 
             Assert.True(loginViewModel.HasError);
         }
@@ -37,7 +37,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordInactive
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.ExecuteAsync(null);
 
             Assert.True(loginViewModel.HasError);
         }
@@ -51,7 +51,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.ExecuteAsync(null);
 
             Assert.False(loginViewModel.HasError);
         }
@@ -67,7 +67,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.Login.ExecuteAsync(null);
+            await loginViewModel.LoginCommand.ExecuteAsync(null);
 
             navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
         }

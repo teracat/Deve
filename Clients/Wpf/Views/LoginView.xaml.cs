@@ -1,5 +1,7 @@
-﻿using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Globalization;
+using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 
 namespace Deve.Clients.Wpf.Views
@@ -18,14 +20,14 @@ namespace Deve.Clients.Wpf.Views
             viewModel.LoginView = this;
             ViewModel = _viewModel = viewModel;
 
-            //-:cnd
+//-:cnd
 #if DEBUG
             if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
                 SetUsernamePassword("teracat", "teracat");
             }
 #endif
-            //+:cnd
+//+:cnd
         }
         #endregion
 
@@ -73,13 +75,19 @@ namespace Deve.Clients.Wpf.Views
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.DoLogin(uxPassword.Password);
+                _ = _viewModel.Login(uxPassword.Password);
             }
         }
 
         private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            _ = _viewModel.DoLogin(uxPassword.Password);
+            _ = _viewModel.Login(uxPassword.Password);
+        }
+
+        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var passwordBox = (PasswordBox)sender;
+            _viewModel.Password = passwordBox.SecurePassword;
         }
         #endregion
     }

@@ -61,7 +61,7 @@ namespace Deve.Tests.Wpf
             var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddState.ExecuteAsync(null);
+            await mainViewModel.AddStateCommand.ExecuteAsync(null);
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(), Times.Once);
         }
@@ -76,7 +76,7 @@ namespace Deve.Tests.Wpf
             var state = mainViewModel.CtrlDataStates?.Items?.First();
             var stateId = state?.Id ?? 0;
 
-            await mainViewModel.EditState.ExecuteAsync(state);
+            await mainViewModel.EditStateCommand.ExecuteAsync(state);
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(stateId), Times.Once);
         }
@@ -90,7 +90,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
 
-            await mainViewModel.DeleteState.ExecuteAsync(state);
+            await mainViewModel.DeleteStateCommand.ExecuteAsync(state);
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }
@@ -105,7 +105,7 @@ namespace Deve.Tests.Wpf
             var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddCountry.ExecuteAsync(null);
+            await mainViewModel.AddCountryCommand.ExecuteAsync(null);
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView>(), Times.Once);
         }
@@ -119,7 +119,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.EditCountry.ExecuteAsync(country);
+            await mainViewModel.EditCountryCommand.ExecuteAsync(country);
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView, Country>(It.IsNotNull<Country>()), Times.Once);
         }
@@ -133,7 +133,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.DeleteCountry.ExecuteAsync(country);
+            await mainViewModel.DeleteCountryCommand.ExecuteAsync(country);
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }

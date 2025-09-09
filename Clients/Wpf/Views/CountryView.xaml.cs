@@ -34,7 +34,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.DoSave();
+                _ = _viewModel.Save();
             }
         }
         #endregion

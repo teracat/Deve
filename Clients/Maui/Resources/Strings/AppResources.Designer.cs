@@ -133,11 +133,20 @@ namespace Deve.Clients.Maui.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username and password are required.
+        ///   Looks up a localized string similar to Password is required.
         /// </summary>
-        internal static string MissingUsernamePassword {
+        internal static string MissingPassword {
             get {
-                return ResourceManager.GetString("MissingUsernamePassword", resourceCulture);
+                return ResourceManager.GetString("MissingPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username is required.
+        /// </summary>
+        internal static string MissingUsername {
+            get {
+                return ResourceManager.GetString("MissingUsername", resourceCulture);
             }
         }
         

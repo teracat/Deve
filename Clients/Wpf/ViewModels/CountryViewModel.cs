@@ -1,28 +1,26 @@
-﻿using Deve.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public class CountryViewModel : BaseEditViewModel, INavigationAwareWithType<Country>
+    public partial class CountryViewModel : BaseEditViewModel, INavigationAwareWithType<Country>
     {
         #region Fields
         private Country? _country;
-        private string? _name;
-        private string? _isoCode;
-        #endregion
 
-        #region Properties
-        public string? Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
-        public string? IsoCode
-        {
-            get => _isoCode;
-            set => SetProperty(ref _isoCode, value);
-        }
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
+        private string? _name;
+
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingIsoCode))]
+        [MinLength(2, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MinLengthIsoCode))]
+        private string? _isoCode;
         #endregion
 
         #region Constructor
@@ -55,28 +53,31 @@ namespace Deve.Clients.Wpf.ViewModels
                 }
             }
 
-            Name = _country.Name;
-            IsoCode = _country.IsoCode;
+            // Only assign values if it's not a new country to avoid validation errors
+            if (_country.Id > 0)
+            {
+                Name = _country!.Name;
+                IsoCode = _country!.IsoCode;
+            }
         }
 
-        internal async override Task DoSave()
+        internal async override Task Save()
         {
             if (_country is null)
             {
                 return;
             }
 
-            if (Utils.SomeIsNullOrWhiteSpace(_name,_isoCode))
+            if (!Validate())
             {
-                MessageHandler.ShowError(AppResources.MissingField);
                 return;
             }
 
             IsBusy = true;
             try
             {
-                _country.Name = _name!.Trim();
-                _country.IsoCode = _isoCode!.Trim();
+                _country.Name = Name!.Trim();
+                _country.IsoCode = IsoCode!.Trim();
 
                 Result res;
                 if (_country.Id == 0)

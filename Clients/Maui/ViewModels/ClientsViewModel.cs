@@ -4,7 +4,7 @@ using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public class ClientsViewModel : ListDataViewModel
+    public partial class ClientsViewModel : ListDataViewModel
     {
         #region Constructor
         public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data)
