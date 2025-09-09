@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using log4net;
+﻿using log4net;
 using log4net.Config;
+using System.Reflection;
 
 namespace Deve.Logging
 {
@@ -23,9 +23,31 @@ namespace Deve.Logging
             Logger.Debug(text);
         }
 
+        public void Debug(string format, params object[] args)
+        {
+            // Log4net does not accept name arguments, so we need to convert it to indexed arguments
+            Logger.DebugFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
+        }
+
         public void Error(string text)
         {
             Logger.Error(text);
+        }
+
+        public void Error(Exception exception)
+        {
+            Logger.Error(null, exception);
+        }
+
+        public void Error(Exception exception, string message)
+        {
+            Logger.Error(message, exception);
+        }
+
+        public void Error(string format, params object[] args)
+        {
+            // Log4net does not accept name arguments, so we need to convert it to indexed arguments
+            Logger.ErrorFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
         }
     }
 

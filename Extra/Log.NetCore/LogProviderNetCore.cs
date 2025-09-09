@@ -20,9 +20,29 @@ namespace Deve.Logging
             _logger.LogDebug(text);
         }
 
+        public void Debug(string format, params object[] args)
+        {
+            _logger.LogDebug(format, args);
+        }
+
         public void Error(string text)
         {
             _logger.LogError(text);
+        }
+
+        public void Error(Exception exception)
+        {
+            _logger.LogError(exception, string.Empty);
+        }
+
+        public void Error(Exception exception, string message)
+        {
+            _logger.LogError(exception, message);
+        }
+
+        public void Error(string format, params object[] args)
+        {
+            _logger.LogError(format, args);
         }
     }
 
