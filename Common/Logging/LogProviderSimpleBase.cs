@@ -100,7 +100,9 @@
         public void Error(Exception exception)
         {
             if (exception is null)
+            {
                 return;
+            }
 
             Write(FormatText(ErrorStringFormat, exception.ToString()));
         }

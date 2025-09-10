@@ -38,9 +38,13 @@
         {
             // Debug.WriteLine does not handle null args well
             if (args is null)
+            {
                 System.Diagnostics.Debug.WriteLine(format, [null]);
+            }
             else
+            {
                 System.Diagnostics.Debug.WriteLine(format, args);
+            }
         }
         #endregion
     }
