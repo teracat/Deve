@@ -4,12 +4,16 @@ namespace Deve.Tests.Logs
 {
     public abstract class TestLogBase
     {
+        #region Fields
         private readonly ILogProvider _logProvider;
+        #endregion
 
-        public TestLogBase(ILogProvider logProvider)
+        #region Constructor
+        protected TestLogBase(ILogProvider logProvider)
         {
             _logProvider = logProvider;
         }
+        #endregion
 
         #region Debug
         [Theory]
