@@ -203,7 +203,10 @@ namespace Deve
             string result = ConvertNameArgumentsToIndexedRegex().Replace(text, match =>
             {
                 string key = match.Groups[1].Value;
-                if (!keys.Contains(key)) keys.Add(key);
+                if (!keys.Contains(key))
+                {
+                    keys.Add(key);
+                }
                 int index = keys.IndexOf(key);
                 return $"{{{index}}}";
             });
