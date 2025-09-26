@@ -38,7 +38,7 @@
                     <TextBox x:Name="uxName" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIdle}" MaxLength="30" KeyDown="OnNameKeyDown" />
 
                     <Label Grid.ColumnSpan="2" Grid.Row="3" Content="{x:Static strings:AppResources.Country}" Style="{StaticResource RequiredFieldLabel}" />
-                    <ComboBox x:Name="uxCountry" Background="White" BorderThickness="1" Grid.ColumnSpan="2" Grid.Row="4" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" DisplayMemberPath="Name" KeyDown="OnCountryKeyDown" />
+                    <ComboBox x:Name="uxCountry" Background="White" BorderThickness="1" Grid.ColumnSpan="2" Grid.Row="4" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" DisplayMemberPath="Name" KeyDown="OnLastControlKeyDown" />
 
                     <Button Grid.Column="0" Grid.Row="6" Content="{x:Static strings:AppResources.Cancel}" Margin="0,10,5,0" Command="{Binding CancelCommand}" Visibility="{Binding IsIdle, Converter={StaticResource BooleanToVisibility}}" Style="{StaticResource SecondaryButton}" />
                     <Button Grid.Column="1" Grid.Row="6" Content="{x:Static strings:AppResources.Save}" Margin="5,10,0,0" Command="{Binding SaveCommand}" Visibility="{Binding IsIdle, Converter={StaticResource BooleanToVisibility}}" />

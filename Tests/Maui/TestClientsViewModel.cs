@@ -11,9 +11,9 @@ namespace Deve.Tests.Maui
         {
         }
 
-        protected override ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data)
+        protected override ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
         {
-            return new ClientsViewModel(navigationService, data);
+            return new ClientsViewModel(navigationService, data, scheduler);
         }
     }
 }

@@ -1,38 +1,54 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Linq;
+using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using ReactiveUI.Validation.Helpers;
 using Deve.Internal.Data;
 using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public abstract partial class BaseViewModel : ObservableValidator
+    public abstract partial class BaseViewModel : ReactiveValidationObject
     {
         #region Fields
         private readonly INavigationService _navigationService;
         private readonly IData _data;
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsIdle))]
+        [Reactive]
         private bool _isBusy = false;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasError))]
+        [Reactive]
+        private bool _shouldValidate = false;
+
+        [Reactive]
         private string _errorText = string.Empty;
+
+        [ObservableAsProperty]
+        private bool _isIdle;
+
+        [ObservableAsProperty]
+        private bool _hasError;
         #endregion
 
         #region Properties
         protected INavigationService NavigationService => _navigationService;
 
         protected IData Data => _data;
-
-        public bool IsIdle => !IsBusy;
-
-        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
         #endregion
 
         #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IData data)
+        protected BaseViewModel(INavigationService navigationService, IData data, ISchedulerProvider scheduler)
         {
             _navigationService = navigationService;
             _data = data;
+
+            // Properties
+            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
+                                .Select(isBusy => !isBusy)
+                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.MainThread, initialValue: true);
+
+            _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
+                                  .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
+                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.MainThread, initialValue: false);
         }
         #endregion
 
@@ -50,14 +66,17 @@ namespace Deve.Clients.Maui.ViewModels
         protected virtual bool Validate()
         {
             ErrorText = string.Empty;
-            ClearErrors();
-            ValidateAllProperties();
+            ShouldValidate = true;
             if (HasErrors)
             {
-                ErrorText = string.Join("\n", GetErrors());
+                var errors = GetErrors(null);
+                if (errors is string[] arrayErrors)
+                {
+                    ErrorText = string.Join("\n", arrayErrors);
+                }
                 return false;
             }
-            return true;
+            return ValidationContext.IsValid;
         }
         #endregion
 

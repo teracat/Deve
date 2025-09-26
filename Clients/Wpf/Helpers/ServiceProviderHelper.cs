@@ -37,6 +37,8 @@ namespace Deve.Clients.Wpf.Helpers
             services.AddSingleton<ICache, SimpleInMemoryCache>();
             services.AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>();
             services.AddSingleton<IData, CoreMain>();
+
+            services.AddSingleton<ISchedulerProvider, SchedulerProvider>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)
