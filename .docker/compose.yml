@@ -27,7 +27,7 @@ services:
       - deve-network
 
   cache-redis:
-    image: redis
+    image: redis:latest
     networks:
       - deve-network
 
