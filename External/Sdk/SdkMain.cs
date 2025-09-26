@@ -1,7 +1,6 @@
 ﻿using Deve.Data;
 using Deve.External.Data;
 using Deve.Sdk;
-using Deve.Sdk.LoggingHandlers;
 
 namespace Deve.External.Sdk
 {
@@ -19,12 +18,12 @@ namespace Deve.External.Sdk
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment, DataOptions options, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, DataOptions options, HttpMessageHandler handler)
             : base(environment, options, handler)
         {
         }
 
-        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, HttpMessageHandler handler)
             : base(environment, handler)
         {
         }

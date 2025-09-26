@@ -14,7 +14,13 @@ namespace Deve.Clients.Maui.Helpers
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<INavigationService, MauiNavigationService>();
-            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
+
+            var handler = new LoggingHandlerLog();
+            // Use SentryHttpMessageHandler to capture HTTP requests in Sentry
+            //var handler = new SentryHttpMessageHandler(new LoggingHandlerLog());    // You can also chain handlers to add logging
+
+            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, handler));
+            services.AddSingleton<ISchedulerProvider, SchedulerProvider>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)

@@ -20,6 +20,12 @@ namespace Deve.Clients.Maui
                 .RegisterServices()
                 .RegisterViewModels()
                 .RegisterViews()
+                // Diagnostics
+                // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.Maui as a reference, uncomment the next line and
+                // change the DSN with your own (you can create a free account at https://sentry.io/welcome/).
+                // You should also modify the App.xaml.cs file to start and finish a transaction for user sessions and
+                // use the SentryHttpMessageHandler in the ServiceProviderHelper.cs file to capture HTTP requests.
+                //.UseSentryForMaui("Use your DSN")
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

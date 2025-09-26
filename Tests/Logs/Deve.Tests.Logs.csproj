@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\..\Extra\Diagnostics.Sentry\Deve.Diagnostics.Sentry.csproj" />
     <ProjectReference Include="..\..\Extra\Log.Log4net\Deve.Log.Log4net.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NLog\Deve.Log.NLog.csproj" />

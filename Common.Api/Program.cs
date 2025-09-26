@@ -1,11 +1,11 @@
-using System.Net;
 using System.Globalization;
+using System.Net;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
-using Deve.Logging;
-using Deve.Data;
-using Deve.DataSource;
-using Deve.DataSource.Config;
+using Deve.Api.Auth;
+using Deve.Api.Helpers;
+using Deve.Api.Settings;
+using Deve.Api.Swagger;
 using Deve.Auth;
 using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
@@ -13,10 +13,10 @@ using Deve.Auth.TokenManagers.Jwt;
 using Deve.Auth.UserIdentityService;
 using Deve.Cache;
 using Deve.Core.Shield;
-using Deve.Api.Auth;
-using Deve.Api.Helpers;
-using Deve.Api.Swagger;
-using Deve.Api.Settings;
+using Deve.Data;
+using Deve.DataSource;
+using Deve.DataSource.Config;
+using Deve.Logging;
 
 namespace Deve.Api
 {
@@ -239,6 +239,12 @@ namespace Deve.Api
             // Logging
             builder.Logging.AddDebug();
             builder.Logging.AddConsole();
+
+            // Diagnostics
+            // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.AspNetCore as a reference, uncomment the next lines and define your DSN in the appsettings.json.
+            // You should change the DSN with your own (you can create a free account at https://sentry.io/welcome/)
+            // Log.Providers.AddSentry is not needed, it captures automatically the logs from ASP.NET Core.
+            //builder.WebHost.UseSentryForAspNetCore(appSettings.SentryDsn);
 
             // Build
             var app = builder.Build();

@@ -1,6 +1,5 @@
 ﻿using Deve.Sdk;
 using Deve.Data;
-using Deve.Sdk.LoggingHandlers;
 using Deve.Internal.Data;
 
 namespace Deve.Internal.Sdk
@@ -25,12 +24,12 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment, IDataOptions options, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, IDataOptions options, HttpMessageHandler handler)
             : base(environment, options, handler)
         {
         }
 
-        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, HttpMessageHandler handler)
             : base(environment, handler)
         {
         }
