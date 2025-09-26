@@ -1,12 +1,14 @@
 ﻿using Deve.Localize;
 using Deve.Model;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace Deve
 {
     /// <summary>
     /// Provides utility methods.
     /// </summary>
-    public static class Utils
+    public static partial class Utils
     {
         /// <summary>
         /// Determines if any of the given strings are null, empty, or contain only whitespace.
@@ -189,5 +191,30 @@ namespace Deve
         /// <param name="errors">The list of result errors.</param>
         /// <returns>A formatted string containing all errors.</returns>
         public static string ErrorsToString(IList<ResultError> errors) => ErrorsToString(errors, ',');
+
+        /// <summary>
+        /// Converts an string with named arguments into a composite format string with indexed arguments.
+        /// </summary>
+        /// <param name="text">The string with named arguments to convert.</param>
+        /// <returns>A composite format string with indexed arguments.</returns>
+        public static string ConvertNameArgumentsToIndexed(string text)
+        {
+            var keys = new List<string>();
+            string result = ConvertNameArgumentsToIndexedRegex().Replace(text, match =>
+            {
+                string key = match.Groups[1].Value;
+                if (!keys.Contains(key))
+                {
+                    keys.Add(key);
+                }
+                int index = keys.IndexOf(key);
+                return $"{{{index}}}";
+            });
+
+            return result;
+        }
+
+        [GeneratedRegex(@"\{(\w+)\}")]
+        private static partial Regex ConvertNameArgumentsToIndexedRegex();
     }
 }
