@@ -1,24 +1,39 @@
-﻿using NLog;
+﻿using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Core;
 
 namespace Deve.Logging
 {
     /// <summary>
-    /// Use NLog as a log provider
-    /// https://github.com/nlog/nlog/wiki/Tutorial
+    /// Use Serilog as a log provider
+    /// https://github.com/serilog/serilog/
     /// </summary>
-    internal class LogProviderNLog : ILogProvider
+    internal class LogProviderSerilog : ILogProvider
     {
         #region Fields
         private readonly Logger _logger;
         #endregion
 
         #region Constructors
-        public LogProviderNLog()
+        public LogProviderSerilog()
         {
-            _logger = LogManager.GetCurrentClassLogger();
+            var configuration = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile("Serilog.json", optional: true, reloadOnChange: true)
+                                .Build();
+            _logger = new LoggerConfiguration()
+                     .ReadFrom.Configuration(configuration)
+                     .CreateLogger();
         }
 
-        public LogProviderNLog(Logger logger)
+        public LogProviderSerilog(IConfiguration configuration)
+        {
+            _logger = new LoggerConfiguration()
+                     .ReadFrom.Configuration(configuration)
+                     .CreateLogger();
+        }
+
+        public LogProviderSerilog(Logger logger)
         {
             _logger = logger;
         }
@@ -57,20 +72,20 @@ namespace Deve.Logging
         #endregion
     }
 
-    public static class LogProviderNLogExtension
+    public static class LogProviderSerilogExtension
     {
-        private static LogProviderNLog? _instance;
+        private static LogProviderSerilog? _instance;
 
-        public static void AddNLog(this LogProviders logProviders)
+        public static void AddSerilog(this LogProviders logProviders)
         {
             if (_instance is null)
             {
-                _instance = new LogProviderNLog();
+                _instance = new LogProviderSerilog();
                 logProviders.Add(_instance);
             }
         }
 
-        public static void RemoveNLog(this LogProviders logProviders)
+        public static void RemoveSerilog(this LogProviders logProviders)
         {
             if (_instance is not null)
             {
