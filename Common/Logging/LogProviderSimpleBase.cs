@@ -73,57 +73,25 @@
         }
 
         protected abstract void Write(string text);
-        protected abstract void Write(string format, params object[] args);
         #endregion
 
         #region ILogProvider
-        /// <inheritdoc/>
+        /// <summary>
+        /// Write some debug text to the log.
+        /// </summary>
+        /// <param name="text">The text to be written to the log.</param>
         public void Debug(string text)
         {
             Write(FormatText(DebugStringFormat, text));
         }
 
-        /// <inheritdoc/>
-        public void Debug(string format, params object[] args)
-        {
-            // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
-            Write(Utils.ConvertNameArgumentsToIndexed(format), args);
-        }
-
-        /// <inheritdoc/>
+        /// <summary>
+        /// Write some error text to the log.
+        /// </summary>
+        /// <param name="text">The text to be written to the log.</param>
         public void Error(string text)
         {
             Write(FormatText(ErrorStringFormat, text));
-        }
-
-        /// <inheritdoc/>
-        public void Error(Exception exception)
-        {
-            if (exception is null)
-            {
-                return;
-            }
-
-            Write(FormatText(ErrorStringFormat, exception.ToString()));
-        }
-
-        /// <inheritdoc/>
-        public void Error(Exception exception, string message)
-        {
-            if (exception is null)
-            {
-                Write(FormatText(ErrorStringFormat, message));
-                return;
-            }
-
-            Write(FormatText(ErrorStringFormat, message + " --> " + exception.ToString()));
-        }
-
-        /// <inheritdoc/>
-        public void Error(string format, params object[] args)
-        {
-            // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
-            Write(Utils.ConvertNameArgumentsToIndexed(format), args);
         }
         #endregion
     }
