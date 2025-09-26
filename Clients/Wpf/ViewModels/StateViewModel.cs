@@ -1,97 +1,100 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using ReactiveUI.Validation.Extensions;
-using Deve.Model;
+﻿using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public partial class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
+    public class StateViewModel : BaseEditViewModel, INavigationAwareWithType<State>
     {
         #region Fields
         private State? _state;
-
-        [Reactive]
         private string? _name;
-
-        [Reactive]
         private IList<Country>? _countries;
-
-        [Reactive]
         private Country? _selectedCountry;
         #endregion
 
-        #region Constructor
-        public StateViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        #region Properties
+        public string? Name
         {
-            // Validation Rules
-            this.ValidationRule(vm => vm.Name,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Name,
-                                                  (shouldValidate, name) => !shouldValidate || !string.IsNullOrWhiteSpace(name)),
-                                AppResources.MissingName);
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
 
-            this.ValidationRule(vm => vm.SelectedCountry,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.SelectedCountry,
-                                                  (shouldValidate, selectedCountry) => !shouldValidate || (selectedCountry is not null && selectedCountry.Id > 0)),
-                                AppResources.MissingCountry);
+        public IList<Country>? Countries
+        {
+            get => _countries;
+            set => SetProperty(ref _countries, value);
+        }
+
+        public Country? SelectedCountry
+        {
+            get => _selectedCountry;
+            set => SetProperty(ref _selectedCountry, value);
+        }
+        #endregion
+
+        #region Constructor
+        public StateViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
+        {
         }
         #endregion
 
         #region Overrides
-        protected async override Task<Result> GetData()
+        protected async override Task GetData()
         {
-            var taskState = GetDataState();
-            var taskCountries = GetDataCountries();
-
-            await Task.WhenAll(taskState, taskCountries);
-
-            var resState = await taskState;
-            var resCountry = await taskCountries;
-
-            // If GetDataState failed, return its result
-            if (!resState.Success)
-            {
-                return resState;
-            }
-
-            // Otherwise, return resCountry
-            return resCountry;
+            await GetDataState();
+            await GetDataCountries();
         }
 
-        protected async override Task<Result> Save()
+        internal async override Task DoSave()
         {
             if (_state is null)
             {
-                return Utils.ResultError();
+                return;
             }
 
-            if (!Validate())
+            if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
             {
-                return Utils.ResultError();
+                MessageHandler.ShowError(AppResources.MissingField);
+                return;
             }
 
-            _state.Name = Name!.Trim();
-            _state.CountryId = SelectedCountry!.Id;
-            _state.Country = SelectedCountry.Name;
-
-            Result res;
-            if (_state.Id == 0)
+            IsBusy = true;
+            try
             {
-                res = await Data.States.Add(_state);
+                _state.Name = _name!.Trim();
+                _state.CountryId = _selectedCountry.Id;
+                _state.Country = _selectedCountry.Name;
+
+                Result res;
+                if (_state.Id == 0)
+                {
+                    res = await Data.States.Add(_state);
+                }
+                else
+                {
+                    res = await Data.States.Update(_state);
+                }
+
+                if (!res.Success)
+                {
+                    MessageHandler.ShowError(res.Errors);
+                    return;
+                }
             }
-            else
+            finally
             {
-                res = await Data.States.Update(_state);
+                IsBusy = false;
             }
 
-            return res;
+            SetResult(true);
+            Close();
         }
         #endregion
 
         #region Methods
-        private async Task<Result> GetDataState()
+        private async Task GetDataState()
         {
             if (_state is null)
             {
@@ -104,37 +107,35 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await Data.States.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        return res;
+                        MessageHandler.ShowError(res.Errors);
+                        IsBusy = false; // When IsBusy=true the Window will not be closed
+                        Close();
+                        return;
                     }
 
                     _state = res.Data;
                 }
             }
 
-            // Only assign values if it's not a new state to avoid validation errors
-            if (_state.Id > 0)
-            {
-                Name = _state.Name;
-            }
-
-            return Utils.ResultOk();
+            Name = _state.Name;
         }
 
-        private async Task<Result> GetDataCountries()
+        private async Task GetDataCountries()
         {
             var res = await Data.Countries.Get();
             if (!res.Success)
             {
-                return res;
+                MessageHandler.ShowError(res.Errors);
+                IsBusy = false; // When IsBusy=true the Window will not be closed
+                Close();
+                return;
             }
 
             Countries = res.Data;
             if (_state is not null && _state.CountryId > 0)
             {
-                SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+                SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
-
-            return Utils.ResultOk();
         }
         #endregion
 
@@ -142,7 +143,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public void OnNavigatedToWithType(State parameter)
         {
             _state = parameter;
-            LoadCommand.Execute().Subscribe();
+            _ = LoadData();
         }
         #endregion
     }

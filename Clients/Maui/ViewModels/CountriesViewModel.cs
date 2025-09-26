@@ -1,33 +1,35 @@
-﻿using Deve.Model;
+﻿using Deve.Criteria;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public partial class CountriesViewModel : ListDataViewModel
+    public class CountriesViewModel : ListDataViewModel
     {
         #region Constructor
-        public CountriesViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
-            : base(navigationService, data, scheduler)
+        public CountriesViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion
 
         #region Overrides
-        protected override async Task<Result> GetListData()
+        protected override async Task GetListData()
         {
-            var res = await Data.Countries.Get(null);
-            if (res.Success)
+            CriteriaCountry? criteria = null;
+            var res = await Data.Countries.Get(criteria);
+            if (!res.Success)
             {
-                ListData = res.Data.Select(x => new ListData()
-                {
-                    Id = x.Id,
-                    Main = x.Name,
-                    Detail = x.IsoCode,
-                }).ToArray();
+                ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
             }
 
-            return res;
+            ListData = res.Data.Select(x => new ListData()
+            {
+                Id = x.Id,
+                Main = x.Name,
+                Detail = x.IsoCode,
+            }).ToArray();
         }
         #endregion
     }

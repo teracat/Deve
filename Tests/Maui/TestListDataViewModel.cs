@@ -15,13 +15,12 @@ namespace Deve.Tests.Maui
             _fixture = fixture;
         }
 
-        protected abstract ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler);
+        protected abstract ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data);
 
         [Fact]
         public async Task Initialization_ValidAuth_HasNoError()
         {
-            var schedulerProvider = new TestSchedulers();
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, schedulerProvider);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
 
             await viewModel.Initialization;
 
@@ -31,8 +30,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Initialization_ValidAuth_DataNotNull()
         {
-            var schedulerProvider = new TestSchedulers();
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, schedulerProvider);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
 
             await viewModel.Initialization;
 
@@ -42,8 +40,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task Initialization_ValidAuth_DataNotNullAndHasItems()
         {
-            var schedulerProvider = new TestSchedulers();
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, schedulerProvider);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
             
             await viewModel.Initialization;
 
@@ -54,8 +51,7 @@ namespace Deve.Tests.Maui
         [Fact]
         public async Task SelectedData_Null_NoException()
         {
-            var schedulerProvider = new TestSchedulers();
-            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, schedulerProvider);
+            var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
             await viewModel.Initialization;
 
             var exception = Record.Exception(() => viewModel.SelectedData = null);
@@ -68,8 +64,7 @@ namespace Deve.Tests.Maui
         {
             // We use a new instance so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var schedulerProvider = new TestSchedulers();
-            var viewModel = CreateViewModel(navigationService.Object, _fixture.DataValidAuth, schedulerProvider);
+            var viewModel = CreateViewModel(navigationService.Object, _fixture.DataValidAuth);
             await viewModel.Initialization;
             var selectedItem = viewModel.ListData!.First();
 

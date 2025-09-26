@@ -1,11 +1,9 @@
-using System.Reactive.Linq;
 using Moq;
 using Deve.Model;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Tests.Wpf.Fixtures;
-using System.Reactive.Threading.Tasks;
 
 namespace Deve.Tests.Wpf
 {
@@ -60,11 +58,10 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddStateCommand.Execute().ToTask();
+            await mainViewModel.AddState.ExecuteAsync(null);
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(), Times.Once);
         }
@@ -74,13 +71,12 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
             var stateId = state?.Id ?? 0;
 
-            await mainViewModel.EditStateCommand.Execute(state!).ToTask();
+            await mainViewModel.EditState.ExecuteAsync(state);
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(stateId), Times.Once);
         }
@@ -90,12 +86,11 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var messageHandler = new Mock<IMessageHandler>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object);
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
 
-            await mainViewModel.DeleteStateCommand.Execute(state!).ToTask();
+            await mainViewModel.DeleteState.ExecuteAsync(state);
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }
@@ -107,11 +102,10 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddCountryCommand.Execute();
+            await mainViewModel.AddCountry.ExecuteAsync(null);
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView>(), Times.Once);
         }
@@ -121,12 +115,11 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var navigationService = new Mock<INavigationService>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object);
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.EditCountryCommand.Execute(country!).ToTask();
+            await mainViewModel.EditCountry.ExecuteAsync(country);
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView, Country>(It.IsNotNull<Country>()), Times.Once);
         }
@@ -136,12 +129,11 @@ namespace Deve.Tests.Wpf
         {
             // We use a new instance of Mock<IMessageHandler> so other tests does not interfere with this one
             var messageHandler = new Mock<IMessageHandler>();
-            var schedulerProvider = new TestSchedulers();
-            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object, schedulerProvider);
+            var mainViewModel = new MainViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, messageHandler.Object);
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.DeleteCountryCommand.Execute(country!).ToTask();
+            await mainViewModel.DeleteCountry.ExecuteAsync(country);
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }

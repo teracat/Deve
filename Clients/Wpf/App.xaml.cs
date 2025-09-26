@@ -70,7 +70,6 @@ namespace Deve.Clients.Wpf
             var loginView = _serviceProvider.GetRequiredService<LoginView>();
             loginView.SetUsernamePassword(username, password);
             loginView.Show();
-            Current.MainWindow = loginView;
 
             oldWindow.Close();
         }

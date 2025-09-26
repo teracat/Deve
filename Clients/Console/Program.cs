@@ -10,7 +10,6 @@ namespace Deve.Clients
             Log.Providers.AddConsole();
             //Log.Providers.AddLog4net();
             //Log.Providers.AddNLog();
-            //Log.Providers.AddSerilog();
 
 //-:cnd
 #if DEBUG

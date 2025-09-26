@@ -1,43 +1,58 @@
-﻿using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.SourceGenerators;
+﻿using System.Windows.Input;
+using Deve.Clients.Wpf.Helpers;
 
 namespace Deve.Clients.Wpf.Models
 {
-    public partial class ListControlData : ReactiveObject
+    public class ListControlData : UIBase
     {
         #region Fields
-        [Reactive]
         private bool _isBusy = false;
-
-        [Reactive]
         private string _searchText = string.Empty;
-
-        [Reactive]
         private string _errorText = string.Empty;
-
-        [Reactive]
         private IEnumerable<ListData>? _items;
-
         private readonly Func<Task>? _funcWhenSearch;
-
-        [ObservableAsProperty]
-        private bool _isIdle;
+        private ICommand? _searchCommand;
         #endregion
 
-        #region Methods
-        [ReactiveCommand(CanExecute = nameof(IsIdle))]
-        public void Search() => _funcWhenSearch?.Invoke();
+        #region Properties
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+
+        public string ErrorText
+        {
+            get => _errorText;
+            set => SetProperty(ref _errorText, value);
+        }
+
+        public IEnumerable<ListData>? Items
+        {
+            get => _items;
+            set => SetProperty(ref _items, value);
+        }
+
+        public ICommand SearchCommand => _searchCommand ??= new Command(() =>
+        {
+            _funcWhenSearch?.Invoke();
+        }, () => !_isBusy);
         #endregion
 
         #region Constructors
+        public ListControlData()
+        {
+        }
+
         public ListControlData(Func<Task>? funcWhenSearch)
         {
             _funcWhenSearch = funcWhenSearch;
-
-            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
-                                .Select(isBusy => !isBusy)
-                                .ToProperty(this, x => x.IsIdle, initialValue: true);
         }
         #endregion
     }
