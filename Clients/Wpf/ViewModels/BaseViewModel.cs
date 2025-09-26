@@ -1,60 +1,37 @@
-﻿using Deve.Internal.Data;
-using Deve.Clients.Wpf.Helpers;
+﻿using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using ReactiveUI.Validation.Helpers;
+using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public abstract class BaseViewModel : UIBase
+    public abstract partial class BaseViewModel : ReactiveValidationObject
     {
         #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
-        private readonly IMessageHandler _messageHandler;
+        [Reactive]
         private bool _isBusy = false;
+
+        [Reactive] 
+        private bool _shouldValidate = false;
+
+        [Reactive]
         private string _errorText = string.Empty;
+
+        [ObservableAsProperty]
+        private bool _isIdle;
+
+        [ObservableAsProperty]
+        private bool _hasError;
         #endregion
 
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
-        protected IMessageHandler MessageHandler => _messageHandler;
-
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                if (_isBusy != value)
-                {
-                    _isBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
-                    OnPropertyChanged(nameof(IsIdle));
-                    OnIsBusyChanged();
-                }
-            }
-        }
-
-        public bool IsIdle
-        {
-            get => !IsBusy;
-            set => IsBusy = !value;
-        }
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set
-            {
-                if (SetProperty(ref _errorText, value))
-                {
-                    OnPropertyChanged(nameof(HasError));
-                }
-            }
-        }
-
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        protected IMessageHandler MessageHandler { get; }
 
         public Action<bool>? SetResultAction { get; set; }
 
@@ -62,16 +39,30 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
+        protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
         {
-            _navigationService = navigationService;
-            _data = data;
-            _messageHandler = messageHandler;
+            NavigationService = navigationService;
+            Data = data;
+            MessageHandler = messageHandler;
+
+            // Properties
+            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
+                                .Select(isBusy => !isBusy)
+                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.MainThread, initialValue: true);
+
+            _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
+                                  .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
+                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.MainThread, initialValue: false);
         }
         #endregion
 
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
+        protected virtual bool Validate()
+        {
+            ErrorText = string.Empty;
+            ShouldValidate = true;
+            return ValidationContext.IsValid;
+        }
         #endregion
 
         #region Helper Methods

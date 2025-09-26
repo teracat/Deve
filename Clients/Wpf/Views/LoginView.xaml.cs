@@ -1,5 +1,8 @@
-﻿using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Globalization;
+using System.Reactive.Threading.Tasks;
+using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 
 namespace Deve.Clients.Wpf.Views
@@ -18,14 +21,23 @@ namespace Deve.Clients.Wpf.Views
             viewModel.LoginView = this;
             ViewModel = _viewModel = viewModel;
 
-            //-:cnd
+//-:cnd
 #if DEBUG
             if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
             {
                 SetUsernamePassword("teracat", "teracat");
             }
 #endif
-            //+:cnd
+//+:cnd
+            
+            if (string.IsNullOrEmpty(_viewModel.Username))
+            {
+                uxUsername.Focus();
+            }
+            else
+            {
+                uxPassword.Focus();
+            }
         }
         #endregion
 
@@ -34,21 +46,6 @@ namespace Deve.Clients.Wpf.Views
         {
             _viewModel.Username = username;
             uxPassword.Password = password;
-        }
-        #endregion
-
-        #region Overrides
-        protected override void OnWindowLoaded()
-        {
-            base.OnWindowLoaded();
-            if (string.IsNullOrEmpty(uxUsername.Text))
-            {
-                uxUsername.Focus();
-            }
-            else
-            {
-                uxPassword.Focus();
-            }
         }
         #endregion
 
@@ -73,13 +70,19 @@ namespace Deve.Clients.Wpf.Views
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.DoLogin(uxPassword.Password);
+                _ = _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
             }
         }
 
-        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
+        private async void OnLoginClick(object sender, RoutedEventArgs e)
         {
-            _ = _viewModel.DoLogin(uxPassword.Password);
+            await _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
+        }
+
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var passwordBox = (PasswordBox)sender;
+            _viewModel.Password = passwordBox.SecurePassword;
         }
         #endregion
     }

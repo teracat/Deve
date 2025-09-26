@@ -1,17 +1,28 @@
-﻿using Deve.Clients.Maui.Interfaces;
+﻿using System.Reactive;
+using ReactiveUI;
+using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public abstract class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
+    public abstract partial class BaseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
         #region Properties
         public long Id { get; private set; }
+
+        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
         #endregion
 
         #region Constructor
-        protected BaseDetailsViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
+        protected BaseDetailsViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
+            : base(navigationService, data, scheduler)
         {
+            // Commands
+            var canExecuteIsIdle = this.WhenAnyValue(vm => vm.IsIdle);
+            LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
+
+            // Properties
+            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
+                .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
         }
         #endregion
 
@@ -20,18 +31,10 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected async Task LoadData()
+        private async Task LoadData()
         {
             ErrorText = string.Empty;
-            IsBusy = true;
-            try
-            {
-                await GetData();
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            await GetData();
         }
         #endregion
 

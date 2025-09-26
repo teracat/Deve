@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <v:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
             xmlns:local="clr-namespace:Deve.Clients.Maui"
             xmlns:strings="clr-namespace:Deve.Clients.Maui.Resources.Strings"
             xmlns:v="clr-namespace:Deve.Clients.Maui.Views"
@@ -30,15 +31,15 @@
                     <Label Text="{x:Static strings:AppResources.Username}" Margin="0,10,0,0"
                            SemanticProperties.Description="" />
 
-                    <Entry x:Name="uxUsername" Text="{Binding Username}" IsReadOnly="{Binding IsBusy}" Completed="uxUsername_Completed" />
+                    <Entry x:Name="uxUsername" Text="{Binding Username}" IsReadOnly="{Binding IsBusy}" Completed="OnUsernameCompleted" />
 
                     <Label Text="{x:Static strings:AppResources.Password}"
                            SemanticProperties.Description="" />
 
-                    <Entry x:Name="uxPassword" IsPassword="True" Text="{Binding Password}" IsReadOnly="{Binding IsBusy}" Completed="uxPassword_Completed" />
+                    <Entry x:Name="uxPassword" IsPassword="True" Text="{Binding Password}" IsReadOnly="{Binding IsBusy}" Completed="OnPasswordCompleted" />
 
                     <Button Text="{x:Static strings:AppResources.Login}" HorizontalOptions="Fill"
-                            Command="{Binding Login}" IsVisible="{Binding IsIdle}"
+                            Command="{Binding LoginCommand}" IsVisible="{Binding IsIdle}"
                             SemanticProperties.Hint="Check username and password to login" />
 
                     <ActivityIndicator HorizontalOptions="Center" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />

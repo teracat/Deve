@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Deve.Clients.Wpf"
                     xmlns:ctrl="clr-namespace:Deve.Clients.Wpf.Controls"
+                    xmlns:strings="clr-namespace:Deve.Clients.Wpf.Resources.Strings"
                     xmlns:fa="http://schemas.fontawesome.com/icons/svg">
 
     <!-- ListViewItem -->
@@ -20,21 +21,33 @@
         <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="MinHeight" Value="20" />
+        <Setter Property="AcceptsReturn" Value="False" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="Border" CornerRadius="4" Padding="0" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" Background="White">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="Disabled" />
-                                <VisualState x:Name="MouseOver" />
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-
+                    <StackPanel>
+                        <Border x:Name="Border" CornerRadius="4" Padding="0" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" Background="White">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Disabled" />
+                                    <VisualState x:Name="MouseOver" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                        <TextBlock x:Name="ErrorTextBlock" FontSize="11" FontStyle="Italic" Foreground="{StaticResource ErrorBrush}" TextWrapping="Wrap"
+                                   Text="" />
+                    </StackPanel>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="ErrorTextBlock" Property="Text" Value="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent},Path=(Validation.Errors)[0].ErrorContent}"/>
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="False">
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlsBorderFocusedBrush}" />
                         </Trigger>
@@ -52,18 +65,31 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type PasswordBox}">
-                    <Border x:Name="Border" CornerRadius="4" Padding="0" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" Background="White">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="Disabled" />
-                                <VisualState x:Name="MouseOver" />
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
+                    <StackPanel>
+                        <Border x:Name="Border" CornerRadius="4" Padding="0" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" Background="White">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Disabled" />
+                                    <VisualState x:Name="MouseOver" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                        <TextBlock x:Name="ErrorTextBlock" FontSize="11" FontStyle="Italic" Foreground="{StaticResource ErrorBrush}" TextWrapping="Wrap"
+                                   Text="{x:Static strings:AppResources.MissingPassword}" />
+                    </StackPanel>
 
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding HasErrorPassword}" Value="True">
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasErrorPassword}" Value="False">
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlsBorderFocusedBrush}" />
+                        </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlsBorderFocusedBrush}" />
                         </Trigger>
@@ -173,39 +199,49 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
-                    <Grid>
-                        <ToggleButton Grid.Column="2" Cursor="Hand" Name="ToggleButton" BorderBrush="{TemplateBinding BorderBrush}" 
-                                      Background="{TemplateBinding Background}" Foreground="{StaticResource Gray600Brush}" 
-                                      Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                                      ClickMode="Press" Style="{StaticResource ComboBoxToggleButton}"/>
+                    <StackPanel>
+                        <Grid>
+                            <ToggleButton Grid.Column="2" Cursor="Hand" Name="ToggleButton" BorderBrush="{TemplateBinding BorderBrush}" 
+                                          Background="{TemplateBinding Background}" Foreground="{StaticResource Gray600Brush}" 
+                                          Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press" Style="{StaticResource ComboBoxToggleButton}"/>
 
-                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
-                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                          Margin="10,3,30,3" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        
-                        <TextBox x:Name="PART_EditableTextBox" Template="{StaticResource ComboBoxTextBox}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,3,23,3" Focusable="True" Visibility="Hidden"
-                                 IsReadOnly="{TemplateBinding IsReadOnly}" Style="{x:Null}"/>
-                        
-                        <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"
-                               Focusable="False" PopupAnimation="Slide">
-                            
-                            <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" CornerRadius="0" Background="White" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" />
-                                
-                                <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                </ScrollViewer>
-                            </Grid>
-                            
-                        </Popup>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="10,3,30,3" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    </Grid>
+                            <TextBox x:Name="PART_EditableTextBox" Template="{StaticResource ComboBoxTextBox}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,3,23,3" Focusable="True" Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}" Style="{x:Null}"/>
+
+                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"
+                                   Focusable="False" PopupAnimation="Slide">
+
+                                <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" CornerRadius="0" Background="White" BorderThickness="1" BorderBrush="{StaticResource ControlsBorderBrush}" />
+
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <TextBlock x:Name="ErrorTextBlock" FontSize="11" FontStyle="Italic" Foreground="{StaticResource ErrorBrush}" TextWrapping="Wrap"
+                                    Text="" />
+                    </StackPanel>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="ErrorTextBlock" Property="Text" Value="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent},Path=(Validation.Errors)[0].ErrorContent}"/>
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="False">
+                            <Setter TargetName="ErrorTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
