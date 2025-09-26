@@ -1,4 +1,4 @@
-﻿using ReactiveUI.SourceGenerators;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Internal.Model;
 using Deve.Clients.Maui.Interfaces;
 
@@ -7,13 +7,13 @@ namespace Deve.Clients.Maui.ViewModels
     public partial class ClientDetailsViewModel : BaseDetailsViewModel
     {
         #region Atributes
-        [Reactive]
+        [ObservableProperty]
         private Client? _client;
         #endregion
 
         #region Constructor
-        public ClientDetailsViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
-            : base(navigationService, data, scheduler)
+        public ClientDetailsViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion

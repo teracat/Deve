@@ -1,4 +1,4 @@
-﻿using Deve.Model;
+﻿using Deve.Internal.Criteria;
 using Deve.Clients.Maui.Models;
 using Deve.Clients.Maui.Interfaces;
 
@@ -7,27 +7,29 @@ namespace Deve.Clients.Maui.ViewModels
     public partial class ClientsViewModel : ListDataViewModel
     {
         #region Constructor
-        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
-            : base(navigationService, data, scheduler)
+        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
         }
         #endregion
 
         #region Overrides
-        protected override async Task<Result> GetListData()
+        protected override async Task GetListData()
         {
-            var res = await Data.Clients.Get(null);
-            if (res.Success)
+            CriteriaClient? criteria = null;
+            var res = await Data.Clients.Get(criteria);
+            if (!res.Success)
             {
-                ListData = res.Data.Select(x => new ListData()
-                {
-                    Id = x.Id,
-                    Main = x.DisplayName,
-                    Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
-                }).ToArray();
+                ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
             }
 
-            return res;
+            ListData = res.Data.Select(x => new ListData()
+            {
+                Id = x.Id,
+                Main = x.DisplayName,
+                Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
+            }).ToArray();
         }
         #endregion
     }

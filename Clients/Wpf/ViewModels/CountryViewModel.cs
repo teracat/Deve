@@ -1,7 +1,5 @@
-﻿using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using ReactiveUI.Validation.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
@@ -13,35 +11,27 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Fields
         private Country? _country;
 
-        [Reactive]
-        private string _name = string.Empty;
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
+        private string? _name;
 
-        [Reactive]
-        private string _isoCode = string.Empty;
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingIsoCode))]
+        [MinLength(2, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MinLengthIsoCode))]
+        private string? _isoCode;
         #endregion
 
         #region Constructor
-        public CountryViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        public CountryViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
-            // Validation Rules
-            this.ValidationRule(vm => vm.Name,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Name,
-                                                  (shouldValidate, name) => !shouldValidate || !string.IsNullOrWhiteSpace(name)),
-                                AppResources.MissingName);
-            this.ValidationRule(vm => vm.IsoCode,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.IsoCode,
-                                                  (shouldValidate, isoCode) => !shouldValidate || !string.IsNullOrWhiteSpace(isoCode)),
-                                AppResources.MissingIsoCode);
-            this.ValidationRule(vm => vm.IsoCode,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.IsoCode,
-                                                  (shouldValidate, isoCode) => !shouldValidate || isoCode.Length >= 2),
-                                AppResources.MinLengthIsoCode);
         }
         #endregion
 
         #region Overrides
-        protected async override Task<Result> GetData()
+        protected async override Task GetData()
         {
             if (_country is null)
             {
@@ -54,7 +44,9 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await Data.Countries.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        return res;
+                        MessageHandler.ShowError(res.Errors);
+                        Close();
+                        return;
                     }
 
                     _country = res.Data;
@@ -67,36 +59,49 @@ namespace Deve.Clients.Wpf.ViewModels
                 Name = _country!.Name;
                 IsoCode = _country!.IsoCode;
             }
-
-            return Utils.ResultOk();
         }
 
-        protected async override Task<Result> Save()
+        internal async override Task Save()
         {
             if (_country is null)
             {
-                return Utils.ResultError();
+                return;
             }
 
             if (!Validate())
             {
-                return Utils.ResultError();
+                return;
             }
 
-            _country.Name = Name.Trim();
-            _country.IsoCode = IsoCode.Trim();
-
-            Result res;
-            if (_country.Id == 0)
+            IsBusy = true;
+            try
             {
-                res = await Data.Countries.Add(_country);
+                _country.Name = Name!.Trim();
+                _country.IsoCode = IsoCode!.Trim();
+
+                Result res;
+                if (_country.Id == 0)
+                {
+                    res = await Data.Countries.Add(_country);
+                }
+                else
+                {
+                    res = await Data.Countries.Update(_country);
+                }
+
+                if (!res.Success)
+                {
+                    MessageHandler.ShowError(res.Errors);
+                    return;
+                }
             }
-            else
+            finally
             {
-                res = await Data.Countries.Update(_country);
+                IsBusy = false;
             }
 
-            return res;
+            SetResult(true);
+            Close();
         }
         #endregion
 
@@ -104,7 +109,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public void OnNavigatedToWithType(Country parameter)
         {
             _country = parameter;
-            _ = LoadCommand.Execute().Subscribe();
+            _ = LoadData();
         }
         #endregion
     }

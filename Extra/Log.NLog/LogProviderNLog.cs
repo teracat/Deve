@@ -8,53 +8,17 @@ namespace Deve.Logging
     /// </summary>
     internal class LogProviderNLog : ILogProvider
     {
-        #region Fields
-        private readonly Logger _logger;
-        #endregion
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        #region Constructors
-        public LogProviderNLog()
-        {
-            _logger = LogManager.GetCurrentClassLogger();
-        }
-
-        public LogProviderNLog(Logger logger)
-        {
-            _logger = logger;
-        }
-        #endregion
-
-        #region ILogProvider
         public void Debug(string text)
         {
-            _logger.Debug(text);
-        }
-
-        public void Debug(string format, params object[] args)
-        {
-            _logger.Debug(format, args);
+            Logger.Debug(text);
         }
 
         public void Error(string text)
         {
-            _logger.Error(text);
+            Logger.Error(text);
         }
-
-        public void Error(Exception exception)
-        {
-            _logger.Error(exception, string.Empty);
-        }
-
-        public void Error(Exception exception, string message)
-        {
-            _logger.Error(exception, message);
-        }
-
-        public void Error(string format, params object[] args)
-        {
-            _logger.Error(format, args);
-        }
-        #endregion
     }
 
     public static class LogProviderNLogExtension

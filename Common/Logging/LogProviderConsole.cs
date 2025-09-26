@@ -18,7 +18,7 @@
         }
         #endregion
 
-        #region LogProviderSimpleBase
+        #region ILogProvider
         /// <summary>
         /// Write the text to the Console.
         /// </summary>
@@ -26,17 +26,6 @@
         protected override void Write(string text)
         {
             Console.WriteLine(text);
-        }
-
-        /// <summary>
-        /// Write a formatted debug text to the Console.
-        /// </summary>
-        /// <param name="format">The text to be written with zero or more format items,
-        /// which correspond to objects in the args array</param>
-        /// <param name="args">An object array that contains zero or more objects to format.</param>
-        protected override void Write(string format, params object[] args)
-        {
-            Console.WriteLine(format, args);
         }
         #endregion
     }

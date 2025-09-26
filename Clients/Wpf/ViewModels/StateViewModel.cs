@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using ReactiveUI.Validation.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Model;
+using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 
@@ -12,86 +12,81 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Fields
         private State? _state;
 
-        [Reactive]
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
         private string? _name;
 
-        [Reactive]
+        [ObservableProperty]
         private IList<Country>? _countries;
 
-        [Reactive]
+        [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [GreaterThanOrEqual(nameof(SelectedCountry.Id), 1, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
         private Country? _selectedCountry;
         #endregion
 
         #region Constructor
-        public StateViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        public StateViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
-            // Validation Rules
-            this.ValidationRule(vm => vm.Name,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Name,
-                                                  (shouldValidate, name) => !shouldValidate || !string.IsNullOrWhiteSpace(name)),
-                                AppResources.MissingName);
-
-            this.ValidationRule(vm => vm.SelectedCountry,
-                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.SelectedCountry,
-                                                  (shouldValidate, selectedCountry) => !shouldValidate || (selectedCountry is not null && selectedCountry.Id > 0)),
-                                AppResources.MissingCountry);
         }
         #endregion
 
         #region Overrides
-        protected async override Task<Result> GetData()
+        protected async override Task GetData()
         {
-            var taskState = GetDataState();
-            var taskCountries = GetDataCountries();
-
-            await Task.WhenAll(taskState, taskCountries);
-
-            var resState = await taskState;
-            var resCountry = await taskCountries;
-
-            // If GetDataState failed, return its result
-            if (!resState.Success)
-            {
-                return resState;
-            }
-
-            // Otherwise, return resCountry
-            return resCountry;
+            await GetDataState();
+            await GetDataCountries();
         }
 
-        protected async override Task<Result> Save()
+        internal async override Task Save()
         {
             if (_state is null)
             {
-                return Utils.ResultError();
+                return;
             }
 
             if (!Validate())
             {
-                return Utils.ResultError();
+                return;
             }
 
-            _state.Name = Name!.Trim();
-            _state.CountryId = SelectedCountry!.Id;
-            _state.Country = SelectedCountry.Name;
-
-            Result res;
-            if (_state.Id == 0)
+            IsBusy = true;
+            try
             {
-                res = await Data.States.Add(_state);
+                _state.Name = Name!.Trim();
+                _state.CountryId = SelectedCountry!.Id;
+                _state.Country = SelectedCountry.Name;
+
+                Result res;
+                if (_state.Id == 0)
+                {
+                    res = await Data.States.Add(_state);
+                }
+                else
+                {
+                    res = await Data.States.Update(_state);
+                }
+
+                if (!res.Success)
+                {
+                    MessageHandler.ShowError(res.Errors);
+                    return;
+                }
             }
-            else
+            finally
             {
-                res = await Data.States.Update(_state);
+                IsBusy = false;
             }
 
-            return res;
+            SetResult(true);
+            Close();
         }
         #endregion
 
         #region Methods
-        private async Task<Result> GetDataState()
+        private async Task GetDataState()
         {
             if (_state is null)
             {
@@ -104,7 +99,10 @@ namespace Deve.Clients.Wpf.ViewModels
                     var res = await Data.States.Get(Id);
                     if (!res.Success || res.Data is null)
                     {
-                        return res;
+                        MessageHandler.ShowError(res.Errors);
+                        IsBusy = false; // When IsBusy=true the Window will not be closed
+                        Close();
+                        return;
                     }
 
                     _state = res.Data;
@@ -116,16 +114,17 @@ namespace Deve.Clients.Wpf.ViewModels
             {
                 Name = _state.Name;
             }
-
-            return Utils.ResultOk();
         }
 
-        private async Task<Result> GetDataCountries()
+        private async Task GetDataCountries()
         {
             var res = await Data.Countries.Get();
             if (!res.Success)
             {
-                return res;
+                MessageHandler.ShowError(res.Errors);
+                IsBusy = false; // When IsBusy=true the Window will not be closed
+                Close();
+                return;
             }
 
             Countries = res.Data;
@@ -133,8 +132,6 @@ namespace Deve.Clients.Wpf.ViewModels
             {
                 SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
-
-            return Utils.ResultOk();
         }
         #endregion
 
@@ -142,7 +139,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public void OnNavigatedToWithType(State parameter)
         {
             _state = parameter;
-            LoadCommand.Execute().Subscribe();
+            _ = LoadData();
         }
         #endregion
     }

@@ -1,14 +1,12 @@
 ﻿using Deve.Localize;
 using Deve.Model;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 namespace Deve
 {
     /// <summary>
     /// Provides utility methods.
     /// </summary>
-    public static partial class Utils
+    public static class Utils
     {
         /// <summary>
         /// Determines if any of the given strings are null, empty, or contain only whitespace.
@@ -117,8 +115,6 @@ namespace Deve
 
         public static Result ResultOk() => new();
 
-        public static Result ResultError() => new(false);
-
         public static Result ResultError(string langCode, ResultErrorType errorType, string? fieldName) => new(errorType, fieldName, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
 
         public static Result ResultError(string langCode, ResultErrorType errorType) => new(errorType, null, ErrorLocalizeFactory.Get().Localize(errorType, langCode));
@@ -191,30 +187,5 @@ namespace Deve
         /// <param name="errors">The list of result errors.</param>
         /// <returns>A formatted string containing all errors.</returns>
         public static string ErrorsToString(IList<ResultError> errors) => ErrorsToString(errors, ',');
-
-        /// <summary>
-        /// Converts an string with named arguments into a composite format string with indexed arguments.
-        /// </summary>
-        /// <param name="text">The string with named arguments to convert.</param>
-        /// <returns>A composite format string with indexed arguments.</returns>
-        public static string ConvertNameArgumentsToIndexed(string text)
-        {
-            var keys = new List<string>();
-            string result = ConvertNameArgumentsToIndexedRegex().Replace(text, match =>
-            {
-                string key = match.Groups[1].Value;
-                if (!keys.Contains(key))
-                {
-                    keys.Add(key);
-                }
-                int index = keys.IndexOf(key);
-                return $"{{{index}}}";
-            });
-
-            return result;
-        }
-
-        [GeneratedRegex(@"\{(\w+)\}")]
-        private static partial Regex ConvertNameArgumentsToIndexedRegex();
     }
 }
