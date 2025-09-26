@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace Deve.Auth.Crypt
 {
     /// <summary>
-    /// Encryption/decryption.
+    /// Encryption/decryption. You should use your own implementation or, at least, change the Key & IV used to encrypt/decrypt (see AutConstants).
     /// </summary>
     public class CryptAes : ICrypt
     {

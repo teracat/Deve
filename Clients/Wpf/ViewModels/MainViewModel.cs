@@ -1,46 +1,72 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using Deve.Criteria;
+﻿using Deve.Criteria;
 using Deve.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Criteria;
 using Deve.Internal.Model;
 using Deve.Clients.Wpf.Views;
 using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Models;
 using Deve.Clients.Wpf.Interfaces;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public partial class MainViewModel : BaseViewModel, IAsyncInitialization
+    public class MainViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
-        [Reactive]
         private ListControlData _ctrlDataClients;
-
-        [Reactive]
         private ListControlData _ctrlDataCities;
-
-        [Reactive]
         private ListControlData _ctrlDataStates;
-
-        [Reactive]
         private ListControlData _ctrlDataCountries;
-
-        [Reactive]
         private bool _isLoadingClientStats = false;
-
-        [Reactive]
         private ClientStats? _clientStats;
+
+        private AsyncCommand? _addStateCommand;
+        private AsyncCommand? _editStateCommand;
+        private AsyncCommand? _deleteStateCommand;
+        private AsyncCommand? _addCountryCommand;
+        private AsyncCommand? _editCountryCommand;
+        private AsyncCommand? _deleteCountryCommand;
         #endregion
 
         #region Properties
         public Task Initialization { get; private set; }
+
+        public ListControlData CtrlDataClients
+        {
+            get => _ctrlDataClients;
+            set => SetProperty(ref _ctrlDataClients, value);
+        }
+        public ListControlData CtrlDataCities
+        {
+            get => _ctrlDataCities;
+            set => SetProperty(ref _ctrlDataCities, value);
+        }
+        public ListControlData CtrlDataStates
+        {
+            get => _ctrlDataStates;
+            set => SetProperty(ref _ctrlDataStates, value);
+        }
+        public ListControlData CtrlDataCountries
+        {
+            get => _ctrlDataCountries;
+            set => SetProperty(ref _ctrlDataCountries, value);
+        }
+        public bool IsLoadingClientStats
+        {
+            get => _isLoadingClientStats;
+            set => SetProperty(ref _isLoadingClientStats, value);
+        }
+        public ClientStats? ClientStats
+        {
+            get => _clientStats;
+            set => SetProperty(ref _clientStats, value);
+        }
         #endregion
 
         #region Constructor
-        public MainViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        public MainViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
             _ctrlDataClients = new(LoadDataClients);
             _ctrlDataCities = new(LoadDataCities);
@@ -66,9 +92,9 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             var criteria = new CriteriaClient()
             {
-                Name = CtrlDataClients.SearchText,
+                Name = _ctrlDataClients.SearchText,
             };
-            await GetDataList(CtrlDataClients, Data.Clients, criteria, x => new ListDataClient()
+            await LoadDataList(_ctrlDataClients, Data.Clients, criteria, x => new ListDataClient()
             {
                 Id = x.Id,
                 Main = x.DisplayName,
@@ -81,9 +107,9 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             var criteria = new CriteriaCity()
             {
-                Name = CtrlDataCities.SearchText,
+                Name = _ctrlDataCities.SearchText,
             };
-            await GetDataList(CtrlDataCities, Data.Cities, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataCities, Data.Cities, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -95,9 +121,9 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             var criteria = new CriteriaState()
             {
-                Name = CtrlDataStates.SearchText,
+                Name = _ctrlDataStates.SearchText,
             };
-            await GetDataList(CtrlDataStates, Data.States, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataStates, Data.States, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -109,9 +135,9 @@ namespace Deve.Clients.Wpf.ViewModels
         {
             var criteria = new CriteriaCountry()
             {
-                Name = CtrlDataCountries.SearchText,
+                Name = _ctrlDataCountries.SearchText,
             };
-            await GetDataList(CtrlDataCountries, Data.Countries, criteria, x => new ListData()
+            await LoadDataList(_ctrlDataCountries, Data.Countries, criteria, x => new ListData()
             {
                 Id = x.Id,
                 Main = x.Name,
@@ -127,7 +153,7 @@ namespace Deve.Clients.Wpf.ViewModels
                 var res = await Data.Stats.GetClientStats();
                 if (!res.Success)
                 {
-                    CtrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
+                    _ctrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
                     return;
                 }
 
@@ -139,8 +165,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task AddState()
+        private async Task DoAddState()
         {
             if (NavigationService.NavigateModalTo<StateView>())
             {
@@ -148,10 +173,9 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task EditState(ListData? listData)
+        private async Task DoEditState(ListData? listData)
         {
-            await Edit(listData, CtrlDataStates, Data.States, (o) =>
+            await DoEdit(listData, _ctrlDataStates, Data.States, (o) =>
             {
                 // Use case 1: sending Id to force data download again
                 if (NavigationService.NavigateModalTo<StateView>(o.Id))
@@ -163,14 +187,12 @@ namespace Deve.Clients.Wpf.ViewModels
             });
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task DeleteState(ListData? listData)
+        private async Task DoDeleteState(ListData? listData)
         {
-            await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
+            await DoDelete(listData, AppResources.ConfirmDeleteState, _ctrlDataStates, Data.States, LoadDataStates);
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task AddCountry()
+        private async Task DoAddCountry()
         {
             if (NavigationService.NavigateModalTo<CountryView>())
             {
@@ -178,10 +200,9 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task EditCountry(ListData? listData)
+        private async Task DoEditCountry(ListData? listData)
         {
-            await Edit(listData, CtrlDataCountries, Data.Countries, (o) =>
+            await DoEdit(listData, _ctrlDataCountries, Data.Countries, (o) =>
             {
                 // Use case 2: sending Country object to avoid data download again
                 if (NavigationService.NavigateModalTo<CountryView, Country>(o))
@@ -193,15 +214,14 @@ namespace Deve.Clients.Wpf.ViewModels
             });
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task DeleteCountry(ListData? listData)
+        private async Task DoDeleteCountry(ListData? listData)
         {
-            await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
+            await DoDelete(listData, AppResources.ConfirmDeleteCountry, _ctrlDataCountries, Data.Countries, LoadDataCountries);
         }
         #endregion
 
         #region Generic Methods
-        private async Task GetDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
+        private async Task LoadDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
         {
             data.IsBusy = true;
             try
@@ -221,7 +241,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        private async Task Edit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
+        private async Task DoEdit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
         {
             if (listData is not null)
             {
@@ -251,7 +271,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        private async Task Delete<ModelList, Model, Criteria>(ListData? listData, string message, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Task> actionWhenDone) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
+        private async Task DoDelete<ModelList, Model, Criteria>(ListData? listData, string message, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Task> actionWhenDone) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
         {
             if (listData is not null)
             {
@@ -276,6 +296,16 @@ namespace Deve.Clients.Wpf.ViewModels
                 }
             }
         }
+        #endregion
+
+        #region Commands
+        public AsyncCommand AddState => _addStateCommand ??= new AsyncCommand(DoAddState, () => !_ctrlDataStates.IsBusy);
+        public AsyncCommand EditState => _editStateCommand ??= new AsyncCommand((listData) => DoEditState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+        public AsyncCommand DeleteState => _deleteStateCommand ??= new AsyncCommand((listData) => DoDeleteState((ListData?)listData), () => !_ctrlDataStates.IsBusy);
+
+        public AsyncCommand AddCountry => _addCountryCommand ??= new AsyncCommand(() => DoAddCountry(), () => !_ctrlDataCountries.IsBusy);
+        public AsyncCommand EditCountry => _editCountryCommand ??= new AsyncCommand((listData) => DoEditCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
+        public AsyncCommand DeleteCountry => _deleteCountryCommand ??= new AsyncCommand((listData) => DoDeleteCountry((ListData?)listData), () => !_ctrlDataCountries.IsBusy);
         #endregion
     }
 }

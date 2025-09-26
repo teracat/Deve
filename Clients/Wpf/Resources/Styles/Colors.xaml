@@ -10,7 +10,7 @@
     <Color x:Key="SecondaryDark">#ffa0ff</Color>
     <Color x:Key="SecondaryDarkText">#545454</Color>
     <Color x:Key="Tertiary">#c6e6b9</Color>
-    <Color x:Key="Error">#ff0000</Color>
+    <Color x:Key="ErrorText">#ff0000</Color>
     <Color x:Key="Link">#43b6cb</Color>
     <Color x:Key="LinkDark">#f2c6ff</Color>
     <Color x:Key="DefaultTextColor">#000000</Color>
@@ -47,7 +47,7 @@
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
     <SolidColorBrush x:Key="LinkBrush" Color="{StaticResource Link}"/>
-    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error}"/>
+    <SolidColorBrush x:Key="ErrorTextBrush" Color="{StaticResource ErrorText}"/>
     <SolidColorBrush x:Key="MidnightBlueBrush" Color="{StaticResource MidnightBlue}"/>
     <SolidColorBrush x:Key="DefaultTextBrush" Color="{StaticResource DefaultTextColor}"/>
     <SolidColorBrush x:Key="ControlsBorderBrush" Color="{StaticResource ControlsBorderColor}"/>

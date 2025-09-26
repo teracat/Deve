@@ -1,95 +1,53 @@
-﻿using System.Reactive;
-using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using Deve.Model;
+﻿using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
-using Deve.Clients.Wpf.Views;
-using Deve.Internal.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
-    public abstract partial class BaseEditViewModel : BaseViewModel, INavigationAware
+    public abstract class BaseEditViewModel : BaseViewModel, INavigationAware
     {
         #region Fields
-        [Reactive]
-        private long _id = 0;
+        public Action? LoadDataDoneAction { get; set; }
+
+        private AsyncCommand? _saveCommand;
+        private Command? _cancelCommand;
         #endregion
 
         #region Properties
-        public ReactiveCommand<Unit, Result> LoadCommand { get; }
-
-        public Action? LoadDataDoneAction { get; set; }
+        public long Id { get; set; } = 0;
         #endregion
 
         #region Constructor
-        protected BaseEditViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        protected BaseEditViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
-            // Commands
-            var canExecuteIsIdle = this.WhenAnyValue(vm => vm.IsIdle);
-            LoadCommand = ReactiveCommand.CreateFromTask(GetData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
-
-            // Properties
-            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting, vm => vm.SaveCommand.IsExecuting, vm => vm.CancelCommand.IsExecuting)
-                .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
-
-            // Subscriptions
-            LoadCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
-                       .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true (it allows to set the focus to the initial control)
-                       .SubscribeOn(scheduler.TaskPool)
-                       .ObserveOn(scheduler.MainThread)
-                       .DistinctUntilChanged()
-                       .Subscribe(tuple =>
-                        {
-                            var res = tuple.First;
-                            if (res is not null)
-                            {
-                                if (!res.Success)
-                                {
-                                    MessageHandler.ShowError(res.Errors);
-                                    Close();
-                                    return;
-                                }
-                            }
-
-                            LoadDataDoneAction?.Invoke();
-                        });
-
-            SaveCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
-                       .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true
-                       .SubscribeOn(scheduler.TaskPool)
-                       .ObserveOn(scheduler.MainThread)
-                       .Subscribe(tuple =>
-                       {
-                           var res = tuple.First;
-                           if (!res.Success)
-                            {
-                                if (res.Errors is not null && res.Errors.Count > 0)
-                                {
-                                    MessageHandler.ShowError(res.Errors);
-                                }
-                                return;
-                            }
-
-                            SetResult(true);
-                            Close();
-                        });
         }
         #endregion
 
         #region Methods
-        [ReactiveCommand(CanExecute = nameof(IsIdle))]
-        protected void Cancel()
+        internal virtual void DoCancel()
         {
             SetResult(false);
             Close();
         }
 
-        [ReactiveCommand(CanExecute = nameof(IsIdle))]
-        protected abstract Task<Result> Save();
+        internal abstract Task DoSave();
 
-        protected abstract Task<Result> GetData();
+        protected async Task LoadData()
+        {
+            IsBusy = true;
+            try
+            {
+                await GetData();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            LoadDataDoneAction?.Invoke();
+        }
+
+        protected abstract Task GetData();
         #endregion
 
         #region INavigationAware
@@ -104,8 +62,13 @@ namespace Deve.Clients.Wpf.ViewModels
                 Id = 0;
             }
 
-            LoadCommand.Execute().Subscribe();
+            _ = LoadData();
         }
+        #endregion
+
+        #region Commands
+        public Command Cancel => _cancelCommand ??= new Command(DoCancel, () => IsIdle);
+        public AsyncCommand Save => _saveCommand ??= new AsyncCommand(DoSave, () => IsIdle);
         #endregion
     }
 }

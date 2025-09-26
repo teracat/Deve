@@ -162,9 +162,6 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="InvalidValue" xml:space="preserve">
-    <value>Invalid value</value>
-  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identification</value>
   </data>
@@ -183,17 +180,11 @@
   <data name="MinBalance" xml:space="preserve">
     <value>Minimum balance</value>
   </data>
-  <data name="MissingCountry" xml:space="preserve">
-    <value>Country is required</value>
+  <data name="MissingField" xml:space="preserve">
+    <value>Missing some required field</value>
   </data>
-  <data name="MissingName" xml:space="preserve">
-    <value>Name is required</value>
-  </data>
-  <data name="MissingPassword" xml:space="preserve">
-    <value>Password is required</value>
-  </data>
-  <data name="MissingUsername" xml:space="preserve">
-    <value>Username is required</value>
+  <data name="MissingUsernamePassword" xml:space="preserve">
+    <value>Username and password are required</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -227,11 +218,5 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
-  </data>
-  <data name="MissingIsoCode" xml:space="preserve">
-    <value>Missing Iso Code</value>
-  </data>
-  <data name="MinLengthIsoCode" xml:space="preserve">
-    <value>The Iso code must have a minimum length of {1} characters.</value>
   </data>
 </root>
