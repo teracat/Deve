@@ -15,7 +15,6 @@ namespace Deve.Clients.Maui.Helpers
         {
             services.AddSingleton<INavigationService, MauiNavigationService>();
             services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
-            services.AddSingleton<ISchedulerProvider, SchedulerProvider>();
         }
 
         public static void RegisterViewModels(IServiceCollection services)

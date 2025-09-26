@@ -29,17 +29,7 @@ namespace Deve.Clients.Wpf.Views
             base.OnKeyDown(e);
             if (e.Key == Key.Escape)
             {
-                _viewModel?.CancelCommand.Execute().Subscribe();
-            }
-        }
-        #endregion
-
-        #region Events
-        protected void OnLastControlKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return && _viewModel is not null)
-            {
-                _ = _viewModel.SaveCommand.Execute().Subscribe();
+                _viewModel?.Cancel();
             }
         }
         #endregion

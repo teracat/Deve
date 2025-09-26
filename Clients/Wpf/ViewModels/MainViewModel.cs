@@ -1,5 +1,5 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Deve.Criteria;
 using Deve.Model;
 using Deve.Internal.Data;
@@ -15,22 +15,22 @@ namespace Deve.Clients.Wpf.ViewModels
     public partial class MainViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
-        [Reactive]
+        [ObservableProperty]
         private ListControlData _ctrlDataClients;
 
-        [Reactive]
+        [ObservableProperty]
         private ListControlData _ctrlDataCities;
 
-        [Reactive]
+        [ObservableProperty]
         private ListControlData _ctrlDataStates;
 
-        [Reactive]
+        [ObservableProperty]
         private ListControlData _ctrlDataCountries;
 
-        [Reactive]
+        [ObservableProperty]
         private bool _isLoadingClientStats = false;
 
-        [Reactive]
+        [ObservableProperty]
         private ClientStats? _clientStats;
         #endregion
 
@@ -39,8 +39,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler, ISchedulerProvider scheduler)
-            : base(navigationService, data, messageHandler, scheduler)
+        public MainViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
+            : base(navigationService, data, messageHandler)
         {
             _ctrlDataClients = new(LoadDataClients);
             _ctrlDataCities = new(LoadDataCities);
@@ -139,7 +139,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
         private async Task AddState()
         {
             if (NavigationService.NavigateModalTo<StateView>())
@@ -148,7 +148,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
         private async Task EditState(ListData? listData)
         {
             await Edit(listData, CtrlDataStates, Data.States, (o) =>
@@ -163,13 +163,13 @@ namespace Deve.Clients.Wpf.ViewModels
             });
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
         private async Task DeleteState(ListData? listData)
         {
             await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
         private async Task AddCountry()
         {
             if (NavigationService.NavigateModalTo<CountryView>())
@@ -178,7 +178,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
         private async Task EditCountry(ListData? listData)
         {
             await Edit(listData, CtrlDataCountries, Data.Countries, (o) =>
@@ -193,7 +193,7 @@ namespace Deve.Clients.Wpf.ViewModels
             });
         }
 
-        [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
         private async Task DeleteCountry(ListData? listData)
         {
             await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);

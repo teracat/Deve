@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Globalization;
-using System.Reactive.Threading.Tasks;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 
@@ -29,15 +28,6 @@ namespace Deve.Clients.Wpf.Views
             }
 #endif
 //+:cnd
-            
-            if (string.IsNullOrEmpty(_viewModel.Username))
-            {
-                uxUsername.Focus();
-            }
-            else
-            {
-                uxPassword.Focus();
-            }
         }
         #endregion
 
@@ -46,6 +36,21 @@ namespace Deve.Clients.Wpf.Views
         {
             _viewModel.Username = username;
             uxPassword.Password = password;
+        }
+        #endregion
+
+        #region Overrides
+        protected override void OnWindowLoaded()
+        {
+            base.OnWindowLoaded();
+            if (string.IsNullOrEmpty(uxUsername.Text))
+            {
+                uxUsername.Focus();
+            }
+            else
+            {
+                uxPassword.Focus();
+            }
         }
         #endregion
 
@@ -70,16 +75,16 @@ namespace Deve.Clients.Wpf.Views
             // The Password property is not a dependency property for security reasons.
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                _ = _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
+                _ = _viewModel.Login(uxPassword.Password);
             }
         }
 
-        private async void OnLoginClick(object sender, RoutedEventArgs e)
+        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            await _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
+            _ = _viewModel.Login(uxPassword.Password);
         }
 
-        private void OnPasswordChanged(object sender, RoutedEventArgs e)
+        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
             var passwordBox = (PasswordBox)sender;
             _viewModel.Password = passwordBox.SecurePassword;

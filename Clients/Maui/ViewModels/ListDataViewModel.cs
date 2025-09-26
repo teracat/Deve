@@ -1,7 +1,4 @@
-﻿using System.Reactive;
-using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using Deve.Model;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
@@ -11,45 +8,34 @@ namespace Deve.Clients.Maui.ViewModels
     public abstract partial class ListDataViewModel : BaseViewModel, IAsyncInitialization
     {
         #region Fields
-        [Reactive]
+        [ObservableProperty]
         IEnumerable<ListData>? _listData;
 
-        [Reactive]
+        [ObservableProperty]
         ListData? _selectedData;
         #endregion
 
         #region Properties
         public Task Initialization { get; private set; }
+        #endregion
 
-        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+        #region OnPropertyChanged
+        partial void OnSelectedDataChanged(ListData? value)
+        {
+            if (value is not null)
+            {
+                DoSelected(value);
+            }
+
+            // Clear the selection to allow the same item to be selected again
+            SelectedData = null;
+        }
         #endregion
 
         #region Constructor
-        protected ListDataViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
-            : base(navigationService, data, scheduler)
+        protected ListDataViewModel(INavigationService navigationService, Internal.Data.IData data)
+            : base(navigationService, data)
         {
-            // Commands
-            var canExecuteIsIdle = this.WhenAnyValue(vm => vm.IsIdle);
-            LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
-
-            // Properties
-            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
-                .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
-
-            // Subscriptions
-            this.WhenAnyValue(vm => vm.SelectedData)
-                .Subscribe((value) =>
-                {
-                    if (value is not null)
-                    {
-                        DoSelected(value);
-
-                        // Clear the selection to allow the same item to be selected again
-                        SelectedData = null;
-                    }
-                });
-
-            // Initialization
             Initialization = InitializeAsync();
         }
         #endregion
@@ -63,16 +49,20 @@ namespace Deve.Clients.Maui.ViewModels
         public async Task LoadData()
         {
             ErrorText = string.Empty;
-            var res = await GetListData();
-            if (!res.Success)
+            IsBusy = true;
+            try
             {
-                ErrorText = Utils.ErrorsToString(res.Errors);
+                await GetListData();
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
         #endregion
 
         #region Abstract/Virtual Methods
-        protected abstract Task<Result> GetListData();
+        protected abstract Task GetListData();
 
         protected virtual void DoSelected(ListData data)
         {
