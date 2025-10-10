@@ -312,7 +312,8 @@ namespace Deve.Api
             // Prometheus: adds the Prometheus scraping endpoint at /metrics (to be used with OpenTelemetry).
             if (!string.IsNullOrWhiteSpace(builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"]))
             {
-                app.MapPrometheusScrapingEndpoint();
+                app.MapPrometheusScrapingEndpoint()
+                   .DisableHttpMetrics();   // We don't want metrics about the /metrics endpoint (https://github.com/dotnet/aspnetcore/issues/50654).
             }
 
             // Run
