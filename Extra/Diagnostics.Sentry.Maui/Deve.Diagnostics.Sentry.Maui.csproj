@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Deve.Diagnostics</RootNamespace>
 
     <UseMaui>true</UseMaui>
-    <MauiVersion>8.0.100</MauiVersion>
+    <MauiVersion>9.0.110</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Sentry.Maui" Version="5.15.1" />
+    <PackageReference Include="Sentry.Maui" Version="5.16.0" />
   </ItemGroup>
 
   <ItemGroup>

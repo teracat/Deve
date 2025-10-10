@@ -89,7 +89,11 @@ namespace Deve.Clients.Wpf
             loginView.SetUsernamePassword(username, password);
             loginView.Show();
 
+            Current.MainWindow = loginView;
+
             oldWindow.Close();
+
+            Log.Debug($"Changed culture to {newCulture}");
         }
         #endregion
 

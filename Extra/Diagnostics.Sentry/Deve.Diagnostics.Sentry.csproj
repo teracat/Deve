@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Deve</RootNamespace>
+    <RootNamespace>Deve.Diagnostics</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sentry" Version="5.15.1" />
+    <PackageReference Include="Sentry" Version="5.16.0" />
+    <PackageReference Include="Sentry.OpenTelemetry" Version="5.16.0" />
   </ItemGroup>
 
   <ItemGroup>
