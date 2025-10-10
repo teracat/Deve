@@ -1,22 +1,24 @@
-﻿using Deve.Clients.Maui.Interfaces;
+﻿using Deve.Diagnostics;
+using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui
 {
     public partial class App : Application
     {
-        // Sentry transaction for user session tracking
-        //private ITransactionTracer? _sentryTransaction;
+        private readonly INavigationService _navigationService;
+        private readonly IDiagnosticsTransactionHandler _diagnosticsTransactionHandler;
 
-        public App(INavigationService navigationService)
+        public App(INavigationService navigationService, IDiagnosticsTransactionHandler diagnosticsTransactionHandler)
         {
             InitializeComponent();
 
-            MainPage = new AppShell(navigationService);
+            _navigationService = navigationService;
+            _diagnosticsTransactionHandler = diagnosticsTransactionHandler;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = base.CreateWindow(activationState);
+            var window = new Window(new AppShell(_navigationService));
 
             window.Created += OnCreated;
             window.Destroying += OnDestroying;
@@ -26,19 +28,12 @@ namespace Deve.Clients.Maui
 
         private void OnCreated(object? sender, EventArgs e)
         {
-            // Start a new Sentry transaction for the user session
-            /*if (_sentryTransaction is null)
-            {
-                _sentryTransaction = SentrySdk.StartTransaction("User Session", "app.maui");
-                SentrySdk.ConfigureScope(scope => scope.Transaction = _sentryTransaction);
-            }*/
+            _diagnosticsTransactionHandler.StartTransaction("MAUI App User Session", "app.maui");
         }
 
         private void OnDestroying(object? sender, EventArgs e)
         {
-            // Finish the Sentry transaction when the app is closing
-            /*_sentryTransaction?.Finish();
-            _sentryTransaction = null;*/
+            _diagnosticsTransactionHandler.StopTransaction();
         }
     }
 }

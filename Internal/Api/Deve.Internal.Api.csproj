@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
     <ProjectReference Include="..\..\Common.Api\Deve.Common.Api.csproj" />
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />

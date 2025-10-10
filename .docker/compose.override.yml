@@ -38,3 +38,12 @@ services:
 
   cache-redis:
     container_name: dev-cache-redis
+
+  prometheus:
+    container_name: dev-prometheus
+
+  grafana:
+    container_name: dev-grafana
+
+  zipkin:
+    container_name: dev-zipkin

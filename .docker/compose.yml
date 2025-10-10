@@ -6,10 +6,18 @@ services:
       dockerfile: ./.docker/Dockerfile.ApiInternal
     depends_on:
       - cache-redis
+      - prometheus
+      - zipkin
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
+      ZIPKIN_URL: "http://zipkin:9411"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_SERVICE_NAME: "api-internal"
+      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
+      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
     networks:
       - deve-network
 
@@ -19,15 +27,64 @@ services:
       dockerfile: ./.docker/Dockerfile.ApiExternal
     depends_on:
       - cache-redis
+      - prometheus
+      - zipkin
     environment:
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
+      ZIPKIN_URL: "http://zipkin:9411"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_SERVICE_NAME: "api-external"
+      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
+      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
     networks:
       - deve-network
 
   cache-redis:
-    image: redis:latest
+    image: redis
+    ports:
+      - 6379:6379
+    depends_on:
+      - prometheus
+      - zipkin
+    networks:
+      - deve-network
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-otlp-receiver'
+    networks:
+      - deve-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "grafana"  # Change the password
+    depends_on:
+      - prometheus
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
+    networks:
+      - deve-network
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
     networks:
       - deve-network
 

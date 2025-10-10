@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Core\Deve.Core.csproj" />
     <ProjectReference Include="..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
     <ProjectReference Include="..\Extra\Cache.Redis\Deve.Cache.Redis.csproj" />
+    <ProjectReference Include="..\Extra\Diagnostics.OpenTelemetry.AspNetCore\Deve.Diagnostics.OpenTelemetry.AspNetCore.csproj" />
     <ProjectReference Include="..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
   </ItemGroup>
 

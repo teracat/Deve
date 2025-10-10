@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using Deve.Diagnostics;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.Services;
+using Deve.Clients.Maui.ViewModels;
+using Deve.Clients.Maui.Views;
 using Deve.Internal.Data;
 using Deve.Internal.Sdk;
 using Deve.Sdk.LoggingHandlers;
-using Deve.Clients.Maui.Interfaces;
-using Deve.Clients.Maui.Services;
-using Deve.Clients.Maui.Views;
-using Deve.Clients.Maui.ViewModels;
 
 namespace Deve.Clients.Maui.Helpers
 {
@@ -15,12 +16,13 @@ namespace Deve.Clients.Maui.Helpers
         {
             services.AddSingleton<INavigationService, MauiNavigationService>();
 
-            var handler = new LoggingHandlerLog();
-            // Use SentryHttpMessageHandler to capture HTTP requests in Sentry
-            //var handler = new SentryHttpMessageHandler(new LoggingHandlerLog());    // You can also chain handlers to add logging
+            // Register the OpenTelemetry transaction handler for diagnostics
+            services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerOpenTelemetry>();
+            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
 
-            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, handler));
-            services.AddSingleton<ISchedulerProvider, SchedulerProvider>();
+            // If you want to use Sentry, comment the previous two lines and uncomment the next two lines. Use SentryHttpMessageHandler to capture HTTP requests in Sentry.
+            //services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerSentry>();
+            //services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new SentryHttpMessageHandler(new LoggingHandlerLog())));
         }
 
         public static void RegisterViewModels(IServiceCollection services)

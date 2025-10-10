@@ -26,3 +26,12 @@ services:
 
   cache-redis:
     container_name: prod-cache-redis
+
+  prometheus:
+    container_name: prod-prometheus
+
+  grafana:
+    container_name: prod-grafana
+
+  zipkin:
+    container_name: prod-zipkin

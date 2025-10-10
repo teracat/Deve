@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace Deve
+namespace Deve.Diagnostics
 {
     public static class WebHostBuilderSentryExtensions
     {
-        public static IWebHostBuilder UseSentryForAspNetCore(this IWebHostBuilder builder, string dsn)
+        public static IWebHostBuilder AddDiagnosticsSentry(this IWebHostBuilder builder)
         {
             builder.UseSentry(options =>
             {
-                options.ConfigureForDeve(dsn);
+                options.ConfigureSentry();
             });
 
             return builder;

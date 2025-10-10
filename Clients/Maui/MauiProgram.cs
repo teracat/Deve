@@ -5,8 +5,10 @@ using Microsoft.UI.Windowing;
 #endif
 //+:cnd
 using Microsoft.Maui.LifecycleEvents;
-using Deve.Logging;
+//using Sentry.OpenTelemetry;
 using Deve.Clients.Maui.Helpers;
+using Deve.Logging;
+using Deve.Diagnostics;
 
 namespace Deve.Clients.Maui
 {
@@ -21,11 +23,18 @@ namespace Deve.Clients.Maui
                 .RegisterViewModels()
                 .RegisterViews()
                 // Diagnostics
+                // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.Maui as a reference and comment the next line.
+                .AddDiagnosticsOpenTelemetry(funcConfigTracing: (tracing) =>
+                {
+                    // Configure Tracing exporters here (if you want to use other exporters).
+
+                    // Example for Sentry:
+                    //tracing.AddSentry();    // You need to uncomment the "using Sentry.OpenTelemetry;" line at the top of this file.
+                })
                 // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.Maui as a reference, uncomment the next line and
                 // change the DSN with your own (you can create a free account at https://sentry.io/welcome/).
-                // You should also modify the App.xaml.cs file to start and finish a transaction for user sessions and
-                // use the SentryHttpMessageHandler in the ServiceProviderHelper.cs file to capture HTTP requests.
-                //.UseSentryForMaui("Use your DSN")
+                // You should also modify the ServiceProviderHelper.cs file to use Sentry instead of OpenTelemetry.
+                //.AddDiagnosticsSentry("Your Sentry DSN")
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

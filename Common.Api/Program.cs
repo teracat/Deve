@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
+//using Sentry.OpenTelemetry;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Settings;
@@ -17,6 +18,7 @@ using Deve.Data;
 using Deve.DataSource;
 using Deve.DataSource.Config;
 using Deve.Logging;
+using Deve.Diagnostics;
 
 namespace Deve.Api
 {
@@ -26,6 +28,9 @@ namespace Deve.Api
 
         public static void Main(string[] args)
         {
+            // We add the console logger for the logs generated before the WebApplication is built.
+            Log.Providers.AddConsole();
+
             // Creates a new WebApplication builder with the provided arguments.
             var builder = WebApplication.CreateBuilder(args);
 
@@ -209,8 +214,11 @@ namespace Deve.Api
             // The RedisCacheConnection string is retrieved from the configuration file.
             // The RedisCache class is defined in the Extra/Cache.Redis project (you can remove it if you don't use it).
             var redisConnection = builder.Configuration.GetConnectionString("RedisCacheConnection") ?? string.Empty;
+            RedisCache? redisCache = null;
             if (string.IsNullOrWhiteSpace(redisConnection))
             {
+                Log.Debug("The RedisCacheConnection is empty. Using SimpleInMemoryCache as the ICache implementation.");
+
                 // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
                 // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
                 builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
@@ -228,7 +236,10 @@ namespace Deve.Api
             }
             else
             {
-                builder.Services.AddSingleton<ICache>(new RedisCache(redisConnection));
+                Log.Debug("The RedisCacheConnection is set. Using RedisCache as the ICache implementation.");
+
+                redisCache = new RedisCache(redisConnection);
+                builder.Services.AddSingleton<ICache>(redisCache);
             }   
 
             // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
@@ -241,10 +252,25 @@ namespace Deve.Api
             builder.Logging.AddConsole();
 
             // Diagnostics
+            // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.AspNetCore as a reference and comment the next lines.
+            // To use OpenTelemetry with Sentry, you need to add the Sentry.OpenTelemetry package and the line "options.UseOpenTelemetry();" in the SentryOptionsExtensions class in the Diagnostics.Sentry project.
+            builder.AddDiagnosticsOpenTelemetry(redisCache?.ConnectionMultiplexer,
+                funcConfigMetrics: (metrics) =>
+                {
+                    // Configure extra Metrics exporters here (if you want to use other exporters).
+                },
+                funcConfigTracing: (tracing) =>
+                {
+                    // Configure Tracing exporters here (if you want to use other exporters).
+
+                    // Example for Sentry:
+                    //tracing.AddSentry();    // You need to uncomment the "using Sentry.OpenTelemetry;" line at the top of this file.
+                });
+
             // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.AspNetCore as a reference, uncomment the next lines and define your DSN in the appsettings.json.
             // You should change the DSN with your own (you can create a free account at https://sentry.io/welcome/)
-            // Log.Providers.AddSentry is not needed, it captures automatically the logs from ASP.NET Core.
-            //builder.WebHost.UseSentryForAspNetCore(appSettings.SentryDsn);
+            // Log.Providers.AddSentry is not needed, Sentry captures automatically the logs from ASP.NET Core.
+            //builder.WebHost.AddDiagnosticsSentry();
 
             // Build
             var app = builder.Build();
@@ -281,6 +307,13 @@ namespace Deve.Api
 
             // Add NetCore Log Provider
             Log.Providers.AddNetCore(app.Logger);
+            Log.Providers.RemoveConsole(); // We remove the console logger because it's already included in the NetCore provider.
+
+            // Prometheus: adds the Prometheus scraping endpoint at /metrics (to be used with OpenTelemetry).
+            if (!string.IsNullOrWhiteSpace(builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"]))
+            {
+                app.MapPrometheusScrapingEndpoint();
+            }
 
             // Run
             app.Run();

@@ -17,6 +17,7 @@ namespace Deve.Cache
         #region Properties
         /// <inheritdoc />
         public TimeSpan? DefaultExpiry { get; set; } = TimeSpan.FromMinutes(5);
+        public ConnectionMultiplexer? ConnectionMultiplexer => _connectionMultiplexer;
         #endregion
 
         #region Constructors
