@@ -12,7 +12,7 @@
             SentrySdk.CaptureMessage(text, SentryLevel.Debug);
         }
 
-        public void Debug(string format, params object[] args)
+        public void Debug(string format, params object?[] args)
         {
             var formatIndexed = Utils.ConvertNameArgumentsToIndexed(format);
             string text;
@@ -48,7 +48,7 @@
             });
         }
 
-        public void Error(string format, params object[] args)
+        public void Error(string format, params object?[] args)
         {
             var formatIndexed = Utils.ConvertNameArgumentsToIndexed(format);
             string text;

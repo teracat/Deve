@@ -28,7 +28,7 @@
         /// <param name="format">The text to be written to the log with zero or more format items,
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public static void Debug(string format, params object[] args)
+        public static void Debug(string format, params object?[] args)
         {
             Providers.List.ForEach(p => p.Debug(format, args));
         }
@@ -68,7 +68,7 @@
         /// <param name="format">The text to be written to the log with zero or more format items, 
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public static void Error(string format, params object[] args)
+        public static void Error(string format, params object?[] args)
         {
             Providers.List.ForEach(p => p.Error(format, args));
         }

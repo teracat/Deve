@@ -34,7 +34,7 @@ namespace Deve.Logging
             _logger.Debug(text);
         }
 
-        public void Debug(string format, params object[] args)
+        public void Debug(string format, params object?[] args)
         {
             // Log4net does not accept name arguments, so we need to convert it to indexed arguments
             _logger.DebugFormat(Utils.ConvertNameArgumentsToIndexed(format), args);
@@ -55,7 +55,7 @@ namespace Deve.Logging
             _logger.Error(message, exception);
         }
 
-        public void Error(string format, params object[] args)
+        public void Error(string format, params object?[] args)
         {
             // Log4net does not accept name arguments, so we need to convert it to indexed arguments
             _logger.ErrorFormat(Utils.ConvertNameArgumentsToIndexed(format), args);

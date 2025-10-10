@@ -34,7 +34,7 @@
         /// <param name="format">The text to be written with zero or more format items,
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        protected override void Write(string format, params object[] args)
+        protected override void Write(string format, params object?[] args)
         {
             // Debug.WriteLine does not handle null args well
             if (args is null)

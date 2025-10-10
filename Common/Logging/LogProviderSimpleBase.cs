@@ -73,7 +73,7 @@
         }
 
         protected abstract void Write(string text);
-        protected abstract void Write(string format, params object[] args);
+        protected abstract void Write(string format, params object?[] args);
         #endregion
 
         #region ILogProvider
@@ -84,7 +84,7 @@
         }
 
         /// <inheritdoc/>
-        public void Debug(string format, params object[] args)
+        public void Debug(string format, params object?[] args)
         {
             // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
             Write(Utils.ConvertNameArgumentsToIndexed(format), args);
@@ -120,7 +120,7 @@
         }
 
         /// <inheritdoc/>
-        public void Error(string format, params object[] args)
+        public void Error(string format, params object?[] args)
         {
             // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
             Write(Utils.ConvertNameArgumentsToIndexed(format), args);

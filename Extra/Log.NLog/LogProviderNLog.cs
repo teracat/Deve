@@ -30,7 +30,7 @@ namespace Deve.Logging
             _logger.Debug(text);
         }
 
-        public void Debug(string format, params object[] args)
+        public void Debug(string format, params object?[] args)
         {
             _logger.Debug(format, args);
         }
@@ -50,7 +50,7 @@ namespace Deve.Logging
             _logger.Error(exception, message);
         }
 
-        public void Error(string format, params object[] args)
+        public void Error(string format, params object?[] args)
         {
             _logger.Error(format, args);
         }

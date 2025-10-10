@@ -15,7 +15,7 @@ namespace Deve.Logging
         }
 
         /// <inheritdoc/>
-        public void Debug(string format, params object[] args)
+        public void Debug(string format, params object?[] args)
         {
             // Trace does not accept name arguments, so we need to convert it to indexed arguments
             Trace.TraceInformation(Utils.ConvertNameArgumentsToIndexed(format), args);
@@ -40,7 +40,7 @@ namespace Deve.Logging
         }
 
         /// <inheritdoc/>
-        public void Error(string format, params object[] args)
+        public void Error(string format, params object?[] args)
         {
             // Trace does not accept name arguments, so we need to convert it to indexed arguments
             Trace.TraceError(Utils.ConvertNameArgumentsToIndexed(format), args);
