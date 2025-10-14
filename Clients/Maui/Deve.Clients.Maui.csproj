@@ -69,6 +69,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
 	  <ProjectReference Include="..\..\Extra\Diagnostics.OpenTelemetry.Maui\Deve.Diagnostics.OpenTelemetry.Maui.csproj" />
+	  <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
 	  <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
 	  <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
 	</ItemGroup>

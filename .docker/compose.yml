@@ -18,6 +18,7 @@ services:
       OTEL_SERVICE_NAME: "api-internal"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 
@@ -39,6 +40,7 @@ services:
       OTEL_SERVICE_NAME: "api-external"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 

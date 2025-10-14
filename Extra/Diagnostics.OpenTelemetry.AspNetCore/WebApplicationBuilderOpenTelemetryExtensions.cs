@@ -1,12 +1,12 @@
-﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Deve.Logging;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using StackExchange.Redis;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Deve.Logging;
 
 namespace Deve.Diagnostics
 {
@@ -19,13 +19,13 @@ namespace Deve.Diagnostics
             Log.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
 
             var tracingOtlpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-            var azureMonitorConnectionString = builder.Configuration["AZUREMONITOR_CONNECTION_STRING"];
+            var azureAppInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
             var zipkinUrl = builder.Configuration["ZIPKIN_URL"];
             var prometheusScrapeEndpoint = builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"];
 
             Log.Debug($"RedisConnectionMultiplexer.Configuration={redisConnectionMultiplexer?.Configuration}");
             Log.Debug($"OTEL_EXPORTER_OTLP_ENDPOINT={tracingOtlpEndpoint}");
-            Log.Debug($"AZUREMONITOR_CONNECTION_STRING={azureMonitorConnectionString}");
+            Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
             Log.Debug($"ZIPKIN_URL={zipkinUrl}");
             Log.Debug($"PROMETHEUS_SCRAPE_ENDPOINT={prometheusScrapeEndpoint}");
 
@@ -126,13 +126,13 @@ namespace Deve.Diagnostics
                 });
 
             // Add Azure Monitor
-            if (!string.IsNullOrWhiteSpace(azureMonitorConnectionString))
+            if (!string.IsNullOrWhiteSpace(azureAppInsightsConnectionString))
             {
                 Log.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
 
                 otel.UseAzureMonitor(o =>
                 {
-                    o.ConnectionString = azureMonitorConnectionString;
+                    o.ConnectionString = azureAppInsightsConnectionString;
                 });
             }
             

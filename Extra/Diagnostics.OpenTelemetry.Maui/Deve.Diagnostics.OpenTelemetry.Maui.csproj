@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.4.0" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.13.0" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.13.0" />
