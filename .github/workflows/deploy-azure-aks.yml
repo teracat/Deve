@@ -1,0 +1,106 @@
+# This workflow requires the following GitHub secrets to be defined:
+#
+# Azure Container Registry (ACR) access:
+# - ACR_LOGIN_SERVER: The login server URL of your Azure Container Registry (e.g., myregistry.azurecr.io).
+# - ACR_USERNAME: The username for accessing the ACR (usually the registry name).
+# - ACR_PASSWORD: The password or access key for the ACR.
+#
+# Azure Kubernetes Service (AKS) access:
+# - AZURE_CREDENTIALS: A JSON string containing Azure service principal credentials, generated using `az ad sp create-for-rbac --sdk-auth`.
+# - AKS_CLUSTER_NAME: The name of the AKS cluster to deploy to.
+# - AKS_RESOURCE_GROUP: The name of the Azure resource group containing the AKS cluster.
+#
+# Email notification settings:
+# - SMTP_SERVER: The address of the SMTP server used to send emails.
+# - SMTP_PORT: The port used by the SMTP server (e.g., 587).
+# - EMAIL_USERNAME: The username of the email account used to send notifications.
+# - EMAIL_PASSWORD: The password or app-specific password for the email account.
+# - EMAIL_TO: The recipient email address for deployment notifications.
+# - EMAIL_FROM: The sender email address used in deployment notifications.
+
+name: Deploy to Azure AKS
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The GitHub environment used to get the secrets needed'
+        required: true
+        type: environment
+      solution:
+        description: 'The solution to build and test'
+        required: true
+        default: 'Deve.All.sln'
+
+jobs:
+  build-and-test:
+    uses: build-and-test.yml
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build Docker images
+      run: docker-compose build
+
+    - name: Push Docker images
+      run: docker-compose push
+
+    - name: Set up Kubernetes
+      uses: azure/aks-set-context@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+        resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
+
+    - name: Deploy to AKS
+      run: kubectl apply -f k8s/
+
+    - name: Check if SMTP_SERVER is defined
+      id: check_smtp
+      run: |
+        if [ -z "${{ secrets.SMTP_SERVER }}" ]; then
+          echo "defined=false" >> $GITHUB_OUTPUT
+        else
+          echo "defined=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Send Success Notification
+      if: steps.check_smtp.outputs.defined == 'true' && success()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: ${{ secrets.SMTP_SERVER }}
+        server_port: ${{ secrets.SMTP_PORT }}
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Deployment to ${{ inputs.environment }} Successful"
+        body: "The deployment to ${{ inputs.environment }} has been successfully completed."
+        to: ${{ secrets.EMAIL_TO }}
+        from: ${{ secrets.EMAIL_FROM }}
+
+    - name: Send Failure Notification
+      if: steps.check_smtp.outputs.defined == 'true' && failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: ${{ secrets.SMTP_SERVER }}
+        server_port: ${{ secrets.SMTP_PORT }}
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Deployment to ${{ inputs.environment }} Failed"
+        body: "The deployment to ${{ inputs.environment }} has failed."
+        to: ${{ secrets.EMAIL_TO }}
+        from: ${{ secrets.EMAIL_FROM }}

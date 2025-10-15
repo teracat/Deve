@@ -1,0 +1,15 @@
+# This workflow requires the environment production-api-internal with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - production/api-internal
+
+jobs:
+  deploy:
+    uses: deploy-azure-aks.yml
+    with:
+      environment: production-api-internal
+      solution: 'Deve.Api.Internal.sln'
