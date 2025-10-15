@@ -25,7 +25,7 @@ on:
     inputs:
       environment:
         description: 'The GitHub environment used to get the secrets needed'
-        type: environment
+        type: string
         required: true
       solution:
         description: 'The solution to build and test'
