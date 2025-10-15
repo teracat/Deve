@@ -91,11 +91,7 @@ namespace Deve.Diagnostics
                                 options.Filter = httpContext =>
                                 {
                                     // We do not want to trace Prometheus scrapes
-                                    if (httpContext.Request.Path.StartsWithSegments(prometheusScrapeEndpoint))
-                                    {
-                                        return false;
-                                    }
-                                    return true;
+                                    return !httpContext.Request.Path.Equals(prometheusScrapeEndpoint);
                                 };
                             }
                         })
