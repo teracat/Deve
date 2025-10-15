@@ -12,6 +12,6 @@ on:
 
 jobs:
   build-and-test:
-    uses: build-and-test.yml
+    uses: ./.github/workflows/build-and-test.yml
     with:
       solution: 'Deve.All.sln'
