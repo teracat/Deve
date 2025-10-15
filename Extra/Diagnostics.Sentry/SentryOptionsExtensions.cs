@@ -22,7 +22,7 @@ namespace Deve.Diagnostics
             options.TracesSampleRate = 1.0;
 #else
             // To sample traces (recommended in production):
-            options.TracesSampleRate = 0.6;   // Adjust the sample rate as needed
+            options.TracesSampleRate = 0.3;   // Adjust the sample rate as needed
 
             options.DiagnosticLevel = SentryLevel.Warning;
 #endif
