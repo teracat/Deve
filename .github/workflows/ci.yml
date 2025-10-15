@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: ["main", "v1.0", "v1.1"]
+    branches: ["main", "v1.0", "v1.1", "production/api-internal", "production/api-external"]
   pull_request:
-    branches: ["main", "v1.0", "v1.1"]
+    branches: ["main", "v1.0", "v1.1", "production/api-internal", "production/api-external"]
   workflow_dispatch:
 
 jobs:

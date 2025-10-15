@@ -5,7 +5,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - production/api-internal
+      - production/api-external
 
 jobs:
   deploy:
