@@ -25,12 +25,12 @@ on:
     inputs:
       environment:
         description: 'The GitHub environment used to get the secrets needed'
-        required: true
         type: environment
+        required: true
       solution:
         description: 'The solution to build and test'
+        type: string
         required: true
-        default: 'Deve.All.sln'
 
 jobs:
   build-and-test:

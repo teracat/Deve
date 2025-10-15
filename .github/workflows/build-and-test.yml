@@ -5,6 +5,7 @@ on:
     inputs:
       solution:
         description: 'The solution to build and test'
+        type: string
         required: true
 
 jobs:

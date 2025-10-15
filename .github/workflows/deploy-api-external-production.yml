@@ -12,4 +12,4 @@ jobs:
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: production-api-external
-      solution: 'Deve.Api.Internal.sln'
+      solution: 'Deve.Api.External.sln'
