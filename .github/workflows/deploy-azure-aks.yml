@@ -32,6 +32,9 @@ on:
         type: string
         required: true
 
+# Only allow one deploy per environment
+concurrency: ${{ inputs.environment }}
+
 jobs:
   build-and-test:
     uses: ./.github/workflows/build-and-test.yml
