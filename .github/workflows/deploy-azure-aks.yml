@@ -15,8 +15,8 @@
 # - SMTP_PORT: The port used by the SMTP server (e.g., 587).
 # - EMAIL_USERNAME: The username of the email account used to send notifications.
 # - EMAIL_PASSWORD: The password or app-specific password for the email account.
-# - EMAIL_TO: The recipient email address for deployment notifications.
-# - EMAIL_FROM: The sender email address used in deployment notifications.
+# - EMAIL_TO: The recipient email address for deployment notifications (this is a variable, not a secret).
+# - EMAIL_FROM: The sender email address used in deployment notifications (this is a variable, not a secret).
 
 name: Deploy to Azure AKS
 
@@ -92,8 +92,8 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Successful"
         body: "The deployment to ${{ inputs.environment }} has been successfully completed."
-        to: ${{ secrets.EMAIL_TO }}
-        from: ${{ secrets.EMAIL_FROM }}
+        to: ${{ vars.EMAIL_TO }}
+        from: ${{ vars.EMAIL_FROM }}
 
     - name: Send Failure Notification
       if: steps.check_smtp.outputs.defined == 'true' && failure()
@@ -105,5 +105,5 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Failed"
         body: "The deployment to ${{ inputs.environment }} has failed."
-        to: ${{ secrets.EMAIL_TO }}
-        from: ${{ secrets.EMAIL_FROM }}
+        to: ${{ vars.EMAIL_TO }}
+        from: ${{ vars.EMAIL_FROM }}
