@@ -23,10 +23,17 @@ name: Deploy to Azure AKS
 on:
   workflow_call:
     inputs:
+      environment:
+        description: 'The GitHub environment used to get the secrets needed'
+        type: string
+        required: true
       solution:
         description: 'The solution to build and test'
         type: string
         required: true
+
+# Only allow one deploy per environment
+#concurrency: ${{ inputs.environment }}
 
 jobs:
   build-and-test:
@@ -37,6 +44,7 @@ jobs:
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
     - name: Show some secrets (Debug)    
       run: |
@@ -94,8 +102,8 @@ jobs:
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "Deployment to ${{ vars.ENVIRONMENT_NAME }} Successful"
-        body: "The deployment to ${{ vars.ENVIRONMENT_NAME }} has been successfully completed."
+        subject: "Deployment to ${{ inputs.environment }} Successful"
+        body: "The deployment to ${{ inputs.environment }} has been successfully completed."
         to: ${{ vars.EMAIL_TO }}
         from: ${{ vars.EMAIL_FROM }}
 
@@ -107,7 +115,7 @@ jobs:
         server_port: ${{ secrets.SMTP_PORT }}
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "Deployment to ${{ vars.ENVIRONMENT_NAME }} Failed"
-        body: "The deployment to ${{ vars.ENVIRONMENT_NAME }} has failed."
+        subject: "Deployment to ${{ inputs.environment }} Failed"
+        body: "The deployment to ${{ inputs.environment }} has failed."
         to: ${{ vars.EMAIL_TO }}
         from: ${{ vars.EMAIL_FROM }}

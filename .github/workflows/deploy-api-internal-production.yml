@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    environment: production-api-internal
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       solution: 'Deve.Api.Internal.sln'
+      environment: production-api-internal
