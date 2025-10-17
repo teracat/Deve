@@ -46,6 +46,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
+    - name: Show some secrets (Debug)    
+      run: |
+          if [ -z "${{ secrets.ACR_USERNAME }}" ]; then
+            echo "ACR_USERNAME is not defined"
+            echo ${{ inputs.environment }}
+            exit 1
+          else
+            echo "ACR_USERNAME is defined"
+          fi
+
     - name: Checkout code
       uses: actions/checkout@v4
 
