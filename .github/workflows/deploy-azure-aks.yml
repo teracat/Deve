@@ -44,7 +44,7 @@ jobs:
   deploy:
     #needs: build-and-test
     runs-on: ubuntu-latest
-    environment: production-api-internal
+    environment: ${{ inputs.environment }}
     steps:
     - name: Show some secrets (Debug)    
       run: |
