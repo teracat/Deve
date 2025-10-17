@@ -36,15 +36,15 @@ on:
 #concurrency: ${{ inputs.environment }}
 
 jobs:
-  build-and-test:
-    uses: ./.github/workflows/build-and-test.yml    
-    with:
-      solution: ${{ inputs.solution }}
+  #build-and-test:
+  #  uses: ./.github/workflows/build-and-test.yml    
+  #  with:
+  #    solution: ${{ inputs.solution }}
 
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: production-api-internal
     steps:
     - name: Show some secrets (Debug)    
       run: |
