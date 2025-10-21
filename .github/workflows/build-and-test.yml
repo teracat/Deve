@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       solution:
-        description: 'The solution to build and test'
+        description: "The solution to build and test"
         type: string
         required: true
 

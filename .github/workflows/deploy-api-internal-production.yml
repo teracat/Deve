@@ -8,8 +8,15 @@ on:
       - production/api-internal
 
 jobs:
-  deploy:
+  deploy-api-internal:
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
-      solution: 'Deve.Api.Internal.sln'
-      environment: production-api-internal
+      environment: "production-api-internal"
+      solution: "Deve.Api.Internal.sln"
+    secrets:
+      ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
+      AKS_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
