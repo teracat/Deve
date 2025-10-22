@@ -10,6 +10,14 @@
 # - AKS_CLUSTER_NAME: The name of the AKS cluster to deploy to.
 # - AKS_RESOURCE_GROUP: The name of the Azure resource group containing the AKS cluster.
 #
+# JWT Secret Keys:
+# - JWT_SIGNING_SECRET_KEY: The secret key used to sign the JWT token (must be 32 bytes).
+# - JWT_ENCRYPTION_SECRET_KEY: The secret key used to encrypt the JWT token (must be 32 bytes).
+#
+# HTTPS Certificate (PFX):
+# - HTTPS_CERTIFICATE_BASE64: Contains the PFX certificate for HTTPS in Base64 format.
+# - HTTPS_CERTIFICATE_PASSWORD: The password of the PFX certificate.
+#
 # Email notification settings:
 # - SMTP_SERVER: The address of the SMTP server used to send emails.
 # - SMTP_PORT: The port used by the SMTP server (e.g., 587).
@@ -44,6 +52,22 @@ on:
         required: true
       AKS_RESOURCE_GROUP:
         required: true
+      JWT_SIGNING_SECRET_KEY:
+        required: true
+      JWT_ENCRYPTION_SECRET_KEY:
+        required: true
+      HTTPS_CERTIFICATE_BASE64:
+        required: true
+      HTTPS_CERTIFICATE_PASSWORD:
+        required: true
+      SMTP_SERVER:
+        required: true
+      SMTP_PORT:
+        required: true
+      EMAIL_USERNAME:
+        required: true
+      EMAIL_PASSWORD:
+        required: true
 
 # Only allow one deploy per environment
 concurrency: ${{ inputs.environment }}
@@ -57,7 +81,14 @@ jobs:
   deploy-azure-aks:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs:
+      build-and-test
+      store-https-certificate
+    env:
+      AppSettings__JwtKeys__SigningSecretKey: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+      AppSettings__JwtKeys__EncryptionSecretKey: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ./certificate.pfx
     steps:
     - name: Check some secret
       run: |
@@ -68,6 +99,10 @@ jobs:
             echo "ACR_USERNAME is defined"
           fi
 
+    - name: save secret to file
+        run: |
+          echo -n ${{ secrets.SIGNING_CERTIFICATE_BASE64 }} | base64 -d -o ./certificate.pfx
+
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -75,24 +110,24 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Log in to Azure Container Registry
-      uses: azure/docker-login@v2
+      uses: azure/docker-login@8e5e3c2c7e6d1f3b9a3f4f8e2c9d4a1b2e3f4c5d
       with:
         login-server: ${{ secrets.ACR_LOGIN_SERVER }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
     - name: Build Docker images
-      run: docker compose build
+      run: docker compose -f ./.docker/compose.yml -f ./.docker/compose.prod.yml up --build
 
     - name: Push Docker images
       run: docker compose push
 
-    - uses: azure/login@v2
+    - uses: azure/login@a457da9a7e3f3c2e5c3e6f1e2e8b5c6f7d8e9a0b
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set up Kubernetes
-      uses: azure/aks-set-context@v4
+      uses: azure/aks-set-context@c7eb093e3b2a4f6d9f8e2a1c3d4b5e6f7a8b9c0d
       with:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
@@ -111,7 +146,7 @@ jobs:
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
-      uses: dawidd6/action-send-mail@v3
+      uses: dawidd6/action-send-mail@2cea961f3b9a4e6d8c7f1e2a3b4c5d6e7f8a9b0c
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
@@ -124,7 +159,7 @@ jobs:
 
     - name: Send Failure Notification
       if: steps.check_smtp.outputs.defined == 'true' && failure()
-      uses: dawidd6/action-send-mail@v3
+      uses: dawidd6/action-send-mail@2cea961f3b9a4e6d8c7f1e2a3b4c5d6e7f8a9b0c
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}

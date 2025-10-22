@@ -13,10 +13,4 @@ jobs:
     with:
       environment: "production-api-external"
       solution: "Deve.Api.External.sln"
-    secrets:
-      ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
-      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
-      AKS_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
+    secrets: inherit
