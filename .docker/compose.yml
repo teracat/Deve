@@ -9,16 +9,14 @@ services:
       - prometheus
       - zipkin
     environment:
-      AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
-      AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
-      OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
       OTEL_SERVICE_NAME: "api-internal"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
-      APPLICATIONINSIGHTS_CONNECTION_STRING: ""
+      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 
@@ -31,16 +29,14 @@ services:
       - prometheus
       - zipkin
     environment:
-      AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
-      AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
-      OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
       OTEL_SERVICE_NAME: "api-external"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
-      APPLICATIONINSIGHTS_CONNECTION_STRING: ""
+      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 
@@ -55,20 +51,20 @@ services:
       - deve-network
 
   prometheus:
-    image: prom/prometheus
+    build:
+      dockerfile: Dockerfile.Prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
-    volumes:
-      - ./prometheus:/etc/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-otlp-receiver'
     networks:
       - deve-network
 
-  grafana:
-    image: grafana/grafana
+  grafana:    
+    build:
+        dockerfile: Dockerfile.Grafana
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -77,9 +73,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: "grafana"  # Change the password
     depends_on:
       - prometheus
-    volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources/
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards/
     networks:
       - deve-network
 

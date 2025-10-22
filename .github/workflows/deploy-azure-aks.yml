@@ -73,17 +73,9 @@ on:
 concurrency: ${{ inputs.environment }}
 
 jobs:
-  build-and-test:
-    uses: ./.github/workflows/build-and-test.yml    
-    with:
-      solution: ${{ inputs.solution }}
-
   deploy-azure-aks:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    needs:
-      build-and-test
-      store-https-certificate
     env:
       AppSettings__JwtKeys__SigningSecretKey: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
       AppSettings__JwtKeys__EncryptionSecretKey: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
@@ -99,9 +91,11 @@ jobs:
             echo "ACR_USERNAME is defined"
           fi
 
-    - name: save secret to file
-        run: |
-          echo -n ${{ secrets.SIGNING_CERTIFICATE_BASE64 }} | base64 -d -o ./certificate.pfx
+    - name: Save PFX certificate to file
+      run: |
+          echo -n $HTTPS_CERTIFICATE_BASE64 | base64 -d > ./certificate.pfx
+      env:
+        HTTPS_CERTIFICATE_BASE64: ${{ secrets.HTTPS_CERTIFICATE_BASE64 }}
 
     - name: Checkout code
       uses: actions/checkout@v4
@@ -110,9 +104,9 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Log in to Azure Container Registry
-      uses: azure/docker-login@8e5e3c2c7e6d1f3b9a3f4f8e2c9d4a1b2e3f4c5d
+      uses: docker/login-action@v3
       with:
-        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        registry: ${{ secrets.ACR_LOGIN_SERVER }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
@@ -122,12 +116,12 @@ jobs:
     - name: Push Docker images
       run: docker compose push
 
-    - uses: azure/login@a457da9a7e3f3c2e5c3e6f1e2e8b5c6f7d8e9a0b
+    - uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set up Kubernetes
-      uses: azure/aks-set-context@c7eb093e3b2a4f6d9f8e2a1c3d4b5e6f7a8b9c0d
+      uses: azure/aks-set-context@v4
       with:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
@@ -146,7 +140,7 @@ jobs:
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
-      uses: dawidd6/action-send-mail@2cea961f3b9a4e6d8c7f1e2a3b4c5d6e7f8a9b0c
+      uses: dawidd6/action-send-mail@v3
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
@@ -159,7 +153,7 @@ jobs:
 
     - name: Send Failure Notification
       if: steps.check_smtp.outputs.defined == 'true' && failure()
-      uses: dawidd6/action-send-mail@2cea961f3b9a4e6d8c7f1e2a3b4c5d6e7f8a9b0c
+      uses: dawidd6/action-send-mail@v3
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}

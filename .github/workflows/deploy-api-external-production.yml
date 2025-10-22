@@ -8,7 +8,13 @@ on:
       - production/api-external
 
 jobs:
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml    
+    with:
+      solution: ${{ inputs.solution }}
+  
   deploy-api-external:
+    needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production-api-external"
