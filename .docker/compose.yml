@@ -52,7 +52,8 @@ services:
 
   prometheus:
     build:
-      dockerfile: Dockerfile.Prometheus
+      context: ../
+      dockerfile: ./.docker/Dockerfile.Prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -64,13 +65,14 @@ services:
 
   grafana:    
     build:
-        dockerfile: Dockerfile.Grafana
+        context: ../
+        dockerfile: ./.docker/Dockerfile.Grafana
     ports:
       - 3000:3000
     restart: unless-stopped
     environment:
+      GF_LOG_LEVEL: debug
       GF_SECURITY_ADMIN_USER: "admin"
-      GF_SECURITY_ADMIN_PASSWORD: "grafana"  # Change the password
     depends_on:
       - prometheus
     networks:

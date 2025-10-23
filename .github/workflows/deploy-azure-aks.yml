@@ -25,6 +25,9 @@
 # - EMAIL_PASSWORD: The password or app-specific password for the email account.
 # - EMAIL_TO: The recipient email address for deployment notifications (this is a variable, not a secret).
 # - EMAIL_FROM: The sender email address used in deployment notifications (this is a variable, not a secret).
+#
+# Grafana:
+# - GRAFANA_ADMIN_PASSWORD: Grafana admin password.
 
 name: Deploy to Azure AKS
 
@@ -68,6 +71,8 @@ on:
         required: true
       EMAIL_PASSWORD:
         required: true
+      GRAFANA_ADMIN_PASSWORD:
+        required: true
 
 # Only allow one deploy per environment
 concurrency: ${{ inputs.environment }}
@@ -81,6 +86,7 @@ jobs:
       AppSettings__JwtKeys__EncryptionSecretKey: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}
       ASPNETCORE_Kestrel__Certificates__Default__Path: ./certificate.pfx
+      GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
     steps:
     - name: Check some secret
       run: |
