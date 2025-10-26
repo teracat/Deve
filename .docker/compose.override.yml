@@ -9,6 +9,7 @@ services:
       - "8080:80"
       - "7245:443"
     environment:
+      ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"
@@ -27,6 +28,7 @@ services:
       - "8081:80"
       - "7175:443"
     environment:
+      ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"

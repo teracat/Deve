@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-internal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-internal
+  template:
+    metadata:
+      labels:
+        app: api-internal
+    spec:
+      containers:
+        - name: api-internal
+          image: ${{ secrets.ACR_LOGIN_SERVER }}/api-internal:latest
+          ports:
+            - containerPort: 443

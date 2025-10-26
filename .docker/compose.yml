@@ -8,6 +8,7 @@ services:
       - cache-redis
       - prometheus
       - zipkin
+      - grafana
     environment:
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
@@ -28,6 +29,7 @@ services:
       - cache-redis
       - prometheus
       - zipkin
+      - grafana
     environment:
       ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
@@ -44,9 +46,6 @@ services:
     image: redis
     ports:
       - 6379:6379
-    depends_on:
-      - prometheus
-      - zipkin
     networks:
       - deve-network
 
@@ -65,13 +64,13 @@ services:
 
   grafana:    
     build:
-        context: ../
-        dockerfile: ./.docker/Dockerfile.Grafana
+      context: ../
+      dockerfile: ./.docker/Dockerfile.Grafana
     ports:
       - 3000:3000
     restart: unless-stopped
     environment:
-      GF_LOG_LEVEL: debug
+      #GF_LOG_LEVEL: debug
       GF_SECURITY_ADMIN_USER: "admin"
     depends_on:
       - prometheus
