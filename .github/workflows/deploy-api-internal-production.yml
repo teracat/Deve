@@ -11,7 +11,7 @@ jobs:
   build-and-test:
     uses: ./.github/workflows/build-and-test.yml    
     with:
-      solution: ${{ inputs.solution }}
+      solution: "Deve.Api.Internal.sln"
 
   deploy-api-internal:
     needs: build-and-test
