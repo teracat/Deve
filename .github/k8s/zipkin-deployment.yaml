@@ -13,14 +13,14 @@ spec:
         app: zipkin
     spec:
       containers:
-        - env:
-          - name: ACR_LOGIN_SERVER
-            valueFrom:
-              secretKeyRef:
-                key: login-server
-                name: acr-secret
         - name: zipkin
           image: $ACR_LOGIN_SERVER/zipkin:latest
+          env:
+            - name: ACR_LOGIN_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: login-server
+                  name: acr-secret
           ports:
             - containerPort: 9411
           securityContext:

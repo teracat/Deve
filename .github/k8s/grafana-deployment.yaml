@@ -13,14 +13,14 @@ spec:
         app: grafana
     spec:
       containers:
-        - env:
-          - name: ACR_LOGIN_SERVER
-            valueFrom:
-              secretKeyRef:
-                key: login-server
-                name: acr-secret
         - name: grafana
           image: $ACR_LOGIN_SERVER/grafana:latest
+          env:
+            - name: ACR_LOGIN_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: login-server
+                  name: acr-secret
           ports:
             - containerPort: 3000
           securityContext:

@@ -13,14 +13,14 @@ spec:
         app: prometheus
     spec:
       containers:
-        - env:
-          - name: ACR_LOGIN_SERVER
-            valueFrom:
-              secretKeyRef:
-                key: login-server
-                name: acr-secret
         - name: prometheus
           image: $ACR_LOGIN_SERVER/prometheus:latest
+          env:
+            - name: ACR_LOGIN_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: login-server
+                  name: acr-secret
           ports:
             - containerPort: 9090
           securityContext:
