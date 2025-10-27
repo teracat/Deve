@@ -114,10 +114,10 @@ jobs:
         fi
 
     - name: Checkout code
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  #v5.0.0
 
     - name: Login to ACR
-      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  #v3.6.0
       with:
         registry: ${{ secrets.ACR_LOGIN_SERVER }}  # ACR login server
         username: ${{ secrets.ACR_USERNAME }}  # ACR username
@@ -148,18 +148,18 @@ jobs:
         docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps api-internal
 
     - name: Azure login
-      uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5
+      uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set AKS context
-      uses: azure/aks-set-context@c7eb093e5a5d47caa333f64974d5fd1cd4bf069d
+      uses: azure/aks-set-context@c7eb093e5a5d47caa333f64974d5fd1cd4bf069d  #v4.0.3
       with:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
     - name: Setup kubectl
-      uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede
+      uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede  #4.0.1
 
     - name: Create Kubernetes secret for ACR login server
       run: |
@@ -173,7 +173,7 @@ jobs:
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
-      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402
+      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
@@ -186,7 +186,7 @@ jobs:
 
     - name: Send Failure Notification
       if: steps.check_smtp.outputs.defined == 'true' && failure()
-      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402
+      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
