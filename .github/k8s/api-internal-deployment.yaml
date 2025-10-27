@@ -13,7 +13,15 @@ spec:
         app: api-internal
     spec:
       containers:
+        - env:
+          - name: ACR_LOGIN_SERVER
+            valueFrom:
+              secretKeyRef:
+                key: login-server
+                name: acr-secret
         - name: api-internal
-          image: ${{ secrets.ACR_LOGIN_SERVER }}/api-internal:latest
+          image: $ACR_LOGIN_SERVER/api-internal:latest
           ports:
             - containerPort: 443
+          securityContext:
+            allowPrivilegeEscalation: false

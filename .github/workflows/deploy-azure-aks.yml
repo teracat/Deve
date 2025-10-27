@@ -114,10 +114,10 @@ jobs:
         fi
 
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
     - name: Login to ACR
-      uses: docker/login-action@v3
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
       with:
         registry: ${{ secrets.ACR_LOGIN_SERVER }}  # ACR login server
         username: ${{ secrets.ACR_USERNAME }}  # ACR username
@@ -148,25 +148,24 @@ jobs:
         docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps api-internal
 
     - name: Azure login
-      uses: azure/login@v2
+      uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure CLI script
-      uses: azure/cli@v2
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
-
     - name: Set AKS context
-      uses: azure/aks-set-context@v4
+      uses: azure/aks-set-context@c7eb093e5a5d47caa333f64974d5fd1cd4bf069d
       with:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
     - name: Setup kubectl
-      uses: azure/setup-kubectl@v3
+      uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede
+
+    - name: Create Kubernetes secret for ACR login server
+      run: |
+        kubectl create secret generic acr-secret \
+          --from-literal=login-server="${{ secrets.ACR_LOGIN_SERVER }}" \
+          --dry-run=client -o yaml | kubectl apply -f -
     
     - name: Deploy to AKS
       run: |
@@ -174,7 +173,7 @@ jobs:
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
-      uses: dawidd6/action-send-mail@v3
+      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}
@@ -187,7 +186,7 @@ jobs:
 
     - name: Send Failure Notification
       if: steps.check_smtp.outputs.defined == 'true' && failure()
-      uses: dawidd6/action-send-mail@v3
+      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402
       with:
         server_address: ${{ secrets.SMTP_SERVER }}
         server_port: ${{ secrets.SMTP_PORT }}

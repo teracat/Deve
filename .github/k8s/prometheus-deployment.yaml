@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zipkin
+  name: prometheus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zipkin
+      app: prometheus
   template:
     metadata:
       labels:
-        app: zipkin
+        app: prometheus
     spec:
       containers:
         - env:
@@ -19,9 +19,9 @@ spec:
               secretKeyRef:
                 key: login-server
                 name: acr-secret
-        - name: zipkin
-          image: $ACR_LOGIN_SERVER/zipkin:latest
+        - name: prometheus
+          image: $ACR_LOGIN_SERVER/prometheus:latest
           ports:
-            - containerPort: 9411
+            - containerPort: 9090
           securityContext:
             allowPrivilegeEscalation: false
