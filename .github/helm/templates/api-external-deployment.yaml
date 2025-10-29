@@ -1,0 +1,23 @@
+{{- if (has "api-external" (splitList "," .Values.deploy.enabledServices)) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiExternal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiExternal
+  template:
+    metadata:
+      labels:
+        app: apiExternal
+    spec:
+      containers:
+        - name: apiExternal
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiExternal }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.apiExternal.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
+{{- end }}

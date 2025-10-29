@@ -1,3 +1,4 @@
+{{- if (has "zipkin" (splitList "," .Values.deploy.enabledServices)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,14 +15,9 @@ spec:
     spec:
       containers:
         - name: zipkin
-          image: $ACR_LOGIN_SERVER/zipkin:latest
-          env:
-            - name: ACR_LOGIN_SERVER
-              valueFrom:
-                secretKeyRef:
-                  key: login-server
-                  name: acr-secret
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: 9411
+            - containerPort: {{ .Values.services.zipkin.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
+{{- end }}

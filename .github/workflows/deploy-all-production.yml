@@ -1,0 +1,25 @@
+# This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy All services to Production
+
+on:
+  push:
+    branches:
+      - production/all
+    tags:
+      - 'all/[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  #build-and-test:
+  #  uses: ./.github/workflows/build-and-test.yml    
+  #  with:
+  #    solution: "Deve.All.sln"
+
+  deploy-all:
+    #needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-aks.yml
+    with:
+      environment: "production"
+      services: "api-internal,api-external,cache-redis,prometheus,grafana,zipkin"
+    secrets: inherit

@@ -1,11 +1,13 @@
-# This workflow requires the environment production-api-internal with the secrets used in the deploy-azure-aks.yml
+# This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
 
-name: Deploy to Production
+name: Deploy Api Internal to Production
 
 on:
   push:
     branches:
       - production/api-internal
+    tags:
+      - 'api-internal/[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build-and-test:
@@ -17,6 +19,6 @@ jobs:
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
-      environment: "production-api-internal"
-      solution: "Deve.Api.Internal.sln"
+      environment: "production"
+      services: "api-internal"
     secrets: inherit

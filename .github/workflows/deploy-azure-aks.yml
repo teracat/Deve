@@ -38,10 +38,11 @@ on:
         description: "The GitHub environment used to get the secrets and vars needed"
         type: string
         required: true
-      solution:
-        description: "The solution to build and test"
+      services:
+        description: "Comma-separated list of services to deploy (e.g. api-internal,grafana)"
         type: string
         required: true
+
     secrets:
       ACR_LOGIN_SERVER:
         required: true
@@ -116,6 +117,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  #v5.0.0
 
+    - name: Define variables
+      id: vars
+      shell: bash
+      run: |
+        #Services
+        echo "services=$(echo '${{ inputs.services }}'  | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+        echo "services_spaces=$(echo '${{ inputs.services }}' | tr ',' ' ' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+        #Compute IMAGE_TAG from tag or SHA
+        IMAGE_TAG="${{ github.sha }}"
+
+        REF_TYPE="${{ github.ref_type }}"
+        REF_NAME="${{ github.ref_name }}"
+
+        # If this is a tag and its last segment matches x.y.z, use that as the image tag
+        if [[ "$REF_TYPE" == "tag" ]]; then
+          if [[ "$REF_NAME" =~ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            IMAGE_TAG="${BASH_REMATCH[0]}"
+          fi
+        fi
+
+        echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
     - name: Login to ACR
       uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  #v3.6.0
       with:
@@ -123,29 +147,29 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}  # ACR username
         password: ${{ secrets.ACR_PASSWORD }}  # ACR password
 
-    - name: Build images with compose (tag sha)
+    - name: Build images with compose (tag computed)
       env:
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start api-internal
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_spaces }}
 
-    - name: Push docker images (tag sha)
+    - name: Push docker images (tag computed)
       env:
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps api-internal
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_spaces }}
 
     - name: Build images with compose (tag latest)
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start api-internal
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_spaces }}
 
     - name: Push docker images (tag latest)
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps api-internal
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_spaces }}
 
     - name: Azure login
       uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
@@ -158,18 +182,15 @@ jobs:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
-    - name: Setup kubectl
-      uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede  #4.0.1
+    - name: Setup Helm
+      uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
 
-    - name: Create Kubernetes secret for ACR login server
+    - name: Deploy with Helm
       run: |
-        kubectl create secret generic acr-secret \
-          --from-literal=login-server="${{ secrets.ACR_LOGIN_SERVER }}" \
-          --dry-run=client -o yaml | kubectl apply -f -
-    
-    - name: Deploy to AKS
-      run: |
-        kubectl apply -f .github/k8s/
+        helm upgrade --install services .github/helm \
+              --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
+              --set image.tag=latest \
+              --set-string deploy.enabledServices=${{ steps.vars.outputs.services }}
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()

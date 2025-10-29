@@ -1,0 +1,23 @@
+{{- if (has "prometheus" (splitList "," .Values.deploy.enabledServices)) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.prometheus }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.prometheus.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
+{{- end }}

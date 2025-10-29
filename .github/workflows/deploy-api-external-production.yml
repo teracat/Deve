@@ -1,11 +1,13 @@
 # This workflow requires the environment production-api-external with the secrets used in the deploy-azure-aks.yml
 
-name: Deploy to Production
+name: Deploy Api External to Production
 
 on:
   push:
     branches:
       - production/api-external
+    tags:
+      - 'api-external/[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build-and-test:
@@ -17,6 +19,6 @@ jobs:
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
-      environment: "production-api-external"
-      solution: "Deve.Api.External.sln"
+      environment: "production"
+      services: "api-external,prometheus,grafana,zipkin"
     secrets: inherit

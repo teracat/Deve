@@ -1,0 +1,23 @@
+{{- if (has "api-internal" (splitList "," .Values.deploy.enabledServices)) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiInternal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiInternal
+  template:
+    metadata:
+      labels:
+        app: apiInternal
+    spec:
+      containers:
+        - name: apiInternal
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiInternal }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.apiInternal.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
+{{- end }}

@@ -1,0 +1,18 @@
+# This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy Prometheus to Production
+
+on:
+  push:
+    branches:
+      - production/prometheus
+    tags:
+      - 'prometheus/[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy-prometheus:
+    uses: ./.github/workflows/deploy-azure-aks.yml
+    with:
+      environment: "production"
+      services: "prometheus"
+    secrets: inherit

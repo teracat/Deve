@@ -1,0 +1,12 @@
+{{- if (has "grafana" (splitList "," .Values.deploy.enabledServices)) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  selector:
+    app: grafana
+  ports:
+    - port: {{ .Values.services.grafana.externalPort }}
+      targetPort: {{ .Values.services.grafana.internalPort }}
+{{- end }}

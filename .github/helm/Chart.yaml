@@ -1,0 +1,4 @@
+apiVersion: v2
+name: services
+version: 0.1.0
+description: A Helm chart to publish services to Kubernetes
