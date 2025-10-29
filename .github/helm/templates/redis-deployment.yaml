@@ -1,0 +1,23 @@
+{{- if (has "redis" (splitList "," .Values.deploy.enabledServices)) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.redis.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
+{{- end }}

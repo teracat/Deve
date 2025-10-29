@@ -9,6 +9,7 @@ image:
     grafana: grafana
     prometheus: prometheus
     zipkin: zipkin
+    redis: redis
 
 services:
   apiInternal:
@@ -26,3 +27,6 @@ services:
   zipkin:
     internalPort: 9411
     externalPort: 9411
+  redis:
+    internalPort: 6379
+    externalPort: 6379
