@@ -1,15 +1,21 @@
 deploy:
-  enabledServices: ""
+  enabledServices:
+    - api-internal
+    - api-external
+    - cache-redis
+    - prometheus
+    - grafana
+    - zipkin
 
 image:
   tag: latest
   repositories:
     apiInternal: api-internal
     apiExternal: api-external
-    grafana: grafana
-    prometheus: prometheus
-    zipkin: zipkin
     redis: redis
+    prometheus: prometheus
+    grafana: grafana
+    zipkin: zipkin
 
 services:
   apiInternal:
@@ -18,15 +24,15 @@ services:
   apiExternal:
     internalPort: 443
     externalPort: 443
-  grafana:
-    internalPort: 3000
-    externalPort: 3000
-  prometheus:
-    internalPort: 9090
-    externalPort: 9090
-  zipkin:
-    internalPort: 9411
-    externalPort: 9411
   redis:
     internalPort: 6379
     externalPort: 6379
+  prometheus:
+    internalPort: 9090
+    externalPort: 9090
+  grafana:
+    internalPort: 3000
+    externalPort: 3000
+  zipkin:
+    internalPort: 9411
+    externalPort: 9411

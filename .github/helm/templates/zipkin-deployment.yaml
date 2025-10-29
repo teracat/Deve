@@ -1,4 +1,4 @@
-{{- if (has "zipkin" (splitList "," .Values.deploy.enabledServices)) }}
+{{- if has "zipkin" .Values.deploy.enabledServices }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

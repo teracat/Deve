@@ -1,4 +1,4 @@
-{{- if (has "api-external" (splitList "," .Values.deploy.enabledServices)) }}
+{{- if has "api-external" .Values.deploy.enabledServices }}
 apiVersion: v1
 kind: Service
 metadata:

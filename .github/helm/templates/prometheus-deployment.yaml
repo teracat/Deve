@@ -1,4 +1,4 @@
-{{- if (has "prometheus" (splitList "," .Values.deploy.enabledServices)) }}
+{{- if has "prometheus" .Values.deploy.enabledServices }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

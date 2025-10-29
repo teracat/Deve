@@ -121,9 +121,13 @@ jobs:
       id: vars
       shell: bash
       run: |
-        #Services
-        echo "services=$(echo '${{ inputs.services }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
-        echo "services_spaces=$(echo '${{ inputs.services }}' | tr ',' ' ' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+        #Services        
+        raw='${{ inputs.services }}'
+        services=$(echo "$raw" | tr '\n' ',' | tr '[:upper:]' '[:lower:]' | sed -E 's/,+/,/g; s/^,+|,+$//g')
+        services_spaces=$(echo "$services" | tr ',' ' ')
+        
+        echo "services=$services" >> "$GITHUB_OUTPUT"
+        echo "services_spaces=$services_spaces" >> "$GITHUB_OUTPUT"
 
         #Compute IMAGE_TAG from tag or SHA
         IMAGE_TAG="${{ github.sha }}"
@@ -190,7 +194,7 @@ jobs:
         helm upgrade --install services .github/helm \
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
-              --set-string deploy.enabledServices="${{ steps.vars.outputs.services }}"
+              --set-json deploy.enabledServices="[${{ steps.vars.outputs.services }}]"
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
