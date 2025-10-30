@@ -17,7 +17,7 @@ spec:
         - name: api-external
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.api-external }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.api-external.internalPort }}
+            - containerPort: {{ .Values.services.apiExternal.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

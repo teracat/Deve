@@ -18,10 +18,10 @@ image:
     zipkin: zipkin
 
 services:
-  api-internal:
+  apiInternal:
     internalPort: 443
     externalPort: 444
-  api-external:
+  apiExternal:
     internalPort: 443
     externalPort: 443
   redis:

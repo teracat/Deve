@@ -9,7 +9,7 @@ spec:
   type: LoadBalancer
   ports:
     - name: http
-      nodePort: {{ .Values.services.api-external.externalPort }}
-      port: {{ .Values.services.api-external.externalPort }}
-      targetPort: {{ .Values.services.api-external.internalPort }}
+      nodePort: {{ .Values.services.apiExternal.externalPort }}
+      port: {{ .Values.services.apiExternal.externalPort }}
+      targetPort: {{ .Values.services.apiExternal.internalPort }}
 {{- end }}
