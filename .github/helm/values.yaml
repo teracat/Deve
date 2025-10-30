@@ -10,8 +10,8 @@ deploy:
 image:
   tag: latest
   repositories:
-    api-internal: api-internal
-    api-external: api-external
+    apiInternal: api-internal
+    apiExternal: api-external
     redis: redis
     prometheus: prometheus
     grafana: grafana
