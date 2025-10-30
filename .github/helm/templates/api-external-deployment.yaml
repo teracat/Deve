@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apiExternal
+  name: api-external
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: apiExternal
+      app: api-external
   template:
     metadata:
       labels:
-        app: apiExternal
+        app: api-external
     spec:
       containers:
-        - name: apiExternal
-          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiExternal }}:{{ .Values.image.tag }}"
+        - name: api-external
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.api-external }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.apiExternal.internalPort }}
+            - containerPort: {{ .Values.services.api-external.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: prometheus
+  type: LoadBalancer
   ports:
     - name: http
       nodePort: {{ .Values.services.prometheus.externalPort }}

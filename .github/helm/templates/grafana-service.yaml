@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: grafana
+  type: LoadBalancer
   ports:
     - name: http
       nodePort: {{ .Values.services.grafana.externalPort }}

@@ -10,18 +10,18 @@ deploy:
 image:
   tag: latest
   repositories:
-    apiInternal: api-internal
-    apiExternal: api-external
+    api-internal: api-internal
+    api-external: api-external
     redis: redis
     prometheus: prometheus
     grafana: grafana
     zipkin: zipkin
 
 services:
-  apiInternal:
+  api-internal:
     internalPort: 443
     externalPort: 444
-  apiExternal:
+  api-external:
     internalPort: 443
     externalPort: 443
   redis:

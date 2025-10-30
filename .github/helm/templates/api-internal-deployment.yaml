@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apiInternal
+  name: api-internal
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: apiInternal
+      app: api-internal
   template:
     metadata:
       labels:
-        app: apiInternal
+        app: api-internal
     spec:
       containers:
-        - name: apiInternal
-          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiInternal }}:{{ .Values.image.tag }}"
+        - name: api-internal
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.api-internal }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.apiInternal.internalPort }}
+            - containerPort: {{ .Values.services.api-internal.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

@@ -17,7 +17,7 @@ jobs:
       solution: "Deve.All.sln"
 
   deploy-all:
-    #needs: build-and-test
+    needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"

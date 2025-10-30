@@ -2,13 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: apiInternal
+  name: api-internal
 spec:
   selector:
-    app: apiInternal
+    app: api-internal
+  type: LoadBalancer
   ports:
     - name: http
-      nodePort: {{ .Values.services.apiInternal.externalPort }}
-      port: {{ .Values.services.apiInternal.externalPort }}
-      targetPort: {{ .Values.services.apiInternal.internalPort }}
+      nodePort: {{ .Values.services.api-internal.externalPort }}
+      port: {{ .Values.services.api-internal.externalPort }}
+      targetPort: {{ .Values.services.api-internal.internalPort }}
 {{- end }}

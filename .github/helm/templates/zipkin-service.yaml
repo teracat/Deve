@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: zipkin
+  type: LoadBalancer
   ports:
     - name: http
       nodePort: {{ .Values.services.zipkin.externalPort }}
