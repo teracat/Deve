@@ -9,7 +9,6 @@ spec:
   type: LoadBalancer
   ports:
     - name: http
-      nodePort: {{ .Values.services.grafana.externalPort }}
       port: {{ .Values.services.grafana.externalPort }}
       targetPort: {{ .Values.services.grafana.internalPort }}
 {{- end }}

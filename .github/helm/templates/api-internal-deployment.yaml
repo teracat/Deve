@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: api-internal
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: api-internal

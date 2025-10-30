@@ -9,7 +9,6 @@ spec:
   type: LoadBalancer
   ports:
     - name: http
-      nodePort: {{ .Values.services.prometheus.externalPort }}
       port: {{ .Values.services.prometheus.externalPort }}
       targetPort: {{ .Values.services.prometheus.internalPort }}
 {{- end }}
