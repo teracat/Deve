@@ -191,10 +191,10 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm upgrade --install services .github/helm \
+        helm upgrade services .github/helm -f .github/helm/values.yaml --install --atomic \
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
-              --set "deploy.enabledServices="{${{ steps.vars.outputs.services }}}""
+              --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}"
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()

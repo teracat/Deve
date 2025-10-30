@@ -7,6 +7,8 @@ spec:
   selector:
     app: apiInternal
   ports:
-    - port: {{ .Values.services.apiInternal.externalPort }}
+    - name: http
+      nodePort: {{ .Values.services.apiInternal.externalPort }}
+      port: {{ .Values.services.apiInternal.externalPort }}
       targetPort: {{ .Values.services.apiInternal.internalPort }}
 {{- end }}

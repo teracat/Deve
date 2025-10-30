@@ -7,6 +7,8 @@ spec:
   selector:
     app: zipkin
   ports:
-    - port: {{ .Values.services.zipkin.externalPort }}
+    - name: http
+      nodePort: {{ .Values.services.zipkin.externalPort }}
+      port: {{ .Values.services.zipkin.externalPort }}
       targetPort: {{ .Values.services.zipkin.internalPort }}
 {{- end }}

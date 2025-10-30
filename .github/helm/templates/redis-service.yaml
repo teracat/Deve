@@ -7,6 +7,7 @@ spec:
   selector:
     app: redis
   ports:
-    - port: {{ .Values.services.redis.externalPort }}
+    - name: http
+      port: {{ .Values.services.redis.externalPort }}
       targetPort: {{ .Values.services.redis.internalPort }}
 {{- end }}
