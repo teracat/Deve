@@ -10,6 +10,6 @@ spec:
   ports:
     - name: http
       nodePort: {{ .Values.services.apiInternal.externalPort }}
-      port: {{ .Values.services.apiInternall.externalPort }}
+      port: {{ .Values.services.apiInternal.externalPort }}
       targetPort: {{ .Values.services.apiInternal.internalPort }}
 {{- end }}
