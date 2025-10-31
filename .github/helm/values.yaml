@@ -24,7 +24,7 @@ services:
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
-    certificatePath: ""
+    certificateContent: ""
     certificatePassword: ""
   apiExternal:
     internalPort: 443
@@ -32,7 +32,7 @@ services:
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
-    certificatePath: ""
+    certificateContent: ""
     certificatePassword: ""
   redis:
     internalPort: 6379

@@ -13,9 +13,20 @@ spec:
       labels:
         app: api-internal
     spec:
+      volumes:
+        - name: cert-volume
+          secret:
+            secretName: api-internal
+            items:
+              - key: certificate.pfx
+                path: certificate.pfx
       containers:
         - name: api-internal
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiInternal }}:{{ .Values.image.tag }}"
+          volumeMounts:
+            - name: cert-volume
+              mountPath: /app/certs
+              readOnly: true
           ports:
             - containerPort: {{ .Values.services.apiInternal.internalPort }}
           securityContext:
@@ -41,10 +52,7 @@ spec:
                   name: api-internal
                   key: jwtEncryptionSecretKey
             - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-              valueFrom:
-                secretKeyRef:
-                  name: api-internal
-                  key: certificatePath
+              value: "/app/certs/certificate.pfx"
             - name: ASPNETCORE_Kestrel__Certificates__Default__Password
               valueFrom:
                 secretKeyRef:

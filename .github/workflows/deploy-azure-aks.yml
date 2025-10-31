@@ -188,23 +188,35 @@ jobs:
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
 
+
+  - name: Create Helm file with secrets
+    run: |
+      cat > helm-values.override.yaml << 'EOF'
+      services:
+        apiInternal:
+          dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
+        apiExternal:
+          dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"          
+      EOF
+
     - name: Deploy with Helm
       run: |
-        helm upgrade services .github/helm -f .github/helm/values.yaml --install --debug \
+        helm upgrade services .github/helm \
+              -f .github/helm/values.yaml \
+              -f helm-values.override.yaml \
+              --install \
+              --debug \
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
+              --set-file services.apiInternal.certificateContent='./certificate.pfx' \
+              --set-file services.apiExternal.certificateContent='./certificate.pfx' \
               --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}"
-              --set-string services.grafana.adminPassword="${{ secrets.GRAFANA_ADMIN_PASSWORD }}"
-              --set-string services.apiInternal.dataSourceConnectionString="${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-              --set-string services.apiInternal.jwtSigningSecretKey="${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-              --set-string services.apiInternal.jwtEncryptionSecretKey="${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-              --set-string services.apiInternal.certificatePath="./certificate.pfx"
-              --set-string services.apiInternal.certificatePassword="${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
-              --set-string services.apiExternal.dataSourceConnectionString="${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-              --set-string services.apiExternal.jwtSigningSecretKey="${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-              --set-string services.apiExternal.jwtEncryptionSecretKey="${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-              --set-string services.apiExternal.certificatePath="./certificate.pfx"
-              --set-string services.apiExternal.certificatePassword="${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
