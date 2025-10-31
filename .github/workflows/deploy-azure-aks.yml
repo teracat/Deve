@@ -191,8 +191,7 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm upgrade services .github/helm -f .github/helm/values.yaml --install --atomic \
-              --timeout 10m0s \
+        helm upgrade services .github/helm -f .github/helm/values.yaml --install --debug \
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
               --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}"
