@@ -21,9 +21,19 @@ services:
   apiInternal:
     internalPort: 443
     externalPort: 444
+    dataSourceConnectionString: ""
+    jwtSigningSecretKey: ""
+    jwtEncryptionSecretKey: ""
+    certificatePath: ""
+    certificatePassword: ""
   apiExternal:
     internalPort: 443
     externalPort: 443
+    dataSourceConnectionString: ""
+    jwtSigningSecretKey: ""
+    jwtEncryptionSecretKey: ""
+    certificatePath: ""
+    certificatePassword: ""
   redis:
     internalPort: 6379
     externalPort: 6379
@@ -33,6 +43,10 @@ services:
   grafana:
     internalPort: 3000
     externalPort: 3000
+    adminPassword: ""    
+    persistence:
+      size: 1Gi
+      storageClass: managed-csi
   zipkin:
     internalPort: 9411
     externalPort: 9411

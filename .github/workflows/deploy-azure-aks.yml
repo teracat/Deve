@@ -19,15 +19,19 @@
 # - HTTPS_CERTIFICATE_PASSWORD: The password of the PFX certificate.
 #
 # Email notification settings:
-# - SMTP_SERVER: The address of the SMTP server used to send emails.
-# - SMTP_PORT: The port used by the SMTP server (e.g., 587).
-# - EMAIL_USERNAME: The username of the email account used to send notifications.
-# - EMAIL_PASSWORD: The password or app-specific password for the email account.
+# - SMTP_SERVER: The address of the SMTP server used to send emails (this is a variable, not a secret).
+# - SMTP_PORT: The port used by the SMTP server (this is a variable, not a secret, e.g.: 587).
+# - SMTP_USERNAME: The username of the SMTP account used to send notifications.
+# - SMTP_PASSWORD: The password or app-specific password for the SMTP account.
 # - EMAIL_TO: The recipient email address for deployment notifications (this is a variable, not a secret).
 # - EMAIL_FROM: The sender email address used in deployment notifications (this is a variable, not a secret).
 #
 # Grafana:
 # - GRAFANA_ADMIN_PASSWORD: Password of the admin user to access Grafana.
+#
+# DataSource:
+# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal.
+# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-external.
 
 name: Deploy to Azure AKS
 
@@ -64,16 +68,16 @@ on:
         required: true
       HTTPS_CERTIFICATE_PASSWORD:
         required: true
-      SMTP_SERVER:
-        required: true
-      SMTP_PORT:
-        required: true
-      EMAIL_USERNAME:
-        required: true
-      EMAIL_PASSWORD:
-        required: true
+      SMTP_USERNAME:
+        required: false
+      SMTP_PASSWORD:
+        required: false
       GRAFANA_ADMIN_PASSWORD:
-        required: true
+        required: false
+      APIINTERNAL_DATASOURCE_CONNECTIONSTRING:
+        required: false
+      APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
+        required: false
 
 # Only allow one deploy per environment
 concurrency: ${{ inputs.environment }}
@@ -82,13 +86,6 @@ jobs:
   deploy-azure-aks:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    env:
-      AppSettings__JwtKeys__SigningSecretKey: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
-      AppSettings__JwtKeys__EncryptionSecretKey: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
-      ASPNETCORE_Kestrel__Certificates__Default__Password: ${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}
-      ASPNETCORE_Kestrel__Certificates__Default__Path: ./certificate.pfx
-      GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
-      ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
     steps:
     - name: Check some secret
       run: |
@@ -105,10 +102,10 @@ jobs:
       env:
         HTTPS_CERTIFICATE_BASE64: ${{ secrets.HTTPS_CERTIFICATE_BASE64 }}
 
-    - name: Check if SMTP_SERVER is defined
+    - name: Check if SMTP_USERNAME is defined
       id: check_smtp
       run: |
-        if [ -z "${{ secrets.SMTP_SERVER }}" ]; then
+        if [ -z "${{ secrets.SMTP_USERNAME }}" ]; then
           echo "defined=false" >> $GITHUB_OUTPUT
         else
           echo "defined=true" >> $GITHUB_OUTPUT
@@ -195,15 +192,26 @@ jobs:
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
               --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}"
-
+              --set-string services.grafana.adminPassword="${{ secrets.GRAFANA_ADMIN_PASSWORD }}"
+              --set-string services.apiInternal.dataSourceConnectionString="${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+              --set-string services.apiInternal.jwtSigningSecretKey="${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+              --set-string services.apiInternal.jwtEncryptionSecretKey="${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+              --set-string services.apiInternal.certificatePath="./certificate.pfx"
+              --set-string services.apiInternal.certificatePassword="${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
+              --set-string services.apiExternal.dataSourceConnectionString="${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+              --set-string services.apiExternal.jwtSigningSecretKey="${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+              --set-string services.apiExternal.jwtEncryptionSecretKey="${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+              --set-string services.apiExternal.certificatePath="./certificate.pfx"
+              --set-string services.apiExternal.certificatePassword="${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
+      
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
       uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
       with:
-        server_address: ${{ secrets.SMTP_SERVER }}
-        server_port: ${{ secrets.SMTP_PORT }}
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
+        server_address: ${{ vars.SMTP_SERVER }}
+        server_port: ${{ vars.SMTP_PORT }}
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Successful"
         body: "The deployment to ${{ inputs.environment }} has been successfully completed."
         to: ${{ vars.EMAIL_TO }}
@@ -213,10 +221,10 @@ jobs:
       if: steps.check_smtp.outputs.defined == 'true' && failure()
       uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
       with:
-        server_address: ${{ secrets.SMTP_SERVER }}
-        server_port: ${{ secrets.SMTP_PORT }}
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
+        server_address: ${{ vars.SMTP_SERVER }}
+        server_port: ${{ vars.SMTP_PORT }}
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Failed"
         body: "The deployment to ${{ inputs.environment }} has failed."
         to: ${{ vars.EMAIL_TO }}

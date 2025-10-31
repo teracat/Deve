@@ -4,13 +4,11 @@ services:
     image: ${ACR_LOGIN_SERVER}/api-internal:${IMAGE_TAG}
     container_name: prod-api-internal
     expose:
+      - "80"
       - "443"
     ports:
+      - "8081:80"
       - "444:443"
-    environment:
-      ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
-      ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_URLS: "https://+:443"
   
   api-external:
     image: ${ACR_LOGIN_SERVER}/api-external:${IMAGE_TAG}
@@ -18,11 +16,8 @@ services:
     expose:
       - "443"
     ports:
+      - "8080:80"
       - "443:443"
-    environment:
-      ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
-      ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_URLS: "https://+:443"
 
   cache-redis:
     container_name: prod-cache-redis

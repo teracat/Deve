@@ -20,4 +20,33 @@ spec:
             - containerPort: {{ .Values.services.grafana.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-admin
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.services.grafana.internalPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 12
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.services.grafana.internalPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+         volumes:
+            - name: grafana-storage
+              persistentVolumeClaim:
+                claimName: grafana-pvc
 {{- end }}
