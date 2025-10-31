@@ -188,22 +188,21 @@ jobs:
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
 
-
-  - name: Create Helm file with secrets
-    run: |
-      cat > helm-values.override.yaml << 'EOF'
-      services:
-        apiInternal:
-          dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-          certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
-        apiExternal:
-          dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-          certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"          
-      EOF
+    - name: Create Helm file with secrets
+      run: |
+        cat > helm-values.override.yaml << 'EOF'
+        services:
+          apiInternal:
+            dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+            jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+            jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+            certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
+          apiExternal:
+            dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+            jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+            jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+            certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"          
+        EOF
 
     - name: Deploy with Helm
       run: |
