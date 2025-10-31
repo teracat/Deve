@@ -86,6 +86,8 @@ jobs:
   deploy-azure-aks:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
+    env:
+      ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
     steps:
     - name: Check some secret
       run: |
@@ -203,7 +205,7 @@ jobs:
               --set-string services.apiExternal.jwtEncryptionSecretKey="${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
               --set-string services.apiExternal.certificatePath="./certificate.pfx"
               --set-string services.apiExternal.certificatePassword="${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
-      
+
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
       uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
