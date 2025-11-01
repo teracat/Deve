@@ -21,5 +21,5 @@ jobs:
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
-      services: "api-internal,api-external,cache-redis,prometheus,grafana,zipkin"
+      services: "api-internal,api-external,redis,prometheus,grafana,zipkin"
     secrets: inherit

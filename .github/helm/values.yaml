@@ -2,7 +2,7 @@ deploy:
   enabledServices:
     - api-internal
     - api-external
-    - cache-redis
+    - redis
     - prometheus
     - grafana
     - zipkin
