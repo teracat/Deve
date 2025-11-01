@@ -17,7 +17,7 @@ spec:
         - name: redis
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.redis.internalPort }}
+            - containerPort: {{ .Values.services.redis.port }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

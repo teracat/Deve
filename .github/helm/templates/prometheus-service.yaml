@@ -6,9 +6,9 @@ metadata:
 spec:
   selector:
     app: prometheus
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
-      port: {{ .Values.services.prometheus.externalPort }}
-      targetPort: {{ .Values.services.prometheus.internalPort }}
+      port: {{ .Values.services.prometheus.port }}
+      targetPort: {{ .Values.services.prometheus.port }}
 {{- end }}

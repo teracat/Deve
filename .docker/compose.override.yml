@@ -38,8 +38,8 @@ services:
     volumes:
       - ./https:/https:ro
 
-  cache-redis:
-    container_name: dev-cache-redis
+  redis:
+    container_name: dev-redis
 
   prometheus:
     container_name: dev-prometheus

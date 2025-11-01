@@ -6,8 +6,9 @@ metadata:
 spec:
   selector:
     app: redis
+  type: ClusterIP
   ports:
     - name: http
-      port: {{ .Values.services.redis.externalPort }}
-      targetPort: {{ .Values.services.redis.internalPort }}
+      port: {{ .Values.services.redis.port }}
+      targetPort: {{ .Values.services.redis.port }}
 {{- end }}

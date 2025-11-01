@@ -16,8 +16,8 @@ services:
     ports:
       - "80:80"
 
-  cache-redis:
-    container_name: prod-cache-redis
+  redis:
+    container_name: prod-redis
 
   prometheus:
     image: ${ACR_LOGIN_SERVER}/prometheus:${IMAGE_TAG}

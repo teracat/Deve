@@ -9,6 +9,6 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: {{ .Values.services.apiExternal.externalPort }}
-      targetPort: {{ .Values.services.apiExternal.internalPort }}
+      port: {{ .Values.services.apiExternal.port }}
+      targetPort: {{ .Values.services.apiExternal.port }}
 {{- end }}

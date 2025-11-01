@@ -31,8 +31,18 @@
 #
 # Let's Encrypt (these are variables, not secrets):
 # - LETSENCRYPT_EMAIL: Email of the Let's Encrypt account.
-# - APIINTERNAL_HOST: Host name for the Api Internal endpoint.
-# - APIEXTERNAL_HOST: Host name for the Api External endpoint.
+# - HOST_APIINTERNAL: Host name for the Api Internal endpoint.
+# - HOST_APIEXTERNAL: Host name for the Api External endpoint.
+# - HOST_PROMETHEUS: Host name for the Prometheus endpoint.
+# - HOST_GRAFANA: Host name for the Grafana endpoint.
+# - HOST_ZIPKIN: Host name for the Zipkin endpoint.
+# - HOST_OAUTH2: Host name for the OAuth2 endpoint.
+# 
+# OAuth2:
+# - CLIENT_ID_GITHUB: OAuth Client ID provided by GitHub for your application (https://github.com/settings/applications).
+# - CLIENT_SECRET_GITHUB: OAuth Client Secret used to authenticate your app with GitHub.
+# - COOKIE_SECRET: 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
+# - EMAIL_DOMAIN_GITHUB: GitHub domain allowed to sign in (this is a variable, not a secret).
 
 name: Deploy to Azure AKS
 
@@ -75,6 +85,12 @@ on:
         required: false
       APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
         required: false
+      CLIENT_ID_GITHUB:
+        required: true
+      CLIENT_SECRET_GITHUB:
+        required: true
+      COOKIE_SECRET:
+        required: true
 
 # Only allow one deploy per environment
 concurrency: ${{ inputs.environment }}
@@ -223,12 +239,25 @@ jobs:
             dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
             jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
             jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            host: "${{ vars.APIINTERNAL_HOST }}"
+            host: "${{ vars.HOST_APIINTERNAL }}"
           apiExternal:
             dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
             jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
             jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            host: "${{ vars.APIEXTERNAL_HOST }}"
+            host: "${{ vars.HOST_APIEXTERNAL }}"
+          prometheus:
+            host: "${{ vars.HOST_PROMETHEUS }}"
+          grafana:
+            host: "${{ vars.HOST_GRAFANA }}"
+          zipkin:
+            host: "${{ vars.HOST_ZIPKIN }}"
+          oauth2:
+            host: "${{ vars.HOST_OAUTH2 }}"
+            hostRoot: "${{ vars.HOST_ROOT }}"
+            clientIdGitHub: "${{ secrets.CLIENT_ID_GITHUB }}"
+            clientSecretGitHub: "${{ secrets.CLIENT_SECRET_GITHUB }}"
+            cookieSecret: "${{ secrets.COOKIE_SECRET }}"
+            emailDomainGitHub: "${{ vars.EMAIL_DOMAIN_GITHUB }}"
           letsEncrypt:
             email: "${{ vars.LETSENCRYPT_EMAIL }}"
         EOF

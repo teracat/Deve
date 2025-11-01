@@ -19,34 +19,36 @@ image:
 
 services:
   apiInternal:
-    internalPort: 80
-    externalPort: 80
+    port: 80
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
     host: ""
   apiExternal:
-    internalPort: 80
-    externalPort: 80
+    port: 80
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
     host: ""
   redis:
-    internalPort: 6379
-    externalPort: 6379
+    port: 6379
   prometheus:
-    internalPort: 9090
-    externalPort: 9090
+    port: 9090
+    host: ""
   grafana:
-    internalPort: 3000
-    externalPort: 3000
-    adminPassword: ""    
-    persistence:
-      size: 1Gi
-      storageClass: managed-csi
+    port: 3000
+    host: ""
+    adminPassword: ""
   zipkin:
-    internalPort: 9411
-    externalPort: 9411
+    port: 9411
+    host: ""
   letsEncrypt:
     email: ""
+  oauth2:
+    port: 80
+    host: ""
+    hostRoot: ""
+    clientIdGitHub: ""
+    clientSecretGitHub: ""
+    cookieSecret: ""
+    emailDomainGitHub: ""

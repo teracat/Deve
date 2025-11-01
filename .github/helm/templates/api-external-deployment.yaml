@@ -17,14 +17,14 @@ spec:
         - name: api-external
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiExternal }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.apiExternal.internalPort }}
+            - containerPort: {{ .Values.services.apiExternal.port }}
           securityContext:
             allowPrivilegeEscalation: false
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
             - name: ASPNETCORE_URLS
-              value: "http://+:{{ .Values.services.apiExternal.internalPort }}"
+              value: "http://+:{{ .Values.services.apiExternal.port }}"
             - name: ConnectionStrings__DataSourceConnection
               valueFrom:
                 secretKeyRef:

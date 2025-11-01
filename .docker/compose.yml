@@ -5,12 +5,12 @@ services:
       context: ../
       dockerfile: ./.docker/Dockerfile.ApiInternal
     depends_on:
-      - cache-redis
+      - redis
       - prometheus
       - zipkin
       - grafana
     environment:
-      ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
+      ConnectionStrings__RedisCacheConnection: "redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
       #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
       #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
@@ -26,12 +26,12 @@ services:
       context: ../
       dockerfile: ./.docker/Dockerfile.ApiExternal
     depends_on:
-      - cache-redis
+      - redis
       - prometheus
       - zipkin
       - grafana
     environment:
-      ConnectionStrings__RedisCacheConnection: "cache-redis:6379"
+      ConnectionStrings__RedisCacheConnection: "redis:6379"
       ZIPKIN_URL: "http://zipkin:9411"
       #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
       #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
@@ -42,7 +42,7 @@ services:
     networks:
       - deve-network
 
-  cache-redis:
+  redis:
     image: redis
     ports:
       - 6379:6379

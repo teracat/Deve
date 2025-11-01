@@ -17,7 +17,7 @@ spec:
         - name: prometheus
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.prometheus }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.prometheus.internalPort }}
+            - containerPort: {{ .Values.services.prometheus.port }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

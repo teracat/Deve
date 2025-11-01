@@ -17,19 +17,29 @@ spec:
         - name: grafana
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.grafana }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.grafana.internalPort }}
+            - containerPort: {{ .Values.services.grafana.port }}
           securityContext:
             allowPrivilegeEscalation: false
-          env:
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: grafana-admin
-                  key: password
+          env:         
+            - name: GF_SERVER_ROOT_URL
+              value: {{ .Values.services.grafana.host }}
+            - name: GF_AUTH_PROXY_ENABLED
+              value: "true"
+            - name: GF_AUTH_PROXY_HEADER_NAME
+              value: "X-Auth-Request-Email"
+            - name: GF_AUTH_PROXY_HEADER_PROPERTY
+              value: "email"
+            - name: GF_AUTH_DISABLE_LOGIN_FORM
+              value: "true"
+            - name: GF_AUTH_DISABLE_SIGNOUT_MENU
+              value: "true"
+            - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
+              value: "Editor"
+
           readinessProbe:
             httpGet:
               path: /api/health
-              port: {{ .Values.services.grafana.internalPort }}
+              port: {{ .Values.services.grafana.port }}
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 2
@@ -37,16 +47,9 @@ spec:
           livenessProbe:
             httpGet:
               path: /api/health
-              port: {{ .Values.services.grafana.internalPort }}
+              port: {{ .Values.services.grafana.port }}
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
             failureThreshold: 6
-          volumeMounts:
-            - name: grafana-storage
-              mountPath: /var/lib/grafana
-         volumes:
-            - name: grafana-storage
-              persistentVolumeClaim:
-                claimName: grafana-pvc
 {{- end }}

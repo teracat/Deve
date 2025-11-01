@@ -6,9 +6,9 @@ metadata:
 spec:
   selector:
     app: zipkin
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
-      port: {{ .Values.services.zipkin.externalPort }}
-      targetPort: {{ .Values.services.zipkin.internalPort }}
+      port: {{ .Values.services.zipkin.port }}
+      targetPort: {{ .Values.services.zipkin.port }}
 {{- end }}

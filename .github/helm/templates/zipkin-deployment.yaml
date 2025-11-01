@@ -17,7 +17,7 @@ spec:
         - name: zipkin
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.zipkin.internalPort }}
+            - containerPort: {{ .Values.services.zipkin.port }}
           securityContext:
             allowPrivilegeEscalation: false
 {{- end }}

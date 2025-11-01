@@ -17,14 +17,14 @@ spec:
         - name: api-internal
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiInternal }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.services.apiInternal.internalPort }}
+            - containerPort: {{ .Values.services.apiInternal.port }}
           securityContext:
             allowPrivilegeEscalation: false
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
             - name: ASPNETCORE_URLS
-              value: "http://+:{{ .Values.services.apiInternal.internalPort }}"
+              value: "http://+:{{ .Values.services.apiInternal.port }}"
             - name: ConnectionStrings__DataSourceConnection
               valueFrom:
                 secretKeyRef:
