@@ -13,20 +13,9 @@ spec:
       labels:
         app: api-external
     spec:
-      volumes:
-        - name: cert-volume
-          secret:
-            secretName: api-external
-            items:
-              - key: certificate.pfx
-                path: certificate.pfx
       containers:
         - name: api-external
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.apiExternal }}:{{ .Values.image.tag }}"
-          volumeMounts:
-            - name: cert-volume
-              mountPath: /app/certs
-              readOnly: true
           ports:
             - containerPort: {{ .Values.services.apiExternal.internalPort }}
           securityContext:
@@ -35,7 +24,7 @@ spec:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
             - name: ASPNETCORE_URLS
-              value: "http://+:80;https://+:443"
+              value: "http://+:{{ .Values.services.apiExternal.internalPort }}"
             - name: ConnectionStrings__DataSourceConnection
               valueFrom:
                 secretKeyRef:
@@ -46,16 +35,4 @@ spec:
                 secretKeyRef:
                   name: api-external
                   key: jwtSigningSecretKey
-            - name: AppSettings__JwtKeys__EncryptionSecretKey
-              valueFrom:
-                secretKeyRef:
-                  name: api-external
-                  key: jwtEncryptionSecretKey
-            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-              value: "/app/certs/certificate.pfx"
-            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-              valueFrom:
-                secretKeyRef:
-                  name: api-external
-                  key: certificatePassword
 {{- end }}

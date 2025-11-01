@@ -19,21 +19,19 @@ image:
 
 services:
   apiInternal:
-    internalPort: 443
-    externalPort: 444
+    internalPort: 80
+    externalPort: 80
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
-    certificateContent: ""
-    certificatePassword: ""
+    host: ""
   apiExternal:
-    internalPort: 443
-    externalPort: 443
+    internalPort: 80
+    externalPort: 80
     dataSourceConnectionString: ""
     jwtSigningSecretKey: ""
     jwtEncryptionSecretKey: ""
-    certificateContent: ""
-    certificatePassword: ""
+    host: ""
   redis:
     internalPort: 6379
     externalPort: 6379
@@ -50,3 +48,5 @@ services:
   zipkin:
     internalPort: 9411
     externalPort: 9411
+  letsEncrypt:
+    email: ""

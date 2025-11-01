@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: api-internal
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
       port: {{ .Values.services.apiInternal.externalPort }}

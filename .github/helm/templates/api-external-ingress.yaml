@@ -1,0 +1,25 @@
+{{- if has "api-external" .Values.deploy.enabledServices }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-external-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.services.apiExternal.host }}
+      secretName: api-external-tls
+  rules:
+    - host: {{ .Values.services.apiExternal.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-external
+                port:
+                  number: 80
+{{- end }}

@@ -14,10 +14,6 @@
 # - JWT_SIGNING_SECRET_KEY: The secret key used to sign the JWT token (must be 32 bytes).
 # - JWT_ENCRYPTION_SECRET_KEY: The secret key used to encrypt the JWT token (must be 32 bytes).
 #
-# HTTPS Certificate (PFX):
-# - HTTPS_CERTIFICATE_BASE64: Contains the PFX certificate for HTTPS in Base64 format.
-# - HTTPS_CERTIFICATE_PASSWORD: The password of the PFX certificate.
-#
 # Email notification settings:
 # - SMTP_SERVER: The address of the SMTP server used to send emails (this is a variable, not a secret).
 # - SMTP_PORT: The port used by the SMTP server (this is a variable, not a secret, e.g.: 587).
@@ -32,6 +28,11 @@
 # DataSource:
 # - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal.
 # - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-external.
+#
+# Let's Encrypt (these are variables, not secrets):
+# - LETSENCRYPT_EMAIL: Email of the Let's Encrypt account.
+# - APIINTERNAL_HOST: Host name for the Api Internal endpoint.
+# - APIEXTERNAL_HOST: Host name for the Api External endpoint.
 
 name: Deploy to Azure AKS
 
@@ -64,10 +65,6 @@ on:
         required: true
       JWT_ENCRYPTION_SECRET_KEY:
         required: true
-      HTTPS_CERTIFICATE_BASE64:
-        required: true
-      HTTPS_CERTIFICATE_PASSWORD:
-        required: true
       SMTP_USERNAME:
         required: false
       SMTP_PASSWORD:
@@ -97,12 +94,6 @@ jobs:
           else
             echo "ACR_USERNAME is defined"
           fi
-
-    - name: Save PFX certificate to file
-      run: |
-          echo -n $HTTPS_CERTIFICATE_BASE64 | base64 -d > ./certificate.pfx
-      env:
-        HTTPS_CERTIFICATE_BASE64: ${{ secrets.HTTPS_CERTIFICATE_BASE64 }}
 
     - name: Check if SMTP_USERNAME is defined
       id: check_smtp
@@ -185,8 +176,44 @@ jobs:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
+    - name: Check if ingress is needed
+      id: ingress_needed
+      run: |
+        if [[ "${{ inputs.services }}" =~ "api-internal" || "${{ inputs.services }}" =~ "api-external" ]]; then
+          echo "needed=true" >> $GITHUB_OUTPUT
+        else
+          echo "needed=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
+
+    - name: Install NGINX Ingress Controller if needed
+      if: steps.ingress_needed.outputs.needed == 'true'
+      run: |
+        if ! kubectl get ns ingress-nginx >/dev/null 2>&1; then
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update
+          helm install ingress-nginx ingress-nginx/ingress-nginx \
+            --namespace ingress-nginx \
+            --create-namespace
+        else
+          echo "NGINX Ingress Controller already installed"
+        fi
+
+    - name: Install cert-manager if needed
+      if: steps.ingress_needed.outputs.needed == 'true'
+      run: |
+        if ! kubectl get ns cert-manager >/dev/null 2>&1; then
+          helm repo add jetstack https://charts.jetstack.io
+          helm repo update
+          helm install cert-manager jetstack/cert-manager \
+            --namespace cert-manager \
+            --create-namespace \
+            --set installCRDs=true
+        else
+          echo "cert-manager already installed"
+        fi
 
     - name: Create Helm file with secrets
       run: |
@@ -196,12 +223,14 @@ jobs:
             dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
             jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
             jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"
+            host: "${{ vars.APIINTERNAL_HOST }}"
           apiExternal:
             dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
             jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
             jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            certificatePassword: "${{ secrets.HTTPS_CERTIFICATE_PASSWORD }}"          
+            host: "${{ vars.APIEXTERNAL_HOST }}"
+          letsEncrypt:
+            email: "${{ vars.LETSENCRYPT_EMAIL }}"
         EOF
 
     - name: Deploy with Helm
@@ -213,8 +242,6 @@ jobs:
               --debug \
               --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
               --set image.tag=latest \
-              --set-file services.apiInternal.certificateContent='./certificate.pfx' \
-              --set-file services.apiExternal.certificateContent='./certificate.pfx' \
               --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}"
 
     - name: Send Success Notification

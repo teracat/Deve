@@ -5,19 +5,16 @@ services:
     container_name: prod-api-internal
     expose:
       - "80"
-      - "443"
     ports:
-      - "8081:80"
-      - "444:443"
+      - "80:80"
   
   api-external:
     image: ${ACR_LOGIN_SERVER}/api-external:${IMAGE_TAG}
     container_name: prod-api-external
     expose:
-      - "443"
+      - "80"
     ports:
-      - "8080:80"
-      - "443:443"
+      - "80:80"
 
   cache-redis:
     container_name: prod-cache-redis

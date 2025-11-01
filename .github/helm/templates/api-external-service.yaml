@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: api-external
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
       port: {{ .Values.services.apiExternal.externalPort }}
