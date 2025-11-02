@@ -192,20 +192,10 @@ jobs:
         resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
-    - name: Check if ingress is needed
-      id: ingress_needed
-      run: |
-        if [[ "${{ inputs.services }}" =~ "api-internal" || "${{ inputs.services }}" =~ "api-external" ]]; then
-          echo "needed=true" >> $GITHUB_OUTPUT
-        else
-          echo "needed=false" >> $GITHUB_OUTPUT
-        fi
-
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
 
     - name: Install NGINX Ingress Controller if needed
-      if: steps.ingress_needed.outputs.needed == 'true'
       run: |
         if ! kubectl get ns ingress-nginx >/dev/null 2>&1; then
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -220,7 +210,6 @@ jobs:
         fi
 
     - name: Install cert-manager if needed
-      if: steps.ingress_needed.outputs.needed == 'true'
       run: |
         if ! kubectl get ns cert-manager >/dev/null 2>&1; then
           helm repo add jetstack https://charts.jetstack.io
