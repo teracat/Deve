@@ -1,0 +1,15 @@
+{{- if has "prometheus" .Values.deploy.enabledServices }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prometheus-cert
+  namespace: default
+spec:
+  secretName: prometheus-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.services.prometheus.host }}
+  dnsNames:
+    - {{ .Values.services.prometheus.host }}
+{{- end }}

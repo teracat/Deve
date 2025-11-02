@@ -1,0 +1,15 @@
+{{- if has "api-internal" .Values.deploy.enabledServices }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-internal-cert
+  namespace: default
+spec:
+  secretName: api-internal-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.services.apiInternal.host }}
+  dnsNames:
+    - {{ .Values.services.apiInternal.host }}
+{{- end }}

@@ -1,0 +1,15 @@
+{{- if has "api-external" .Values.deploy.enabledServices }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-external-cert
+  namespace: default
+spec:
+  secretName: api-external-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.services.apiExternal.host }}
+  dnsNames:
+    - {{ .Values.services.apiExternal.host }}
+{{- end }}

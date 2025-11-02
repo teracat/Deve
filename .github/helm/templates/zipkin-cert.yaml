@@ -1,0 +1,15 @@
+{{- if has "zipkin" .Values.deploy.enabledServices }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: zipkin-cert
+  namespace: default
+spec:
+  secretName: zipkin-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.services.zipkin.host }}
+  dnsNames:
+    - {{ .Values.services.zipkin.host }}
+{{- end }}
