@@ -15,7 +15,11 @@ spec:
     spec:
       containers:
         - name: redis
-          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
+          repository: redis # We use the standard image
+          tag: latest
+          # If you want to use a custom image from your ACR, uncomment the line below
+          # and remove the 'repository' and 'tag' lines above. Also update docker-compose accordingly.
+          #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.services.redis.port }}
           securityContext:

@@ -14,8 +14,12 @@ spec:
         app: zipkin
     spec:
       containers:
-        - name: zipkin
-          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
+        - name: zipkin        
+          repository: zipkin # We use the standard image
+          tag: latest
+          # If you want to use a custom image from your ACR, uncomment the line below
+          # and remove the 'repository' and 'tag' lines above. Also update docker-compose accordingly.
+          #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.services.zipkin.port }}
           securityContext:
