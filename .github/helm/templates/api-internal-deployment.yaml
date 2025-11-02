@@ -35,4 +35,9 @@ spec:
                 secretKeyRef:
                   name: api-internal
                   key: jwtSigningSecretKey
+            - name: AppSettings__JwtKeys__EncryptionSecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: api-internal
+                  key: jwtEncryptionSecretKey
 {{- end }}
