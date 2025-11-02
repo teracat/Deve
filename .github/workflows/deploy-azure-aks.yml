@@ -265,7 +265,7 @@ jobs:
           --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
           --set image.tag=latest \
           --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}" \
-          --set controller.service.externalTrafficPolicy=Local
+          --set controller.service.externalTrafficPolicy=Local \
           --timeout 15m
 
     - name: Send Success Notification
