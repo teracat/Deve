@@ -204,7 +204,7 @@ jobs:
             --namespace ingress-nginx \
             --create-namespace \
             --wait \
-            --timeout 10m
+            --timeout 15m
         else
           echo "NGINX Ingress Controller already installed"
         fi
@@ -219,7 +219,7 @@ jobs:
             --create-namespace \
             --set crds.enabled=true \
             --wait \
-            --timeout 10m
+            --timeout 15m
         else
           echo "cert-manager already installed"
         fi
@@ -266,7 +266,7 @@ jobs:
           --set image.tag=latest \
           --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}" \
           --wait \
-          --timeout 10m
+          --timeout 15m
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
