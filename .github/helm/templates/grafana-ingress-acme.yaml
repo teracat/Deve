@@ -1,0 +1,25 @@
+# This Ingress exists only to allow Let's Encrypt ACME HTTP-01 challenges
+# to bypass OAuth2 authentication. It defines a specific path
+# (/.well-known/acme-challenge/) without auth annotations so that
+# cert-manager can complete domain validation successfully.
+{{- if has "grafana" .Values.deploy.enabledServices }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-acme-challenge
+  annotations:
+    acme.cert-manager.io/http01-ingress-class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ .Values.services.grafana.host }}
+      http:
+        paths:
+          - path: /.well-known/acme-challenge/
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: {{ .Values.services.grafana.port }}
+{{- end }}

@@ -1,23 +1,21 @@
+# This Ingress exists only to allow Let's Encrypt ACME HTTP-01 challenges
+# to bypass OAuth2 authentication. It defines a specific path
+# (/.well-known/acme-challenge/) without auth annotations so that
+# cert-manager can complete domain validation successfully.
 {{- if has "api-internal" .Values.deploy.enabledServices }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-internal-ingress
+  name: api-internal-acme-challenge
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     acme.cert-manager.io/http01-ingress-class: nginx
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - {{ .Values.services.apiInternal.host }}
-      secretName: api-internal-tls
   rules:
     - host: {{ .Values.services.apiInternal.host }}
       http:
         paths:
-          - path: /
+          - path: /.well-known/acme-challenge/
             pathType: Prefix
             backend:
               service:

@@ -9,10 +9,6 @@ metadata:
     nginx.ingress.kubernetes.io/auth-url: "https://{{ .Values.services.oauth2.host }}/oauth2/auth"
     nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.services.oauth2.host }}/oauth2/start?rd=https://$host$request_uri"
     nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User, X-Auth-Request-Email, Set-Cookie, Authorization"
-    nginx.ingress.kubernetes.io/auth-snippet: |
-          location ~ "^/.well-known/acme-challenge/" {
-            auth_request off;
-          }
 spec:
   ingressClassName: nginx
   tls:
