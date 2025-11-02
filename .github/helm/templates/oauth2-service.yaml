@@ -4,7 +4,7 @@ metadata:
   name: oauth2-proxy
 spec:
   ports:
-    - port: {{ .Values.services.oauth2.port }}
-      targetPort: {{ .Values.services.oauth2.port }}
+    - port: {{ .Values.services.oauth2.externalPort }}
+      targetPort: {{ .Values.services.oauth2.internalPort }}
   selector:
     app: oauth2-proxy

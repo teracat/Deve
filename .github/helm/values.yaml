@@ -45,7 +45,8 @@ services:
   letsEncrypt:
     email: ""
   oauth2:
-    port: 80
+    internalPort: 4180
+    externalPort: 80
     host: ""
     hostRoot: ""
     clientIdGitHub: ""

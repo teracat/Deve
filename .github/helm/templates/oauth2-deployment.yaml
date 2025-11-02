@@ -21,14 +21,13 @@ spec:
             - --client-secret=$(CLIENT_SECRET_GITHUB)
             - --cookie-secret=$(COOKIE_SECRET)
             - --email-domain=$(EMAIL_DOMAIN_GITHUB)
-            - --upstream=file:///dev/null
             - --redirect-url=https://{{ .Values.services.oauth2.host }}/oauth2/callback            
             - --cookie-domain={{ .Values.services.oauth2.hostRoot }}
             - --whitelist-domain={{ .Values.services.oauth2.hostRoot }}
             - --reverse-proxy=true            
             - --set-authorization-header=true
             - --pass-authorization-header=true
-            - --http-address=0.0.0.0:{{ .Values.services.oauth2.port }}
+            - --http-address=0.0.0.0:{{ .Values.services.oauth2.internalPort }}
             - --cookie-secure=true
             - --set-xauthrequest=true
           env:
@@ -53,4 +52,4 @@ spec:
                   name: oauth2-proxy
                   key: email-domain-github
           ports:
-            - containerPort: {{ .Values.services.oauth2.port }}
+            - containerPort: {{ .Values.services.oauth2.internalPort }}

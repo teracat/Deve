@@ -265,7 +265,6 @@ jobs:
           --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
           --set image.tag=latest \
           --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}" \
-          --wait \
           --timeout 15m
 
     - name: Send Success Notification

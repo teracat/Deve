@@ -19,4 +19,4 @@ spec:
               service:
                 name: oauth2-proxy
                 port:
-                  number: {{ .Values.services.oauth2.port }}
+                  number: {{ .Values.services.oauth2.externalPort }}
