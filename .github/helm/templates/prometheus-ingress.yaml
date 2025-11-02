@@ -10,6 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.services.oauth2.host }}/oauth2/start?rd=https://$host$request_uri"
     nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User, X-Auth-Request-Email, Set-Cookie, Authorization"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - {{ .Values.services.prometheus.host }}
