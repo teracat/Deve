@@ -1,0 +1,201 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-credentials-root
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  password: {{ .Values.mysql.rootPassword | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-credentials-keycloak
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.keycloak.dbUser | quote }}
+  password: {{ .Values.keycloak.dbPassword | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-credentials-grafana
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.grafana.dbUser | quote }}
+  password: {{ .Values.grafana.dbPassword | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-credentials-zipkin
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.zipkin.dbUser | quote }}
+  password: {{ .Values.zipkin.dbPassword | quote }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+  namespace: {{ .Values.namespace.name | quote }}
+  labels:
+    type: local
+spec:
+  storageClassName: mysql-sc
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  storageClassName: mysql-sc
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.4
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-root
+              key: password
+        ports:
+        - containerPort: {{ .Values.mysql.port }}
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  ports:
+  - port: {{ .Values.mysql.port }}
+  selector:
+    app: mysql
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-init-job
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql-init
+        image: mysql:8.4
+        command:
+          - sh
+          - -c
+          - |
+            set -e
+
+            until mysqladmin ping -h mysql --silent; do
+                echo "Waiting for MySQL..."; sleep 5;
+              done
+            
+            echo "Init MySQL..."
+            mysql -h mysql -p"${MYSQL_ROOT_PASSWORD}" -e "
+              CREATE DATABASE IF NOT EXISTS {{ .Values.keycloak.dbName }};
+              CREATE DATABASE IF NOT EXISTS {{ .Values.grafana.dbName }};
+              CREATE DATABASE IF NOT EXISTS {{ .Values.zipkin.dbName }};
+
+              CREATE USER IF NOT EXISTS '${KEYCLOAK_USER}'@'%' IDENTIFIED BY '${KEYCLOAK_PASSWORD}';
+              GRANT ALL PRIVILEGES ON {{ .Values.keycloak.dbName }}.* TO '${KEYCLOAK_USER}'@'%';
+
+              CREATE USER IF NOT EXISTS '${GRAFANA_USER}'@'%' IDENTIFIED BY '${GRAFANA_PASSWORD}';
+              GRANT ALL PRIVILEGES ON {{ .Values.grafana.dbName }}.* TO '${GRAFANA_USER}'@'%';
+
+              CREATE USER IF NOT EXISTS '${ZIPKIN_USER}'@'%' IDENTIFIED BY '${ZIPKIN_PASSWORD}';
+              GRANT ALL PRIVILEGES ON {{ .Values.zipkin.dbName }}.* TO '${ZIPKIN_USER}'@'%';
+
+              FLUSH PRIVILEGES;"
+
+            echo "[done] MySQL init done."
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-root
+              key: password
+        - name: KEYCLOAK_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-keycloak
+              key: user
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-keycloak
+              key: password
+        - name: GRAFANA_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-grafana
+              key: user
+        - name: GRAFANA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-grafana
+              key: password
+        - name: ZIPKIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-zipkin
+              key: user
+        - name: ZIPKIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials-zipkin
+              key: password
+      restartPolicy: OnFailure

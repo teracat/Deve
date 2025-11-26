@@ -12,7 +12,7 @@ on:
 
 jobs:
   #build-and-test:
-  #  uses: ./.github/workflows/build-and-test.yml    
+  #  uses: ./.github/workflows/build-and-test.yml
   #  with:
   #    solution: "Deve.All.sln"
 
@@ -21,5 +21,5 @@ jobs:
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
-      services: "api-internal,api-external,redis,prometheus,grafana,zipkin"
+      services: "api-internal,api-external,monitoring"
     secrets: inherit

@@ -17,13 +17,10 @@
 # Email notification settings:
 # - SMTP_SERVER: The address of the SMTP server used to send emails (this is a variable, not a secret).
 # - SMTP_PORT: The port used by the SMTP server (this is a variable, not a secret, e.g.: 587).
-# - SMTP_USERNAME: The username of the SMTP account used to send notifications.
+# - SMTP_USERNAME: The username of the SMTP account used to send notifications (this is a variable, not a secret).
 # - SMTP_PASSWORD: The password or app-specific password for the SMTP account.
 # - EMAIL_TO: The recipient email address for deployment notifications (this is a variable, not a secret).
 # - EMAIL_FROM: The sender email address used in deployment notifications (this is a variable, not a secret).
-#
-# Grafana:
-# - GRAFANA_ADMIN_PASSWORD: Password of the admin user to access Grafana.
 #
 # DataSource:
 # - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal.
@@ -39,10 +36,16 @@
 # - HOST_OAUTH2: Host name for the OAuth2 endpoint.
 # 
 # OAuth2:
-# - CLIENT_ID_GITHUB: OAuth Client ID provided by GitHub for your application (https://github.com/settings/applications).
-# - CLIENT_SECRET_GITHUB: OAuth Client Secret used to authenticate your app with GitHub.
 # - COOKIE_SECRET: 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
-# - EMAIL_DOMAIN_GITHUB: GitHub domain allowed to sign in (this is a variable, not a secret).
+#
+# MySQL:
+# - DB_USERS_PASSWORD: MySql password for al the users (if you prefer to use a different password for each user, you'll need a secret for each service and the root).
+#
+# Keycloak:
+# - KEYCLOAK_ADMIN_PASSWORD: Initial password of the admin user to access Keycloak (to manage users with acces to monitoring services with OAuth2).
+# - SECRET_GRAFANA: Secret for Grafana in Keycloak.
+# - SECRET_PROMETHEUS: Secret for Prometheus in Keycloak.
+# - SECRET_ZIPKIN: Secret for Zipkin in Keycloak.
 
 name: Deploy to Azure AKS
 
@@ -79,17 +82,21 @@ on:
         required: false
       SMTP_PASSWORD:
         required: false
-      GRAFANA_ADMIN_PASSWORD:
-        required: false
       APIINTERNAL_DATASOURCE_CONNECTIONSTRING:
         required: false
       APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
         required: false
-      CLIENT_ID_GITHUB:
-        required: true
-      CLIENT_SECRET_GITHUB:
-        required: true
       COOKIE_SECRET:
+        required: true
+      DB_ROOT_PASSWORD:
+        required: true
+      KEYCLOAK_ADMIN_PASSWORD:
+        required: true
+      SECRET_GRAFANA:
+        required: true
+      SECRET_PROMETHEUS:
+        required: true
+      SECRET_ZIPKIN:
         required: true
 
 # Only allow one deploy per environment
@@ -127,15 +134,34 @@ jobs:
       id: vars
       shell: bash
       run: |
-        #Services        
+        # Services
+        # Normalize input services to a clean, lowercase CSV
         raw='${{ inputs.services }}'
         services=$(echo "$raw" | tr '\n' ',' | tr '[:upper:]' '[:lower:]' | sed -E 's/,+/,/g; s/^,+|,+$//g')
-        services_spaces=$(echo "$services" | tr ',' ' ')
         
         echo "services=$services" >> "$GITHUB_OUTPUT"
-        echo "services_spaces=$services_spaces" >> "$GITHUB_OUTPUT"
 
-        #Compute IMAGE_TAG from tag or SHA
+        # Build services_docker
+        expand() {
+              case "$1" in
+                monitoring)   echo "prometheus zipkin grafana" ;;
+                api-internal) echo "redis api-internal" ;;
+                api-external) echo "redis api-external" ;;
+                *)            echo "$1" ;;
+              esac
+            }
+
+        IFS=',' read -r -a req <<< "$services"
+        out=(); seen=" "
+        for k in "${req[@]}"; do
+          for s in $(expand "$k"); do
+            [[ " $seen " == *" $s "* ]] || { out+=("$s"); seen+=" $s"; }
+          done
+        done
+
+        echo "services_docker=${out[*]}" >> "$GITHUB_OUTPUT"
+
+        # Compute IMAGE_TAG from tag or SHA
         IMAGE_TAG="${{ github.sha }}"
 
         REF_TYPE="${{ github.ref_type }}"
@@ -161,25 +187,25 @@ jobs:
       env:
         IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_spaces }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_docker }}
 
     - name: Push docker images (tag computed)
       env:
         IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_spaces }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_docker }}
 
     - name: Build images with compose (tag latest)
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_spaces }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_docker }}
 
     - name: Push docker images (tag latest)
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_spaces }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_docker }}
 
     - name: Azure login
       uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
@@ -197,76 +223,144 @@ jobs:
 
     - name: Install NGINX Ingress Controller if needed
       run: |
-        if ! kubectl get ns ingress-nginx >/dev/null 2>&1; then
-          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-          helm repo update
-          helm install ingress-nginx ingress-nginx/ingress-nginx \
+        NAMESPACE="ingress-nginx"
+        if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
+          helm upgrade --install ingress-nginx .github/helm/ingress-nginx \
+            -f .github/helm/ingress-nginx/values.yaml \
+            --set ingress-nginx.controller.service.loadBalancerIP=${{ vars.AKS_PUBLIC_IP }} \
+            --dependency-update \
             --namespace ingress-nginx \
             --create-namespace \
             --wait \
-            --timeout 15m
+            --timeout 20m \
+            --debug \
+            --atomic
         else
           echo "NGINX Ingress Controller already installed"
         fi
 
     - name: Install cert-manager if needed
       run: |
-        if ! kubectl get ns cert-manager >/dev/null 2>&1; then
-          helm repo add jetstack https://charts.jetstack.io
-          helm repo update
-          helm install cert-manager jetstack/cert-manager \
+        NAMESPACE="cert-manager"
+        if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
+          helm upgrade --install cert-manager .github/helm/cert-manager \
+            -f .github/helm/cert-manager/values.yaml \
+            --dependency-update \
             --namespace cert-manager \
             --create-namespace \
-            --set crds.enabled=true \
             --wait \
-            --timeout 15m
+            --timeout 20m \
+            --debug \
+            --atomic
         else
           echo "cert-manager already installed"
         fi
 
-    - name: Create Helm file with secrets
+    - name: Install letsencrypt
       run: |
-        cat > helm-values.override.yaml << 'EOF'
+        helm upgrade --install letsencrypt .github/helm/letsencrypt \
+          -f .github/helm/letsencrypt/values.yaml \
+          -f .github/helm/letsencrypt/values.override.yaml \
+          --wait \
+          --timeout 20m \
+          --debug
+
+    - name: Deploy monitoring
+      if: contains(steps.vars.outputs.services, 'monitoring')
+      run: |
+        NAMESPACE="monitoring"
+        cat > .github/helm/monitoring/values.override.yaml << 'EOF'
+        namespace
+          name: "${NAMESPACE}"
         services:
-          apiInternal:
-            dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-            jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-            jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            host: "${{ vars.HOST_APIINTERNAL }}"
-          apiExternal:
-            dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-            jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-            jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-            host: "${{ vars.HOST_APIEXTERNAL }}"
-          prometheus:
-            host: "${{ vars.HOST_PROMETHEUS }}"
-          grafana:
-            host: "${{ vars.HOST_GRAFANA }}"
-          zipkin:
-            host: "${{ vars.HOST_ZIPKIN }}"
           oauth2:
             host: "${{ vars.HOST_OAUTH2 }}"
             hostRoot: "${{ vars.HOST_ROOT }}"
-            clientIdGitHub: "${{ secrets.CLIENT_ID_GITHUB }}"
-            clientSecretGitHub: "${{ secrets.CLIENT_SECRET_GITHUB }}"
             cookieSecret: "${{ secrets.COOKIE_SECRET }}"
-            emailDomainGitHub: "${{ vars.EMAIL_DOMAIN_GITHUB }}"
-          letsEncrypt:
-            email: "${{ vars.LETSENCRYPT_EMAIL }}"
+          mysql:
+            rootPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          keycloak:
+            host: "${{ vars.HOST_KEYCLOAK }}"
+            adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
+            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          grafana:
+            host: "${{ vars.HOST_GRAFANA }}"
+            clientSecret: "${{ secrets.SECRET_GRAFANA }}"
+            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          prometheus:
+            host: "${{ vars.HOST_PROMETHEUS }}"
+            clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
+          zipkin:
+            host: "${{ vars.HOST_ZIPKIN }}"
+            clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
+            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
         EOF
 
-    - name: Deploy with Helm
-      run: |
-        helm upgrade services .github/helm \
-          -f .github/helm/values.yaml \
-          -f helm-values.override.yaml \
-          --install \
+        helm upgrade --install monitoring .github/helm/monitoring \
+          -f .github/helm/monitoring/values.yaml \
+          -f .github/helm/monitoring/values.override.yaml \
+          --dependency-update \
+          --namespace ${NAMESPACE} \
+          --create-namespace \
+          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --wait \
+          --timeout 20m \
           --debug \
-          --set acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }} \
-          --set image.tag=latest \
-          --set "deploy.enabledServices={${{ steps.vars.outputs.services }}}" \
-          --set controller.service.externalTrafficPolicy=Local
-          --timeout 15m
+          --atomic
+
+    - name: Deploy api-internal
+      if: contains(steps.vars.outputs.services, 'api-internal')
+      run: |
+        NAMESPACE="api-internal"
+        cat > .github/helm/api-internal/values.override.yaml << 'EOF'
+        namespace
+          name: "${NAMESPACE}"
+        apiInternal:
+          dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          host: "${{ vars.HOST_APIINTERNAL }}"
+        EOF
+
+        helm upgrade api-internal .github/helm/api-internal \
+          -f .github/helm/api-internal/values.yaml \
+          -f .github/helm/api-internal/values.override.yaml \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          --install \
+          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --set "image.tag=latest" \
+          --wait \
+          --timeout 20m \
+          --debug \
+          --atomic
+
+    - name: Deploy api-external
+      if: contains(steps.vars.outputs.services, 'api-external')
+      run: |
+        NAMESPACE="api-external"
+        cat > .github/helm/api-external/values.override.yaml << 'EOF'
+        namespace
+          name: "${NAMESPACE}"
+        apiExternal:
+          dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          host: "${{ vars.HOST_APIEXTERNAL }}"
+        EOF
+
+        helm upgrade api-external .github/helm/api-external \
+          -f .github/helm/api-external/values.yaml \
+          -f .github/helm/api-external/values.override.yaml \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          --install \
+          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --set "image.tag=latest" \
+          --wait \
+          --timeout 20m \
+          --debug \
+          --atomic
 
     - name: Send Success Notification
       if: steps.check_smtp.outputs.defined == 'true' && success()
@@ -274,7 +368,7 @@ jobs:
       with:
         server_address: ${{ vars.SMTP_SERVER }}
         server_port: ${{ vars.SMTP_PORT }}
-        username: ${{ secrets.SMTP_USERNAME }}
+        username: ${{ vars.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Successful"
         body: "The deployment to ${{ inputs.environment }} has been successfully completed."
@@ -287,7 +381,7 @@ jobs:
       with:
         server_address: ${{ vars.SMTP_SERVER }}
         server_port: ${{ vars.SMTP_PORT }}
-        username: ${{ secrets.SMTP_USERNAME }}
+        username: ${{ vars.SMTP_USERNAME }}
         password: ${{ secrets.SMTP_PASSWORD }}
         subject: "Deployment to ${{ inputs.environment }} Failed"
         body: "The deployment to ${{ inputs.environment }} has failed."

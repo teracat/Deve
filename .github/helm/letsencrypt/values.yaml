@@ -1,0 +1,6 @@
+namespace:
+  name: cert-manager
+
+letsEncrypt:
+  server: 'https://acme-v02.api.letsencrypt.org/directory'
+  email: ""

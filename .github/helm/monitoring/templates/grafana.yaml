@@ -1,0 +1,192 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-cert
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  secretName: grafana-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.grafana.host | quote }}
+  dnsNames:
+    - {{ .Values.grafana.host }}
+  privateKey:
+    rotationPolicy: Always
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-ini
+  namespace: {{ .Values.namespace.name | quote }}
+data:
+  grafana.ini: |
+    [server]
+    root_url = https://{{ .Values.grafana.host }}/
+
+    [auth]
+    disable_login_form = true
+
+    [auth.proxy]
+    enabled = true
+    header_name           = X-Auth-Request-Email
+    header_property       = email
+    auto_sign_up          = true
+    auto_assign_org_role  = true
+    whitelist             = 0.0.0.0/0
+
+    headers = Login:X-Auth-Request-Preferred-Username Email:X-Auth-Request-Email Name:X-Auth-Request-Preferred-Username Role:X-Auth-Request-Role
+
+    sync_ttl = 0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      volumes:
+        - name: grafana-ini
+          configMap:
+            name: grafana-ini
+      initContainers:
+        - name: wait-for-mysql
+          image: mysql:8.4
+          command: ["sh","-c"]
+          args:
+            - |
+              until mysqladmin ping -h mysql --silent; do
+                echo "Waiting for MySQL..."; sleep 5;
+              done
+      containers:
+        - name: grafana
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.grafana }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.grafana.port }}
+          securityContext:
+            allowPrivilegeEscalation: false          
+          env:
+            - name: GF_DATABASE_TYPE
+              value: mysql
+            - name: GF_DATABASE_HOST
+              value: mysql
+            - name: GF_DATABASE_PORT
+              value: {{ .Values.mysql.port | quote }}
+            - name: GF_DATABASE_NAME
+              value: {{ .Values.grafana.dbName | quote }}
+            - name: GF_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials-grafana
+                  key: user
+            - name: GF_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-credentials-grafana
+                  key: password
+            - name: GF_DATABASE_SSL_MODE
+              value: disable
+          volumeMounts:
+            - name: grafana-ini
+              mountPath: /etc/grafana/grafana.ini
+              subPath: grafana.ini
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.grafana.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 12
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.grafana.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: {{ .Values.grafana.port }}
+      targetPort: {{ .Values.grafana.port }}
+  selector:
+    app: grafana
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/auth-url: "https://{{ .Values.oauth2.host }}/grafana/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.oauth2.host }}/grafana/start?rd=https://$host$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User, X-Auth-Request-Email, X-Auth-Request-Preferred-Username, X-Auth-Request-Groups, X-Auth-Request-Role"        
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      auth_request_set $x_groups $upstream_http_x_auth_request_groups;
+      set $x_role "None";
+      access_by_lua_block {
+        local groups = ngx.var.x_groups or ""
+        if     groups:find("grafana%-admin")  then ngx.var.x_role = "Admin"
+        elseif groups:find("grafana%-editor") then ngx.var.x_role = "Editor"
+        elseif groups:find("grafana%-viewer") then ngx.var.x_role = "Viewer"
+        end
+      }
+      proxy_set_header X-Auth-Request-Role $x_role;
+      proxy_set_header X-Auth-Request-Groups $x_groups;
+      add_header X-Auth-Request-Role $x_role;
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.grafana.host | quote }}
+      secretName: grafana-tls
+  rules:
+    - host: {{ .Values.grafana.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: {{ .Values.grafana.port }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: grafana-only-ingress
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  podSelector:
+    matchLabels:
+      app: grafana
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: nginx-ingress
+  policyTypes:
+    - Ingress

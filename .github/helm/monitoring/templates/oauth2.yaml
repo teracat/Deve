@@ -1,0 +1,284 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: oauth2-proxy-cert
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  secretName: oauth2-proxy-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.oauth2.host | quote }}
+  dnsNames:
+    - {{ .Values.oauth2.host | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth2-proxy-oidc
+type: Opaque
+stringData:
+  cookie-secret: {{ .Values.oauth2.cookieSecret | quote }}
+  client-secret-grafana: {{ .Values.grafana.clientSecret | quote }}
+  client-secret-prometheus: {{ .Values.prometheus.clientSecret | quote }}
+  client-secret-zipkin: {{ .Values.zipkin.clientSecret | quote }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy-grafana
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy-grafana
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy-grafana
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
+          args:
+            - --provider=keycloak-oidc
+            - --client-id=$(CLIENT_ID)
+            - --client-secret=$(CLIENT_SECRET)
+            - --oidc-issuer-url=https://{{ .Values.keycloak.host }}/realms/monitoring
+            - --oidc-groups-claim=groups
+            - --redirect-url=https://{{ .Values.oauth2.host }}/grafana/callback
+            - --email-domain=*
+            - --code-challenge-method=S256
+            - --cookie-secure=true
+            - --cookie-secret=$(COOKIE_SECRET)
+            - --cookie-domain={{ .Values.oauth2.hostRoot }}
+            - --cookie-name=_oauth2_monitoring
+            - --cookie-path=/
+            - --proxy-prefix=/grafana
+            - --reverse-proxy=true
+            - --whitelist-domain={{ .Values.oauth2.hostRoot }}
+            - --scope=openid email profile roles groups offline_access
+            - --set-xauthrequest=true
+            - --pass-access-token=true
+            - --pass-user-headers=true
+            - --http-address=0.0.0.0:{{ .Values.oauth2.internalPort }}
+            - --allowed-role=grafana-admin
+            - --allowed-role=grafana-editor
+            - --allowed-role=grafana-viewer
+          env:
+            - name: CLIENT_ID
+              value: {{ .Values.grafana.clientId | quote }}
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: client-secret-grafana
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: cookie-secret
+          ports:
+            - containerPort: {{ .Values.oauth2.internalPort }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy-prometheus
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy-prometheus
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy-prometheus
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
+          args:
+            - --provider=keycloak-oidc
+            - --client-id=$(CLIENT_ID)
+            - --client-secret=$(CLIENT_SECRET)
+            - --oidc-issuer-url=https://{{ .Values.keycloak.host }}/realms/monitoring
+            - --oidc-groups-claim=groups
+            - --skip-oidc-discovery
+            - --login-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/auth
+            - --redeem-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/token
+            - --oidc-jwks-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/certs
+            - --redirect-url=https://{{ .Values.oauth2.host }}/prometheus/callback
+            - --email-domain=*
+            - --code-challenge-method=S256
+            - --cookie-secure=true
+            - --cookie-secret=$(COOKIE_SECRET)
+            - --cookie-domain={{ .Values.oauth2.hostRoot }}
+            - --cookie-name=_oauth2_monitoring
+            - --cookie-path=/
+            - --proxy-prefix=/prometheus
+            - --reverse-proxy=true
+            - --whitelist-domain={{ .Values.oauth2.hostRoot }}
+            - --scope=openid email profile groups offline_access
+            - --set-xauthrequest=true
+            - --pass-access-token=true
+            - --pass-user-headers=true
+            - --http-address=0.0.0.0:{{ .Values.oauth2.internalPort }}
+            - --allowed-role=prometheus-access
+          env:
+            - name: CLIENT_ID
+              value: {{ .Values.prometheus.clientId | quote }}
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: client-secret-prometheus
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: cookie-secret
+          ports:
+            - containerPort: {{ .Values.oauth2.internalPort }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy-zipkin
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy-zipkin
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy-zipkin
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
+          args:
+            - --provider=keycloak-oidc
+            - --client-id=$(CLIENT_ID)
+            - --client-secret=$(CLIENT_SECRET)
+            - --oidc-issuer-url=https://{{ .Values.keycloak.host }}/realms/monitoring
+            - --oidc-groups-claim=groups
+            - --skip-oidc-discovery
+            - --login-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/auth
+            - --redeem-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/token
+            - --oidc-jwks-url=https://{{ .Values.keycloak.host }}/realms/monitoring/protocol/openid-connect/certs
+            - --redirect-url=https://{{ .Values.oauth2.host }}/zipkin/callback
+            - --email-domain=*
+            - --code-challenge-method=S256
+            - --cookie-secure=true
+            - --cookie-secret=$(COOKIE_SECRET)
+            - --cookie-domain={{ .Values.oauth2.hostRoot }}
+            - --cookie-name=_oauth2_monitoring
+            - --cookie-path=/
+            - --proxy-prefix=/zipkin
+            - --reverse-proxy=true
+            - --whitelist-domain={{ .Values.oauth2.hostRoot }}
+            - --scope=openid email profile groups offline_access
+            - --set-xauthrequest=true
+            - --pass-access-token=true
+            - --pass-user-headers=true
+            - --http-address=0.0.0.0:{{ .Values.oauth2.internalPort }}
+            - --allowed-role=zipkin-access
+          env:
+            - name: CLIENT_ID
+              value: {{ .Values.zipkin.clientId | quote }}
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: client-secret-zipkin
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-proxy-oidc
+                  key: cookie-secret
+          ports:
+            - containerPort: {{ .Values.oauth2.internalPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth2-proxy-grafana
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.oauth2.externalPort }}
+      targetPort: {{ .Values.oauth2.internalPort }}
+  selector:
+    app: oauth2-proxy-grafana
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth2-proxy-prometheus
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.oauth2.externalPort }}
+      targetPort: {{ .Values.oauth2.internalPort }}
+  selector:
+    app: oauth2-proxy-prometheus
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth2-proxy-zipkin
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.oauth2.externalPort }}
+      targetPort: {{ .Values.oauth2.internalPort }}
+  selector:
+    app: oauth2-proxy-zipkin
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth2-proxy
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.oauth2.host | quote }}
+      secretName: oauth2-proxy-tls
+  rules:
+    - host: {{ .Values.oauth2.host | quote }}
+      http:
+        paths:
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy-grafana
+                port:
+                  number: {{ .Values.oauth2.externalPort }}
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy-prometheus
+                port:
+                  number: {{ .Values.oauth2.externalPort }}
+          - path: /zipkin
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy-zipkin
+                port:
+                  number: {{ .Values.oauth2.externalPort }}
