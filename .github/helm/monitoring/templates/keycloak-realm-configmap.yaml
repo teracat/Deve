@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: keycloak-realm-monitoring
   namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook-delete-policy": hook-succeeded
 data:
   realm-monitoring.json: |
     {

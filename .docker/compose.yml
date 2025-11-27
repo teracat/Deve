@@ -43,7 +43,7 @@ services:
       - deve-network
 
   redis:
-    image: redis
+    image: redis:8.4
     ports:
       - 6379:6379
     networks:
@@ -56,9 +56,6 @@ services:
     ports:
       - 9090:9090
     restart: unless-stopped
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.enable-otlp-receiver'
     networks:
       - deve-network
 

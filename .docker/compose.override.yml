@@ -43,6 +43,9 @@ services:
 
   prometheus:
     container_name: dev-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.dev.yml'
+      - '--web.enable-otlp-receiver'
 
   grafana:
     container_name: dev-grafana

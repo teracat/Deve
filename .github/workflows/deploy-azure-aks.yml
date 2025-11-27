@@ -322,7 +322,7 @@ jobs:
           host: "${{ vars.HOST_APIINTERNAL }}"
         EOF
 
-        helm upgrade api-internal .github/helm/api-internal \
+        helm upgrade --install api-internal .github/helm/api-internal \
           -f .github/helm/api-internal/values.yaml \
           -f .github/helm/api-internal/values.override.yaml \
           --namespace "${NAMESPACE}" \
@@ -349,7 +349,7 @@ jobs:
           host: "${{ vars.HOST_APIEXTERNAL }}"
         EOF
 
-        helm upgrade api-external .github/helm/api-external \
+        helm upgrade --install api-external .github/helm/api-external \
           -f .github/helm/api-external/values.yaml \
           -f .github/helm/api-external/values.override.yaml \
           --namespace "${NAMESPACE}" \

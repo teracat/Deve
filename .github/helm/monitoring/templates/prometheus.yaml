@@ -45,6 +45,7 @@ spec:
       containers:
         - name: prometheus
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.prometheus }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.prometheus.port }}
           securityContext:
@@ -54,6 +55,9 @@ spec:
           volumeMounts:
             - name: prometheus-storage
               mountPath: /prometheus
+          args:
+            - --config.file=/etc/prometheus/prometheus.prod.yml
+            - --web.enable-otlp-receiver
       volumes:
         - name: prometheus-storage
           persistentVolumeClaim:

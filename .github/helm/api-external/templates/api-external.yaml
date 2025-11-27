@@ -29,7 +29,7 @@ metadata:
   name: api-external
   namespace: {{ .Values.namespace.name | quote }}
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: api-external
@@ -52,6 +52,14 @@ spec:
               value: "http://+:{{ .Values.apiExternal.port }}"
             - name: ConnectionStrings__RedisCacheConnection
               value: "redis-external:{{ .Values.redis.port }}"
+            - name: PROMETHEUS_SCRAPE_ENDPOINT
+              value: "/metrics"
+            - name: ZIPKIN_URL
+              value: "http://zipkin.monitoring.svc.cluster.local:9411"
+            - name: OTEL_SERVICE_NAME
+              value: "api-external"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service.instance.id=$(uuidgen)"
             - name: ConnectionStrings__DataSourceConnection
               valueFrom:
                 secretKeyRef:
