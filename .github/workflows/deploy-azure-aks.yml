@@ -88,7 +88,7 @@ on:
         required: false
       COOKIE_SECRET:
         required: true
-      DB_ROOT_PASSWORD:
+      DB_USERS_PASSWORD:
         required: true
       KEYCLOAK_ADMIN_PASSWORD:
         required: true
@@ -187,7 +187,7 @@ jobs:
       env:
         IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_docker }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build ${{ steps.vars.outputs.services_docker }}
 
     - name: Push docker images (tag computed)
       env:
@@ -199,7 +199,7 @@ jobs:
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker up --no-start ${{ steps.vars.outputs.services_docker }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build --no-start ${{ steps.vars.outputs.services_docker }}
 
     - name: Push docker images (tag latest)
       env:
@@ -220,6 +220,11 @@ jobs:
 
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
+
+    - name: Setup yq
+      uses: dcarbone/install-yq-action@4075b4dca348d74bd83f2bf82d30f25d7c54539b #v1.3.1
+      with:
+        version: v4.49.2
 
     - name: Install NGINX Ingress Controller if needed
       run: |
@@ -293,8 +298,9 @@ jobs:
           zipkin:
             host: "${{ vars.HOST_ZIPKIN }}"
             clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
-            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
         EOF
+
+        yq -i '.version = "${{ steps.vars.outputs.image_tag }}" | .appVersion = "${{ steps.vars.outputs.image_tag }}"' .github/helm/monitoring/Chart.yaml
 
         helm upgrade --install monitoring .github/helm/monitoring \
           -f .github/helm/monitoring/values.yaml \
@@ -322,6 +328,8 @@ jobs:
           host: "${{ vars.HOST_APIINTERNAL }}"
         EOF
 
+        yq -i '.version = "${{ steps.vars.outputs.image_tag }}" | .appVersion = "${{ steps.vars.outputs.image_tag }}"' .github/helm/api-internal/Chart.yaml
+
         helm upgrade --install api-internal .github/helm/api-internal \
           -f .github/helm/api-internal/values.yaml \
           -f .github/helm/api-internal/values.override.yaml \
@@ -348,6 +356,8 @@ jobs:
           jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
           host: "${{ vars.HOST_APIEXTERNAL }}"
         EOF
+
+        yq -i '.version = "${{ steps.vars.outputs.image_tag }}" | .appVersion = "${{ steps.vars.outputs.image_tag }}"' .github/helm/api-external/Chart.yaml
 
         helm upgrade --install api-external .github/helm/api-external \
           -f .github/helm/api-external/values.yaml \

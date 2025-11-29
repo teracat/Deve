@@ -14,9 +14,10 @@ oauth2:
   internalPort: 4180
   externalPort: 80
   cookieSecret: ''
-mysql:
-  port: 3306
-  rootPassword: ''
+postgres:
+  port: 5432
+  superUser: 'postgres'
+  superPassword: ''
 keycloak:
   host: ''
   port: 8080
@@ -45,6 +46,3 @@ zipkin:
   host: ''
   clientId: zipkin
   clientSecret: ''
-  dbUser: zipkin
-  dbPassword: ''
-  dbName: zipkin

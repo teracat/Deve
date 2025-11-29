@@ -1,18 +1,18 @@
 # This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
 
-name: Deploy Zipkin to Production
+name: Deploy Monitoring services to Production
 
 on:
   push:
     branches:
-      - production/zipkin
+      - production/monitoring
     tags:
-      - 'zipkin/[0-9]+.[0-9]+.[0-9]+'
+      - 'monitoring/[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  deploy-zipkin:
+  deploy-monitoring:
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
-      services: "zipkin"
+      services: "monitoring"
     secrets: inherit

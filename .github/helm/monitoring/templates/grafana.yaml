@@ -59,13 +59,19 @@ spec:
           configMap:
             name: grafana-ini
       initContainers:
-        - name: wait-for-mysql
-          image: mysql:8.4
+        - name: wait-for-postgres
+          image: postgres:16-alpine
           command: ["sh","-c"]
+          env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials-grafana
+                key: password
           args:
             - |
-              until mysqladmin ping -h mysql --silent; do
-                echo "Waiting for MySQL..."; sleep 5;
+              until psql "host=postgresql port={{ .Values.postgres.port }} user={{ .Values.grafana.dbUser }} dbname={{ .Values.grafana.dbName }} sslmode=disable" -c 'SELECT 1;' >/dev/null 2>&1; do
+                echo "Waiting for Postgres..."; sleep 5;
               done
       containers:
         - name: grafana
@@ -76,22 +82,22 @@ spec:
             allowPrivilegeEscalation: false          
           env:
             - name: GF_DATABASE_TYPE
-              value: mysql
+              value: postgres
             - name: GF_DATABASE_HOST
-              value: mysql
+              value: postgresql
             - name: GF_DATABASE_PORT
-              value: {{ .Values.mysql.port | quote }}
+              value: {{ .Values.postgres.port | quote }}
             - name: GF_DATABASE_NAME
               value: {{ .Values.grafana.dbName | quote }}
             - name: GF_DATABASE_USER
               valueFrom:
                 secretKeyRef:
-                  name: mysql-credentials-grafana
+                  name: postgres-credentials-grafana
                   key: user
             - name: GF_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-credentials-grafana
+                  name: postgres-credentials-grafana
                   key: password
             - name: GF_DATABASE_SSL_MODE
               value: disable

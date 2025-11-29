@@ -45,7 +45,6 @@ spec:
       containers:
         - name: prometheus
           image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.prometheus }}:{{ .Values.image.tag }}"
-          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.prometheus.port }}
           securityContext:

@@ -27,18 +27,9 @@ spec:
       labels:
         app: zipkin
     spec:  
-      initContainers:
-        - name: wait-for-mysql
-          image: mysql:8.4
-          command: ["sh","-c"]
-          args:
-            - |
-              until mysqladmin ping -h mysql --silent; do
-                echo "Waiting for MySQL..."; sleep 5;
-              done
       containers:
         - name: zipkin        
-          image: openzipkin/zipkin:3.5.1 # We use the standard image
+          image: openzipkin/zipkin:3.5.1
           # If you want to use a custom image from your ACR, uncomment the line below
           # and remove the 'image' line above. Also update docker-compose accordingly.
           #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
@@ -46,25 +37,6 @@ spec:
             - containerPort: {{ .Values.zipkin.port }}
           securityContext:
             allowPrivilegeEscalation: false
-          env:
-            - name: STORAGE_TYPE
-              value: mysql
-            - name: MYSQL_HOST
-              value: mysql
-            - name: MYSQL_PORT
-              value: {{ .Values.mysql.port | quote }}
-            - name: MYSQL_DB
-              value: {{ .Values.zipkin.dbName | quote }}
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-credentials-zipkin
-                  key: user
-            - name: MYSQL_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-credentials-zipkin
-                  key: password
 ---
 apiVersion: v1
 kind: Service

@@ -9,15 +9,6 @@ services:
       - prometheus
       - zipkin
       - grafana
-    environment:
-      ConnectionStrings__RedisCacheConnection: "redis:6379"
-      ZIPKIN_URL: "http://zipkin:9411"
-      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
-      OTEL_SERVICE_NAME: "api-internal"
-      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
-      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
-      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 
@@ -30,15 +21,6 @@ services:
       - prometheus
       - zipkin
       - grafana
-    environment:
-      ConnectionStrings__RedisCacheConnection: "redis:6379"
-      ZIPKIN_URL: "http://zipkin:9411"
-      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
-      OTEL_SERVICE_NAME: "api-external"
-      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
-      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
-      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     networks:
       - deve-network
 
@@ -75,7 +57,7 @@ services:
       - deve-network
 
   zipkin:
-    image: openzipkin/zipkin
+    image: openzipkin/zipkin:3.5.1
     ports:
       - 9411:9411
     networks:

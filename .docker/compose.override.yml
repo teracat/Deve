@@ -10,12 +10,20 @@ services:
       - "7245:443"
     environment:
       ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__RedisCacheConnection: "redis:6379"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
+      ZIPKIN_URL: "http://zipkin:9411"
+      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_SERVICE_NAME: "api-internal"
+      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
+      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
+      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     volumes:
       - ./https:/https:ro
   
@@ -29,12 +37,20 @@ services:
       - "7175:443"
     environment:
       ConnectionStrings__DataSourceConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__RedisCacheConnection: "redis:6379"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
+      ZIPKIN_URL: "http://zipkin:9411"
+      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
+      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_SERVICE_NAME: "api-external"
+      OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
+      PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
+      #APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     volumes:
       - ./https:/https:ro
 
