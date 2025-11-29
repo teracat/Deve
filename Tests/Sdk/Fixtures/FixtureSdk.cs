@@ -20,8 +20,11 @@ namespace Deve.Tests.Sdk.Fixtures
 
         protected override void Dispose(bool disposing)
         {
-            DataNoAuth?.Dispose();
-            DataValidAuth?.Dispose();
+            if (disposing)
+            {
+                DataNoAuth?.Dispose();
+                DataValidAuth?.Dispose();
+            }
             base.Dispose(disposing);
         }
 
