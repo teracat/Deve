@@ -11,13 +11,18 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  build-and-test:
+  build-and-test-api-internal:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      solution: "Deve.All.sln"
+      solution: "Deve.Api.Internal.sln"
+
+  build-and-test-api-external:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      solution: "Deve.Api.External.sln"
 
   deploy-all:
-    needs: build-and-test
+    needs: [build-and-test-api-internal,build-and-test-api-external]
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"

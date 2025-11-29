@@ -199,7 +199,7 @@ jobs:
       env:
         IMAGE_TAG: 'latest'
       run: |
-        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build --no-start ${{ steps.vars.outputs.services_docker }}
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build ${{ steps.vars.outputs.services_docker }}
 
     - name: Push docker images (tag latest)
       env:
