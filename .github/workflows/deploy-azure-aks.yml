@@ -286,8 +286,8 @@ jobs:
           host: "${{ vars.HOST_OAUTH2 }}"
           hostRoot: "${{ vars.HOST_ROOT }}"
           cookieSecret: "${{ secrets.COOKIE_SECRET }}"
-        mysql:
-          rootPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        postgres:
+          superPassword: "${{ secrets.DB_USERS_PASSWORD }}"
         keycloak:
           host: "${{ vars.HOST_KEYCLOAK }}"
           adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
