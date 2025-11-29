@@ -280,29 +280,28 @@ jobs:
       run: |
         NAMESPACE="monitoring"
         cat > .github/helm/monitoring/values.override.yaml << 'EOF'
-        namespace
+        namespace:
           name: "${NAMESPACE}"
-        services:
-          oauth2:
-            host: "${{ vars.HOST_OAUTH2 }}"
-            hostRoot: "${{ vars.HOST_ROOT }}"
-            cookieSecret: "${{ secrets.COOKIE_SECRET }}"
-          mysql:
-            rootPassword: "${{ secrets.DB_USERS_PASSWORD }}"
-          keycloak:
-            host: "${{ vars.HOST_KEYCLOAK }}"
-            adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
-            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
-          grafana:
-            host: "${{ vars.HOST_GRAFANA }}"
-            clientSecret: "${{ secrets.SECRET_GRAFANA }}"
-            dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
-          prometheus:
-            host: "${{ vars.HOST_PROMETHEUS }}"
-            clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
-          zipkin:
-            host: "${{ vars.HOST_ZIPKIN }}"
-            clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
+        oauth2:
+          host: "${{ vars.HOST_OAUTH2 }}"
+          hostRoot: "${{ vars.HOST_ROOT }}"
+          cookieSecret: "${{ secrets.COOKIE_SECRET }}"
+        mysql:
+          rootPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        keycloak:
+          host: "${{ vars.HOST_KEYCLOAK }}"
+          adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
+          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        grafana:
+          host: "${{ vars.HOST_GRAFANA }}"
+          clientSecret: "${{ secrets.SECRET_GRAFANA }}"
+          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        prometheus:
+          host: "${{ vars.HOST_PROMETHEUS }}"
+          clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
+        zipkin:
+          host: "${{ vars.HOST_ZIPKIN }}"
+          clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
         EOF
 
         yq -i '.version = "${{ steps.vars.outputs.image_tag }}" | .appVersion = "${{ steps.vars.outputs.image_tag }}"' .github/helm/monitoring/Chart.yaml
@@ -324,7 +323,7 @@ jobs:
       run: |
         NAMESPACE="api-internal"
         cat > .github/helm/api-internal/values.override.yaml << 'EOF'
-        namespace
+        namespace:
           name: "${NAMESPACE}"
         apiInternal:
           dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
@@ -353,7 +352,7 @@ jobs:
       run: |
         NAMESPACE="api-external"
         cat > .github/helm/api-external/values.override.yaml << 'EOF'
-        namespace
+        namespace:
           name: "${NAMESPACE}"
         apiExternal:
           dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
