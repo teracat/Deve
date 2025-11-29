@@ -263,6 +263,11 @@ jobs:
 
     - name: Install letsencrypt
       run: |
+        cat > .github/helm/letsencrypt/values.override.yaml << 'EOF'
+        letsEncrypt:
+          email: "${{ vars.LETSENCRYPT_EMAIL }}"
+        EOF
+
         helm upgrade --install letsencrypt .github/helm/letsencrypt \
           -f .github/helm/letsencrypt/values.yaml \
           -f .github/helm/letsencrypt/values.override.yaml \
