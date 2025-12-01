@@ -14,17 +14,9 @@
 # - JWT_SIGNING_SECRET_KEY: The secret key used to sign the JWT token (must be 32 bytes).
 # - JWT_ENCRYPTION_SECRET_KEY: The secret key used to encrypt the JWT token (must be 32 bytes).
 #
-# Email notification settings:
-# - SMTP_SERVER: The address of the SMTP server used to send emails (this is a variable, not a secret).
-# - SMTP_PORT: The port used by the SMTP server (this is a variable, not a secret, e.g.: 587).
-# - SMTP_USERNAME: The username of the SMTP account used to send notifications (this is a variable, not a secret).
-# - SMTP_PASSWORD: The password or app-specific password for the SMTP account.
-# - EMAIL_TO: The recipient email address for deployment notifications (this is a variable, not a secret).
-# - EMAIL_FROM: The sender email address used in deployment notifications (this is a variable, not a secret).
-#
 # DataSource:
-# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal.
-# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-external.
+# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal (optional).
+# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-external (optional).
 #
 # Let's Encrypt (these are variables, not secrets):
 # - LETSENCRYPT_EMAIL: Email of the Let's Encrypt account.
@@ -78,10 +70,6 @@ on:
         required: true
       JWT_ENCRYPTION_SECRET_KEY:
         required: true
-      SMTP_USERNAME:
-        required: false
-      SMTP_PASSWORD:
-        required: false
       APIINTERNAL_DATASOURCE_CONNECTIONSTRING:
         required: false
       APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
@@ -117,15 +105,6 @@ jobs:
           else
             echo "ACR_USERNAME is defined"
           fi
-
-    - name: Check if SMTP_USERNAME is defined
-      id: check_smtp
-      run: |
-        if [ -z "${{ secrets.SMTP_USERNAME }}" ]; then
-          echo "defined=false" >> $GITHUB_OUTPUT
-        else
-          echo "defined=true" >> $GITHUB_OUTPUT
-        fi
 
     - name: Checkout code
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  #v5.0.0
@@ -375,29 +354,3 @@ jobs:
           --timeout 20m \
           --debug \
           --atomic
-
-    - name: Send Success Notification
-      if: steps.check_smtp.outputs.defined == 'true' && success()
-      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
-      with:
-        server_address: ${{ vars.SMTP_SERVER }}
-        server_port: ${{ vars.SMTP_PORT }}
-        username: ${{ vars.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "Deployment to ${{ inputs.environment }} Successful"
-        body: "The deployment to ${{ inputs.environment }} has been successfully completed."
-        to: ${{ vars.EMAIL_TO }}
-        from: ${{ vars.EMAIL_FROM }}
-
-    - name: Send Failure Notification
-      if: steps.check_smtp.outputs.defined == 'true' && failure()
-      uses: dawidd6/action-send-mail@6d98ae34d733f9a723a9e04e94f2f24ba05e1402 #v6
-      with:
-        server_address: ${{ vars.SMTP_SERVER }}
-        server_port: ${{ vars.SMTP_PORT }}
-        username: ${{ vars.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "Deployment to ${{ inputs.environment }} Failed"
-        body: "The deployment to ${{ inputs.environment }} has failed."
-        to: ${{ vars.EMAIL_TO }}
-        from: ${{ vars.EMAIL_FROM }}
