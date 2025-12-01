@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace.name | quote }}
 type: Opaque
 stringData:
-  dataSourceConnectionString: {{ required "apiInternal.dataSourceConnectionString is required" .Values.apiInternal.dataSourceConnectionString | quote }}
+  dataSourceConnectionString: {{ .Values.apiInternal.dataSourceConnectionString | quote }}
   jwtSigningSecretKey: {{ required "apiInternal.jwtSigningSecretKey is required" .Values.apiInternal.jwtSigningSecretKey | quote }}
   jwtEncryptionSecretKey: {{ required "apiInternal.jwtEncryptionSecretKey is required" .Values.apiInternal.jwtEncryptionSecretKey | quote }}
 ---
