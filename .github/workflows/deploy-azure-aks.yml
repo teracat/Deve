@@ -221,7 +221,7 @@ jobs:
             --wait \
             --timeout 20m \
             --debug \
-            --atomic
+            --rollback-on-failure
         else
           echo "NGINX Ingress Controller already installed"
         fi
@@ -238,7 +238,7 @@ jobs:
             --wait \
             --timeout 20m \
             --debug \
-            --atomic
+            --rollback-on-failure
         else
           echo "cert-manager already installed"
         fi
@@ -301,7 +301,7 @@ jobs:
           --wait \
           --timeout 20m \
           --debug \
-          --atomic
+          --rollback-on-failure
 
     - name: Deploy api-internal
       if: contains(steps.vars.outputs.services, 'api-internal')
@@ -333,7 +333,7 @@ jobs:
           --wait \
           --timeout 20m \
           --debug \
-          --atomic
+          --rollback-on-failure
 
     - name: Deploy api-external
       if: contains(steps.vars.outputs.services, 'api-external')
@@ -365,4 +365,4 @@ jobs:
           --wait \
           --timeout 20m \
           --debug \
-          --atomic
+          --rollback-on-failure
