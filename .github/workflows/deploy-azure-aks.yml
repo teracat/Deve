@@ -30,8 +30,8 @@
 # OAuth2:
 # - COOKIE_SECRET: 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
 #
-# MySQL:
-# - DB_USERS_PASSWORD: MySql password for al the users (if you prefer to use a different password for each user, you'll need a secret for each service and the root).
+# PostgreSQL:
+# - DB_USERS_PASSWORD: PostgreSQL password for all the users (if you prefer to use a different password for each user, you'll need a secret for each service and the superuser).
 #
 # Keycloak:
 # - KEYCLOAK_ADMIN_PASSWORD: Initial password of the admin user to access Keycloak (to manage users with acces to monitoring services with OAuth2).
