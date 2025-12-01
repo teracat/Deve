@@ -7,7 +7,7 @@ on:
     branches:
       - production/api-internal
     tags:
-      - 'api-internal/[0-9]+.[0-9]+.[0-9]+'
+      - 'api-internal/v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build-and-test:
