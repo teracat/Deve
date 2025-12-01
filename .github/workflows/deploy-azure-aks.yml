@@ -245,7 +245,7 @@ jobs:
 
     - name: Install letsencrypt
       run: |
-        cat > .github/helm/letsencrypt/values.override.yaml << 'EOF'
+        cat > .github/helm/letsencrypt/values.override.yaml << EOF
         letsEncrypt:
           email: "${{ vars.LETSENCRYPT_EMAIL }}"
         EOF
@@ -261,7 +261,7 @@ jobs:
       if: contains(steps.vars.outputs.services, 'monitoring')
       run: |
         NAMESPACE="monitoring"
-        cat > .github/helm/monitoring/values.override.yaml << 'EOF'
+        cat > .github/helm/monitoring/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
         oauth2:
@@ -307,7 +307,7 @@ jobs:
       if: contains(steps.vars.outputs.services, 'api-internal')
       run: |
         NAMESPACE="api-internal"
-        cat > .github/helm/api-internal/values.override.yaml << 'EOF'
+        cat > .github/helm/api-internal/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
         apiInternal:
@@ -339,7 +339,7 @@ jobs:
       if: contains(steps.vars.outputs.services, 'api-external')
       run: |
         NAMESPACE="api-external"
-        cat > .github/helm/api-external/values.override.yaml << 'EOF'
+        cat > .github/helm/api-external/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
         apiExternal:
