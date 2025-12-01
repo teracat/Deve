@@ -46,7 +46,8 @@ namespace Deve.Api
             var dsConnectionString = builder.Configuration.GetConnectionString("DataSourceConnection") ?? string.Empty;
             if (string.IsNullOrWhiteSpace(dsConnectionString))
             {
-                throw new Exception("The DataSourceConnection is empty. Please set the DataSourceConnection in the appsettings.json file.");
+                // If you want the DataSourceConnection to be mandatory, uncomment the next line.
+                //throw new Exception("The DataSourceConnection is empty. Please set the DataSourceConnection in the appsettings.json file.");
             }
             var dsConfig = new DataSourceConfig(dsConnectionString);
 
