@@ -32,4 +32,5 @@ jobs:
       environment: "production"
       project: "Internal/Api/Deve.Internal.Api.csproj"
       name: "API Internal"
-    secrets: inherit
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
