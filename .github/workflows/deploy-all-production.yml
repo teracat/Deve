@@ -40,17 +40,24 @@ jobs:
       - name: Check secrets
         id: secrets_available
         run: |
-          if [ "${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}" != "" ]; then
+
+          internal_secret="${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}"
+          external_secret="${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}"
+
+          if [ -n "$internal_secret" ]; then
+            echo "internal=true"
             echo "internal=true" >> "$GITHUB_OUTPUT"
           else
+            echo "internal=false"
             echo "internal=false" >> "$GITHUB_OUTPUT"
           fi
-          if [ "${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}" != "" ]; then
+          if [ -n "$external_secret" ]; then
+            echo "external=true"
             echo "external=true" >> "$GITHUB_OUTPUT"
           else
+            echo "external=false"
             echo "external=false" >> "$GITHUB_OUTPUT"
           fi
-
           echo "DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}"
 
   deploy-all-api-internal:
