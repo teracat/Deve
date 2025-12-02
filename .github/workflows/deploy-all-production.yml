@@ -11,6 +11,45 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
+  checks:
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      app_internal: ${{ steps.checks.outputs.app_internal }}
+      app_external: ${{ steps.checks.outputs.app_external }}
+      aks: ${{ steps.checks.outputs.aks }}
+    steps:
+      - name: Check secrets
+        id: checks
+        shell: bash        
+        env:
+          INTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
+          EXTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
+          DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}
+        run: |
+          app_internal=false
+          app_external=false
+          aks=false
+
+          if [[ "$INTERNAL_SECRET" != "" && "$DEPLOY_TYPE" == "app" ]]; then
+            app_internal=true
+          fi
+          if [[ "$EXTERNAL_SECRET" != "" && "$DEPLOY_TYPE" == "app" ]]; then
+            app_external=true
+          fi
+          if [[ "$DEPLOY_TYPE" == "aks" ]]; then
+            aks=true
+          fi
+
+          echo "app_internal=$app_internal" >> "$GITHUB_OUTPUT"
+          echo "app_external=$app_external" >> "$GITHUB_OUTPUT"
+          echo "aks=$aks" >> "$GITHUB_OUTPUT"
+          
+          echo "DEPLOY_TYPE=$DEPLOY_TYPE"
+          echo "app_internal=$app_internal"
+          echo "app_external=$app_external"
+          echo "aks=$aks"
+    
   build-and-test-api-internal:
     uses: ./.github/workflows/build-and-test.yml
     with:
@@ -22,47 +61,17 @@ jobs:
       solution: "Deve.Api.External.sln"
 
   deploy-all-aks:
-    if: ${{ vars.DEPLOY_TYPE == 'aks' }}
-    needs: [build-and-test-api-internal,build-and-test-api-external]
+    if: ${{ needs.checks.outputs.aks == 'true' }}
+    needs: [checks,build-and-test-api-internal,build-and-test-api-external]
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
       services: "api-internal,api-external,monitoring"
     secrets: inherit
 
-  check-secrets:
-    runs-on: ubuntu-latest
-    environment: production
-    outputs:
-      internal: ${{ steps.secrets_available.outputs.internal }}
-      external: ${{ steps.secrets_available.outputs.external }}
-    steps:
-      - name: Check secrets
-        id: secrets_available
-        shell: bash        
-        env:
-          INTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
-          EXTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
-        run: |
-          if [ "$INTERNAL_SECRET" != '' ]; then
-            echo "internal=true"
-            echo "internal=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "internal=false"
-            echo "internal=false" >> "$GITHUB_OUTPUT"
-          fi
-          if [ "$EXTERNAL_SECRET" != '' ]; then
-            echo "external=true"
-            echo "external=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "external=false"
-            echo "external=false" >> "$GITHUB_OUTPUT"
-          fi
-          echo "DEPLOY_TYPE=${{ vars.DEPLOY_TYPE }}"
-
   deploy-all-api-internal:
-    if: ${{ vars.DEPLOY_TYPE == 'app' }}
-    needs: [check-secrets,build-and-test-api-internal]
+    if: ${{ needs.checks.outputs.app_internal == 'true' }}
+    needs: [checks,build-and-test-api-internal]
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
@@ -72,8 +81,8 @@ jobs:
       AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
 
   deploy-all-api-external:
-    if: ${{ vars.DEPLOY_TYPE == 'app' && needs.check-secrets.outputs.external == 'true' }}
-    needs: [check-secrets,build-and-test-api-external]
+    if: ${{ needs.checks.outputs.app_external == 'true' }}
+    needs: [checks,build-and-test-api-external]
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
