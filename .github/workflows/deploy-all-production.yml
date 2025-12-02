@@ -51,7 +51,7 @@ jobs:
             echo "external=false" >> "$GITHUB_OUTPUT"
           fi
 
-          echo "DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}
+          echo "DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}"
 
   deploy-all-api-internal:
     if: ${{ vars.DEPLOY_TYPE == 'app' && needs.check-secrets.outputs.internal == 'true' }}
