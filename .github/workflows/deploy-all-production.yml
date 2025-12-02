@@ -76,7 +76,7 @@ jobs:
     with:
       environment: "production"
       project: "Internal/Api/Deve.Internal.Api.csproj"
-      name: "API Internal"
+      name: ${{ vars.AZURE_WEBAPP_NAME_INTERNAL }}
     secrets:
       AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
 
@@ -87,6 +87,6 @@ jobs:
     with:
       environment: "production"
       project: "External/Api/Deve.External.Api.csproj"
-      name: "API External"
+      name: ${{ vars.AZURE_WEBAPP_NAME_EXTERNAL }}
     secrets:
       AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
