@@ -15,10 +15,21 @@ jobs:
     with:
       solution: "Deve.Api.Internal.sln"
 
-  deploy-api-internal:
+  deploy-aks-api-internal:
+    if: ${{ vars.DEPLOY_TYPE == 'aks' }}
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
       services: "api-internal"
+    secrets: inherit
+
+  deploy-app-api-internal:
+    if: ${{ vars.DEPLOY_TYPE == 'app' }}
+    needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-app.yml
+    with:
+      environment: "production"
+      project: "Internal/Api/Deve.Internal.Api.csproj"
+      name: "API Internal"
     secrets: inherit

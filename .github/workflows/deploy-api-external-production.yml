@@ -15,10 +15,21 @@ jobs:
     with:
       solution: "Deve.Api.External.sln"
   
-  deploy-api-external:
+  deploy-aks-api-external:
+    if: ${{ vars.DEPLOY_TYPE == 'aks' }}
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
       services: "api-external"
+    secrets: inherit
+
+  deploy-app-api-external:
+    if: ${{ vars.DEPLOY_TYPE == 'app' }}
+    needs: build-and-test-api-external
+    uses: ./.github/workflows/deploy-azure-app.yml
+    with:
+      environment: "production"
+      project: "External/Api/Deve.External.Api.csproj"
+      name: "API External"
     secrets: inherit
