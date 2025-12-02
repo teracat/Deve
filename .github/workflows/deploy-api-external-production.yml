@@ -26,7 +26,7 @@ jobs:
 
   deploy-app-api-external:
     if: ${{ vars.DEPLOY_TYPE == 'app' }}
-    needs: build-and-test-api-external
+    needs: build-and-test
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
