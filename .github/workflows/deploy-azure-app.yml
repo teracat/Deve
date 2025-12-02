@@ -50,13 +50,13 @@ jobs:
         run: dotnet build --configuration Release ${{ inputs.project }}
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp ${{ inputs.project }}
+        run: dotnet publish -c Release -o ./publish ${{ inputs.project }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4  #v5.0.0
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy-azure-app:
     environment: ${{ inputs.environment }}
@@ -68,7 +68,7 @@ jobs:
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53  #v6.0.0
         with:
           name: .net-app
-          path: ${{ github.workspace }}/myapp
+          path: ./publish
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -76,4 +76,4 @@ jobs:
         with:
           app-name: ${{ inputs.name }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ github.workspace }}/myapp
+          package: ./publish
