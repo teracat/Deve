@@ -31,21 +31,23 @@ jobs:
     secrets: inherit
 
   deploy-all-api-internal:
-    #if: ${{ vars.DEPLOY_TYPE == 'app' }}
-    #needs: build-and-test-api-internal
+    if: ${{ vars.DEPLOY_TYPE == 'app' && secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL != null && secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL != '' }}
+    needs: build-and-test-api-internal
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
       project: "Internal/Api/Deve.Internal.Api.csproj"
       name: "API Internal"
-    secrets: inherit
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
 
   deploy-all-api-external:
-    if: ${{ vars.DEPLOY_TYPE == 'app' }}
+    if: ${{ vars.DEPLOY_TYPE == 'app' && secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL != null && secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL != '' }}
     needs: build-and-test-api-external
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
       project: "External/Api/Deve.External.Api.csproj"
       name: "API External"
-    secrets: inherit
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
