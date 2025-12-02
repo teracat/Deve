@@ -39,8 +39,8 @@ jobs:
     steps:
       - name: Check secrets
         id: secrets_available
+        shell: bash
         run: |
-
           internal_secret="${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}"
           external_secret="${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}"
 
@@ -58,7 +58,7 @@ jobs:
             echo "external=false"
             echo "external=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}"
+          echo "DEPLOY_TYPE=${{ vars.DEPLOY_TYPE }}"
 
   deploy-all-api-internal:
     if: ${{ vars.DEPLOY_TYPE == 'app' && needs.check-secrets.outputs.internal == 'true' }}
