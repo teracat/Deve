@@ -50,6 +50,10 @@ jobs:
             echo "external=false" >> "$GITHUB_OUTPUT"
           fi
 
+          echo "DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}
+          echo "Internal secret length: ${#${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}}"
+          echo "External secret length: ${#${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}}
+
   deploy-all-api-internal:
     if: ${{ vars.DEPLOY_TYPE == 'app' && needs.check-secrets.outputs.internal == 'true' }}
     needs: [check-secrets,build-and-test-api-internal]
