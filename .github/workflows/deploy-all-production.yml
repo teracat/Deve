@@ -32,6 +32,7 @@ jobs:
 
   check-secrets:
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       internal: ${{ steps.secrets_available.outputs.internal }}
       external: ${{ steps.secrets_available.outputs.external }}
