@@ -1,6 +1,10 @@
 using System.Globalization;
 using System.Net;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 //using Sentry.OpenTelemetry;
 using Deve.Api.Auth;
@@ -22,11 +26,11 @@ using Deve.Diagnostics;
 
 namespace Deve.Api
 {
-    public partial class Program
+    public partial class ApiBuilder
     {
-        protected Program() { }
+        protected ApiBuilder() { }
 
-        public static void Main(string[] args)
+        public static void CreateAndRunApi(string[] args)
         {
             // We add the console logger for the logs generated before the WebApplication is built.
             Log.Providers.AddConsole();

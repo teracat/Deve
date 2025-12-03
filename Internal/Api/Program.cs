@@ -4,7 +4,7 @@ namespace Deve.Internal.Api
     {
         public static void Main(string[] args)
         {
-            Deve.Api.Program.Main(args);
+            Deve.Api.ApiBuilder.CreateAndRunApi(args);
         }
 
         protected Program() {}
