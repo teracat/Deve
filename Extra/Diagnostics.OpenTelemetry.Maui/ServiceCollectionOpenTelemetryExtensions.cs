@@ -11,14 +11,12 @@ namespace Deve.Diagnostics
     {
         private const string DiagnosticsProvider = "OpenTelemetry.Maui";
 
-        public static MauiAppBuilder AddDiagnosticsOpenTelemetry(this MauiAppBuilder builder, Action<TracerProviderBuilder>? funcConfigTracing)
+        public static MauiAppBuilder AddDiagnosticsOpenTelemetry(this MauiAppBuilder builder, string? azureAppInsightsConnectionString, string? zipkinUrl, Action<TracerProviderBuilder>? funcConfigTracing)
         {
             Log.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
 
-            var zipkinUrl = Environment.GetEnvironmentVariable("ZIPKIN_URL");
-            var azureAppInsightsConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
-
             Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
+            Log.Debug($"ZIPKIN_URL={zipkinUrl}");
 
             builder.Logging.AddOpenTelemetry(options =>
             {

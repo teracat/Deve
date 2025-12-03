@@ -29,11 +29,6 @@ namespace Deve.Clients.Maui
             Log.Providers.AddDebug();
 
             builder.Logging.AddDebug();
-
-            // For development purposes only - to avoid setting the environment variable on your machine. Remove the values before pushing your code to a public repository.
-            Environment.SetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING", "");
-            //Environment.SetEnvironmentVariable("SENTRY_DSN", "");
-            Environment.SetEnvironmentVariable("ZIPKIN_URL", "http://localhost:9411");
 #endif
 //+:cnd
 
@@ -44,7 +39,8 @@ namespace Deve.Clients.Maui
                 .RegisterViews()
                 // Diagnostics
                 // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.Maui as a reference and comment the next line.
-                .AddDiagnosticsOpenTelemetry(funcConfigTracing: (tracing) =>
+                // You can configure the Azure Application Insights connection string and the Zipkin URL here.
+                .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", zipkinUrl: "", funcConfigTracing: (tracing) =>
                 {
                     // Configure Tracing exporters here (if you want to use other exporters).
 
@@ -54,7 +50,7 @@ namespace Deve.Clients.Maui
                 // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.Maui as a reference, uncomment the next line and
                 // change the DSN with your own (you can create a free account at https://sentry.io/welcome/).
                 // You should also modify the ServiceProviderHelper.cs file to use Sentry instead of OpenTelemetry.
-                //.AddDiagnosticsSentry()
+                //.AddDiagnosticsSentry(sentryDsn: "Use your DSN")
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

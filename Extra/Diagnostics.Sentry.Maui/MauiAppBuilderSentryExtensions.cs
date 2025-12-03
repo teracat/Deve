@@ -2,11 +2,11 @@
 {
     public static class MauiAppBuilderSentryExtensions
     {
-        public static MauiAppBuilder AddDiagnosticsSentry(this MauiAppBuilder builder)
+        public static MauiAppBuilder AddDiagnosticsSentry(this MauiAppBuilder builder, string sentryDsn)
         {
             builder.UseSentry(options =>
             {
-                options.Dsn = Environment.GetEnvironmentVariable("SENTRY_DSN");
+                options.Dsn = sentryDsn;
                 options.ConfigureSentry();
             });
 
