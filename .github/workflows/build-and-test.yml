@@ -35,4 +35,4 @@ jobs:
       run: dotnet build --no-restore ${{ inputs.solution }}
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal ${{ inputs.solution }}
+      run: dotnet test --no-build --verbosity detailed ${{ inputs.solution }}
