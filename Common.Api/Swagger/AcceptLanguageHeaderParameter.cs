@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Deve.Api.Swagger
@@ -17,7 +17,7 @@ namespace Deve.Api.Swagger
         {
             if (operation.Parameters == null)
             {
-                operation.Parameters = new List<OpenApiParameter>();
+                operation.Parameters = [];
             }
 
             operation.Parameters.Add(new OpenApiParameter

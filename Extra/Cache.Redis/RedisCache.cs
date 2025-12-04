@@ -89,7 +89,8 @@ namespace Deve.Cache
                     return false;
                 }
 
-                var deserializedValue = JsonSerializer.Deserialize<T>(redisValue!);
+                // Fix ambiguity by explicitly converting to string
+                var deserializedValue = JsonSerializer.Deserialize<T>(redisValue.ToString());
                 if (deserializedValue is null)
                 {
                     value = default!;
@@ -122,7 +123,7 @@ namespace Deve.Cache
                     return;
                 }
 
-                _database.StringSet(key, serializedValue, expiry);
+                _database.StringSet(key, serializedValue, expiry, false);
             }
             catch (Exception ex)
             {

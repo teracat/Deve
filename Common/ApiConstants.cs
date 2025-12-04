@@ -35,7 +35,7 @@
         /// <summary>
         /// The default authentication scheme used for API requests.
         /// </summary>
-        public static readonly string AuthDefaultScheme    = "Bearer";
+        public static readonly string AuthDefaultScheme = "Bearer";
         #endregion
 
         #region Paths

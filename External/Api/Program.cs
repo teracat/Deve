@@ -4,7 +4,7 @@ namespace Deve.External.Api
     {
         public static void Main(string[] args)
         {
-            Deve.Api.ApiBuilder.CreateAndRunApi(args);
+            new Deve.Api.ApiBuilder().CreateAndRunApi(args);
         }
 
         protected Program() { }
