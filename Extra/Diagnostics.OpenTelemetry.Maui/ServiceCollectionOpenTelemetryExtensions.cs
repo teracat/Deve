@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Azure.Monitor.OpenTelemetry.Exporter;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Azure.Monitor.OpenTelemetry.Exporter;
 using Deve.Logging;
 
 namespace Deve.Diagnostics
@@ -18,7 +18,7 @@ namespace Deve.Diagnostics
             Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
             Log.Debug($"ZIPKIN_URL={zipkinUrl}");
 
-            builder.Logging.AddOpenTelemetry(options =>
+            _ = builder.Logging.AddOpenTelemetry(options =>
             {
                 options.IncludeScopes = true;
                 options.ParseStateValues = true;
@@ -31,22 +31,22 @@ namespace Deve.Diagnostics
                                                              .AddService(serviceName: "app.maui"))
                               .WithMetrics(metrics =>
                               {
-                                  metrics.AddRuntimeInstrumentation();
-                                  metrics.AddHttpClientInstrumentation();
+                                  _ = metrics.AddRuntimeInstrumentation();
+                                  _ = metrics.AddHttpClientInstrumentation();
                               })
                               .WithTracing(tracing =>
                               {
-                                  tracing.AddHttpClientInstrumentation();
+                                  _ = tracing.AddHttpClientInstrumentation();
 
                                   if (!string.IsNullOrWhiteSpace(zipkinUrl))
                                   {
                                       Log.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
 
-                                      tracing.AddZipkinExporter(zipkin =>
+                                      _ = tracing.AddZipkinExporter(zipkin =>
                                       {
                                           zipkin.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans");
                                       });
-                                  }      
+                                  }
 
                                   funcConfigTracing?.Invoke(tracing);
                               });
@@ -55,7 +55,7 @@ namespace Deve.Diagnostics
             {
                 Log.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
 
-                otel.UseAzureMonitorExporter(options =>
+                _ = otel.UseAzureMonitorExporter(options =>
                 {
                     options.ConnectionString = azureAppInsightsConnectionString;
                 });

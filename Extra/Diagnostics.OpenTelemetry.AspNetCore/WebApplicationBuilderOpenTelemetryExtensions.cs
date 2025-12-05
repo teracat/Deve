@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using StackExchange.Redis;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Deve.Logging;
 
 namespace Deve.Diagnostics
@@ -30,7 +30,7 @@ namespace Deve.Diagnostics
             Log.Debug($"PROMETHEUS_SCRAPE_ENDPOINT={prometheusScrapeEndpoint}");
 
             // Logs: record individual operations, such as an incoming request, a failure in a specific component, or an order being placed.
-            builder.Logging.AddOpenTelemetry(options =>
+            _ = builder.Logging.AddOpenTelemetry(options =>
             {
                 options.IncludeScopes = true;
                 options.ParseStateValues = true;
@@ -41,10 +41,10 @@ namespace Deve.Diagnostics
                               .AddOpenTelemetry();
 
             // Metrics: measuring counters and gauges such as number of completed requests, active requests, widgets that have been sold; or a histogram of the request latency.
-            otel
+            _ = otel
                 .WithMetrics(metrics =>
                 {
-                    metrics
+                    _ = metrics
                         // Enable to collect incoming HTTP requests
                         .AddAspNetCoreInstrumentation()
                         // Enable to collect CPU, Memory, GC, and other runtime metrics
@@ -66,7 +66,7 @@ namespace Deve.Diagnostics
                         Log.Debug("{DiagnosticsProvider} - Enabling Prometheus exporter for metrics...", DiagnosticsProvider);
 
                         // Expose the Prometheus scrape endpoint
-                        metrics.AddPrometheusExporter(o =>
+                        _ = metrics.AddPrometheusExporter(o =>
                         {
                             o.ScrapeEndpointPath = prometheusScrapeEndpoint;
                         });
@@ -77,10 +77,10 @@ namespace Deve.Diagnostics
                 });
 
             // Tracing: tracks requests and activities across components in a distributed system so that you can see where time is spent and track down specific failures.
-            otel
+            _ = otel
                 .WithTracing(tracing =>
                 {
-                    tracing
+                    _ = tracing
                         // Enable to collect incoming HTTP requests
                         .AddAspNetCoreInstrumentation(options =>
                         {
@@ -103,7 +103,7 @@ namespace Deve.Diagnostics
                     {
                         Log.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
 
-                        tracing.AddRedisInstrumentation(redisConnectionMultiplexer); 
+                        _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer);
                     }
 
                     // Zipkin exporter (for distributed tracing)
@@ -111,7 +111,7 @@ namespace Deve.Diagnostics
                     {
                         Log.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
 
-                        tracing.AddZipkinExporter(o =>
+                        _ = tracing.AddZipkinExporter(o =>
                         {
                             o.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans");
                         });
@@ -126,18 +126,18 @@ namespace Deve.Diagnostics
             {
                 Log.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
 
-                otel.UseAzureMonitor(o =>
+                _ = otel.UseAzureMonitor(o =>
                 {
                     o.ConnectionString = azureAppInsightsConnectionString;
                 });
             }
-            
+
             // Add OTLP exporter
             if (!string.IsNullOrEmpty(tracingOtlpEndpoint))
             {
                 Log.Debug("{DiagnosticsProvider} - Enabling OTLP exporter...", DiagnosticsProvider);
 
-                otel.UseOtlpExporter();
+                _ = otel.UseOtlpExporter();
             }
 
             return builder;

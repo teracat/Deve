@@ -1,19 +1,15 @@
-﻿using Deve.Internal.Model;
-using Deve.Clients.Maui.Interfaces;
+﻿using Deve.Clients.Maui.Interfaces;
+using Deve.Internal.Model;
 
 namespace Deve.Clients.Maui.ViewModels
 {
     public class ClientDetailsViewModel : BaseDetailsViewModel
     {
-        #region Atributes
-        private Client? _client;
-        #endregion
-
         #region Properties
         public Client? Client
         {
-            get => _client;
-            set => SetProperty(ref _client, value);
+            get;
+            set => SetProperty(ref field, value);
         }
         #endregion
 

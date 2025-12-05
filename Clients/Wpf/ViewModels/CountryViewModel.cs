@@ -1,6 +1,6 @@
-﻿using Deve.Model;
-using Deve.Clients.Wpf.Interfaces;
+﻿using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -8,20 +8,18 @@ namespace Deve.Clients.Wpf.ViewModels
     {
         #region Fields
         private Country? _country;
-        private string? _name;
-        private string? _isoCode;
         #endregion
 
         #region Properties
         public string? Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get;
+            set => SetProperty(ref field, value);
         }
         public string? IsoCode
         {
-            get => _isoCode;
-            set => SetProperty(ref _isoCode, value);
+            get;
+            set => SetProperty(ref field, value);
         }
         #endregion
 
@@ -33,7 +31,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task GetData()
+        protected override async Task GetData()
         {
             if (_country is null)
             {
@@ -59,14 +57,14 @@ namespace Deve.Clients.Wpf.ViewModels
             IsoCode = _country.IsoCode;
         }
 
-        internal async override Task DoSave()
+        internal override async Task DoSave()
         {
             if (_country is null)
             {
                 return;
             }
 
-            if (Utils.SomeIsNullOrWhiteSpace(_name,_isoCode))
+            if (Utils.SomeIsNullOrWhiteSpace(Name, IsoCode))
             {
                 MessageHandler.ShowError(AppResources.MissingField);
                 return;
@@ -75,8 +73,8 @@ namespace Deve.Clients.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                _country.Name = _name!.Trim();
-                _country.IsoCode = _isoCode!.Trim();
+                _country.Name = Name!.Trim();
+                _country.IsoCode = IsoCode!.Trim();
 
                 Result res;
                 if (_country.Id == 0)

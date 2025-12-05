@@ -9,7 +9,7 @@ namespace Deve.Clients.Maui.Services
     internal class MauiNavigationService : INavigationService
     {
         public Task NavigateToAsync(string route, INavigationParameters routeParameters) => Shell.Current.GoToAsync(route, routeParameters);
-        
+
         public Task NavigateToAsync(string route) => Shell.Current.GoToAsync(route);
 
         public Task PopAsync() => Shell.Current.Navigation.PopAsync();

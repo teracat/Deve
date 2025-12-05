@@ -1,17 +1,17 @@
 ﻿using Moq;
-using Deve.Authenticate;
-using Deve.Core;
-using Deve.Cache;
-using Deve.Internal.Data;
-using Deve.Clients.Wpf.Interfaces;
 using Deve.Auth.UserIdentityService;
+using Deve.Authenticate;
+using Deve.Cache;
+using Deve.Clients.Wpf.Interfaces;
+using Deve.Core;
+using Deve.Internal.Data;
 
 namespace Deve.Tests.Wpf.Fixtures
 {
     public class FixtureWpf : FixtureCommon
     {
         #region Properties
-        public IData DataNoAuth { get; }        
+        public IData DataNoAuth { get; }
         public IData DataValidAuth { get; }
 
         public Mock<IMessageHandler> MessageHandler { get; }
@@ -36,10 +36,7 @@ namespace Deve.Tests.Wpf.Fixtures
         #endregion
 
         #region IAsyncLifetime
-        public override async Task InitializeAsync()
-        {
-            await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-        }
+        public override async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
         public override Task DisposeAsync()
         {

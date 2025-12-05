@@ -1,5 +1,4 @@
 ﻿using Deve.Logging;
-using System.Transactions;
 
 namespace Deve.Diagnostics
 {
@@ -37,7 +36,9 @@ namespace Deve.Diagnostics
             lock (_transactions)
             {
                 if (_transactions.Count == 0)
+                {
                     return;
+                }
 
                 var transaction = _transactions.Last();
                 transaction.Finish();

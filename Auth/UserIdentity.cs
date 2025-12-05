@@ -1,5 +1,5 @@
-﻿using Deve.Model;
-using Deve.Internal.Model;
+﻿using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Auth
 {
@@ -17,7 +17,7 @@ namespace Deve.Auth
         /// <summary>
         /// Username of the user.
         /// </summary>
-        public string Username {get;set;}
+        public string Username { get; set; }
 
         /// <summary>
         /// Role of the user (to check permissions)

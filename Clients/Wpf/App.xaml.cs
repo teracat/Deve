@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Threading;
-using Microsoft.Extensions.DependencyInjection;
-using Deve.Logging;
 using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Views;
+using Deve.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Clients.Wpf
 {
@@ -42,7 +42,7 @@ namespace Deve.Clients.Wpf
             });
             Log.Providers.AddSentry();*/
 
-            DispatcherUnhandledException += App_DispatcherUnhandledException;
+            DispatcherUnhandledException += OnAppDispatcherUnhandledException;
         }
         #endregion
 
@@ -98,7 +98,7 @@ namespace Deve.Clients.Wpf
         #endregion
 
         #region Events
-        void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private void OnAppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Error(e.Exception);
 

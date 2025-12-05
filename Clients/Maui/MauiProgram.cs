@@ -8,8 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 //using Sentry.OpenTelemetry;
 using Deve.Clients.Maui.Helpers;
-using Deve.Logging;
 using Deve.Diagnostics;
+using Deve.Logging;
 
 namespace Deve.Clients.Maui
 {

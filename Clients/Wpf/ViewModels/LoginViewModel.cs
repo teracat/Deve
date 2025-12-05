@@ -9,7 +9,6 @@ namespace Deve.Clients.Wpf.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         #region Fields
-        private List<CultureInfo> _languages = [new CultureInfo("en"), new CultureInfo("es-ES")];
         private CultureInfo? _selectedLanguage;
         private string _username = string.Empty;
         private bool _remember = false;
@@ -26,9 +25,9 @@ namespace Deve.Clients.Wpf.ViewModels
 
         public List<CultureInfo> Languages
         {
-            get => _languages;
-            set => SetProperty(ref _languages, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = [new CultureInfo("en"), new CultureInfo("es-ES")];
 
         public CultureInfo? SelectedLanguage
         {
@@ -56,7 +55,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public LoginViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
             : base(navigationService, data, messageHandler)
         {
-            _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
+            _selectedLanguage = Languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? Languages.FirstOrDefault();
             _username = Properties.Settings.Default.Username;
             _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
         }

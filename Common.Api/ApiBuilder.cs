@@ -21,8 +21,8 @@ using Deve.Core.Shield;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.DataSource.Config;
-using Deve.Logging;
 using Deve.Diagnostics;
+using Deve.Logging;
 
 namespace Deve.Api
 {
@@ -67,7 +67,7 @@ namespace Deve.Api
             AddSwagger(builder);
 
             // Registers the IHttpContextAccessor service, allowing access to the current HTTP context.
-            builder.Services.AddHttpContextAccessor();
+            _ = builder.Services.AddHttpContextAccessor();
 
             // Configures authentication services with a custom authentication scheme.
             AddAuthentication(builder, appSettings);
@@ -79,8 +79,8 @@ namespace Deve.Api
             RedisCache? redisCache = AddCache(builder);
 
             // Logging
-            builder.Logging.AddDebug();
-            builder.Logging.AddConsole();
+            _ = builder.Logging.AddDebug();
+            _ = builder.Logging.AddConsole();
 
             // Diagnostics
             AddDiagnostics(builder, redisCache);
@@ -89,7 +89,7 @@ namespace Deve.Api
             var app = builder.Build();
 
             // Add TooManyRequestsMiddleware
-            app.UseMiddleware<TooManyRequestsMiddleware>();
+            _ = app.UseMiddleware<TooManyRequestsMiddleware>();
 
             foreach (var appAction in _appActions.OrderBy(x => x.Priority).ThenBy(x => x.Position))
             {
@@ -110,20 +110,14 @@ namespace Deve.Api
         /// </summary>
         /// <param name="action">The delegate that defines the action to perform on the WebApplication instance. Cannot be null.</param>
         /// <param name="priority">The priority that determines the order in which the action is executed relative to other registered actions.</param>
-        private void AddAppAction(Action<WebApplication> action, ApiBuilderAppActionPriority priority)
-        {
-            _appActions.Add(new ApiBuilderAppAction(action, _appActions.Count, priority));
-        }
+        private void AddAppAction(Action<WebApplication> action, ApiBuilderAppActionPriority priority) => _appActions.Add(new ApiBuilderAppAction(action, _appActions.Count, priority));
 
         /// <summary>
         /// Adds an action to be executed with the application's <see cref="WebApplication"/> instance during
         /// configuration. It will be executed with normal priority.
         /// </summary>
         /// <param name="action">The action to perform on the <see cref="WebApplication"/> instance. Cannot be null.</param>
-        private void AddAppAction(Action<WebApplication> action)
-        {
-            _appActions.Add(new ApiBuilderAppAction(action, _appActions.Count));
-        }
+        private void AddAppAction(Action<WebApplication> action) => AddAppAction(action, ApiBuilderAppActionPriority.Normal);
 
         /// <summary>
         /// Creates and configures an instance of the AppSettings class using values from the application's
@@ -170,7 +164,7 @@ namespace Deve.Api
 
             // Registers the provided instance of IDataSourceConfig as a singleton service.
             // The same instance (dsConfig) will be shared across the entire application.
-            builder.Services.AddSingleton<IDataSourceConfig>(dsConfig);
+            _ = builder.Services.AddSingleton<IDataSourceConfig>(dsConfig);
         }
 
         /// <summary>
@@ -185,7 +179,7 @@ namespace Deve.Api
         private void AddLocalization(WebApplicationBuilder builder)
         {
             // Configures localization settings for the application.
-            builder.Services.Configure<RequestLocalizationOptions>(config =>
+            _ = builder.Services.Configure<RequestLocalizationOptions>(config =>
             {
                 // Creates a list of supported cultures from the available language codes.
                 var cultures = Constants.AvailableLanguages
@@ -202,7 +196,7 @@ namespace Deve.Api
             AddAppAction(app =>
             {
                 // Request Localization
-                app.UseRequestLocalization(new RequestLocalizationOptions
+                _ = app.UseRequestLocalization(new RequestLocalizationOptions
                 {
                     ApplyCurrentCultureToResponseHeaders = true,
                 });
@@ -220,7 +214,7 @@ namespace Deve.Api
         private void AddRateLimiter(WebApplicationBuilder builder)
         {
             // You might need to change the configurations in RateLimiterHelper.
-            builder.Services.AddRateLimiter(options =>
+            _ = builder.Services.AddRateLimiter(options =>
             {
                 // Sets a global rate limiter using a custom helper method.
                 options.GlobalLimiter = RateLimiterHelper.CreateRateLimiter();
@@ -232,7 +226,7 @@ namespace Deve.Api
             AddAppAction(app =>
             {
                 // Rate Limiter
-                app.UseRateLimiter();
+                _ = app.UseRateLimiter();
             });
         }
 
@@ -245,16 +239,16 @@ namespace Deve.Api
         /// <param name="builder">The web application builder to which controller services will be added. Cannot be null.</param>
         private void AddControllers(WebApplicationBuilder builder)
         {
-            builder.Services.AddControllers(options =>
+            _ = builder.Services.AddControllers(options =>
             {
                 // Comment the next line if you don't want to modify the response status code.
-                options.Filters.Add<ResultResponseFilter>();
+                _ = options.Filters.Add<ResultResponseFilter>();
             });
 
             AddAppAction(app =>
             {
                 // Map the controllers
-                app.MapControllers();
+                _ = app.MapControllers();
             });
         }
 
@@ -269,11 +263,11 @@ namespace Deve.Api
         /// <param name="builder">The web application builder to which Swagger and OpenAPI services will be added. Must not be null.</param>
         private void AddSwagger(WebApplicationBuilder builder)
         {
-            builder.Services.AddEndpointsApiExplorer();
+            _ = builder.Services.AddEndpointsApiExplorer();
 
             // Configures Swagger generation and security settings.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddSwaggerGen(options =>
+            _ = builder.Services.AddSwaggerGen(options =>
             {
                 // Registers a new OpenAPI document (optional, if multiple versions are needed).
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Deve.Api v1", Version = "v1" });
@@ -315,8 +309,8 @@ namespace Deve.Api
                 // If you don't want to publish the Swagger, uncomment this condition
                 //if (app.Environment.IsDevelopment())
                 {
-                    app.UseSwagger();
-                    app.UseSwaggerUI(options =>
+                    _ = app.UseSwagger();
+                    _ = app.UseSwaggerUI(options =>
                     {
                         // Adds a Swagger UI endpoint for the API documentation.
                         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Deve.Api v1");
@@ -340,7 +334,7 @@ namespace Deve.Api
         /// values, or if the signing and encryption keys are identical.</exception>
         private void AddAuthentication(WebApplicationBuilder builder, AppSettings appSettings)
         {
-            builder.Services.AddAuthentication((o) =>
+            _ = builder.Services.AddAuthentication((o) =>
             {
                 // Adds a custom authentication scheme using DefaultAuthenticationHandler.
                 o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.AuthDefaultScheme, ApiConstants.AuthDefaultScheme);
@@ -373,7 +367,7 @@ namespace Deve.Api
 
             // Inject the TokenManager: used to generate and validate tokens.
             var tokenManagerJwt = new TokenManagerJwt(appSettings.JwtKeys.SigningSecretKey, appSettings.JwtKeys.EncryptionSecretKey);
-            builder.Services.AddSingleton<ITokenManager>(tokenManagerJwt);
+            _ = builder.Services.AddSingleton<ITokenManager>(tokenManagerJwt);
 
             // If you want to use TokenManagerCrypt with DataProtection, uncomment the following lines.
             //var dataProtectionProvider = Microsoft.AspNetCore.DataProtection.DataProtectionProvider.Create(nameof(Program));
@@ -383,7 +377,7 @@ namespace Deve.Api
             AddAppAction(app =>
             {
                 // Authorization
-                app.UseAuthorization();
+                _ = app.UseAuthorization();
             });
         }
 
@@ -400,33 +394,33 @@ namespace Deve.Api
         {
             // Registers HashSha512 as the implementation for IHash with singleton lifetime.
             // A single instance is created and shared across the entire application.
-            builder.Services.AddSingleton<IHash, HashSha512>();
+            _ = builder.Services.AddSingleton<IHash, HashSha512>();
 
             // Registers DataSourceMain as the implementation for IDataSource with a scoped lifetime.
             // A new instance is created per request.
-            builder.Services.AddScoped<IDataSource, DataSourceMain>();
+            _ = builder.Services.AddScoped<IDataSource, DataSourceMain>();
 
             // Registers DataOptionsFromContextAccessor as the implementation for IDataOptions with a scoped lifetime.
             // A new instance is created for each request, based on the current HTTP context.
-            builder.Services.AddScoped<IDataOptions, DataOptionsFromContextAccessor>();
+            _ = builder.Services.AddScoped<IDataOptions, DataOptionsFromContextAccessor>();
 
             // Registers ContextAccessorUserIdentityService as the implementation for IUserIdentityService with a scoped lifetime.
             // A new instance is created for each request, based on the current HTTP context.
             // This service is used to retrieve user identity information from the HTTP context.
-            builder.Services.AddScoped<IUserIdentityService, ContextAccessorUserIdentityService>();
+            _ = builder.Services.AddScoped<IUserIdentityService, ContextAccessorUserIdentityService>();
 
             // Registers AuthMain as the implementation for IAuth with a scoped lifetime.
             // A new instance is created per request to handle authentication operations.
-            builder.Services.AddScoped<IAuth, AuthMain>();
+            _ = builder.Services.AddScoped<IAuth, AuthMain>();
 
             // Registers ShieldMain as the implementation for IShield with singleton lifetime.
             // A single instance is created and shared across the entire application.
-            builder.Services.AddSingleton<IShield, ShieldMain>();
+            _ = builder.Services.AddSingleton<IShield, ShieldMain>();
 
             // Registers Core classes as the implementation for IData interfaces with scoped lifetime.
             // A new instance is created per request.
             // See Helpers/ServiceCollectionExtensions class for the implementation.
-            builder.Services.RegisterCoreClasses();
+            _ = builder.Services.RegisterCoreClasses();
         }
 
         /// <summary>
@@ -452,7 +446,7 @@ namespace Deve.Api
 
                 // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
                 // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
-                builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
+                _ = builder.Services.AddSingleton<ICache>(new SimpleInMemoryCache());
 
                 // Registers InMemoryCache as the implementation for ICache with singleton lifetime.
                 // The cache is configured with a 5-minute expiration scan frequency.
@@ -470,7 +464,7 @@ namespace Deve.Api
                 Log.Debug("The RedisCacheConnection is set. Using RedisCache as the ICache implementation.");
 
                 redisCache = new RedisCache(redisConnection);
-                builder.Services.AddSingleton<ICache>(redisCache);
+                _ = builder.Services.AddSingleton<ICache>(redisCache);
             }
             return redisCache;
         }
@@ -488,7 +482,7 @@ namespace Deve.Api
         {
             // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.AspNetCore as a reference and comment the next lines.
             // To use OpenTelemetry with Sentry, you need to add the Sentry.OpenTelemetry package and the line "options.UseOpenTelemetry();" in the SentryOptionsExtensions class in the Diagnostics.Sentry project.
-            builder.AddDiagnosticsOpenTelemetry(redisCache?.ConnectionMultiplexer,
+            _ = builder.AddDiagnosticsOpenTelemetry(redisCache?.ConnectionMultiplexer,
                 funcConfigMetrics: (metrics) =>
                 {
                     // Configure extra Metrics exporters here (if you want to use other exporters).
@@ -511,7 +505,7 @@ namespace Deve.Api
                 // Prometheus: adds the Prometheus scraping endpoint at /metrics (to be used with OpenTelemetry).
                 if (!string.IsNullOrWhiteSpace(builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"]))
                 {
-                    app.MapPrometheusScrapingEndpoint()
+                    _ = app.MapPrometheusScrapingEndpoint()
                        .DisableHttpMetrics();   // We don't want metrics about the /metrics endpoint (https://github.com/dotnet/aspnetcore/issues/50654).
                 }
             });

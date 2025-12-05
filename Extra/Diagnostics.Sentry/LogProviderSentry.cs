@@ -7,10 +7,7 @@
     internal class LogProviderSentry : ILogProvider
     {
         #region ILogProvider
-        public void Debug(string text)
-        {
-            SentrySdk.CaptureMessage(text, SentryLevel.Debug);
-        }
+        public void Debug(string text) => SentrySdk.CaptureMessage(text, SentryLevel.Debug);
 
         public void Debug(string format, params object?[] args)
         {
@@ -27,22 +24,16 @@
                 text = string.Format(formatIndexed, args);
             }
 
-            SentrySdk.CaptureMessage(text, SentryLevel.Debug);
+            _ = SentrySdk.CaptureMessage(text, SentryLevel.Debug);
         }
 
-        public void Error(string text)
-        {
-            SentrySdk.CaptureMessage(text, SentryLevel.Error);
-        }
+        public void Error(string text) => SentrySdk.CaptureMessage(text, SentryLevel.Error);
 
-        public void Error(Exception exception)
-        {
-            SentrySdk.CaptureException(exception);
-        }
+        public void Error(Exception exception) => SentrySdk.CaptureException(exception);
 
         public void Error(Exception exception, string message)
         {
-            SentrySdk.CaptureException(exception, scope =>
+            _ = SentrySdk.CaptureException(exception, scope =>
             {
                 scope.SetExtra("Message", message);
             });
@@ -63,7 +54,7 @@
                 text = string.Format(formatIndexed, args);
             }
 
-            SentrySdk.CaptureMessage(text, SentryLevel.Error);
+            _ = SentrySdk.CaptureMessage(text, SentryLevel.Error);
         }
         #endregion
     }
@@ -77,7 +68,7 @@
             if (_instance is null)
             {
                 _instance = new LogProviderSentry();
-                logProviders.Add(_instance);
+                _ = logProviders.Add(_instance);
             }
         }
 
@@ -85,7 +76,7 @@
         {
             if (_instance is not null)
             {
-                logProviders.Remove(_instance);
+                _ = logProviders.Remove(_instance);
                 _instance = null;
             }
         }

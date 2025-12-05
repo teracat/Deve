@@ -1,6 +1,6 @@
-﻿using Deve.Model;
-using Deve.Criteria;
+﻿using Deve.Criteria;
 using Deve.Internal.Data;
+using Deve.Model;
 
 namespace Deve.Internal.Sdk
 {

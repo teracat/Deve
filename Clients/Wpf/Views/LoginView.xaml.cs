@@ -14,7 +14,7 @@ namespace Deve.Clients.Wpf.Views
         public LoginView(LoginViewModel viewModel)
         {
             InitializeComponent();
-            
+
             viewModel.LoginView = this;
             ViewModel = _viewModel = viewModel;
 
@@ -43,20 +43,17 @@ namespace Deve.Clients.Wpf.Views
             base.OnWindowLoaded();
             if (string.IsNullOrEmpty(uxUsername.Text))
             {
-                uxUsername.Focus();
+                _ = uxUsername.Focus();
             }
             else
             {
-                uxPassword.Focus();
+                _ = uxPassword.Focus();
             }
         }
         #endregion
 
         #region IViewLogin
-        public void ChangeCulture(CultureInfo value, string username)
-        {
-            ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
-        }
+        public void ChangeCulture(CultureInfo value, string username) => ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
         #endregion
 
         #region Events
@@ -64,7 +61,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                uxPassword.Focus();
+                _ = uxPassword.Focus();
             }
         }
 
@@ -77,10 +74,7 @@ namespace Deve.Clients.Wpf.Views
             }
         }
 
-        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _ = _viewModel.DoLogin(uxPassword.Password);
-        }
+        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e) => _ = _viewModel.DoLogin(uxPassword.Password);
         #endregion
     }
 }

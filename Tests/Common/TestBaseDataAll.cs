@@ -1,7 +1,7 @@
 using Deve.Data;
-using Deve.Model;
 using Deve.External.Data;
 using Deve.Internal.Data;
+using Deve.Model;
 
 namespace Deve.Tests
 {
@@ -9,7 +9,7 @@ namespace Deve.Tests
     /// DataAll methods tests.
     /// The ExecuteValidLogin is used to avoid permissions errors.
     /// </summary>
-    public abstract class TestBaseDataAll<TDataType, ModelList, Model, Criteria> : TestBaseDataGet<TDataType, ModelList, Model, Criteria> where Model: ModelId where TDataType : IDataCommon
+    public abstract class TestBaseDataAll<TDataType, ModelList, Model, Criteria> : TestBaseDataGet<TDataType, ModelList, Model, Criteria> where Model : ModelId where TDataType : IDataCommon
     {
         #region Abstract Methods
         protected abstract IDataAll<ModelList, Model, Criteria> GetDataAll(TDataType data);
@@ -82,7 +82,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Add(obj);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Add(obj);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -195,7 +195,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Update(obj);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Update(obj);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -304,7 +304,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Delete(ValidIdDelete);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -334,7 +334,7 @@ namespace Deve.Tests
 
             var res = await dataAll.Delete(0);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]

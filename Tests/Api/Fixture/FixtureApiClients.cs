@@ -3,7 +3,7 @@ using Deve.Authenticate;
 
 namespace Deve.Tests.Api.Fixture
 {
-    public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint: class
+    public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint : class
     {
         public ITokenManager TokenManager { get; }
 

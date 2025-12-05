@@ -7,11 +7,11 @@
         /// </summary>
         /// <param name="name">The name of the transaction.</param>
         /// <param name="operation">The operation name of the transaction.</param>
-        public void StartTransaction(string name, string operation);
+        void StartTransaction(string name, string operation);
 
         /// <summary>
         /// Stops the last transaction.
         /// </summary>
-        public void StopTransaction();
+        void StopTransaction();
     }
 }

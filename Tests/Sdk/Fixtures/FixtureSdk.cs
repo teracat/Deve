@@ -28,10 +28,7 @@ namespace Deve.Tests.Sdk.Fixtures
             base.Dispose(disposing);
         }
 
-        public async Task InitializeAsync()
-        {
-            await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-        }
+        public async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
         Task IAsyncLifetime.DisposeAsync()
         {

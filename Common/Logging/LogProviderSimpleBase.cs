@@ -78,23 +78,15 @@
 
         #region ILogProvider
         /// <inheritdoc/>
-        public void Debug(string text)
-        {
-            Write(FormatText(DebugStringFormat, text));
-        }
+        public void Debug(string text) => Write(FormatText(DebugStringFormat, text));
 
         /// <inheritdoc/>
-        public void Debug(string format, params object?[] args)
-        {
+        public void Debug(string format, params object?[] args) =>
             // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
             Write(Utils.ConvertNameArgumentsToIndexed(format), args);
-        }
 
         /// <inheritdoc/>
-        public void Error(string text)
-        {
-            Write(FormatText(ErrorStringFormat, text));
-        }
+        public void Error(string text) => Write(FormatText(ErrorStringFormat, text));
 
         /// <inheritdoc/>
         public void Error(Exception exception)
@@ -120,11 +112,9 @@
         }
 
         /// <inheritdoc/>
-        public void Error(string format, params object?[] args)
-        {
+        public void Error(string format, params object?[] args) =>
             // Debug and Console don accept name arguments, so we need to convert it to indexed arguments
             Write(Utils.ConvertNameArgumentsToIndexed(format), args);
-        }
         #endregion
     }
 }

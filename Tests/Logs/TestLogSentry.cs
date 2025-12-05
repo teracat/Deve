@@ -9,9 +9,6 @@ namespace Deve.Tests.Logs
         {
         }
 
-        private static LogProviderSentry CreateProvider()
-        {
-            return new LogProviderSentry();
-        }
+        private static LogProviderSentry CreateProvider() => new();
     }
 }

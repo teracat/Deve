@@ -92,10 +92,7 @@ namespace Deve.Sdk
         #endregion
 
         #region IDisposable
-        public void Dispose()
-        {
-            _client.Dispose();
-        }
+        public void Dispose() => _client.Dispose();
         #endregion
     }
 }

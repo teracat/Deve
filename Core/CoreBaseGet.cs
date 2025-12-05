@@ -1,12 +1,12 @@
-﻿using Deve.Model;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
+using Deve.Cache;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Cache;
 using Deve.External.Data;
 using Deve.Logging;
+using Deve.Model;
 
 namespace Deve.Core
 {
@@ -76,10 +76,7 @@ namespace Deve.Core
         #endregion
 
         #region Methods
-        protected async virtual Task<Result> CheckPermission(PermissionType type)
-        {
-            return await CheckPermission(type, DataType);
-        }
+        protected virtual async Task<Result> CheckPermission(PermissionType type) => await CheckPermission(type, DataType);
         #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using Deve.Diagnostics;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Services;
 using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Views;
+using Deve.Diagnostics;
 using Deve.Internal.Data;
 using Deve.Internal.Sdk;
 using Deve.Sdk.LoggingHandlers;
@@ -14,11 +14,11 @@ namespace Deve.Clients.Maui.Helpers
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<INavigationService, MauiNavigationService>();
+            _ = services.AddSingleton<INavigationService, MauiNavigationService>();
 
             // Register the OpenTelemetry transaction handler for diagnostics
-            services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerOpenTelemetry>();
-            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
+            _ = services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerOpenTelemetry>();
+            _ = services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
 
             // If you want to use Sentry, comment the previous two lines and uncomment the next two lines. Use SentryHttpMessageHandler to capture HTTP requests in Sentry.
             //services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerSentry>();
@@ -32,7 +32,7 @@ namespace Deve.Clients.Maui.Helpers
                                      .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseViewModel)));
             foreach (var vm in viewModels)
             {
-                services.AddTransient(vm);
+                _ = services.AddTransient(vm);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Deve.Clients.Maui.Helpers
                                 .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseView)));
             foreach (var v in views)
             {
-                services.AddTransient(v);
+                _ = services.AddTransient(v);
             }
         }
 

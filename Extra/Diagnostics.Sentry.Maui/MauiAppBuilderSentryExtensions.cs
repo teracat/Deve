@@ -4,7 +4,7 @@
     {
         public static MauiAppBuilder AddDiagnosticsSentry(this MauiAppBuilder builder, string sentryDsn)
         {
-            builder.UseSentry(options =>
+            _ = builder.UseSentry(options =>
             {
                 options.Dsn = sentryDsn;
                 options.ConfigureSentry();

@@ -21,6 +21,7 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
 		<!-- Display name -->
 		<ApplicationTitle>Maui</ApplicationTitle>

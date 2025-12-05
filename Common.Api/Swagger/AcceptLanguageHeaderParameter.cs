@@ -15,10 +15,7 @@ namespace Deve.Api.Swagger
         /// <param name="context">The context of the operation filter.</param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (operation.Parameters == null)
-            {
-                operation.Parameters = [];
-            }
+            operation.Parameters ??= [];
 
             operation.Parameters.Add(new OpenApiParameter
             {

@@ -1,5 +1,5 @@
-﻿using Deve.Logging;
-using OpenTelemetry.Trace;
+﻿using OpenTelemetry.Trace;
+using Deve.Logging;
 
 namespace Deve.Diagnostics
 {
@@ -46,7 +46,9 @@ namespace Deve.Diagnostics
             lock (_spans)
             {
                 if (_spans.Count == 0)
+                {
                     return;
+                }
 
                 var span = _spans.Last();
                 span.Dispose();

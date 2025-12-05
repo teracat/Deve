@@ -6,19 +6,15 @@ namespace Deve.Clients.Wpf.Views
 {
     public class BaseView : Window
     {
-        #region Fields
-        private BaseViewModel? _viewModel;
-        #endregion
-
         #region Properties
         public BaseViewModel? ViewModel
         {
-            get => _viewModel;
+            get;
             set
             {
-                if (_viewModel != value)
+                if (field != value)
                 {
-                    DataContext = _viewModel = value;
+                    DataContext = field = value;
                 }
             }
         }
@@ -36,7 +32,7 @@ namespace Deve.Clients.Wpf.Views
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            if (_viewModel is not null && _viewModel.IsBusy)
+            if (ViewModel is not null && ViewModel.IsBusy)
             {
                 e.Cancel = true;
             }
@@ -46,10 +42,10 @@ namespace Deve.Clients.Wpf.Views
         #region Methods
         protected virtual void OnWindowLoaded()
         {
-            if (_viewModel is not null)
+            if (ViewModel is not null)
             {
-                _viewModel.SetResultAction = SetResult;
-                _viewModel.CloseAction = Close;
+                ViewModel.SetResultAction = SetResult;
+                ViewModel.CloseAction = Close;
             }
         }
 
@@ -64,10 +60,7 @@ namespace Deve.Clients.Wpf.Views
         #endregion
 
         #region IView
-        public void SetResult(bool result)
-        {
-            DialogResult = result;
-        }
+        public void SetResult(bool result) => DialogResult = result;
         #endregion
     }
 }

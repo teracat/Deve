@@ -20,35 +20,17 @@ namespace Deve.Logging
         #endregion
 
         #region ILogProvider
-        public void Debug(string text)
-        {
-            _logger.LogDebug(text);
-        }
+        public void Debug(string text) => _logger.LogDebug(text);
 
-        public void Debug(string format, params object?[] args)
-        {
-            _logger.LogDebug(format, args);
-        }
+        public void Debug(string format, params object?[] args) => _logger.LogDebug(format, args);
 
-        public void Error(string text)
-        {
-            _logger.LogError(text);
-        }
+        public void Error(string text) => _logger.LogError(text);
 
-        public void Error(Exception exception)
-        {
-            _logger.LogError(exception, string.Empty);
-        }
+        public void Error(Exception exception) => _logger.LogError(exception, string.Empty);
 
-        public void Error(Exception exception, string message)
-        {
-            _logger.LogError(exception, message);
-        }
+        public void Error(Exception exception, string message) => _logger.LogError(exception, message);
 
-        public void Error(string format, params object?[] args)
-        {
-            _logger.LogError(format, args);
-        }
+        public void Error(string format, params object?[] args) => _logger.LogError(format, args);
         #endregion
     }
 
@@ -61,7 +43,7 @@ namespace Deve.Logging
             if (_instance is null)
             {
                 _instance = new LogProviderNetCore(logger);
-                logProviders.Add(_instance);
+                _ = logProviders.Add(_instance);
             }
         }
 
@@ -69,7 +51,7 @@ namespace Deve.Logging
         {
             if (_instance is not null)
             {
-                logProviders.Remove(_instance);
+                _ = logProviders.Remove(_instance);
                 _instance = null;
             }
         }

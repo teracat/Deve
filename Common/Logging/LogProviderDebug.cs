@@ -23,10 +23,7 @@
         /// Write the text to the Debug.
         /// </summary>
         /// <param name="text">The text to be written.</param>
-        protected override void Write(string text)
-        {
-            System.Diagnostics.Debug.WriteLine(text);
-        }
+        protected override void Write(string text) => System.Diagnostics.Debug.WriteLine(text);
 
         /// <summary>
         /// Write a formatted debug text to the Debug.
@@ -58,7 +55,7 @@
             if (_instance is null)
             {
                 _instance = new LogProviderDebug();
-                logProviders.Add(_instance);
+                _ = logProviders.Add(_instance);
             }
         }
 
@@ -66,7 +63,7 @@
         {
             if (_instance is not null)
             {
-                logProviders.Remove(_instance);
+                _ = logProviders.Remove(_instance);
                 _instance = null;
             }
         }

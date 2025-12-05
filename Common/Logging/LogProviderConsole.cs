@@ -23,10 +23,7 @@
         /// Write the text to the Console.
         /// </summary>
         /// <param name="text">The text to be written.</param>
-        protected override void Write(string text)
-        {
-            Console.WriteLine(text);
-        }
+        protected override void Write(string text) => Console.WriteLine(text);
 
         /// <summary>
         /// Write a formatted debug text to the Console.
@@ -34,10 +31,7 @@
         /// <param name="format">The text to be written with zero or more format items,
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        protected override void Write(string format, params object?[] args)
-        {
-            Console.WriteLine(format, args);
-        }
+        protected override void Write(string format, params object?[] args) => Console.WriteLine(format, args);
         #endregion
     }
 
@@ -50,7 +44,7 @@
             if (_instance is null)
             {
                 _instance = new LogProviderConsole();
-                logProviders.Add(_instance);
+                _ = logProviders.Add(_instance);
             }
         }
 
@@ -58,7 +52,7 @@
         {
             if (_instance is not null)
             {
-                logProviders.Remove(_instance);
+                _ = logProviders.Remove(_instance);
                 _instance = null;
             }
         }

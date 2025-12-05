@@ -6,10 +6,7 @@ namespace Deve.Clients
 {
     public abstract class ClientSampleBase
     {
-        public static void LogCharacters(char character, int count)
-        {
-            Log.Debug(new string(character, count));
-        }
+        public static void LogCharacters(char character, int count) => Log.Debug(new string(character, count));
 
         public static void LogTitle(string title)
         {
@@ -32,7 +29,7 @@ namespace Deve.Clients
             var msg = new StringBuilder("Errors: ");
             foreach (var error in result.Errors)
             {
-                msg.AppendLine($"{error.Type} - {error.Description} [{error.FieldName}]");
+                _ = msg.AppendLine($"{error.Type} - {error.Description} [{error.FieldName}]");
             }
             LogResult(msg.ToString());
         }

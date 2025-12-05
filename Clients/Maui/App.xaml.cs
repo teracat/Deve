@@ -1,5 +1,5 @@
-﻿using Deve.Diagnostics;
-using Deve.Clients.Maui.Interfaces;
+﻿using Deve.Clients.Maui.Interfaces;
+using Deve.Diagnostics;
 
 namespace Deve.Clients.Maui
 {
@@ -26,14 +26,8 @@ namespace Deve.Clients.Maui
             return window;
         }
 
-        private void OnCreated(object? sender, EventArgs e)
-        {
-            _diagnosticsTransactionHandler.StartTransaction("MAUI App User Session", "app.maui");
-        }
+        private void OnCreated(object? sender, EventArgs e) => _diagnosticsTransactionHandler.StartTransaction("MAUI App User Session", "app.maui");
 
-        private void OnDestroying(object? sender, EventArgs e)
-        {
-            _diagnosticsTransactionHandler.StopTransaction();
-        }
+        private void OnDestroying(object? sender, EventArgs e) => _diagnosticsTransactionHandler.StopTransaction();
     }
 }

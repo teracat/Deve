@@ -6,7 +6,7 @@ namespace Deve.Diagnostics
     {
         public static IWebHostBuilder AddDiagnosticsSentry(this IWebHostBuilder builder)
         {
-            builder.UseSentry(options =>
+            _ = builder.UseSentry(options =>
             {
                 options.ConfigureSentry();
             });
