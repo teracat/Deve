@@ -27,7 +27,7 @@ namespace Deve.Localize
             CultureInfo? cultureInfo = null;
             if (!string.IsNullOrWhiteSpace(langCode) && langCode.Length > 1)
             {
-                _cultureInfos.TryGetValue(langCode, out cultureInfo);
+                _ = _cultureInfos.TryGetValue(langCode, out cultureInfo);
             }
             if (cultureInfo is null)
             {

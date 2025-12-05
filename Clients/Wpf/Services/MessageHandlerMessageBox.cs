@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Model;
 
 namespace Deve.Clients.Wpf.Services
 {

@@ -1,0 +1,18 @@
+# This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy Monitoring services to Production
+
+on:
+  push:
+    branches:
+      - production/monitoring
+    tags:
+      - 'monitoring/v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy-monitoring:
+    uses: ./.github/workflows/deploy-azure-aks.yml
+    with:
+      environment: "production"
+      services: "monitoring"
+    secrets: inherit

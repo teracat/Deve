@@ -5,7 +5,7 @@ namespace Deve.Core
 {
     internal static class UtilsCore
     {
-        public static Result? CheckIdWhenAdding<Model>(IDataOptions options, Model data, IList<Model> list) where Model: ModelId
+        public static Result? CheckIdWhenAdding<Model>(IDataOptions options, Model data, IList<Model> list) where Model : ModelId
         {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
 

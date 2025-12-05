@@ -5,12 +5,8 @@
     /// </summary>
     public class LogProviders
     {
-        #region Fields
-        private readonly List<ILogProvider> _list = [];
-        #endregion
-
         #region Properties
-        internal List<ILogProvider> List => _list;
+        internal List<ILogProvider> List { get; } = [];
         #endregion
 
         #region Methods
@@ -21,14 +17,14 @@
         /// <returns>True if the provider was added.</returns>
         public bool Add(ILogProvider provider)
         {
-            lock (_list)
+            lock (List)
             {
-                if (_list.Any(x => x.GetType() == provider.GetType()))
+                if (List.Any(x => x.GetType() == provider.GetType()))
                 {
                     return false;
                 }
 
-                _list.Add(provider);
+                List.Add(provider);
                 return true;
             }
         }
@@ -40,9 +36,9 @@
         /// <returns>True if the provider was removed.</returns>
         public bool Remove(ILogProvider provider)
         {
-            lock (_list)
+            lock (List)
             {
-                return _list.Remove(provider);
+                return List.Remove(provider);
             }
         }
         #endregion

@@ -1,0 +1,18 @@
+namespace:
+  name: api-external
+
+image:
+  tag: latest
+  repositories:
+    redis: redis
+    apiExternal: api-external
+
+redis:
+  port: 6379
+  
+apiExternal:
+  host: ''
+  port: 80
+  dataSourceConnectionString: ''
+  jwtSigningSecretKey: ''
+  jwtEncryptionSecretKey: ''

@@ -1,5 +1,5 @@
-﻿using Deve.Sdk;
-using Deve.Internal.Data;
+﻿using Deve.Internal.Data;
+using Deve.Sdk;
 
 namespace Deve.Internal.Sdk
 {

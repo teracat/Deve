@@ -1,7 +1,7 @@
 using Moq;
+using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
-using Deve.Clients.Wpf.Interfaces;
 using Deve.Tests.Wpf.Fixtures;
 
 namespace Deve.Tests.Wpf

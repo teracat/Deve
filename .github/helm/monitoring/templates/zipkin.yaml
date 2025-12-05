@@ -1,0 +1,82 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: zipkin-cert
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  secretName: zipkin-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.zipkin.host | quote }}
+  dnsNames:
+    - {{ .Values.zipkin.host | quote }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zipkin
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkin
+  template:
+    metadata:
+      labels:
+        app: zipkin
+    spec:  
+      containers:
+        - name: zipkin        
+          image: openzipkin/zipkin:3.5.1
+          # If you want to use a custom image from your ACR, uncomment the line below
+          # and remove the 'image' line above. Also update docker-compose accordingly.
+          #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.zipkin }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.zipkin.port }}
+          securityContext:
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  selector:
+    app: zipkin
+  type: ClusterIP
+  ports:
+    - name: http
+      port: {{ .Values.zipkin.port }}
+      targetPort: {{ .Values.zipkin.port }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zipkin-ingress
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+    nginx.ingress.kubernetes.io/auth-url: "https://{{ .Values.oauth2.host }}/zipkin/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.oauth2.host }}/zipkin/start?rd=https://$host$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User, X-Auth-Request-Email, X-Auth-Request-Groups"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.zipkin.host | quote }}
+      secretName: zipkin-tls
+  rules:
+    - host: {{ .Values.zipkin.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: zipkin
+                port:
+                  number: {{ .Values.zipkin.port }}

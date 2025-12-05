@@ -9,42 +9,26 @@ namespace Deve.Logging
     {
         #region ILogProvider
         /// <inheritdoc/>
-        public void Debug(string text)
-        {
-            Trace.TraceInformation(text);
-        }
+        public void Debug(string text) => Trace.TraceInformation(text);
 
         /// <inheritdoc/>
-        public void Debug(string format, params object[] args)
-        {
+        public void Debug(string format, params object?[] args) =>
             // Trace does not accept name arguments, so we need to convert it to indexed arguments
             Trace.TraceInformation(Utils.ConvertNameArgumentsToIndexed(format), args);
-        }
 
         /// <inheritdoc/>
-        public void Error(string text)
-        {
-            Trace.TraceError(text);
-        }
+        public void Error(string text) => Trace.TraceError(text);
 
         /// <inheritdoc/>
-        public void Error(Exception exception)
-        {
-            Trace.TraceError(exception.ToString());
-        }
+        public void Error(Exception exception) => Trace.TraceError(exception.ToString());
 
         /// <inheritdoc/>
-        public void Error(Exception exception, string message)
-        {
-            Trace.TraceError("{0} --> {1}", message, exception);
-        }
+        public void Error(Exception exception, string message) => Trace.TraceError("{0} --> {1}", message, exception);
 
         /// <inheritdoc/>
-        public void Error(string format, params object[] args)
-        {
+        public void Error(string format, params object?[] args) =>
             // Trace does not accept name arguments, so we need to convert it to indexed arguments
             Trace.TraceError(Utils.ConvertNameArgumentsToIndexed(format), args);
-        }
         #endregion
     }
 
@@ -57,7 +41,7 @@ namespace Deve.Logging
             if (_instance is null)
             {
                 _instance = new LogProviderTrace();
-                logProviders.Add(_instance);
+                _ = logProviders.Add(_instance);
             }
         }
 
@@ -65,7 +49,7 @@ namespace Deve.Logging
         {
             if (_instance is not null)
             {
-                logProviders.Remove(_instance);
+                _ = logProviders.Remove(_instance);
                 _instance = null;
             }
         }

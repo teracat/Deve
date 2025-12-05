@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.Services;
+using Deve.Clients.Maui.ViewModels;
+using Deve.Clients.Maui.Views;
+using Deve.Diagnostics;
 using Deve.Internal.Data;
 using Deve.Internal.Sdk;
 using Deve.Sdk.LoggingHandlers;
-using Deve.Clients.Maui.Interfaces;
-using Deve.Clients.Maui.Services;
-using Deve.Clients.Maui.Views;
-using Deve.Clients.Maui.ViewModels;
 
 namespace Deve.Clients.Maui.Helpers
 {
@@ -13,8 +14,15 @@ namespace Deve.Clients.Maui.Helpers
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<INavigationService, MauiNavigationService>();
-            services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
+            _ = services.AddSingleton<INavigationService, MauiNavigationService>();
+
+            // Register the OpenTelemetry transaction handler for diagnostics
+            _ = services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerOpenTelemetry>();
+            _ = services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new LoggingHandlerLog()));
+
+            // If you want to use Sentry, comment the previous two lines and uncomment the next two lines. Use SentryHttpMessageHandler to capture HTTP requests in Sentry.
+            //services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerSentry>();
+            //services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new SentryHttpMessageHandler(new LoggingHandlerLog())));
         }
 
         public static void RegisterViewModels(IServiceCollection services)
@@ -24,7 +32,7 @@ namespace Deve.Clients.Maui.Helpers
                                      .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseViewModel)));
             foreach (var vm in viewModels)
             {
-                services.AddTransient(vm);
+                _ = services.AddTransient(vm);
             }
         }
 
@@ -35,7 +43,7 @@ namespace Deve.Clients.Maui.Helpers
                                 .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseView)));
             foreach (var v in views)
             {
-                services.AddTransient(v);
+                _ = services.AddTransient(v);
             }
         }
 

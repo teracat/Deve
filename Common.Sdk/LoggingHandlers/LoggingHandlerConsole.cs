@@ -24,9 +24,6 @@
         {
         }
 
-        protected override void Write(string text)
-        {
-            Console.WriteLine(text);
-        }
+        protected override void Write(string text) => Console.WriteLine(text);
     }
 }

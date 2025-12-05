@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Deve.Model;
 using Deve.External.Data;
+using Deve.Model;
 
 namespace Deve.Api.Controllers
 {
@@ -12,16 +12,10 @@ namespace Deve.Api.Controllers
 
         #region Methods
         [HttpGet]
-        public async Task<ResultGetList<ModelList>> Get([FromQuery] Criteria? criteria)
-        {
-            return await DataGet.Get(criteria);
-        }
+        public async Task<ResultGetList<ModelList>> Get([FromQuery] Criteria? criteria) => await DataGet.Get(criteria);
 
         [HttpGet, Route("{id}")]
-        public async Task<ResultGet<Model>> Get(long id)
-        {
-            return await DataGet.Get(id);
-        }
+        public async Task<ResultGet<Model>> Get(long id) => await DataGet.Get(id);
         #endregion
     }
 }

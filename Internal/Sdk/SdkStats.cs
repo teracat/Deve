@@ -1,7 +1,7 @@
-﻿using Deve.Model;
-using Deve.Sdk;
-using Deve.Internal.Data;
+﻿using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
+using Deve.Sdk;
 
 namespace Deve.Internal.Sdk
 {
@@ -15,10 +15,7 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IDataStats
-        public async Task<ResultGet<ClientStats>> GetClientStats()
-        {
-            return await Get<ClientStats>(ApiConstants.PathStats + ApiConstants.MethodGetClientStats, RequestAuthType.Default);
-        }
+        public async Task<ResultGet<ClientStats>> GetClientStats() => await Get<ClientStats>(ApiConstants.PathStats + ApiConstants.MethodGetClientStats, RequestAuthType.Default);
         #endregion
     }
 }

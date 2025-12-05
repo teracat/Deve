@@ -1,37 +1,29 @@
-﻿using Deve.Internal.Data;
-using Deve.Clients.Maui.Helpers;
+﻿using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Internal.Data;
 
 namespace Deve.Clients.Maui.ViewModels
 {
     public abstract class BaseViewModel : UIBase
     {
-        #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
-        private bool _isBusy = false;
-        private string _errorText = string.Empty;
-        #endregion
-
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
         public bool IsBusy
         {
-            get => _isBusy;
-            set
+            get; set
             {
-                if (_isBusy != value)
+                if (field != value)
                 {
-                    _isBusy = value;
+                    field = value;
                     OnPropertyChanged(nameof(IsBusy));
                     OnPropertyChanged(nameof(IsIdle));
                     OnIsBusyChanged();
                 }
             }
-        }
+        } = false;
 
         public bool IsIdle
         {
@@ -41,29 +33,28 @@ namespace Deve.Clients.Maui.ViewModels
 
         public string ErrorText
         {
-            get => _errorText;
-            set
+            get; set
             {
-                if (SetProperty(ref _errorText, value))
+                if (SetProperty(ref field, value))
                 {
                     OnPropertyChanged(nameof(HasError));
                 }
             }
-        }
+        } = string.Empty;
 
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
         #endregion
 
         #region Constructor
         protected BaseViewModel(INavigationService navigationService, IData data)
         {
-            _navigationService = navigationService;
-            _data = data;
+            NavigationService = navigationService;
+            Data = data;
         }
         #endregion
 
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
+        protected virtual void OnIsBusyChanged() { }
 
         public virtual bool OnViewBackButtonPressed()
         {

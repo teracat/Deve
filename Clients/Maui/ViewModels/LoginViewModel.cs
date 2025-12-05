@@ -7,25 +7,18 @@ namespace Deve.Clients.Maui.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        #region Fields
-        private string _username = string.Empty;
-        private string _password = string.Empty;
-
-        private AsyncCommand? _loginCommand;
-        #endregion
-
         #region Properties
         public string Username
         {
-            get => _username;
-            set => SetProperty(ref _username, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         public string Password
         {
-            get => _password;
-            set => SetProperty(ref _password, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
         #endregion
 
         #region Constructor
@@ -46,7 +39,7 @@ namespace Deve.Clients.Maui.ViewModels
         {
             ErrorText = string.Empty;
 
-            if (Utils.SomeIsNullOrWhiteSpace(_username, _password))
+            if (Utils.SomeIsNullOrWhiteSpace(Username, Password))
             {
                 ErrorText = AppResources.MissingUsernamePassword;
                 return;
@@ -55,7 +48,7 @@ namespace Deve.Clients.Maui.ViewModels
             IsBusy = true;
             try
             {
-                var resLogin = await Data.Authenticate.Login(new UserCredentials(_username, _password));
+                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, Password));
                 if (!resLogin.Success || resLogin.Data is null)
                 {
                     ErrorText = Utils.ErrorsToString(resLogin.Errors);
@@ -74,7 +67,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Commands
-        public AsyncCommand Login => _loginCommand ??= new AsyncCommand(DoLogin, () => IsIdle);
+        public AsyncCommand Login { get => field ??= new AsyncCommand(DoLogin, () => IsIdle); private set; }
         #endregion
     }
 }

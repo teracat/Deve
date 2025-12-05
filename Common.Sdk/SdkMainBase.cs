@@ -1,6 +1,5 @@
 ﻿using Deve.Authenticate;
 using Deve.Data;
-using Deve.Sdk.LoggingHandlers;
 
 namespace Deve.Sdk
 {
@@ -38,7 +37,7 @@ namespace Deve.Sdk
         #endregion
 
         #region Constructors
-        protected SdkMainBase(EnvironmentType environment, IDataOptions options, LoggingHandlerBase handler)
+        protected SdkMainBase(EnvironmentType environment, IDataOptions options, HttpMessageHandler handler)
         {
             _environment = environment;
             _options = options;
@@ -46,7 +45,7 @@ namespace Deve.Sdk
             UpdatedOptions();
         }
 
-        protected SdkMainBase(EnvironmentType environment, LoggingHandlerBase handler)
+        protected SdkMainBase(EnvironmentType environment, HttpMessageHandler handler)
         {
             _environment = environment;
             _options = new DataOptions();
@@ -93,10 +92,7 @@ namespace Deve.Sdk
         #endregion
 
         #region IDisposable
-        public void Dispose()
-        {
-            _client.Dispose();
-        }
+        public void Dispose() => _client.Dispose();
         #endregion
     }
 }

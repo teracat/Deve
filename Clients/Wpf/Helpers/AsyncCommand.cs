@@ -37,8 +37,8 @@ namespace Deve.Clients.Wpf.Helpers
 
         public event EventHandler? CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         public bool CanExecute(object? parameter) => !_isExecuting && (_canExecute?.Invoke() ?? true);

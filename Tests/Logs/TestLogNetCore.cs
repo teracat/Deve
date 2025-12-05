@@ -1,5 +1,5 @@
-using Deve.Logging;
 using Microsoft.Extensions.Logging;
+using Deve.Logging;
 
 namespace Deve.Tests.Logs
 {

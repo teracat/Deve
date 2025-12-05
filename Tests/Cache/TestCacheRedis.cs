@@ -6,7 +6,7 @@ namespace Deve.Tests.Cache
     {
         public TestCacheRedis(FixtureRedisCache fixtureCache)
             : base(fixtureCache)
-        {   
+        {
         }
     }
 }

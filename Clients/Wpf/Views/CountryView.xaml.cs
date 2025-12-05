@@ -12,9 +12,9 @@ namespace Deve.Clients.Wpf.Views
         public CountryView(CountryViewModel viewModel)
         {
             InitializeComponent();
-            
+
             // When the data is loaded, set initial focus
-            viewModel.LoadDataDoneAction = new Action(() => { uxName.Focus(); });
+            viewModel.LoadDataDoneAction = new Action(() => { _ = uxName.Focus(); });
 
             // Set ViewModel
             ViewModel = _viewModel = viewModel;
@@ -26,7 +26,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                uxIsoCode.Focus();
+                _ = uxIsoCode.Focus();
             }
         }
 

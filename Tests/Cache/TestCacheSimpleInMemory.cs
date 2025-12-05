@@ -6,7 +6,7 @@ namespace Deve.Tests.Cache
     {
         public TestCacheSimpleInMemory(FixtureSimpleInMemoryCache fixtureCache)
             : base(fixtureCache)
-        {   
+        {
         }
     }
 }

@@ -61,10 +61,7 @@ namespace Deve.Tests.Auth
         }
 
         [Fact]
-        public void Decrypt_NotValid_ThrowsException()
-        {
-            Assert.Throws<CryptographicException>(() => _fixtureAuth.Crypt.Decrypt("aaaa"));
-        }
+        public void Decrypt_NotValid_ThrowsException() => Assert.Throws<CryptographicException>(() => _fixtureAuth.Crypt.Decrypt("aaaa"));
 
         [Fact]
         public void Decrypt_Valid_Equal()

@@ -1,10 +1,10 @@
 ﻿using Moq;
-using Deve.Authenticate;
-using Deve.Core;
-using Deve.Cache;
-using Deve.Internal.Data;
-using Deve.Clients.Maui.Interfaces;
 using Deve.Auth.UserIdentityService;
+using Deve.Authenticate;
+using Deve.Cache;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Core;
+using Deve.Internal.Data;
 
 namespace Deve.Tests.Maui.Fixtures
 {
@@ -29,10 +29,7 @@ namespace Deve.Tests.Maui.Fixtures
             NavigationService = new Mock<INavigationService>();
         }
 
-        public override async Task InitializeAsync()
-        {
-            await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-        }
+        public override async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
         public override Task DisposeAsync()
         {

@@ -6,7 +6,7 @@ namespace Deve.Tests
     /// <summary>
     /// Authenticate Tests.
     /// </summary>
-    public abstract class TestAuthenticate<TDataType> : TestBase<TDataType> where TDataType: IDataCommon
+    public abstract class TestAuthenticate<TDataType> : TestBase<TDataType> where TDataType : IDataCommon
     {
         protected TestAuthenticate(IFixtureData<TDataType> fixture)
             : base(fixture)

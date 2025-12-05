@@ -1,0 +1,214 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm-monitoring
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook-delete-policy": hook-succeeded
+data:
+  realm-monitoring.json: |
+    {
+      "realm": "monitoring",
+      "enabled": true,
+      "roles": {
+        "realm": [
+          { "name": "grafana-admin" },
+          { "name": "grafana-editor" },
+          { "name": "grafana-viewer" },
+          { "name": "prometheus-access" },
+          { "name": "zipkin-access" }
+        ]
+      },
+      "groups": [
+        {
+          "name": "monitoring-admin",
+          "realmRoles": ["grafana-admin","prometheus-access","zipkin-access"]
+        },
+        {
+          "name": "monitoring-editor",
+          "realmRoles": ["grafana-editor","prometheus-access","zipkin-access"]
+        },
+        {
+          "name": "monitoring-viewer",
+          "realmRoles": ["grafana-viewer","prometheus-access","zipkin-access"]
+        },
+        {
+          "name": "grafana-only-viewer",
+          "realmRoles": ["grafana-viewer"]
+        }
+      ],
+      "clients": [
+        {
+          "clientId": "grafana",
+          "name": "Grafana",
+          "protocol": "openid-connect",
+          "publicClient": false,
+          "standardFlowEnabled": true,
+          "redirectUris": ["https://{{ .Values.oauth2.host }}/grafana/callback"],
+          "defaultClientScopes": ["profile","email","roles","groups","offline_access"],
+          "webOrigins": ["{{ .Values.grafana.host }}"],
+          "secret": "{{ .Values.grafana.clientSecret }}",
+          "protocolMappers": [
+            {
+              "name": "audience-grafana",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-audience-mapper",
+              "config": {
+                "included.client.audience": "grafana",
+                "id.token.claim": "true",
+                "access.token.claim": "true"
+              }
+            }
+          ]
+        },
+        {
+          "clientId": "prometheus",
+          "name": "Prometheus",
+          "protocol": "openid-connect",
+          "publicClient": false,
+          "standardFlowEnabled": true,
+          "redirectUris": ["https://{{ .Values.oauth2.host }}/prometheus/callback"],
+          "defaultClientScopes": ["profile","email","roles","groups","offline_access"],
+          "webOrigins": ["{{ .Values.prometheus.host }}"],
+          "secret": "{{ .Values.prometheus.clientSecret }}",
+          "protocolMappers": [
+            {
+              "name": "audience-prometheus",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-audience-mapper",
+              "config": {
+                "included.client.audience": "prometheus",
+                "id.token.claim": "true",
+                "access.token.claim": "true"
+              }
+            }
+          ]
+        },
+        {
+          "clientId": "zipkin",
+          "name": "Zipkin",
+          "protocol": "openid-connect",
+          "publicClient": false,
+          "standardFlowEnabled": true,
+          "redirectUris": ["https://{{ .Values.oauth2.host }}/zipkin/callback"],
+          "defaultClientScopes": ["profile","email","roles","groups","offline_access"],
+          "webOrigins": ["{{ .Values.zipkin.host }}"],
+          "secret": "{{ .Values.zipkin.clientSecret }}",
+          "protocolMappers": [
+            {
+              "name": "audience-zipkin",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-audience-mapper",
+              "config": {
+                "included.client.audience": "zipkin",
+                "id.token.claim": "true",
+                "access.token.claim": "true"
+              }
+            }
+          ]
+        }
+      ],
+      "clientScopes": [
+        {
+          "name": "profile",
+          "protocol": "openid-connect",
+          "description": "Standard OIDC profile claims",
+          "protocolMappers": [
+            {
+              "name": "username",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usermodel-property-mapper",
+              "config": {
+                "user.attribute": "username",
+                "claim.name": "preferred_username",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true"
+              }
+            }
+          ]
+        },
+        {
+          "name": "email",
+          "protocol": "openid-connect",
+          "description": "Standard OIDC email claims",
+          "protocolMappers": [
+            {
+              "name": "email",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usermodel-property-mapper",
+              "config": {
+                "user.attribute": "email",
+                "claim.name": "email",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offline_access",
+          "description": "Scope for offline tokens",
+          "protocol": "openid-connect",
+          "attributes": {
+            "include.in.token.scope": "true",
+            "display.on.consent.screen": "true",
+            "consent.screen.text": "Access your data offline"
+          }
+        },
+        {
+          "name": "roles",
+          "protocol": "openid-connect",
+          "description": "Realm roles in token",
+          "attributes": {
+            "include.in.token.scope": "true",
+            "display.on.consent.screen": "true",
+            "consent.screen.text": "Allow sending the role"
+          },
+          "protocolMappers": [
+            {
+              "name": "realm roles",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usermodel-realm-role-mapper",
+              "config": {
+                "multivalued": "true",
+                "claim.name": "realm_access.roles",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true"
+              }
+            }
+          ]
+        },
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "description": "Realm groups in tokengroups",
+          "attributes": {
+            "include.in.token.scope": "true",
+            "display.on.consent.screen": "true",
+            "consent.screen.text": "Allow sending the groups"
+          },
+          "protocolMappers": [
+            {
+              "name": "groups",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usermodel-group-mapper",
+              "config": {
+                "claim.name": "groups",
+                "jsonType.label": "String",
+                "multivalued": "true",
+                "access.token.claim": "true",
+                "id.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "full.path": "false"
+              }
+            }
+          ]
+        }
+      ]
+    }
