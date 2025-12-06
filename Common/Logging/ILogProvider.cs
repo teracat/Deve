@@ -17,7 +17,7 @@
         /// <param name="format">The text to be written to the log with zero or more format items,
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        void Debug(string format, params object[] args);
+        void Debug(string format, params object?[] args);
 
         /// <summary>
         /// Write some error text to the log.
@@ -44,6 +44,6 @@
         /// <param name="format">The text to be written to the log with zero or more format items, 
         /// which correspond to objects in the args array</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        void Error(string format, params object[] args);
+        void Error(string format, params object?[] args);
     }
 }

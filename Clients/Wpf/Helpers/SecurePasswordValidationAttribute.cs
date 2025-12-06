@@ -1,6 +1,6 @@
-﻿using System.Security;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
-using System.ComponentModel.DataAnnotations;
+using System.Security;
 
 namespace Deve.Clients.Wpf.Helpers
 {

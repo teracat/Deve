@@ -1,13 +1,13 @@
-﻿using Deve.DataSource;
-using Deve.Data;
-using Deve.Model;
+﻿using Deve.Auth.Hash;
+using Deve.Auth.Permissions;
+using Deve.Auth.TokenManagers;
 using Deve.Authenticate;
 using Deve.Criteria;
-using Deve.Auth.TokenManagers;
-using Deve.Auth.Hash;
-using Deve.Auth.Permissions;
-using Deve.Internal.Model;
+using Deve.Data;
+using Deve.DataSource;
 using Deve.Internal.Criteria;
+using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Auth
 {
@@ -108,7 +108,7 @@ namespace Deve.Auth
                     case PermissionDataType.State:
                     case PermissionDataType.Country:
                         //Anyone can Get City, State & Country
-                        if (type == PermissionType.Get || type == PermissionType.GetList)
+                        if (type is PermissionType.Get or PermissionType.GetList)
                         {
                             return PermissionResult.Granted;
                         }

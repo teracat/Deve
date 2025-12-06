@@ -1,11 +1,11 @@
-﻿using Deve.Model;
-using Deve.Criteria;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
-using Deve.Internal.Data;
+using Deve.Criteria;
 using Deve.Data;
 using Deve.DataSource;
+using Deve.Internal.Data;
+using Deve.Model;
 
 namespace Deve.Core
 {
@@ -36,7 +36,7 @@ namespace Deve.Core
 
             if (action == ChecksActionType.Update)
             {
-                resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                _ = resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
             }
 
             //Check Valid CountryId

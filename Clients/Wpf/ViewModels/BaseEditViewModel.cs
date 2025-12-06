@@ -52,7 +52,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(object? parameter)
         {
-            if (parameter is not null && parameter is long id)
+            if (parameter is long id)
             {
                 Id = id;
             }

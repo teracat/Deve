@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cert-manager
+description: A Helm chart to publish the cert-manager service to Kubernetes
+version: 0.1.0
+dependencies:
+  - name: cert-manager
+    version: 1.19.1
+    repository: https://charts.jetstack.io
+    alias: cert-manager

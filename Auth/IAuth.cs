@@ -1,10 +1,10 @@
-﻿using Deve.Authenticate;
-using Deve.Data;
-using Deve.Model;
-using Deve.Auth.Hash;
-using Deve.Auth.TokenManagers;
+﻿using Deve.Auth.Hash;
 using Deve.Auth.Permissions;
+using Deve.Auth.TokenManagers;
+using Deve.Authenticate;
+using Deve.Data;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Auth
 {

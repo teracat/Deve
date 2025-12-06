@@ -1,13 +1,13 @@
-﻿using Deve.Model;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
 using Deve.Core.DataSourceWrappers;
+using Deve.Data;
+using Deve.DataSource;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
-using Deve.Data;
-using Deve.DataSource;
+using Deve.Model;
 
 namespace Deve.Core
 {
@@ -41,11 +41,11 @@ namespace Deve.Core
                 switch (action)
                 {
                     case ChecksActionType.Add:
-                        resultBuilder.CheckNotNullOrEmpty(new Field(data.Password));
+                        _ = resultBuilder.CheckNotNullOrEmpty(new Field(data.Password));
                         break;
 
                     case ChecksActionType.Update:
-                        resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
+                        _ = resultBuilder.CheckNotNullOrEmpty(new Field(data.Id));
                         break;
 
                     default:

@@ -88,7 +88,7 @@
                                   Items="{Binding CtrlDataCountries.Items}" SearchText="{Binding CtrlDataCountries.SearchText, Mode=TwoWay}" IsBusy="{Binding CtrlDataCountries.IsBusy}" 
                                   ErrorText="{Binding CtrlDataCountries.ErrorText}" SearchCommand="{Binding CtrlDataCountries.SearchCommand}"
                                   AddCommand="{Binding AddCountryCommand}" EditCommand="{Binding EditCountryCommand}" DeleteCommand="{Binding DeleteCountryCommand}" />
-            
+
         </Grid>
     </Border>
 </v:BaseView>

@@ -1,7 +1,7 @@
-﻿using System.Text;
-using System.Text.Json;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Web;
 using Deve.Authenticate;
 
@@ -11,13 +11,12 @@ namespace Deve.Sdk
     {
         #region Fields
         private readonly NameValueCollection _collection = [];
-        private readonly Dictionary<string, string> _headers = [];
         private readonly object? _value;
         private readonly UserToken? _userToken;
         #endregion
 
         #region Properties
-        internal Dictionary<string, string> Headers =>  _headers;
+        internal Dictionary<string, string> Headers { get; } = [];
         internal RequestAuthType AuthType { get; set; } = RequestAuthType.None;
         internal HttpMethod Method { get; set; } = HttpMethod.Get;
         internal string? Uri { get; set; }
@@ -45,7 +44,7 @@ namespace Deve.Sdk
         #region Methods
         public RequestBuilder AddHeader(string name, string val)
         {
-            _headers.Add(name, val);
+            Headers.Add(name, val);
             return this;
         }
 
@@ -77,15 +76,9 @@ namespace Deve.Sdk
             return this;
         }
 
-        private string BoolToString(bool val)
-        {
-            return val ? "true" : "false";
-        }
+        private string BoolToString(bool val) => val ? "true" : "false";
 
-        public void Clear()
-        {
-            _collection.Clear();
-        }
+        public void Clear() => _collection.Clear();
 
         private string ToQueryString()
         {
@@ -93,7 +86,7 @@ namespace Deve.Sdk
             {
                 foreach (var p in _value.GetType().GetProperties())
                 {
-                    Add(p.Name, p.GetValue(_value));
+                    _ = Add(p.Name, p.GetValue(_value));
                 }
             }
 
@@ -128,7 +121,7 @@ namespace Deve.Sdk
             var request = new HttpRequestMessage(Method, uri);
 
             //Headers
-            foreach (var header in _headers)
+            foreach (var header in Headers)
             {
                 request.Headers.Add(header.Key, header.Value);
             }

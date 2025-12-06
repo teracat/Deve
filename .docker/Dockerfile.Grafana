@@ -1,0 +1,3 @@
+FROM grafana/grafana
+
+COPY ./.docker/grafana/provisioning /etc/grafana/provisioning

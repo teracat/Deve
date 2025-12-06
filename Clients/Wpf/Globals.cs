@@ -15,7 +15,7 @@ namespace Deve.Clients.Wpf
         #endregion
 
         #region Helpers
-        public static string AppVersion => "v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? string.Empty;
+        public static string AppVersion => ("v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString(3)) ?? string.Empty;
         #endregion
     }
 }

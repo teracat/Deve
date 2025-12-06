@@ -1,7 +1,7 @@
-using Moq;
+using Deve.Core;
 using Deve.Data;
 using Deve.Model;
-using Deve.Core;
+using Moq;
 
 namespace Deve.Tests.Core
 {
@@ -14,7 +14,7 @@ namespace Deve.Tests.Core
             var options = new Mock<IDataOptions>().Object;
             var data = new ModelId { Id = 1 };
             var list = new List<ModelId> { new() { Id = 2 } };
-            
+
             var result = UtilsCore.CheckIdWhenAdding(options, data, list);
 
             Assert.Null(result);
@@ -26,7 +26,7 @@ namespace Deve.Tests.Core
             var options = new Mock<IDataOptions>().Object;
             var data = new ModelId { Id = 1 };
             var list = new List<ModelId> { new() { Id = 1 } };
-            
+
             var result = UtilsCore.CheckIdWhenAdding(options, data, list);
 
             Assert.NotNull(result);
@@ -42,7 +42,7 @@ namespace Deve.Tests.Core
             var list = new List<ModelId?> { new() { Id = 1 } };
 
 #pragma warning disable CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
-            Assert.Throws<ArgumentNullException>(() => UtilsCore.CheckIdWhenAdding(options, data, list));
+            _ = Assert.Throws<ArgumentNullException>(() => UtilsCore.CheckIdWhenAdding(options, data, list));
 #pragma warning restore CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
         }
         #endregion

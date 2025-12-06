@@ -10,7 +10,7 @@ namespace Deve.Clients.Wpf.Controls
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(EFontAwesomeIcon), typeof(DataListControl), new FrameworkPropertyMetadata(EFontAwesomeIcon.Solid_Question));
         public static readonly DependencyProperty IconColorProperty = DependencyProperty.Register(nameof(IconColor), typeof(Brush), typeof(DataListControl), new FrameworkPropertyMetadata(Brushes.Black));
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(DataListControl), new FrameworkPropertyMetadata(new CornerRadius(0)));
-        
+
 
         static IconButton()
         {

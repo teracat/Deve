@@ -24,6 +24,7 @@ namespace Deve.Core.Shield
         #region Fields
         private readonly Dictionary<string, ShieldOriginData> _origins = [];  //Key: originId
         private readonly Dictionary<string, ShieldOriginMethodData> _originsMethods = [];  //Key: originId-methodKey
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0052:Remove unread private members", Justification = "Timer used to remove old data")]
         private readonly Timer _timer;  //Used to remove old data in _origins and _originsMethods
         #endregion
 
@@ -39,10 +40,7 @@ namespace Deve.Core.Shield
             return category + "-" + method;
         }
 
-        public static string BuildOriginMethodKey(string originId, string category, string method)
-        {
-            return originId + "-" + BuildConfigKey(category, method);
-        }
+        public static string BuildOriginMethodKey(string originId, string category, string method) => originId + "-" + BuildConfigKey(category, method);
 
         private static ShieldItemConfig GetItemConfig(string category, string method)
         {
@@ -114,7 +112,7 @@ namespace Deve.Core.Shield
             }
             foreach (var originKey in originsToRemove)
             {
-                _origins.Remove(originKey);
+                _ = _origins.Remove(originKey);
             }
 
             var originMethodsToRemove = new List<string>();
@@ -127,7 +125,7 @@ namespace Deve.Core.Shield
             }
             foreach (var originMethodKey in originMethodsToRemove)
             {
-                _originsMethods.Remove(originMethodKey);
+                _ = _originsMethods.Remove(originMethodKey);
             }
         }
         #endregion

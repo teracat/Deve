@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Deve.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Api.Helpers
 {
@@ -17,7 +18,7 @@ namespace Deve.Api.Helpers
                     var interfaces = type.GetInterfaces().ToArray();
                     foreach (var iface in interfaces)
                     {
-                        services.AddScoped(iface, type);
+                        _ = services.AddScoped(iface, type);
                     }
                 }
             }

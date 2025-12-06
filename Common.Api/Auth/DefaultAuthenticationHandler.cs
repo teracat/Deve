@@ -1,12 +1,13 @@
 ﻿using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Options;
-using Deve.Localize;
+using Deve.Auth.Converters;
+using Deve.Auth.TokenManagers;
 using Deve.Data;
+using Deve.Localize;
 using Deve.Logging;
 using Deve.Model;
-using Deve.Auth.TokenManagers;
-using Deve.Auth.Converters;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Deve.Api.Auth
 {
@@ -127,10 +128,7 @@ namespace Deve.Api.Auth
         /// </summary>
         /// <param name="langCode">The language code for localization.</param>
         /// <returns>An authentication failure result.</returns>
-        private AuthenticateResult GetResultUnauthorized(string langCode)
-        {
-            return AuthenticateResult.Fail(ErrorLocalizeFactory.Get().Localize(ResultErrorType.Unauthorized, langCode));
-        }
+        private AuthenticateResult GetResultUnauthorized(string langCode) => AuthenticateResult.Fail(ErrorLocalizeFactory.Get().Localize(ResultErrorType.Unauthorized, langCode));
         #endregion
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Resources;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Resources;
 
 namespace Deve.Clients.Wpf.Helpers
 {
@@ -26,7 +26,7 @@ namespace Deve.Clients.Wpf.Helpers
                 long? extractedValue = null;
 
                 // If the value is an int directly
-                if (value is short || value is int || value is long)
+                if (value is short or int or long)
                 {
                     extractedValue = (long)value;
                 }
@@ -40,7 +40,7 @@ namespace Deve.Clients.Wpf.Helpers
                     }
 
                     var propertyValue = propertyInfo.GetValue(value);
-                    if (propertyValue is short || propertyValue is int || propertyValue is long)
+                    if (propertyValue is short or int or long)
                     {
                         extractedValue = (long)propertyValue;
                     }

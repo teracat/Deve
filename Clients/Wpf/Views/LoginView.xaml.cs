@@ -1,7 +1,6 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
-using System.Globalization;
-using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 
 namespace Deve.Clients.Wpf.Views
@@ -16,7 +15,7 @@ namespace Deve.Clients.Wpf.Views
         public LoginView(LoginViewModel viewModel)
         {
             InitializeComponent();
-            
+
             viewModel.LoginView = this;
             ViewModel = _viewModel = viewModel;
 
@@ -45,20 +44,17 @@ namespace Deve.Clients.Wpf.Views
             base.OnWindowLoaded();
             if (string.IsNullOrEmpty(uxUsername.Text))
             {
-                uxUsername.Focus();
+                _ = uxUsername.Focus();
             }
             else
             {
-                uxPassword.Focus();
+                _ = uxPassword.Focus();
             }
         }
         #endregion
 
         #region IViewLogin
-        public void ChangeCulture(CultureInfo value, string username)
-        {
-            ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
-        }
+        public void ChangeCulture(CultureInfo value, string username) => ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
         #endregion
 
         #region Events
@@ -66,7 +62,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                uxPassword.Focus();
+                _ = uxPassword.Focus();
             }
         }
 
@@ -79,12 +75,9 @@ namespace Deve.Clients.Wpf.Views
             }
         }
 
-        private void OnLoginClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _ = _viewModel.Login(uxPassword.Password);
-        }
+        private void OnLoginClick(object sender, RoutedEventArgs e) => _ = _viewModel.Login(uxPassword.Password);
 
-        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             var passwordBox = (PasswordBox)sender;
             _viewModel.Password = passwordBox.SecurePassword;

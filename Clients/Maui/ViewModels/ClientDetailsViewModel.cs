@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Internal.Model;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Internal.Model;
 
 namespace Deve.Clients.Maui.ViewModels
 {

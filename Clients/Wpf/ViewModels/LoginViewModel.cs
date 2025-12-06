@@ -1,12 +1,12 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Security;
-using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Deve.Authenticate;
+using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Views;
-using Deve.Clients.Wpf.Helpers;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -26,8 +26,6 @@ namespace Deve.Clients.Wpf.ViewModels
 
         [ObservableProperty]
         private bool _remember = false;
-
-        private SecureString _password = new();
         #endregion
 
         #region Properties
@@ -36,14 +34,14 @@ namespace Deve.Clients.Wpf.ViewModels
         [SecurePasswordValidation(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
         public SecureString Password
         {
-            get => _password;
+            get;
             set
             {
-                SetProperty(ref _password, value);
+                _ = SetProperty(ref field, value);
                 ValidateProperty(value);
                 OnPropertyChanged(nameof(HasErrorPassword));
             }
-        }
+        } = new();
 
         public bool HasErrorPassword => GetErrors(nameof(Password)).Any();
         #endregion
@@ -65,7 +63,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public LoginViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
             : base(navigationService, data, messageHandler)
         {
-            _selectedLanguage = _languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? _languages.FirstOrDefault();
+            _selectedLanguage = Languages.FirstOrDefault(x => x.LCID == Thread.CurrentThread.CurrentCulture.LCID) ?? Languages.FirstOrDefault();
             _username = Properties.Settings.Default.Username;
             _remember = !string.IsNullOrEmpty(Properties.Settings.Default.Username);
         }

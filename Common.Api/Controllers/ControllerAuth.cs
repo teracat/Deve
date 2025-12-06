@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Deve.Authenticate;
 using Deve.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Deve.Api.Controllers
 {
@@ -16,15 +16,9 @@ namespace Deve.Api.Controllers
         }
 
         [HttpGet(ApiConstants.MethodLogin)]
-        public Task<ResultGet<UserToken>> Login([FromQuery]UserCredentials credentials)
-        {
-            return _auth.Login(credentials);
-        }
+        public Task<ResultGet<UserToken>> Login([FromQuery] UserCredentials credentials) => _auth.Login(credentials);
 
         [HttpGet(ApiConstants.MethodRefreshToken)]
-        public Task<ResultGet<UserToken>> RefreshToken([FromQuery] string token)
-        {
-            return _auth.RefreshToken(token);
-        }
+        public Task<ResultGet<UserToken>> RefreshToken([FromQuery] string token) => _auth.RefreshToken(token);
     }
 }

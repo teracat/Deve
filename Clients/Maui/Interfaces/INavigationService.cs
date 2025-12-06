@@ -6,8 +6,6 @@
     /// </summary>
     public interface INavigationService
     {
-        Task InitializeAsync();
-
         Task NavigateToAsync(string route, INavigationParameters routeParameters);
 
         Task NavigateToAsync(string route);

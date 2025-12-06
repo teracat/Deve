@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Deve.Auth.Crypt;
+﻿using Deve.Auth.Crypt;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Deve.Api.Crypt
 {

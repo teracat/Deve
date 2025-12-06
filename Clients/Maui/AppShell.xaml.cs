@@ -17,11 +17,5 @@ namespace Deve.Clients.Maui
         }
 
         private async void LogoutClicked(object sender, EventArgs e) => await _navigationService.NavigateToAsync("//login");
-
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            _ = _navigationService.InitializeAsync();
-        }
     }
 }

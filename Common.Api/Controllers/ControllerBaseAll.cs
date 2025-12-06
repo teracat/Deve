@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using Deve.Model;
 using Deve.Internal.Data;
+using Deve.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Deve.Api.Controllers
 {
@@ -12,34 +12,19 @@ namespace Deve.Api.Controllers
 
         #region Methods
         [HttpGet]
-        public async Task<ResultGetList<ModelList>> GetList([FromQuery] Criteria? criteria)
-        {
-            return await DataAll.Get(criteria);
-        }
+        public async Task<ResultGetList<ModelList>> GetList([FromQuery] Criteria? criteria) => await DataAll.Get(criteria);
 
         [HttpGet, Route("{id}")]
-        public async Task<ResultGet<Model>> Get(long id)
-        {
-            return await DataAll.Get(id);
-        }
+        public async Task<ResultGet<Model>> Get(long id) => await DataAll.Get(id);
 
         [HttpPost]
-        public async Task<Result> Post([FromBody] Model request)
-        {
-            return await DataAll.Add(request);
-        }
+        public async Task<Result> Post([FromBody] Model request) => await DataAll.Add(request);
 
         [HttpPut]
-        public async Task<Result> Put([FromBody] Model request)
-        {
-            return await DataAll.Update(request);
-        }
+        public async Task<Result> Put([FromBody] Model request) => await DataAll.Update(request);
 
         [HttpDelete, Route("{id}")]
-        public async Task<Result> Delete(long id)
-        {
-            return await DataAll.Delete(id);
-        }
+        public async Task<Result> Delete(long id) => await DataAll.Delete(id);
         #endregion
     }
 }

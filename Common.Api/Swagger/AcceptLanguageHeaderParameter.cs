@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Deve.Api.Swagger
@@ -15,10 +15,7 @@ namespace Deve.Api.Swagger
         /// <param name="context">The context of the operation filter.</param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (operation.Parameters == null)
-            {
-                operation.Parameters = new List<OpenApiParameter>();
-            }
+            operation.Parameters ??= [];
 
             operation.Parameters.Add(new OpenApiParameter
             {

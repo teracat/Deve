@@ -1,6 +1,7 @@
 ﻿using Deve.Auth;
 using Deve.Auth.Converters;
 using Deve.Auth.UserIdentityService;
+using Microsoft.AspNetCore.Http;
 
 namespace Deve.Api.Auth
 {

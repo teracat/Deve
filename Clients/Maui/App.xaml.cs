@@ -1,14 +1,33 @@
 ﻿using Deve.Clients.Maui.Interfaces;
+using Deve.Diagnostics;
 
 namespace Deve.Clients.Maui
 {
     public partial class App : Application
     {
-        public App(INavigationService navigationService)
+        private readonly INavigationService _navigationService;
+        private readonly IDiagnosticsTransactionHandler _diagnosticsTransactionHandler;
+
+        public App(INavigationService navigationService, IDiagnosticsTransactionHandler diagnosticsTransactionHandler)
         {
             InitializeComponent();
 
-            MainPage = new AppShell(navigationService);
+            _navigationService = navigationService;
+            _diagnosticsTransactionHandler = diagnosticsTransactionHandler;
         }
+
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            var window = new Window(new AppShell(_navigationService));
+
+            window.Created += OnCreated;
+            window.Destroying += OnDestroying;
+
+            return window;
+        }
+
+        private void OnCreated(object? sender, EventArgs e) => _diagnosticsTransactionHandler.StartTransaction("MAUI App User Session", "app.maui");
+
+        private void OnDestroying(object? sender, EventArgs e) => _diagnosticsTransactionHandler.StopTransaction();
     }
 }

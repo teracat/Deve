@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net8.0-android34.0</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))=='false'">net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>net10.0;net10.0-android36.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net10.0-tizen</TargetFrameworks> -->
 
 		<!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
@@ -15,12 +15,13 @@
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 		<RuntimeIdentifiers Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">iossimulator-x64</RuntimeIdentifiers>
 
-    <OutputType Condition="'$(TargetFramework)' != 'net8.0'">Exe</OutputType>
+    <OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
 		<UseMaui>true</UseMaui>
-		<MauiVersion>8.0.100</MauiVersion>
+		<MauiVersion>10.0.11</MauiVersion>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
 		<!-- Display name -->
 		<ApplicationTitle>Maui</ApplicationTitle>
@@ -64,11 +65,13 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+	  <ProjectReference Include="..\..\Extra\Diagnostics.OpenTelemetry.Maui\Deve.Diagnostics.OpenTelemetry.Maui.csproj" />
+	  <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
 	  <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
 	  <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
 	</ItemGroup>

@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Deve.Logging;
-using Deve.Clients.Wpf.Interfaces;
+﻿using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Views;
+using Deve.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Clients.Wpf.Services
 {
@@ -83,7 +83,7 @@ namespace Deve.Clients.Wpf.Services
                 {
                     navAwareWithType.OnNavigatedToWithType(parameter);
                 }
-                else if(view.ViewModel is INavigationAware navAware)
+                else if (view.ViewModel is INavigationAware navAware)
                 {
                     navAware.OnNavigatedTo(parameter);
                 }
