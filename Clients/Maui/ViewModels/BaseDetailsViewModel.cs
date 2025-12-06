@@ -21,7 +21,7 @@ namespace Deve.Clients.Maui.ViewModels
             LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
 
             // Properties
-            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
+            _ = this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
                 .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
         }
         #endregion

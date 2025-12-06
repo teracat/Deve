@@ -1,30 +1,22 @@
 ﻿using Deve.Data;
 using Deve.External.Data;
 using Deve.Sdk;
-using Deve.Sdk.LoggingHandlers;
 
 namespace Deve.External.Sdk
 {
     public class SdkMain : SdkMainBase, ISdk
     {
-        #region Fields
-        private IDataCountry? _sdkCountry;
-        private IDataState? _sdkState;
-        private IDataCity? _sdkCity;
-        private IDataClientBasic? _sdkClient;
-        #endregion
-
         #region Properties
         internal override string Url => _environment == EnvironmentType.Staging ? ApiConstants.UrlStagingExternal : ApiConstants.UrlProductionExternal;
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment, DataOptions options, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, DataOptions options, HttpMessageHandler handler)
             : base(environment, options, handler)
         {
         }
 
-        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, HttpMessageHandler handler)
             : base(environment, handler)
         {
         }
@@ -51,13 +43,13 @@ namespace Deve.External.Sdk
         #endregion
 
         #region IData
-        public IDataCountry Countries => _sdkCountry ??= new SdkCountry(this);
+        public IDataCountry Countries => field ??= new SdkCountry(this);
 
-        public IDataState States => _sdkState ??= new SdkState(this);
+        public IDataState States => field ??= new SdkState(this);
 
-        public IDataCity Cities => _sdkCity ??= new SdkCity(this);
+        public IDataCity Cities => field ??= new SdkCity(this);
 
-        public IDataClientBasic Clients => _sdkClient ??= new SdkClient(this);
+        public IDataClientBasic Clients => field ??= new SdkClient(this);
         #endregion
     }
 }

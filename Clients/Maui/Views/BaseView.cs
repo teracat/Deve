@@ -4,19 +4,15 @@ namespace Deve.Clients.Maui.Views
 {
     public abstract class BaseView : ContentPage
     {
-        #region Fields
-        private BaseViewModel? _viewModel;
-        #endregion
-
         #region Properties
         protected BaseViewModel? ViewModel
         {
-            get => _viewModel;
+            get;
             set
             {
-                if (_viewModel != value)
+                if (field != value)
                 {
-                    BindingContext = _viewModel = value;
+                    BindingContext = field = value;
                 }
             }
         }

@@ -2,7 +2,7 @@
 {
     public enum ChecksActionType
     {
-        Add, 
+        Add,
         Update
     }
 }

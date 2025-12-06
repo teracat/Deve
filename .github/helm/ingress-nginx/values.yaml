@@ -1,0 +1,22 @@
+ingress-nginx:
+  controller:
+    replicaCount: 2
+    healthStatus: true
+    allowSnippetAnnotations: true
+    nodeSelector:
+      kubernetes.io/os: linux
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+    service:
+      externalTrafficPolicy: Cluster
+      loadBalancerIP: ''
+      annotations:
+        service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+    config:
+      enable-snippets: "true"
+      annotations-risk-level: "Critical"
+
+  defaultBackend:
+    nodeSelector:
+      kubernetes.io/os: linux

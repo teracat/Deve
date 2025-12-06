@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-external
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-external
+  template:
+    metadata:
+      labels:
+        app: redis-external
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest # We use the standard image
+          # If you want to use a custom image from your ACR, uncomment the line below
+          # and remove the 'image' line above. Also update docker-compose accordingly.
+          #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.redis.port }}
+          securityContext:
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-external
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  selector:
+    app: redis-external
+  type: ClusterIP
+  ports:
+    - name: http
+      port: {{ .Values.redis.port }}
+      targetPort: {{ .Values.redis.port }}

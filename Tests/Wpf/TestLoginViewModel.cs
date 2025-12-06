@@ -1,9 +1,9 @@
-using System.Security;
 using System.Reactive.Threading.Tasks;
+using System.Security;
 using Moq;
+using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
-using Deve.Clients.Wpf.Interfaces;
 using Deve.Tests.Wpf.Fixtures;
 
 namespace Deve.Tests.Wpf
@@ -26,7 +26,7 @@ namespace Deve.Tests.Wpf
                 Username = string.Empty,
             };
 
-            await loginViewModel.LoginCommand.Execute(string.Empty).ToTask();
+            _ = await loginViewModel.LoginCommand.Execute(string.Empty).ToTask();
 
             Assert.True(loginViewModel.HasErrors);  // Validation errors uses the HasErrors property
         }
@@ -53,7 +53,7 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordInactive),  // To avoid Validation errors
             };
 
-            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordInactive).ToTask();
+            _ = await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordInactive).ToTask();
 
             Assert.True(loginViewModel.HasError);   // HasError is a custom property for other types of errors
         }
@@ -68,7 +68,7 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
+            _ = await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
 
             Assert.False(loginViewModel.HasError);
         }
@@ -85,7 +85,7 @@ namespace Deve.Tests.Wpf
                 Password = SecureStringConverter(TestsConstants.UserPasswordValid),  // To avoid Validation errors
             };
 
-            await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
+            _ = await loginViewModel.LoginCommand.Execute(TestsConstants.UserPasswordValid).ToTask();
 
             navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
         }

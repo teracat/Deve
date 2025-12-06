@@ -56,9 +56,9 @@ namespace Deve.Clients.Wpf.ViewModels
             LoginCommand = ReactiveCommand.CreateFromTask<string, ResultGet<UserToken>?>(Login, canExecuteLogin, outputScheduler: scheduler.MainThread);
 
             // Validation Rules
-            this.ValidationRule(vm => vm.Username,
+            _ = this.ValidationRule(vm => vm.Username,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Username,
-                                                  (shouldValidate,username) => !shouldValidate || !string.IsNullOrWhiteSpace(username)),
+                                                  (shouldValidate, username) => !shouldValidate || !string.IsNullOrWhiteSpace(username)),
                                 AppResources.MissingUsername);
 
             _passwordValidation = this.ValidationRule(vm => vm.Password,
@@ -72,18 +72,18 @@ namespace Deve.Clients.Wpf.ViewModels
                                           .ToProperty(this, vm => vm.HasErrorPassword, scheduler: scheduler.TaskPool, initialValue: false);
 
             // Subscriptions
-            this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)
+            _ = this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)
                 .SubscribeOn(scheduler.TaskPool)
                 .ObserveOn(scheduler.MainThread)
                 .DistinctUntilChanged()
                 .Subscribe(isExecuting => IsBusy = isExecuting);
 
-            _passwordValidation.ValidationChanged
+            _ = _passwordValidation.ValidationChanged
                                .SubscribeOn(scheduler.TaskPool)
                                .ObserveOn(scheduler.MainThread)
                                .Subscribe(_ => this.RaisePropertyChanged(nameof(HasErrorPassword)));
 
-            this.WhenAnyValue(vm => vm.SelectedLanguage)
+            _ = this.WhenAnyValue(vm => vm.SelectedLanguage)
                 .SubscribeOn(scheduler.TaskPool)
                 .ObserveOn(scheduler.MainThread)
                 .DistinctUntilChanged()
@@ -101,7 +101,7 @@ namespace Deve.Clients.Wpf.ViewModels
             // When the login command completes, check the result and navigate to the main view if successful.
             // It waits for the command to complete and then checks if it was successful.
             // It's done this way to be able to close this window after the navigation (if IsBusy is true it won't be closed -check OnClosing in BaseView-).
-            LoginCommand
+            _ = LoginCommand
                 .CombineLatest(this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting))
                 .Where(tuple => !tuple.Second && tuple.First is not null)  // Waits until IsExecuting becomes false
                 .SubscribeOn(scheduler.TaskPool)

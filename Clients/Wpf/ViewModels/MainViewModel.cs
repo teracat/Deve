@@ -164,10 +164,7 @@ namespace Deve.Clients.Wpf.ViewModels
         }
 
         [ReactiveCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task DeleteState(ListData? listData)
-        {
-            await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
-        }
+        private async Task DeleteState(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
 
         [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
         private async Task AddCountry()
@@ -194,10 +191,7 @@ namespace Deve.Clients.Wpf.ViewModels
         }
 
         [ReactiveCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task DeleteCountry(ListData? listData)
-        {
-            await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
-        }
+        private async Task DeleteCountry(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
         #endregion
 
         #region Generic Methods
@@ -246,7 +240,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 if (obj is not null)
                 {
-                    editFunc(obj);
+                    _ = editFunc(obj);
                 }
             }
         }

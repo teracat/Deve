@@ -1,10 +1,10 @@
-﻿using System.Text;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using Deve.Authenticate;
-using Deve.Logging;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using Deve.Auth.Converters;
+using Deve.Authenticate;
 using Deve.Internal.Model;
+using Deve.Logging;
 
 namespace Deve.Auth.TokenManagers.Jwt
 {

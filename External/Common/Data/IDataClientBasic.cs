@@ -1,6 +1,6 @@
-﻿using Deve.Model;
-using Deve.Criteria;
+﻿using Deve.Criteria;
 using Deve.External.Model;
+using Deve.Model;
 
 namespace Deve.External.Data
 {

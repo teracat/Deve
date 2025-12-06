@@ -6,18 +6,17 @@ namespace Deve.Clients.Wpf.Views
     public class BaseEditView : BaseView
     {
         #region Fields
-        private BaseEditViewModel? _viewModel;
         #endregion
 
         #region Properties
         protected new BaseEditViewModel? ViewModel
         {
-            get => _viewModel;
+            get;
             set
             {
-                if (_viewModel != value)
+                if (field != value)
                 {
-                    DataContext = base.ViewModel = _viewModel = value;
+                    DataContext = base.ViewModel = field = value;
                 }
             }
         }
@@ -29,17 +28,17 @@ namespace Deve.Clients.Wpf.Views
             base.OnKeyDown(e);
             if (e.Key == Key.Escape)
             {
-                _viewModel?.CancelCommand.Execute().Subscribe();
+                _ = (ViewModel?.CancelCommand.Execute().Subscribe());
             }
         }
         #endregion
 
         #region Events
-        protected void OnLastControlKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        protected void OnLastControlKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Return && _viewModel is not null)
+            if (e.Key == Key.Return && ViewModel is not null)
             {
-                _ = _viewModel.SaveCommand.Execute().Subscribe();
+                _ = ViewModel.SaveCommand.Execute().Subscribe();
             }
         }
         #endregion

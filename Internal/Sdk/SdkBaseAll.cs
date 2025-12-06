@@ -1,6 +1,5 @@
 ﻿using Deve.Model;
 using Deve.Sdk;
-using Deve.Internal.Data;
 
 namespace Deve.Internal.Sdk
 {
@@ -14,20 +13,11 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IDataAll Methods
-        public async Task<ResultGet<ModelId>> Add(Model data)
-        {
-            return await PostWithResult<ModelId>(Path, RequestAuthType.Default, data);
-        }
+        public async Task<ResultGet<ModelId>> Add(Model data) => await PostWithResult<ModelId>(Path, RequestAuthType.Default, data);
 
-        public async Task<Result> Update(Model data)
-        {
-            return await Put(Path, RequestAuthType.Default, data);
-        }
+        public async Task<Result> Update(Model data) => await Put(Path, RequestAuthType.Default, data);
 
-        public async Task<Result> Delete(long id)
-        {
-            return await Delete(Path + id, RequestAuthType.Default);
-        }
+        public async Task<Result> Delete(long id) => await Delete(Path + id, RequestAuthType.Default);
         #endregion
     }
 }

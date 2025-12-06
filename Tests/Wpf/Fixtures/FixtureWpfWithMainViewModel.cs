@@ -19,10 +19,7 @@ namespace Deve.Tests.Wpf.Fixtures
             await MainViewModel.Initialization;
         }
 
-        public override async Task DisposeAsync()
-        {
-            await base.DisposeAsync();
-        }
+        public override async Task DisposeAsync() => await base.DisposeAsync();
         #endregion
     }
 }

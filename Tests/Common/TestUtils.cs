@@ -6,28 +6,16 @@ namespace Deve.Tests
     {
         #region SomeIsNullOrWhiteSpace
         [Fact]
-        public void SomeIsNullOrWhiteSpace_Null_ReturnTrue()
-        {
-            Assert.True(Utils.SomeIsNullOrWhiteSpace("a", null));
-        }
+        public void SomeIsNullOrWhiteSpace_Null_ReturnTrue() => Assert.True(Utils.SomeIsNullOrWhiteSpace("a", null));
 
         [Fact]
-        public void SomeIsNullOrWhiteSpace_Empty_ReturnTrue()
-        {
-            Assert.True(Utils.SomeIsNullOrWhiteSpace("a", ""));
-        }
+        public void SomeIsNullOrWhiteSpace_Empty_ReturnTrue() => Assert.True(Utils.SomeIsNullOrWhiteSpace("a", ""));
 
         [Fact]
-        public void SomeIsNullOrWhiteSpace_Space_ReturnTrue()
-        {
-            Assert.True(Utils.SomeIsNullOrWhiteSpace("a", " "));
-        }
+        public void SomeIsNullOrWhiteSpace_Space_ReturnTrue() => Assert.True(Utils.SomeIsNullOrWhiteSpace("a", " "));
 
         [Fact]
-        public void SomeIsNullOrWhiteSpace_NotEmpty_ReturnFalse()
-        {
-            Assert.False(Utils.SomeIsNullOrWhiteSpace("a", "b"));
-        }
+        public void SomeIsNullOrWhiteSpace_NotEmpty_ReturnFalse() => Assert.False(Utils.SomeIsNullOrWhiteSpace("a", "b"));
         #endregion
 
         #region FindNullOrWhiteSpace
@@ -128,46 +116,25 @@ namespace Deve.Tests
 
         #region IsEmptyValue
         [Fact]
-        public void IsEmptyValue_Null_ReturnTrue()
-        {
-            Assert.True(Utils.IsEmptyValue(null));
-        }
+        public void IsEmptyValue_Null_ReturnTrue() => Assert.True(Utils.IsEmptyValue(null));
 
         [Fact]
-        public void IsEmptyValue_Empty_ReturnTrue()
-        {
-            Assert.True(Utils.IsEmptyValue(""));
-        }
+        public void IsEmptyValue_Empty_ReturnTrue() => Assert.True(Utils.IsEmptyValue(""));
 
         [Fact]
-        public void IsEmptyValue_Space_ReturnTrue()
-        {
-            Assert.True(Utils.IsEmptyValue(" "));
-        }
+        public void IsEmptyValue_Space_ReturnTrue() => Assert.True(Utils.IsEmptyValue(" "));
 
         [Fact]
-        public void IsEmptyValue_Zero_ReturnTrue()
-        {
-            Assert.True(Utils.IsEmptyValue(0));
-        }
+        public void IsEmptyValue_Zero_ReturnTrue() => Assert.True(Utils.IsEmptyValue(0));
 
         [Fact]
-        public void IsEmptyValue_Negative_ReturnTrue()
-        {
-            Assert.True(Utils.IsEmptyValue(-1));
-        }
+        public void IsEmptyValue_Negative_ReturnTrue() => Assert.True(Utils.IsEmptyValue(-1));
 
         [Fact]
-        public void IsEmptyValue_NotEmpty_ReturnFalse()
-        {
-            Assert.False(Utils.IsEmptyValue("test"));
-        }
+        public void IsEmptyValue_NotEmpty_ReturnFalse() => Assert.False(Utils.IsEmptyValue("test"));
 
         [Fact]
-        public void IsEmptyValue_One_ReturnFalse()
-        {
-            Assert.False(Utils.IsEmptyValue(1));
-        }
+        public void IsEmptyValue_One_ReturnFalse() => Assert.False(Utils.IsEmptyValue(1));
         #endregion
 
         #region FoundFieldsToErrors
@@ -211,7 +178,7 @@ namespace Deve.Tests
 
             var res = Utils.FoundFieldsToErrors(Constants.DefaultLangCode, ResultErrorType.Unknown, list);
 
-            Assert.Single(res);
+            _ = Assert.Single(res);
         }
 
         [Fact]
@@ -231,7 +198,7 @@ namespace Deve.Tests
         {
             var obj = Utils.CreateInstance<Result>();
 
-            Assert.IsType<Result>(obj);
+            _ = Assert.IsType<Result>(obj);
         }
         #endregion
 

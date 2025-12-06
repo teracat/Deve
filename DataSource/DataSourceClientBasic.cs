@@ -1,7 +1,7 @@
-﻿using Deve.Model;
-using Deve.Criteria;
+﻿using Deve.Criteria;
 using Deve.DataSource.CriteriaHandlers;
 using Deve.External.Model;
+using Deve.Model;
 
 namespace Deve.DataSource
 {
@@ -73,8 +73,7 @@ namespace Deve.DataSource
                     return Utils.ResultGetError<Client>(DataSource.Options.LangCode, ResultErrorType.MissingRequiredField, nameof(ClientBasic.Id));
                 }
 
-                var client = Data.Clients.FirstOrDefault(x => x.Id == id) as Client;
-                if (client is null)
+                if (Data.Clients.FirstOrDefault(x => x.Id == id) is not Client client)
                 {
                     return Utils.ResultGetError<Client>(DataSource.Options.LangCode, ResultErrorType.NotFound);
                 }

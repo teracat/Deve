@@ -2,11 +2,8 @@ namespace Deve.Internal.Api
 {
     public partial class Program
     {
-        public static void Main(string[] args)
-        {
-            Deve.Api.Program.Main(args);
-        }
+        public static void Main(string[] args) => new Deve.Api.ApiBuilder().CreateAndRunApi(args);
 
-        protected Program() {}
+        protected Program() { }
     }
 }

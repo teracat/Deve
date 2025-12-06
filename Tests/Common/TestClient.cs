@@ -99,7 +99,7 @@ namespace Deve.Tests
 
             var res = await dataClient.UpdateStatus(ValidId, ClientStatus.Active);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace Deve.Tests
 
             var res = await dataClient.UpdateStatus(0, ClientStatus.Active);
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]

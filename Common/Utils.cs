@@ -15,7 +15,7 @@ namespace Deve
         /// </summary>
         /// <param name="values">The string values to check.</param>
         /// <returns>true if at least one value is null, empty, or whitespace; otherwise, false.</returns>
-        public static bool SomeIsNullOrWhiteSpace(params string?[] values) => values.Any(x => string.IsNullOrWhiteSpace(x));
+        public static bool SomeIsNullOrWhiteSpace(params string?[] values) => values.Any(string.IsNullOrWhiteSpace);
 
         /// <summary>
         /// Finds fields where the value is null or whitespace.
@@ -102,7 +102,7 @@ namespace Deve
             }
             finally
             {
-                semaphore.Release();
+                _ = semaphore.Release();
             }
         }
 

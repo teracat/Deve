@@ -1,0 +1,48 @@
+namespace:
+  name: monitoring
+
+image:
+  tag: latest
+  repositories:
+    grafana: grafana
+    prometheus: prometheus
+    zipkin: zipkin
+
+oauth2:
+  host: ''
+  hostRoot: ''
+  internalPort: 4180
+  externalPort: 80
+  cookieSecret: ''
+postgres:
+  port: 5432
+  superUser: 'postgres'
+  superPassword: ''
+keycloak:
+  host: ''
+  port: 8080
+  portManagement: 9000
+  adminUser: 'admin'
+  adminPassword: ''
+  dbUser: keycloak
+  dbPassword: ''
+  dbName: keycloak
+grafana:
+  port: 3000
+  host: ''
+  adminPassword: ''
+  clientId: grafana
+  clientSecret: ''
+  dbUser: grafana
+  dbPassword: ''
+  dbName: grafana
+prometheus:
+  port: 9090
+  host: ''
+  clientId: prometheus
+  clientSecret: ''
+zipkin:
+  port: 9411
+  host: ''
+  clientId: zipkin
+  clientSecret: ''

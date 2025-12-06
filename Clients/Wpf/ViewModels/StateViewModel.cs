@@ -27,12 +27,12 @@ namespace Deve.Clients.Wpf.ViewModels
             : base(navigationService, data, messageHandler, scheduler)
         {
             // Validation Rules
-            this.ValidationRule(vm => vm.Name,
+            _ = this.ValidationRule(vm => vm.Name,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Name,
                                                   (shouldValidate, name) => !shouldValidate || !string.IsNullOrWhiteSpace(name)),
                                 AppResources.MissingName);
 
-            this.ValidationRule(vm => vm.SelectedCountry,
+            _ = this.ValidationRule(vm => vm.SelectedCountry,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.SelectedCountry,
                                                   (shouldValidate, selectedCountry) => !shouldValidate || (selectedCountry is not null && selectedCountry.Id > 0)),
                                 AppResources.MissingCountry);
@@ -40,12 +40,12 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task<Result> GetData()
+        protected override async Task<Result> GetData()
         {
             var taskState = GetDataState();
             var taskCountries = GetDataCountries();
 
-            await Task.WhenAll(taskState, taskCountries);
+            _ = await Task.WhenAll(taskState, taskCountries);
 
             var resState = await taskState;
             var resCountry = await taskCountries;
@@ -60,7 +60,7 @@ namespace Deve.Clients.Wpf.ViewModels
             return resCountry;
         }
 
-        protected async override Task<Result> Save()
+        protected override async Task<Result> Save()
         {
             if (_state is null)
             {
@@ -142,7 +142,7 @@ namespace Deve.Clients.Wpf.ViewModels
         public void OnNavigatedToWithType(State parameter)
         {
             _state = parameter;
-            LoadCommand.Execute().Subscribe();
+            _ = LoadCommand.Execute().Subscribe();
         }
         #endregion
     }

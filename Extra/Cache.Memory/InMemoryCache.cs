@@ -77,7 +77,7 @@ namespace Deve.Cache
         {
             if (!expiry.HasValue)
             {
-                _memoryCache.Set(key, value);
+                _ = _memoryCache.Set(key, value);
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace Deve.Cache
             {
                 AbsoluteExpirationRelativeToNow = expiry.Value,
             };
-            _memoryCache.Set(key, value, options);
+            _ = _memoryCache.Set(key, value, options);
         }
 
         /// <inheritdoc />
@@ -93,10 +93,7 @@ namespace Deve.Cache
         #endregion
 
         #region IDisposable
-        public void Dispose()
-        {
-            _memoryCache.Dispose();
-        }
+        public void Dispose() => _memoryCache.Dispose();
         #endregion
     }
 }

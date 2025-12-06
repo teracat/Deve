@@ -25,15 +25,15 @@ namespace Deve.Clients.Wpf.ViewModels
             : base(navigationService, data, messageHandler, scheduler)
         {
             // Validation Rules
-            this.ValidationRule(vm => vm.Name,
+            _ = this.ValidationRule(vm => vm.Name,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Name,
                                                   (shouldValidate, name) => !shouldValidate || !string.IsNullOrWhiteSpace(name)),
                                 AppResources.MissingName);
-            this.ValidationRule(vm => vm.IsoCode,
+            _ = this.ValidationRule(vm => vm.IsoCode,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.IsoCode,
                                                   (shouldValidate, isoCode) => !shouldValidate || !string.IsNullOrWhiteSpace(isoCode)),
                                 AppResources.MissingIsoCode);
-            this.ValidationRule(vm => vm.IsoCode,
+            _ = this.ValidationRule(vm => vm.IsoCode,
                                 this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.IsoCode,
                                                   (shouldValidate, isoCode) => !shouldValidate || isoCode.Length >= 2),
                                 AppResources.MinLengthIsoCode);
@@ -41,7 +41,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task<Result> GetData()
+        protected override async Task<Result> GetData()
         {
             if (_country is null)
             {
@@ -71,7 +71,7 @@ namespace Deve.Clients.Wpf.ViewModels
             return Utils.ResultOk();
         }
 
-        protected async override Task<Result> Save()
+        protected override async Task<Result> Save()
         {
             if (_country is null)
             {

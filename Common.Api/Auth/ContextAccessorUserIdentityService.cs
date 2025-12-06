@@ -1,4 +1,5 @@
-﻿using Deve.Auth;
+﻿using Microsoft.AspNetCore.Http;
+using Deve.Auth;
 using Deve.Auth.Converters;
 using Deve.Auth.UserIdentityService;
 

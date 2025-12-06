@@ -1,11 +1,11 @@
-﻿using Deve.Authenticate;
+﻿using Deve.Auth;
+using Deve.Auth.UserIdentityService;
+using Deve.Authenticate;
+using Deve.Cache;
+using Deve.Core.Shield;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Auth;
-using Deve.Auth.UserIdentityService;
-using Deve.Core.Shield;
 using Deve.Internal.Data;
-using Deve.Cache;
 
 namespace Deve.Core
 {

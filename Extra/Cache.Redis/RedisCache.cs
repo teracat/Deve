@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using StackExchange.Redis;
 using Deve.Logging;
+using StackExchange.Redis;
 
 namespace Deve.Cache
 {
@@ -10,13 +10,13 @@ namespace Deve.Cache
     public class RedisCache : ICache
     {
         #region Fields
-        private readonly ConnectionMultiplexer? _connectionMultiplexer;
         private readonly IDatabase _database;
         #endregion
 
         #region Properties
         /// <inheritdoc />
         public TimeSpan? DefaultExpiry { get; set; } = TimeSpan.FromMinutes(5);
+        public ConnectionMultiplexer? ConnectionMultiplexer { get; }
         #endregion
 
         #region Constructors
@@ -26,8 +26,8 @@ namespace Deve.Cache
         /// <param name="connectionString">The connection string to the Redis server.</param>
         public RedisCache(string connectionString)
         {
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
-            _database = _connectionMultiplexer.GetDatabase();
+            ConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
+            _database = ConnectionMultiplexer.GetDatabase();
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace Deve.Cache
         /// <param name="log">The <see cref="TextWriter"/> to log to.</param>
         public RedisCache(string connectionString, TextWriter log)
         {
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(connectionString, log);
-            _database = _connectionMultiplexer.GetDatabase();
+            ConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString, log);
+            _database = ConnectionMultiplexer.GetDatabase();
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Deve.Cache
         /// <param name="configure">Action to further modify the parsed configuration options.</param>
         public RedisCache(string configuration, Action<ConfigurationOptions> configure)
         {
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(configuration, configure);
-            _database = _connectionMultiplexer.GetDatabase();
+            ConnectionMultiplexer = ConnectionMultiplexer.Connect(configuration, configure);
+            _database = ConnectionMultiplexer.GetDatabase();
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace Deve.Cache
         /// <param name="log">The TextWriter to log to.</param>
         public RedisCache(string configuration, Action<ConfigurationOptions> configure, TextWriter log)
         {
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(configuration, configure, log);
-            _database = _connectionMultiplexer.GetDatabase();
+            ConnectionMultiplexer = ConnectionMultiplexer.Connect(configuration, configure, log);
+            _database = ConnectionMultiplexer.GetDatabase();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Deve.Cache
         /// <param name="database">The existing <see cref="IDatabase"/> instance.</param>
         public RedisCache(IDatabase database)
         {
-            _connectionMultiplexer = null;
+            ConnectionMultiplexer = null;
             _database = database;
         }
         #endregion
@@ -88,7 +88,8 @@ namespace Deve.Cache
                     return false;
                 }
 
-                var deserializedValue = JsonSerializer.Deserialize<T>(redisValue!);
+                // Fix ambiguity by explicitly converting to string
+                var deserializedValue = JsonSerializer.Deserialize<T>(redisValue.ToString());
                 if (deserializedValue is null)
                 {
                     value = default!;
@@ -117,11 +118,11 @@ namespace Deve.Cache
                 var serializedValue = JsonSerializer.Serialize(value);
                 if (expiry is null)
                 {
-                    _database.StringSet(key, serializedValue);
+                    _ = _database.StringSet(key, serializedValue);
                     return;
                 }
 
-                _database.StringSet(key, serializedValue, expiry);
+                _ = _database.StringSet(key, serializedValue, expiry, false);
             }
             catch (Exception ex)
             {
@@ -134,10 +135,7 @@ namespace Deve.Cache
         #endregion
 
         #region IDisposable
-        public void Dispose()
-        {
-            _connectionMultiplexer?.Dispose();
-        }
+        public void Dispose() => ConnectionMultiplexer?.Dispose();
         #endregion
     }
 }

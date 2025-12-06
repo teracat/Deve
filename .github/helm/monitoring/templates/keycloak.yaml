@@ -1,0 +1,182 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-secret
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  password: {{ .Values.keycloak.adminPassword | quote }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  secretName: keycloak-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.keycloak.host | quote }}
+  dnsNames:
+    - {{ .Values.keycloak.host | quote }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: {{ .Values.namespace.name | quote }}
+  labels:
+    app: keycloak
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      volumes:
+        - name: realm-import
+          configMap:
+            name: keycloak-realm-monitoring
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16-alpine
+          command: ["sh","-c"]
+          env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials-keycloak
+                key: password
+          args:
+            - |
+              until psql "host=postgresql port={{ .Values.postgres.port }} user={{ .Values.keycloak.dbUser }} dbname={{ .Values.keycloak.dbName }} sslmode=disable" -c 'SELECT 1;' >/dev/null 2>&1; do
+                echo "Waiting for Postgres..."; sleep 5;
+              done
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:26.4
+        args: ["start", "--import-realm"]
+        env:
+        - name: KC_BOOTSTRAP_ADMIN_USERNAME
+          value: {{ .Values.keycloak.adminUser | quote }}
+        - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-secret
+              key: password
+        - name: KC_HTTP_ENABLED
+          value: 'true'
+        - name: KC_PROXY_HEADERS
+          value: 'xforwarded'
+        - name: KC_HOSTNAME
+          value: {{ .Values.keycloak.host | quote }}
+        - name: KC_PROXY
+          value: 'edge'
+        - name: KC_HEALTH_ENABLED
+          value: 'true'
+        - name: KC_METRICS_ENABLED
+          value: 'true'
+        - name: KC_LOG_LEVEL
+          value: 'INFO'
+        - name: KC_DB
+          value: 'postgres'
+        - name: KC_DB_URL
+          value: "jdbc:postgresql://postgresql:{{ .Values.postgres.port }}/{{ .Values.keycloak.dbName }}"
+        - name: KC_DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-keycloak
+              key: user
+        - name: KC_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-keycloak
+              key: password
+        - name: KEYCLOAK_IMPORT
+          value: '/opt/keycloak/data/import/realm-monitoring.json'
+        volumeMounts:
+          - name: realm-import
+            mountPath: /opt/keycloak/data/import
+        ports:
+        - name: http
+          containerPort: {{ .Values.keycloak.port }}
+        - name: management
+          containerPort: {{ .Values.keycloak.portManagement }}
+        startupProbe:
+          httpGet:
+            path: /health/ready
+            port: {{ .Values.keycloak.portManagement }}
+          failureThreshold: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: {{ .Values.keycloak.portManagement }}
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: {{ .Values.keycloak.portManagement }}
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.5"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: {{ .Values.namespace.name | quote }}
+  labels:
+    app: keycloak
+spec:
+  ports:
+  - name: http
+    port: {{ .Values.keycloak.port }}
+    targetPort: {{ .Values.keycloak.port }}
+  selector:
+    app: keycloak
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.keycloak.host | quote }}
+      secretName: keycloak-tls
+  rules:
+    - host: {{ .Values.keycloak.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: {{ .Values.keycloak.port }}

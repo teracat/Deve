@@ -1,24 +1,20 @@
-﻿using Deve.Model;
+﻿using Deve.External.Data;
+using Deve.Model;
 using Deve.Sdk;
-using Deve.External.Data;
 
 namespace Deve.External.Sdk
 {
     internal class SdkBaseGet<ModelList, Model, Criteria, SdkType> : SdkBase<SdkType>, IDataGet<ModelList, Model, Criteria> where SdkType : ISdkCommon
     {
-        #region Atributes
-        private readonly string _path;
-        #endregion
-
         #region Properties
-        protected string Path => _path;
+        protected string Path { get; }
         #endregion
 
         #region Constructor
         public SdkBaseGet(string path, SdkType sdk)
             : base(sdk)
         {
-            _path = path;
+            Path = path;
         }
         #endregion
 

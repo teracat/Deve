@@ -1,8 +1,8 @@
-﻿using Deve.Model;
-using Deve.Sdk;
-using Deve.Internal.Criteria;
+﻿using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
+using Deve.Sdk;
 
 namespace Deve.Internal.Sdk
 {
@@ -16,10 +16,7 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IDataClient
-        public async Task<Result> UpdateStatus(long id, ClientStatus newStatus)
-        {
-            return await Put(Path + ApiConstants.MethodUpdateStatus + $"/{id}/{(int)newStatus}", RequestAuthType.Default, null);
-        }
+        public async Task<Result> UpdateStatus(long id, ClientStatus newStatus) => await Put(Path + ApiConstants.MethodUpdateStatus + $"/{id}/{(int)newStatus}", RequestAuthType.Default, null);
         #endregion
     }
 }

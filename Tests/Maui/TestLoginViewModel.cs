@@ -1,7 +1,7 @@
 using System.Reactive.Threading.Tasks;
 using Moq;
-using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
 
 namespace Deve.Tests.Maui
@@ -25,7 +25,7 @@ namespace Deve.Tests.Maui
                 Password = string.Empty
             };
 
-            await loginViewModel.LoginCommand.Execute().ToTask();
+            _ = await loginViewModel.LoginCommand.Execute().ToTask();
 
             Assert.True(loginViewModel.HasError);
         }
@@ -40,7 +40,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordInactive
             };
 
-            await loginViewModel.LoginCommand.Execute().ToTask();
+            _ = await loginViewModel.LoginCommand.Execute().ToTask();
 
             Assert.True(loginViewModel.HasError);
         }
@@ -55,7 +55,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.LoginCommand.Execute().ToTask();
+            _ = await loginViewModel.LoginCommand.Execute().ToTask();
 
             Assert.False(loginViewModel.HasError);
         }
@@ -72,7 +72,7 @@ namespace Deve.Tests.Maui
                 Password = TestsConstants.UserPasswordValid
             };
 
-            await loginViewModel.LoginCommand.Execute().ToTask();
+            _ = await loginViewModel.LoginCommand.Execute().ToTask();
 
             navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
         }

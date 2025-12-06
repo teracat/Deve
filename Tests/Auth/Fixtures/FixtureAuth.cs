@@ -1,6 +1,6 @@
-﻿using Deve.Model;
+﻿using Deve.Auth;
 using Deve.Authenticate;
-using Deve.Auth;
+using Deve.Model;
 
 namespace Deve.Tests.Auth.Fixtures
 {
