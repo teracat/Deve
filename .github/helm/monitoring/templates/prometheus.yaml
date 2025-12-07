@@ -1,17 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: prometheus-cert
-  namespace: {{ .Values.namespace.name | quote }}
-spec:
-  secretName: prometheus-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: {{ .Values.prometheus.host | quote }}
-  dnsNames:
-    - {{ .Values.prometheus.host | quote }}
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

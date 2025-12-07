@@ -57,7 +57,7 @@ spec:
             - name: ZIPKIN_URL
               value: "http://zipkin.monitoring.svc.cluster.local:9411"
             - name: OTEL_SERVICE_NAME
-              value: "api-external"
+              value: "api-internal"
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: "service.instance.id=$(uuidgen)"
             - name: ConnectionStrings__DataSourceConnection
