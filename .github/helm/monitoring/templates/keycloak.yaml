@@ -9,20 +9,6 @@ type: Opaque
 stringData:
   password: {{ .Values.keycloak.adminPassword | quote }}
 ---
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: keycloak-cert
-  namespace: {{ .Values.namespace.name | quote }}
-spec:
-  secretName: keycloak-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: {{ .Values.keycloak.host | quote }}
-  dnsNames:
-    - {{ .Values.keycloak.host | quote }}
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

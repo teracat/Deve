@@ -1,43 +1,43 @@
-# This workflow requires the following GitHub secrets to be defined:
+# This workflow requires the following GitHub secrets and environment variables (vars) to be defined:
 #
 # Azure Container Registry (ACR) access:
-# - ACR_LOGIN_SERVER: The login server URL of your Azure Container Registry (e.g., myregistry.azurecr.io).
-# - ACR_USERNAME: The username for accessing the ACR (usually the registry name).
-# - ACR_PASSWORD: The password or access key for the ACR.
+# - ACR_LOGIN_SERVER (vars): The login server URL of your Azure Container Registry (e.g., myregistry.azurecr.io).
+# - ACR_USERNAME (vars): The username for accessing the ACR (usually the registry name).
+# - ACR_PASSWORD (secrets): The password or access key for the ACR.
 #
 # Azure Kubernetes Service (AKS) access:
-# - AZURE_CREDENTIALS: A JSON string containing Azure service principal credentials, generated using `az ad sp create-for-rbac --sdk-auth`.
-# - AKS_CLUSTER_NAME: The name of the AKS cluster to deploy to.
-# - AKS_RESOURCE_GROUP: The name of the Azure resource group containing the AKS cluster.
+# - AZURE_CREDENTIALS (secrets): A JSON string containing Azure service principal credentials, generated using `az ad sp create-for-rbac --json-auth`.
+# - AKS_CLUSTER_NAME (vars): The name of the AKS cluster to deploy to.
+# - AKS_RESOURCE_GROUP (vars): The name of the Azure resource group containing the AKS cluster.
 #
 # JWT Secret Keys:
-# - JWT_SIGNING_SECRET_KEY: The secret key used to sign the JWT token (must be 32 bytes).
-# - JWT_ENCRYPTION_SECRET_KEY: The secret key used to encrypt the JWT token (must be 32 bytes).
+# - JWT_SIGNING_SECRET_KEY (secrets): The secret key used to sign the JWT token (must be 32 bytes).
+# - JWT_ENCRYPTION_SECRET_KEY (secrets): The secret key used to encrypt the JWT token (must be 32 bytes).
 #
 # DataSource:
-# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-internal (optional).
-# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING: ConnectionString for your DataSource (Database) in api-external (optional).
+# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-internal (optional).
+# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-external (optional).
 #
-# Let's Encrypt (these are variables, not secrets):
-# - LETSENCRYPT_EMAIL: Email of the Let's Encrypt account.
-# - HOST_APIINTERNAL: Host name for the Api Internal endpoint.
-# - HOST_APIEXTERNAL: Host name for the Api External endpoint.
-# - HOST_PROMETHEUS: Host name for the Prometheus endpoint.
-# - HOST_GRAFANA: Host name for the Grafana endpoint.
-# - HOST_ZIPKIN: Host name for the Zipkin endpoint.
-# - HOST_OAUTH2: Host name for the OAuth2 endpoint.
+# Let's Encrypt:
+# - LETSENCRYPT_EMAIL (vars): Email of the Let's Encrypt account.
+# - HOST_APIINTERNAL (vars): Host name for the Api Internal endpoint.
+# - HOST_APIEXTERNAL (vars): Host name for the Api External endpoint.
+# - HOST_PROMETHEUS (vars): Host name for the Prometheus endpoint.
+# - HOST_GRAFANA (vars): Host name for the Grafana endpoint.
+# - HOST_ZIPKIN (vars): Host name for the Zipkin endpoint.
+# - HOST_OAUTH2 (vars): Host name for the OAuth2 endpoint.
 # 
 # OAuth2:
-# - COOKIE_SECRET: 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
+# - COOKIE_SECRET (secrets): 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
 #
 # PostgreSQL:
-# - DB_USERS_PASSWORD: PostgreSQL password for all the users (if you prefer to use a different password for each user, you'll need a secret for each service and the superuser).
+# - DB_USERS_PASSWORD (secrets): PostgreSQL password for all the users (if you prefer to use a different password for each user, you'll need a secret for each service and the superuser).
 #
 # Keycloak:
-# - KEYCLOAK_ADMIN_PASSWORD: Initial password of the admin user to access Keycloak (to manage users with acces to monitoring services with OAuth2).
-# - SECRET_GRAFANA: Secret for Grafana in Keycloak.
-# - SECRET_PROMETHEUS: Secret for Prometheus in Keycloak.
-# - SECRET_ZIPKIN: Secret for Zipkin in Keycloak.
+# - KEYCLOAK_ADMIN_PASSWORD (secrets): Initial password of the admin user to access Keycloak (to manage users with acces to monitoring services with OAuth2).
+# - SECRET_GRAFANA (secrets): Secret for Grafana in Keycloak.
+# - SECRET_PROMETHEUS (secrets): Secret for Prometheus in Keycloak.
+# - SECRET_ZIPKIN (secrets): Secret for Zipkin in Keycloak.
 
 name: Deploy to Azure AKS
 
@@ -54,17 +54,9 @@ on:
         required: true
 
     secrets:
-      ACR_LOGIN_SERVER:
-        required: true
-      ACR_USERNAME:
-        required: true
       ACR_PASSWORD:
         required: true
       AZURE_CREDENTIALS:
-        required: true
-      AKS_CLUSTER_NAME:
-        required: true
-      AKS_RESOURCE_GROUP:
         required: true
       JWT_SIGNING_SECRET_KEY:
         required: true
@@ -95,11 +87,11 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     env:
-      ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+      ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
     steps:
     - name: Check some secret
       run: |
-          if [ -z "${{ secrets.ACR_USERNAME }}" ]; then
+          if [ -z "${{ vars.ACR_USERNAME }}" ]; then
             echo "ACR_USERNAME is not defined"
             exit 1
           else
@@ -161,9 +153,9 @@ jobs:
     - name: Login to ACR
       uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  #v3.6.0
       with:
-        registry: ${{ secrets.ACR_LOGIN_SERVER }}  # ACR login server
-        username: ${{ secrets.ACR_USERNAME }}  # ACR username
-        password: ${{ secrets.ACR_PASSWORD }}  # ACR password
+        registry: ${{ vars.ACR_LOGIN_SERVER }}
+        username: ${{ vars.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     - name: Build images with compose (tag computed)
       env:
@@ -197,8 +189,8 @@ jobs:
     - name: Set AKS context
       uses: azure/aks-set-context@c7eb093e5a5d47caa333f64974d5fd1cd4bf069d  #v4.0.3
       with:
-        resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
-        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+        resource-group: ${{ vars.AKS_RESOURCE_GROUP }}
+        cluster-name: ${{ vars.AKS_CLUSTER_NAME }}
 
     - name: Setup Helm
       uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
@@ -297,7 +289,7 @@ jobs:
           --dependency-update \
           --namespace ${NAMESPACE} \
           --create-namespace \
-          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
           --wait \
           --timeout 20m \
           --debug \
@@ -328,7 +320,7 @@ jobs:
           --namespace "${NAMESPACE}" \
           --create-namespace \
           --install \
-          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
           --set "image.tag=latest" \
           --wait \
           --timeout 20m \
@@ -360,7 +352,7 @@ jobs:
           --namespace "${NAMESPACE}" \
           --create-namespace \
           --install \
-          --set "acrLoginServer=${{ secrets.ACR_LOGIN_SERVER }}" \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
           --set "image.tag=latest" \
           --wait \
           --timeout 20m \
