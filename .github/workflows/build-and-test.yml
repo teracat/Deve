@@ -29,6 +29,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
+    - name: Restore workloads
+      run: dotnet workload restore ${{ inputs.solution }}
+
     - name: Restore dependencies
       run: dotnet restore ${{ inputs.solution }}
 
