@@ -9,10 +9,10 @@ namespace Deve.Clients.Maui.ViewModels
     {
         #region Fields
         [ObservableProperty]
-        IEnumerable<ListData>? _listData;
+        private IEnumerable<ListData>? _listData;
 
         [ObservableProperty]
-        ListData? _selectedData;
+        private ListData? _selectedData;
         #endregion
 
         #region Properties
@@ -41,10 +41,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected async Task InitializeAsync()
-        {
-            await LoadData();
-        }
+        protected async Task InitializeAsync() => await LoadData();
 
         public async Task LoadData()
         {
@@ -70,7 +67,7 @@ namespace Deve.Clients.Maui.ViewModels
             {
                 { nameof(BaseDetailsViewModel.Id), data.Id }
             };
-            NavigationService.NavigateToAsync("details", navigationParameter);
+            _ = NavigationService.NavigateToAsync("details", navigationParameter);
         }
         #endregion
     }

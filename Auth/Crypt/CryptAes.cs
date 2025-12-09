@@ -1,10 +1,10 @@
-﻿using System.Text;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace Deve.Auth.Crypt
 {
     /// <summary>
-    /// Encryption/decryption.
+    /// Encryption/decryption. You should use your own implementation or, at least, change the Key & IV used to encrypt/decrypt (see AutConstants).
     /// </summary>
     public class CryptAes : ICrypt
     {
@@ -50,16 +50,14 @@ namespace Deve.Auth.Crypt
             using (var memoryStream = new MemoryStream())
             {
                 // Create a CryptoStream object to perform the encryption.
-                using (var cryptoStream = new CryptoStream(memoryStream, _aes.CreateEncryptor(), CryptoStreamMode.Write))
+                using var cryptoStream = new CryptoStream(memoryStream, _aes.CreateEncryptor(), CryptoStreamMode.Write);
+                // Encrypt the plaintext.
+                using (var streamWriter = new StreamWriter(cryptoStream))
                 {
-                    // Encrypt the plaintext.
-                    using (var streamWriter = new StreamWriter(cryptoStream))
-                    {
-                        streamWriter.Write(text);
-                    }
-
-                    encrypted = memoryStream.ToArray();
+                    streamWriter.Write(text);
                 }
+
+                encrypted = memoryStream.ToArray();
             }
 
             return Convert.ToBase64String(encrypted);
@@ -84,14 +82,10 @@ namespace Deve.Auth.Crypt
             using (var memoryStream = new MemoryStream(bytes))
             {
                 // Create a CryptoStream object to perform the decryption.
-                using (var cryptoStream = new CryptoStream(memoryStream, _aes.CreateDecryptor(), CryptoStreamMode.Read))
-                {
-                    // Decrypt the ciphertext.
-                    using (var streamReader = new StreamReader(cryptoStream))
-                    {
-                        decrypted = streamReader.ReadToEnd();
-                    }
-                }
+                using var cryptoStream = new CryptoStream(memoryStream, _aes.CreateDecryptor(), CryptoStreamMode.Read);
+                // Decrypt the ciphertext.
+                using var streamReader = new StreamReader(cryptoStream);
+                decrypted = streamReader.ReadToEnd();
             }
 
             return decrypted;
@@ -100,9 +94,6 @@ namespace Deve.Auth.Crypt
         /// <summary>
         /// Releases any resources used by the instance. (Not needed for this implementation).
         /// </summary>
-        public void Dispose()
-        {
-            _aes.Dispose();
-        }
+        public void Dispose() => _aes.Dispose();
     }
 }

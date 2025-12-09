@@ -1,14 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Internal.Data;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Internal.Data;
 
 namespace Deve.Clients.Maui.ViewModels
 {
     public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
@@ -19,9 +17,9 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
         public bool IsIdle => !IsBusy;
 
@@ -31,12 +29,14 @@ namespace Deve.Clients.Maui.ViewModels
         #region Constructor
         protected BaseViewModel(INavigationService navigationService, IData data)
         {
-            _navigationService = navigationService;
-            _data = data;
+            NavigationService = navigationService;
+            Data = data;
         }
         #endregion
 
         #region Virtual Methods
+        protected virtual void OnIsBusyChanged() { }
+
         public virtual bool OnViewBackButtonPressed()
         {
             if (IsBusy)

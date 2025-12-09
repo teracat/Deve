@@ -1,5 +1,5 @@
-﻿using Deve.Localize;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using Deve.Localize;
 
 namespace Deve.Model
 {
@@ -58,16 +58,13 @@ namespace Deve.Model
         #endregion
 
         #region Checks Methods
-        public void CheckNotNull(object? value, [CallerArgumentExpression(nameof(value))] string fieldName = "")
-        {
-            CheckNotNull(value, ResultErrorType.InvalidId, fieldName);
-        }
+        public void CheckNotNull(object? value, [CallerArgumentExpression(nameof(value))] string fieldName = "") => CheckNotNull(value, ResultErrorType.InvalidId, fieldName);
 
         public void CheckNotNull(object? value, ResultErrorType errorType, [CallerArgumentExpression(nameof(value))] string fieldName = "")
         {
             if (value is null)
             {
-                Add(errorType, fieldName);
+                _ = Add(errorType, fieldName);
             }
         }
 
@@ -76,7 +73,7 @@ namespace Deve.Model
             var found = Utils.FindNullOrWhiteSpace(fields);
             if (found.Count > 0)
             {
-                AddRange(Utils.FoundFieldsToErrors(_langCode, ResultErrorType.MissingRequiredField, found));
+                return AddRange(Utils.FoundFieldsToErrors(_langCode, ResultErrorType.MissingRequiredField, found));
             }
 
             return this;

@@ -1,4 +1,6 @@
-﻿namespace Deve.Api
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Deve.Api
 {
     /// <summary>
     /// Helper methods to be used in the API projects.

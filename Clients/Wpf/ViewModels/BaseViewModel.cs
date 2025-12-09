@@ -1,15 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Internal.Data;
 using Deve.Clients.Wpf.Interfaces;
+using Deve.Internal.Data;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
     public abstract partial class BaseViewModel : ObservableValidator
     {
         #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
-        private readonly IMessageHandler _messageHandler;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIdle))]
         private bool _isBusy = false;
@@ -20,11 +17,11 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
-        protected IMessageHandler MessageHandler => _messageHandler;
+        protected IMessageHandler MessageHandler { get; }
         public bool IsIdle => !IsBusy;
 
         public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
@@ -37,9 +34,9 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Constructor
         protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
         {
-            _navigationService = navigationService;
-            _data = data;
-            _messageHandler = messageHandler;
+            NavigationService = navigationService;
+            Data = data;
+            MessageHandler = messageHandler;
         }
         #endregion
 
@@ -48,7 +45,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
+        protected virtual void OnIsBusyChanged() { }
 
         protected virtual bool Validate()
         {

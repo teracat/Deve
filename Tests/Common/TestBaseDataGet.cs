@@ -8,7 +8,7 @@ namespace Deve.Tests
     /// DataGet methods tests.
     /// The ExecuteValidLogin is used to avoid permissions errors.
     /// </summary>
-    public abstract class TestBaseDataGet<TDataType, ModelList, Model, Criteria> : TestBase<TDataType> where Model: ModelId where TDataType: IDataCommon
+    public abstract class TestBaseDataGet<TDataType, ModelList, Model, Criteria> : TestBase<TDataType> where Model : ModelId where TDataType : IDataCommon
     {
         #region Properties
         protected virtual long ValidId => TestsConstants.DefaultValidId;
@@ -54,7 +54,7 @@ namespace Deve.Tests
 
             var res = await dataGet.Get(default(Criteria?));
 
-            Assert.IsAssignableFrom<IList<ModelList>>(res.Data);
+            _ = Assert.IsAssignableFrom<IList<ModelList>>(res.Data);
         }
 
         [Fact]

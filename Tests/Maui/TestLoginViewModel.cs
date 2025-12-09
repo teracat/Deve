@@ -1,7 +1,7 @@
-using Moq;
-using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
+using Moq;
 
 namespace Deve.Tests.Maui
 {

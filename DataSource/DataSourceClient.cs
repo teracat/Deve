@@ -1,8 +1,8 @@
-﻿using Deve.Model;
-using Deve.DataSource.CriteriaHandlers;
+﻿using Deve.DataSource.CriteriaHandlers;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.DataSource
 {
@@ -137,10 +137,7 @@ namespace Deve.DataSource
         #endregion
 
         #region Methods
-        private Client? FindLocal(long id)
-        {
-            return Data.Clients.FirstOrDefault(x => x.Id == id);
-        }
+        private Client? FindLocal(long id) => Data.Clients.FirstOrDefault(x => x.Id == id);
         #endregion
     }
 }

@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Deve.Criteria;
-using Deve.Model;
-using Deve.Internal.Data;
-using Deve.Internal.Criteria;
-using Deve.Internal.Model;
-using Deve.Clients.Wpf.Views;
-using Deve.Clients.Wpf.Resources.Strings;
-using Deve.Clients.Wpf.Models;
 using Deve.Clients.Wpf.Interfaces;
+using Deve.Clients.Wpf.Models;
+using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Clients.Wpf.Views;
+using Deve.Criteria;
+using Deve.Internal.Criteria;
+using Deve.Internal.Data;
+using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -164,10 +164,7 @@ namespace Deve.Clients.Wpf.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task DeleteState(ListData? listData)
-        {
-            await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
-        }
+        private async Task DeleteState(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
 
         [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
         private async Task AddCountry()
@@ -194,10 +191,7 @@ namespace Deve.Clients.Wpf.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task DeleteCountry(ListData? listData)
-        {
-            await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
-        }
+        private async Task DeleteCountry(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
         #endregion
 
         #region Generic Methods
@@ -221,7 +215,7 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        private async Task Edit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList: ModelId where Model: ModelId where Criteria : CriteriaId
+        private async Task Edit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
         {
             if (listData is not null)
             {
@@ -246,7 +240,7 @@ namespace Deve.Clients.Wpf.ViewModels
 
                 if (obj is not null)
                 {
-                    editFunc(obj);
+                    _ = editFunc(obj);
                 }
             }
         }

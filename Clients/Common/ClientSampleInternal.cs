@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Deve.Model;
 using Deve.Authenticate;
 using Deve.Internal.Data;
+using Deve.Model;
 
 namespace Deve.Clients
 {
@@ -63,7 +63,7 @@ namespace Deve.Clients
                 {
                     LogResult($@"Name: {loginRes.Data.Subject.Name}
 Username: {loginRes.Data.Subject.Username}
-Joined: {loginRes.Data.Subject.Joined.ToShortDateString()}
+Joined: {loginRes.Data.Subject.Joined:d}
 Token: {loginRes.Data.Token}
 Created: {loginRes.Data.Created}
 Expires: {loginRes.Data.Expires}");
@@ -95,7 +95,7 @@ Expires: {loginRes.Data.Expires}");
                     var result = new StringBuilder();
                     foreach (var country in countriesRes.Data)
                     {
-                        result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
+                        _ = result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
                     }
                     LogResult(result.ToString());
                 }
@@ -126,7 +126,7 @@ Expires: {loginRes.Data.Expires}");
                     var result = new StringBuilder();
                     foreach (var client in clientsRes.Data)
                     {
-                        result.AppendLine($"{client.Id} - {client.DisplayName} (Balance: {client.Balance}) (Status: {client.Status}) [{client.Location.Latitude},{client.Location.Longitude}]");
+                        _ = result.AppendLine($"{client.Id} - {client.DisplayName} (Balance: {client.Balance}) (Status: {client.Status}) [{client.Location.Latitude},{client.Location.Longitude}]");
                     }
                     LogResult(result.ToString());
                 }

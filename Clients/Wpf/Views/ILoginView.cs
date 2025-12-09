@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Deve.Clients.Wpf.Interfaces
+namespace Deve.Clients.Wpf.Views
 {
     public interface ILoginView
     {

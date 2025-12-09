@@ -8,10 +8,10 @@ namespace Deve.Auth
     /// </summary>
     public interface IUserIdentity
     {
-        public long Id { get; set; }
+        long Id { get; set; }
 
-        public string Username {get;set;}
+        string Username { get; set; }
 
-        public Role Role { get; set; }
+        Role Role { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Deve.Clients.Wpf.Helpers;
 
 namespace Deve.Clients.Wpf.Models
 {
@@ -21,7 +19,7 @@ namespace Deve.Clients.Wpf.Models
         [ObservableProperty]
         private IEnumerable<ListData>? _items;
 
-        private Func<Task>? _funcWhenSearch;
+        private readonly Func<Task>? _funcWhenSearch;
         #endregion
 
         #region Properties

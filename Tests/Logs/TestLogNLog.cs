@@ -20,7 +20,7 @@ namespace Deve.Tests.Logs
             config.AddRule(LogLevel.Info, LogLevel.Fatal, memory);
 
             LogManager.Configuration = config;
-            
+
             var logger = LogManager.GetLogger("test");
 
             return new LogProviderNLog(logger);

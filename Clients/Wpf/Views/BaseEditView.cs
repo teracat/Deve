@@ -5,19 +5,15 @@ namespace Deve.Clients.Wpf.Views
 {
     public class BaseEditView : BaseView
     {
-        #region Fields
-        private BaseEditViewModel? _viewModel;
-        #endregion
-
         #region Properties
         protected new BaseEditViewModel? ViewModel
         {
-            get => _viewModel;
+            get;
             set
             {
-                if (_viewModel != value)
+                if (field != value)
                 {
-                    DataContext = base.ViewModel = _viewModel = value;
+                    DataContext = base.ViewModel = field = value;
                 }
             }
         }
@@ -29,7 +25,7 @@ namespace Deve.Clients.Wpf.Views
             base.OnKeyDown(e);
             if (e.Key == Key.Escape)
             {
-                _viewModel?.Cancel();
+                ViewModel?.Cancel();
             }
         }
         #endregion

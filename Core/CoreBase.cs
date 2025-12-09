@@ -1,9 +1,9 @@
-﻿using Deve.Model;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
 using Deve.Data;
 using Deve.DataSource;
+using Deve.Model;
 
 namespace Deve.Core
 {
@@ -27,7 +27,7 @@ namespace Deve.Core
         #endregion
 
         #region Methods
-        protected async virtual Task<Result> CheckPermission(PermissionType type, PermissionDataType dataType)
+        protected virtual async Task<Result> CheckPermission(PermissionType type, PermissionDataType dataType)
         {
             var userIdentity = UserIdentityService.UserIdentity;
             var permissionResult = await Auth.IsGranted(userIdentity, type, dataType);

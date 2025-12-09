@@ -1,0 +1,180 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials-superuser
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.postgres.superUser | quote }}
+  password: {{ .Values.postgres.superPassword | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials-keycloak
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.keycloak.dbUser | quote }}
+  password: {{ .Values.keycloak.dbPassword | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials-grafana
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  user: {{ .Values.grafana.dbUser | quote }}
+  password: {{ .Values.grafana.dbPassword | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: {{ .Values.namespace.name | quote }}
+  labels:
+    app: postgresql
+spec:
+  clusterIP: None
+  ports:
+  - port: {{ .Values.postgres.port }}
+    name: postgresql
+  selector:
+    app: postgresql
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  serviceName: postgresql
+  selector:
+    matchLabels:
+      app: postgresql
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      volumes:
+      - name: init-sql
+        configMap:
+          name: postgres-init-sql
+          items:
+            - key: postgres-init-service.sql
+              path: scripts/postgres-init-service.sql
+            - key: services-init.sh
+              path: 00_services-init.sh
+      containers:
+      - name: postgres
+        image: postgres:18.1
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-superuser
+              key: user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-superuser
+              key: password
+        - name: KEYCLOAK_PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-keycloak
+              key: user
+        - name: KEYCLOAK_PG_PASS
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-keycloak
+              key: password
+        - name: GRAFANA_PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-grafana
+              key: user
+        - name: GRAFANA_PG_PASS
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials-grafana
+              key: password
+        ports:
+        - containerPort: {{ .Values.postgres.port }}
+          name: postgres
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: init-sql
+          mountPath: /docker-entrypoint-initdb.d
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql
+        resources:
+            limits:
+              memory: 1Gi
+              cpu: "1"
+            requests:
+              memory: 512Mi
+              cpu: "0.5"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-sql
+  namespace: {{ .Values.namespace.name | quote }}
+data:
+  postgres-init-service.sql: |-
+    \set PG_DATABASE :SERVICE_PG_DBNAME
+    \set PG_USER     :SERVICE_PG_USER
+    \set PG_PASSWORD :SERVICE_PG_PASS
+
+    SELECT format('CREATE ROLE %I LOGIN PASSWORD %L', :'PG_USER', :'PG_PASSWORD') \gexec
+
+    SELECT format(
+      'CREATE DATABASE %I WITH OWNER %I ENCODING ''UTF8'' LC_COLLATE=''en_US.UTF-8'' LC_CTYPE=''en_US.UTF-8'' TEMPLATE template0',
+      :'PG_DATABASE', :'PG_USER'
+    ) \gexec
+
+    \connect :PG_DATABASE
+    GRANT ALL PRIVILEGES ON DATABASE :PG_DATABASE TO :PG_USER;
+    CREATE SCHEMA IF NOT EXISTS public;
+    ALTER SCHEMA public OWNER TO :PG_USER;
+    GRANT ALL PRIVILEGES ON SCHEMA public TO :PG_USER;
+
+  services-init.sh: |-
+    #!/usr/bin/env bash
+    set -Eeo pipefail
+
+    SQL_FILE="/docker-entrypoint-initdb.d/scripts/postgres-init-service.sql"
+
+    echo "==> Init PG Keycloak"
+    psql -v ON_ERROR_STOP=1 -d postgres \
+      -v SERVICE_PG_DBNAME="{{ .Values.keycloak.dbName }}" \
+      -v SERVICE_PG_USER="${KEYCLOAK_PG_USER}" \
+      -v SERVICE_PG_PASS="${KEYCLOAK_PG_PASS}" \
+      -f "$SQL_FILE"
+
+    echo "==> Init PG Grafana"
+    psql -v ON_ERROR_STOP=1 -d postgres \
+      -v SERVICE_PG_DBNAME="{{ .Values.grafana.dbName }}" \
+      -v SERVICE_PG_USER="${GRAFANA_PG_USER}" \
+      -v SERVICE_PG_PASS="${GRAFANA_PG_PASS}" \
+      -f "$SQL_FILE"

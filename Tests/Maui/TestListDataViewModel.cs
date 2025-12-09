@@ -1,8 +1,8 @@
-using Moq;
+using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.ViewModels;
-using Deve.Clients.Maui.Helpers;
 using Deve.Tests.Maui.Fixtures;
+using Moq;
 
 namespace Deve.Tests.Maui
 {
@@ -41,7 +41,7 @@ namespace Deve.Tests.Maui
         public async Task Initialization_ValidAuth_DataNotNullAndHasItems()
         {
             var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth);
-            
+
             await viewModel.Initialization;
 
             Assert.NotNull(viewModel.ListData);

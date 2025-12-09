@@ -13,7 +13,7 @@
         <VerticalStackLayout Spacing="5" Padding="10">
             <ActivityIndicator HorizontalOptions="Center" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
             <Label Text="{Binding ErrorText}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorLabel}" />
-            
+
             <ListView ItemsSource="{Binding ListData}" SelectedItem="{Binding SelectedData, Mode=TwoWay}" RowHeight="60" SeparatorColor="{StaticResource Gray100}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="m:ListData">

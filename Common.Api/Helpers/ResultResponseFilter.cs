@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using Deve.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Deve.Model;
 
 namespace Deve.Api.Helpers
 {
@@ -23,30 +23,16 @@ namespace Deve.Api.Helpers
                 if (error is not null)
                 {
                     var response = context.HttpContext.Response;
-                    switch (error.Type)
+                    response.StatusCode = error.Type switch
                     {
-                        case ResultErrorType.Unauthorized:
-                            response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                            break;
-                        case ResultErrorType.MissingRequiredField:
-                        case ResultErrorType.InvalidId:
-                        case ResultErrorType.NotFound:
-                        case ResultErrorType.DuplicatedValue:
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            break;
-                        case ResultErrorType.NotAllowed:
-                            response.StatusCode = (int)HttpStatusCode.Forbidden;
-                            break;
-                        case ResultErrorType.Locked:
-                            response.StatusCode = (int)HttpStatusCode.Locked;
-                            break;
-                        case ResultErrorType.TooManyAttempts:
-                            response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-                            break;
-                        default:
-                            response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                            break;
-                    }
+                        ResultErrorType.Unauthorized => (int)HttpStatusCode.Unauthorized,
+                        ResultErrorType.MissingRequiredField or ResultErrorType.InvalidId or ResultErrorType.NotFound or ResultErrorType.DuplicatedValue => (int)HttpStatusCode.BadRequest,
+                        ResultErrorType.NotAllowed => (int)HttpStatusCode.Forbidden,
+                        ResultErrorType.Locked => (int)HttpStatusCode.Locked,
+                        ResultErrorType.TooManyAttempts => (int)HttpStatusCode.TooManyRequests,
+                        ResultErrorType.Unknown => (int)HttpStatusCode.InternalServerError,
+                        _ => (int)HttpStatusCode.InternalServerError,
+                    };
                 }
             }
         }

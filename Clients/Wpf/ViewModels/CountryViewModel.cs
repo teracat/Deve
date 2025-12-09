@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Model;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -10,7 +10,9 @@ namespace Deve.Clients.Wpf.ViewModels
     {
         #region Fields
         private Country? _country;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         [NotifyDataErrorInfo]
         [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingName))]
@@ -31,7 +33,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task GetData()
+        protected override async Task GetData()
         {
             if (_country is null)
             {
@@ -61,14 +63,14 @@ namespace Deve.Clients.Wpf.ViewModels
             }
         }
 
-        internal async override Task Save()
+        internal override async Task Save()
         {
             if (_country is null)
             {
                 return;
             }
 
-            if (!Validate())
+            if (Utils.SomeIsNullOrWhiteSpace(Name, IsoCode))
             {
                 return;
             }

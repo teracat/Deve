@@ -394,3 +394,14 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Secrets & Env
+*.secrets
+*.env
+
+# Helm overrides (used for testing)
+.github/helm/*/values.override.yaml
+
+# Helm subchart files
+.github/helm/*/charts/*.tgz
+.github/helm/*/*.lock

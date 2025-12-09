@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-pvc
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: Always
+      containers:
+        - name: prometheus
+          image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.prometheus }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.prometheus.port }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: prometheus-storage
+              mountPath: /prometheus
+          args:
+            - --config.file=/etc/prometheus/prometheus.prod.yml
+            - --web.enable-otlp-receiver
+      volumes:
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: {{ .Values.namespace.name | quote }}
+spec:
+  selector:
+    app: prometheus
+  type: ClusterIP
+  ports:
+    - name: http
+      port: {{ .Values.prometheus.port }}
+      targetPort: {{ .Values.prometheus.port }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+  namespace: {{ .Values.namespace.name | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-ingress-class: nginx
+    nginx.ingress.kubernetes.io/auth-url: "https://{{ .Values.oauth2.host }}/prometheus/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.oauth2.host }}/prometheus/start?rd=https://$host$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-User, X-Auth-Request-Email, X-Auth-Request-Groups"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.prometheus.host | quote }}
+      secretName: prometheus-tls
+  rules:
+    - host: {{ .Values.prometheus.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: {{ .Values.prometheus.port }}

@@ -1,6 +1,6 @@
-using Deve.Model;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Tests
 {
@@ -43,7 +43,7 @@ namespace Deve.Tests
         {
             var res = await Fixture.DataNoAuth.Stats.GetClientStats();
 
-            Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
+            _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Deve.Tests
         {
             var res = await Fixture.DataValidAuth.Stats.GetClientStats();
 
-            Assert.IsAssignableFrom<ClientStats>(res.Data);
+            _ = Assert.IsAssignableFrom<ClientStats>(res.Data);
         }
         #endregion
     }

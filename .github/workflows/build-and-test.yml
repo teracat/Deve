@@ -1,0 +1,42 @@
+name: Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      solution:
+        description: "The solution to build and test"
+        type: string
+        required: true
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 #v5.0.1
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Set up dependency caching for faster builds
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  #v4.3.0
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore workloads
+      run: dotnet workload restore ${{ inputs.solution }}
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ inputs.solution }}
+
+    - name: Build
+      run: dotnet build --no-restore ${{ inputs.solution }}
+
+    - name: Test
+      run: dotnet test --no-build --verbosity detailed ${{ inputs.solution }}

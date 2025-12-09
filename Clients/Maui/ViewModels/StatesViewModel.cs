@@ -1,10 +1,10 @@
-﻿using Deve.Criteria;
-using Deve.Clients.Maui.Interfaces;
+﻿using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
+using Deve.Criteria;
 
 namespace Deve.Clients.Maui.ViewModels
 {
-    public class StatesViewModel : ListDataViewModel
+    public partial class StatesViewModel : ListDataViewModel
     {
         #region Constructor
         public StatesViewModel(INavigationService navigationService, Internal.Data.IData data)

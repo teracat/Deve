@@ -1,4 +1,5 @@
 ﻿using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Http;
 
 namespace Deve.Api.Helpers
 {
@@ -11,7 +12,7 @@ namespace Deve.Api.Helpers
         /// <summary>
         /// Partition Key used for Unauthenticated requests.
         /// </summary>
-        const string PartitionKeyAnonymous = "RateLimiterAnonymous";
+        private const string PartitionKeyAnonymous = "RateLimiterAnonymous";
 
         public static PartitionedRateLimiter<HttpContext> CreateRateLimiter()
         {

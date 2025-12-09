@@ -11,9 +11,6 @@ namespace Deve.Tests.Maui
         {
         }
 
-        protected override ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data)
-        {
-            return new StatesViewModel(navigationService, data);
-        }
+        protected override ListDataViewModel CreateViewModel(INavigationService navigationService, Internal.Data.IData data) => new StatesViewModel(navigationService, data);
     }
 }

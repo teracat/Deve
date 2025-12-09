@@ -33,7 +33,7 @@
 
             <fa:ImageAwesome x:Name="uxLoadingImage" Grid.Column="5" Grid.Row="0" Style="{StaticResource LoadingImageAwesome}" />
             <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding Items, ElementName=root}" ItemTemplate="{Binding ItemTemplate, ElementName=root}" Style="{StaticResource MainListView}" />
-            <Label x:Name="uxErrorTextLabel" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5" Content="{Binding ErrorText, ElementName=root}" Visibility="Collapsed" Foreground="{StaticResource ErrorBrush}" />
+            <Label x:Name="uxErrorTextLabel" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5" Content="{Binding ErrorText, ElementName=root}" Visibility="Collapsed" Foreground="{StaticResource ErrorTextBrush}" />
         </Grid>
     </Border>
 </UserControl>

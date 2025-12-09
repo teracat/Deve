@@ -20,15 +20,15 @@ namespace Deve.Tests.Sdk.Fixtures
 
         protected override void Dispose(bool disposing)
         {
-            DataNoAuth?.Dispose();
-            DataValidAuth?.Dispose();
+            if (disposing)
+            {
+                DataNoAuth?.Dispose();
+                DataValidAuth?.Dispose();
+            }
             base.Dispose(disposing);
         }
 
-        public async Task InitializeAsync()
-        {
-            await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-        }
+        public async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
         Task IAsyncLifetime.DisposeAsync()
         {

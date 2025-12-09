@@ -1,6 +1,6 @@
 ﻿using Deve.Auth;
-using Deve.Auth.Hash;
 using Deve.Auth.Crypt;
+using Deve.Auth.Hash;
 using Deve.Auth.TokenManagers;
 using Deve.Data;
 using Deve.DataSource;
@@ -31,10 +31,7 @@ namespace Deve.Tests
         #endregion
 
         #region IAsyncLifetime
-        public virtual Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
+        public virtual Task InitializeAsync() => Task.CompletedTask;
 
         public virtual Task DisposeAsync()
         {

@@ -1,9 +1,9 @@
-﻿using Deve.Model;
+﻿using Deve.Auth;
 using Deve.DataSource;
-using Deve.Auth;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Core.DataSourceWrappers
 {
@@ -83,10 +83,7 @@ namespace Deve.Core.DataSourceWrappers
             return await Source.Users.Update(user);
         }
 
-        public async Task<Result> Delete(long id)
-        {
-            return await Source.Users.Delete(id);
-        }
+        public async Task<Result> Delete(long id) => await Source.Users.Delete(id);
         #endregion
     }
 }

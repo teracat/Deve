@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RootNamespace>Deve.Diagnostics</RootNamespace>
+
+    <UseMaui>true</UseMaui>
+    <MauiVersion>10.0.11</MauiVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+    <PackageReference Include="Sentry.Maui" Version="5.16.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+    <ProjectReference Include="..\Diagnostics.Sentry\Deve.Diagnostics.Sentry.csproj" />
+  </ItemGroup>
+
+</Project>

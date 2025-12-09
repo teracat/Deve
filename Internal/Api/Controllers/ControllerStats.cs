@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Deve.Model;
-using Deve.Internal.Model;
 using Deve.Api.Controllers;
 using Deve.Internal.Data;
+using Deve.Internal.Model;
+using Deve.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Deve.Internal.Api.Controllers
 {
@@ -18,9 +18,6 @@ namespace Deve.Internal.Api.Controllers
         }
 
         [HttpGet(), Route(ApiConstants.MethodGetClientStats)]
-        public async Task<ResultGet<ClientStats>> GetClientStats()
-        {
-            return await _data.GetClientStats();
-        }
+        public async Task<ResultGet<ClientStats>> GetClientStats() => await _data.GetClientStats();
     }
 }

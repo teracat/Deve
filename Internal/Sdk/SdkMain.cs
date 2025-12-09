@@ -1,7 +1,6 @@
-﻿using Deve.Sdk;
-using Deve.Data;
-using Deve.Sdk.LoggingHandlers;
+﻿using Deve.Data;
 using Deve.Internal.Data;
+using Deve.Sdk;
 
 namespace Deve.Internal.Sdk
 {
@@ -10,27 +9,17 @@ namespace Deve.Internal.Sdk
     /// </summary>
     public class SdkMain : SdkMainBase, ISdk
     {
-        #region Fields
-        private IDataCountry? _sdkCountry;
-        private IDataState? _sdkState;
-        private IDataCity? _sdkCity;
-        private IDataClient? _sdkClient;
-        private IDataUser? _sdkUser;
-        private IDataStats? _sdkStats;
-        private External.Data.IDataClientBasic? _sdkClientBasicGet;
-        #endregion
-
         #region Properties
         internal override string Url => _environment == EnvironmentType.Staging ? ApiInternalConstants.UrlStaging : ApiInternalConstants.UrlProduction;
         #endregion
 
         #region Constructor
-        public SdkMain(EnvironmentType environment, IDataOptions options, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, IDataOptions options, HttpMessageHandler handler)
             : base(environment, options, handler)
         {
         }
 
-        public SdkMain(EnvironmentType environment, LoggingHandlerBase handler)
+        public SdkMain(EnvironmentType environment, HttpMessageHandler handler)
             : base(environment, handler)
         {
         }
@@ -57,19 +46,19 @@ namespace Deve.Internal.Sdk
         #endregion
 
         #region IData
-        public IDataCountry Countries => _sdkCountry ??= new SdkCountry(this);
+        public IDataCountry Countries => field ??= new SdkCountry(this);
 
-        public IDataState States => _sdkState ??= new SdkState(this);
+        public IDataState States => field ??= new SdkState(this);
 
-        public IDataCity Cities => _sdkCity ??= new SdkCity(this);
+        public IDataCity Cities => field ??= new SdkCity(this);
 
-        public IDataClient Clients => _sdkClient ??= new SdkClientAll(this);
+        public IDataClient Clients => field ??= new SdkClientAll(this);
 
-        public External.Data.IDataClientBasic ClientsBasic => _sdkClientBasicGet ??= new SdkClientBasic(this);
+        public External.Data.IDataClientBasic ClientsBasic => field ??= new SdkClientBasic(this);
 
-        public IDataUser Users => _sdkUser ??= new SdkUser(this);
+        public IDataUser Users => field ??= new SdkUser(this);
 
-        public IDataStats Stats => _sdkStats ??= new SdkStats(this);
+        public IDataStats Stats => field ??= new SdkStats(this);
         #endregion
     }
 }
