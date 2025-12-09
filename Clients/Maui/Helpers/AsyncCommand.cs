@@ -47,10 +47,7 @@ namespace Deve.Clients.Maui.Helpers
             }
 
             _isExecuting = true;
-            if (CanExecuteChanged is not null)
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
             try
             {
@@ -66,10 +63,7 @@ namespace Deve.Clients.Maui.Helpers
             finally
             {
                 _isExecuting = false;
-                if (CanExecuteChanged is not null)
-                {
-                    CanExecuteChanged(this, EventArgs.Empty);
-                }
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
