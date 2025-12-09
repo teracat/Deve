@@ -1,0 +1,17 @@
+# This workflow will build and test a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: ["main", "v2.0", "v2.1"]
+  pull_request:
+    branches: ["main", "v2.0", "v2.1", "production/**"]
+  workflow_dispatch:
+
+jobs:
+  build-and-test-all:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      solution: "Deve.All.sln"

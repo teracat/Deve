@@ -5,6 +5,6 @@
     /// </summary>
     public interface IUserIdentityService
     {
-        public IUserIdentity? UserIdentity { get; set; }
+        IUserIdentity? UserIdentity { get; set; }
     }
 }

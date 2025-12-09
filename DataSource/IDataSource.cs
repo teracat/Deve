@@ -1,11 +1,11 @@
 ﻿using Deve.Criteria;
-using Deve.Model;
 using Deve.Data;
 using Deve.DataSource.Config;
 using Deve.External.Data;
 using Deve.Internal.Criteria;
 using Deve.Internal.Data;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.DataSource
 {

@@ -4,9 +4,12 @@ using Microsoft.UI;
 using Microsoft.UI.Windowing;
 #endif
 //+:cnd
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
-using Deve.Logging;
+//using Sentry.OpenTelemetry;
 using Deve.Clients.Maui.Helpers;
+using Deve.Diagnostics;
+using Deve.Logging;
 
 namespace Deve.Clients.Maui
 {
@@ -15,11 +18,37 @@ namespace Deve.Clients.Maui
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+//-:cnd
+#if DEBUG
+            // We add the Debug logger for the logs generated before the MauiApp is built.
+            Log.Providers.AddDebug();
+
+            builder.Logging.AddDebug();
+#endif
+//+:cnd
+
             builder
                 .UseMauiApp<App>()
                 .RegisterServices()
                 .RegisterViewModels()
                 .RegisterViews()
+                // Diagnostics
+                // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.Maui as a reference and comment the next line.
+                // You can configure the Azure Application Insights connection string and the Zipkin URL here.
+                .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", zipkinUrl: "", funcConfigTracing: (tracing) =>
+                {
+                    // Configure Tracing exporters here (if you want to use other exporters).
+
+                    // Example for Sentry:
+                    //tracing.AddSentry();    // You need to uncomment the "using Sentry.OpenTelemetry;" line at the top of this file.
+                })
+                // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry.Maui as a reference, uncomment the next line and
+                // change the DSN with your own (you can create a free account at https://sentry.io/welcome/).
+                // You should also modify the ServiceProviderHelper.cs file to use Sentry instead of OpenTelemetry.
+                //.AddDiagnosticsSentry(sentryDsn: "Use your DSN")
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -53,12 +82,17 @@ namespace Deve.Clients.Maui
 #endif
 //+:cnd
                 });
-//-:cnd
-#if DEBUG
-            Log.Providers.AddDebug();
-#endif
-//+:cnd
-            return builder.Build();
+
+            var app = builder.Build();
+
+            var logger = app.Services.GetService<ILogger<MauiApp>>();
+            if (logger is not null)
+            {
+                Log.Providers.AddNetCore(logger);
+                Log.Providers.RemoveDebug(); // We remove the Debug logger because it's already included in the NetCore provider.
+            }
+
+            return app;
         }
     }
 }

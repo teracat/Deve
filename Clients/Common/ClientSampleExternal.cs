@@ -49,7 +49,7 @@ namespace Deve.Clients
                 {
                     LogResult($@"Name: {loginRes.Data.Subject.Name}
 Username: {loginRes.Data.Subject.Username}
-Joined: {loginRes.Data.Subject.Joined.ToShortDateString()}
+Joined: {loginRes.Data.Subject.Joined:d}
 Token: {loginRes.Data.Token}
 Created: {loginRes.Data.Created}
 Expires: {loginRes.Data.Expires}");
@@ -81,7 +81,7 @@ Expires: {loginRes.Data.Expires}");
                     var result = new StringBuilder();
                     foreach (var country in countriesRes.Data)
                     {
-                        result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
+                        _ = result.AppendLine($"{country.Id} - {country.IsoCode} - {country.Name}");
                     }
                     LogResult(result.ToString());
                 }
@@ -112,7 +112,7 @@ Expires: {loginRes.Data.Expires}");
                     var result = new StringBuilder();
                     foreach (var client in clientsRes.Data)
                     {
-                        result.AppendLine($"{client.Id} - {client.DisplayName} [{client.Latitude},{client.Longitude}]");
+                        _ = result.AppendLine($"{client.Id} - {client.DisplayName} [{client.Latitude},{client.Longitude}]");
                     }
                     LogResult(result.ToString());
                 }

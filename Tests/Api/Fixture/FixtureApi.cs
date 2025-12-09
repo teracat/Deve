@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Deve.Data;
 
 namespace Deve.Tests.Api.Fixture
 {
-    public class FixtureApi<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint: class
+    public class FixtureApi<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
     {
         protected readonly WebApplicationFactory<TEntryPoint> _factory;
 
@@ -14,12 +14,12 @@ namespace Deve.Tests.Api.Fixture
         {
             _factory = WithWebHostBuilder(builder =>
             {
-                builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build());
-                builder.ConfigureServices(services =>
+                _ = builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build());
+                _ = builder.ConfigureServices(services =>
                 {
-                    services.AddScoped<IDataOptions, DataOptions>();
-                    services.AddScoped(provider => TestsHelpers.CreateDataSourceMock());
-                    services.AddScoped(provider => TestsHelpers.CreateTokenManager());
+                    _ = services.AddScoped<IDataOptions, DataOptions>();
+                    _ = services.AddScoped(provider => TestsHelpers.CreateDataSourceMock());
+                    _ = services.AddScoped(provider => TestsHelpers.CreateTokenManager());
                 });
             });
         }

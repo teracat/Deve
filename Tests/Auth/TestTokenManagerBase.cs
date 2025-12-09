@@ -1,5 +1,4 @@
-﻿using Deve.Auth.TokenManagers;
-using Deve.Tests.Auth.Fixtures;
+﻿using Deve.Tests.Auth.Fixtures;
 
 namespace Deve.Tests.Auth
 {
@@ -16,18 +15,17 @@ namespace Deve.Tests.Auth
         }
 
         [Fact]
-        public void CreateToken_Null_ThrowsArgumentNullException()
-        {
+        public void CreateToken_Null_ThrowsArgumentNullException() =>
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Throws<ArgumentNullException>(() => _fixtureTokenManager.TokenManager.CreateToken(null));
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
-        }
+
 
         [Fact]
         public void CreateToken_User_NotNull()
         {
             var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
-            
+
             Assert.NotNull(userToken);
         }
 
@@ -80,7 +78,7 @@ namespace Deve.Tests.Auth
         {
             var userToken = _fixtureTokenManager.TokenManager.CreateToken(new UserTests());
 
-            _fixtureTokenManager.TokenManager.TryValidateToken(userToken.Token, out var userIdentity);
+            _ = _fixtureTokenManager.TokenManager.TryValidateToken(userToken.Token, out var userIdentity);
 
             Assert.NotNull(userIdentity);
         }

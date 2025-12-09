@@ -1,15 +1,15 @@
-﻿using Deve.Model;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
+using Deve.Cache;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Internal.Data;
-using Deve.Cache;
+using Deve.Model;
 
 namespace Deve.Core
 {
-    public abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria> where Model: ModelId
+    public abstract class CoreBaseAll<ModelList, Model, Criteria> : CoreBaseGet<ModelList, Model, Criteria>, IDataAll<ModelList, Model, Criteria> where Model : ModelId
     {
         #region Abstract Property
         protected abstract IDataAll<ModelList, Model, Criteria> DataAll { get; }

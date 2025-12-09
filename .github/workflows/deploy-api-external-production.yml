@@ -1,0 +1,36 @@
+# This workflow requires the environment production-api-external with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy Api External to Production
+
+on:
+  push:
+    branches:
+      - production/api-external
+    tags:
+      - 'api-external/v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      solution: "Deve.Api.External.sln"
+  
+  deploy-aks-api-external:
+    if: ${{ vars.DEPLOY_TYPE == 'aks' }}
+    needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-aks.yml
+    with:
+      environment: "production"
+      services: "api-external"
+    secrets: inherit
+
+  deploy-app-api-external:
+    if: ${{ vars.DEPLOY_TYPE == 'app' }}
+    needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-app.yml
+    with:
+      environment: "production"
+      project: "External/Api/Deve.External.Api.csproj"
+      name: "API External"
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}

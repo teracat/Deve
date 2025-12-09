@@ -1,6 +1,6 @@
-﻿using Deve.Model;
-using Deve.Clients.Wpf.Interfaces;
+﻿using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
+using Deve.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
@@ -8,28 +8,25 @@ namespace Deve.Clients.Wpf.ViewModels
     {
         #region Fields
         private State? _state;
-        private string? _name;
-        private IList<Country>? _countries;
-        private Country? _selectedCountry;
         #endregion
 
         #region Properties
         public string? Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public IList<Country>? Countries
         {
-            get => _countries;
-            set => SetProperty(ref _countries, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public Country? SelectedCountry
         {
-            get => _selectedCountry;
-            set => SetProperty(ref _selectedCountry, value);
+            get;
+            set => SetProperty(ref field, value);
         }
         #endregion
 
@@ -41,20 +38,20 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Overrides
-        protected async override Task GetData()
+        protected override async Task GetData()
         {
             await GetDataState();
             await GetDataCountries();
         }
 
-        internal async override Task DoSave()
+        internal override async Task DoSave()
         {
             if (_state is null)
             {
                 return;
             }
 
-            if (Utils.SomeIsNullOrWhiteSpace(_name) || _selectedCountry is null || _selectedCountry.Id <= 0)
+            if (Utils.SomeIsNullOrWhiteSpace(Name) || SelectedCountry is null || SelectedCountry.Id <= 0)
             {
                 MessageHandler.ShowError(AppResources.MissingField);
                 return;
@@ -63,9 +60,9 @@ namespace Deve.Clients.Wpf.ViewModels
             IsBusy = true;
             try
             {
-                _state.Name = _name!.Trim();
-                _state.CountryId = _selectedCountry.Id;
-                _state.Country = _selectedCountry.Name;
+                _state.Name = Name!.Trim();
+                _state.CountryId = SelectedCountry.Id;
+                _state.Country = SelectedCountry.Name;
 
                 Result res;
                 if (_state.Id == 0)
@@ -134,7 +131,7 @@ namespace Deve.Clients.Wpf.ViewModels
             Countries = res.Data;
             if (_state is not null && _state.CountryId > 0)
             {
-                SelectedCountry = _countries?.FirstOrDefault(x => x.Id == _state.CountryId);
+                SelectedCountry = Countries?.FirstOrDefault(x => x.Id == _state.CountryId);
             }
         }
         #endregion

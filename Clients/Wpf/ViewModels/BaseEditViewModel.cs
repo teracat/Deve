@@ -7,9 +7,6 @@ namespace Deve.Clients.Wpf.ViewModels
     {
         #region Fields
         public Action? LoadDataDoneAction { get; set; }
-
-        private AsyncCommand? _saveCommand;
-        private Command? _cancelCommand;
         #endregion
 
         #region Properties
@@ -53,7 +50,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(object? parameter)
         {
-            if (parameter is not null && parameter is long id)
+            if (parameter is long id)
             {
                 Id = id;
             }
@@ -67,8 +64,8 @@ namespace Deve.Clients.Wpf.ViewModels
         #endregion
 
         #region Commands
-        public Command Cancel => _cancelCommand ??= new Command(DoCancel, () => IsIdle);
-        public AsyncCommand Save => _saveCommand ??= new AsyncCommand(DoSave, () => IsIdle);
+        public Command Cancel => field ??= new Command(DoCancel, () => IsIdle);
+        public AsyncCommand Save => field ??= new AsyncCommand(DoSave, () => IsIdle);
         #endregion
     }
 }

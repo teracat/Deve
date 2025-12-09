@@ -23,10 +23,7 @@ namespace Deve.Tests.Core.Fixtures
             DataValidAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceAuth, Cache);
         }
 
-        public override async Task InitializeAsync()
-        {
-            await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-        }
+        public override async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
 
         public override Task DisposeAsync()
         {

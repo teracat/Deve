@@ -3,7 +3,7 @@ using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Api
 {
-    public abstract class TestApiBaseAll<TEntryPoint, Model> : TestApiBaseGet<TEntryPoint> where TEntryPoint : class where Model: ModelId
+    public abstract class TestApiBaseAll<TEntryPoint, Model> : TestApiBaseGet<TEntryPoint> where TEntryPoint : class where Model : ModelId
     {
         #region Properties
         protected virtual long ValidIdDelete => TestsConstants.DefaultValidIdDelete;

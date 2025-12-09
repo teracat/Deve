@@ -41,7 +41,7 @@ namespace Deve.Tests.Cache
         public void SetAndGet_Value_SameValue()
         {
             _fixtureCache.Cache.Set("NewExistingKey2", "Value");
-            _fixtureCache.Cache.TryGet("NewExistingKey2", out string value);
+            _ = _fixtureCache.Cache.TryGet("NewExistingKey2", out string value);
 
             Assert.Equal("Value", value);
         }

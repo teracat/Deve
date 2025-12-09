@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using Deve.Model;
 using Deve.Criteria;
 using Deve.Internal.Criteria;
 using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.DataSource
 {
@@ -54,7 +54,7 @@ namespace Deve.DataSource
                     default:
                         // Filter by IsActive is not needed
                         break;
-                }   
+                }
 
                 if (!string.IsNullOrWhiteSpace(criteria.Username))
                 {
@@ -73,31 +73,16 @@ namespace Deve.DataSource
 
                 //OrderBy
                 string orderBy = criteria.OrderBy ?? nameof(User.Name);
-                switch (orderBy.ToLower(CultureInfo.InvariantCulture))
+                qry = orderBy.ToLower(CultureInfo.InvariantCulture) switch
                 {
-                    case "id":
-                        qry = qry.OrderBy(x => x.Id);
-                        break;
-                    case "email":
-                        qry = qry.OrderBy(x => x.Email);
-                        break;
-                    case "username":
-                        qry = qry.OrderBy(x => x.Username);
-                        break;
-                    case "birthday":
-                        qry = qry.OrderBy(x => x.Birthday).ThenBy(x => x.Name);
-                        break;
-                    case "joined":
-                        qry = qry.OrderBy(x => x.Joined).ThenBy(x => x.Name);
-                        break;
-                    case "isactive":
-                        qry = qry.OrderBy(x => x.IsActive).ThenBy(x => x.Name);
-                        break;
-                    default:
-                        qry = qry.OrderBy(x => x.Name);
-                        break;
-                }
-
+                    "id" => qry.OrderBy(x => x.Id),
+                    "email" => qry.OrderBy(x => x.Email),
+                    "username" => qry.OrderBy(x => x.Username),
+                    "birthday" => qry.OrderBy(x => x.Birthday).ThenBy(x => x.Name),
+                    "joined" => qry.OrderBy(x => x.Joined).ThenBy(x => x.Name),
+                    "isactive" => qry.OrderBy(x => x.IsActive).ThenBy(x => x.Name),
+                    _ => qry.OrderBy(x => x.Name),
+                };
                 return ApplyOffsetAndLimit(qry, criteria, orderBy);
             });
         }

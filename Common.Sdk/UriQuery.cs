@@ -19,10 +19,7 @@ namespace Deve.Sdk
         /// </summary>
         /// <param name="key">Paramater name.</param>
         /// <param name="value">Parameter value.</param>
-        public void AddParameter(string key, string value)
-        {
-            collection.Add(key, value);
-        }
+        public void AddParameter(string key, string value) => collection.Add(key, value);
 
         /// <summary>
         /// Get the parameters and values in Http Query String.

@@ -1,8 +1,8 @@
-﻿using Deve.Model;
-using Deve.Criteria;
-using Deve.Sdk;
-using Deve.External.Sdk;
+﻿using Deve.Criteria;
 using Deve.External.Data;
+using Deve.External.Sdk;
+using Deve.Model;
+using Deve.Sdk;
 
 namespace Deve.Internal.Sdk
 {

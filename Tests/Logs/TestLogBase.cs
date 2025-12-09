@@ -71,7 +71,7 @@ namespace Deve.Tests.Logs
         public void Debug_TextWithMultipleObjectArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
-            
+
             Assert.Null(exception);
         }
 
@@ -79,7 +79,7 @@ namespace Deve.Tests.Logs
         public void Debug_TextWithNullAndObjectArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg}", null!, new { Name = "Test", Value = 123 }));
-            
+
             Assert.Null(exception);
         }
 
@@ -87,7 +87,7 @@ namespace Deve.Tests.Logs
         public void Debug_TextWithNullAndMultipleObjectArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
-            
+
             Assert.Null(exception);
         }
 
@@ -95,7 +95,7 @@ namespace Deve.Tests.Logs
         public void Debug_TextWithMultipleNullArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, null!, null!));
-            
+
             Assert.Null(exception);
         }
         #endregion
@@ -138,7 +138,7 @@ namespace Deve.Tests.Logs
         [Fact]
         public void Error_NullExceptionAndText_NoException()
         {
-            var exception = Record.Exception(() => _logProvider.Error((Exception)null!, "Sample text"));
+            var exception = Record.Exception(() => _logProvider.Error(null!, "Sample text"));
 
             Assert.Null(exception);
         }
@@ -155,7 +155,7 @@ namespace Deve.Tests.Logs
         public void Error_NullExceptionAndNullText_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Error((Exception)null!, null!));
-            
+
             Assert.Null(exception);
         }
 
@@ -163,7 +163,7 @@ namespace Deve.Tests.Logs
         public void Error_TextWithArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg}", "FirstArg"));
-            
+
             Assert.Null(exception);
         }
 
@@ -195,7 +195,7 @@ namespace Deve.Tests.Logs
         public void Error_TextWithMultipleObjectArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
-            
+
             Assert.Null(exception);
         }
 
@@ -211,7 +211,7 @@ namespace Deve.Tests.Logs
         public void Error_TextWithNullAndMultipleObjectArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
-            
+
             Assert.Null(exception);
         }
 
@@ -219,7 +219,7 @@ namespace Deve.Tests.Logs
         public void Error_TextWithMultipleNullArgs_NoException()
         {
             var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, null!, null!));
-            
+
             Assert.Null(exception);
         }
         #endregion

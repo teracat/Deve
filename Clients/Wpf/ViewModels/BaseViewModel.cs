@@ -1,40 +1,31 @@
-﻿using Deve.Internal.Data;
-using Deve.Clients.Wpf.Helpers;
+﻿using Deve.Clients.Wpf.Helpers;
 using Deve.Clients.Wpf.Interfaces;
+using Deve.Internal.Data;
 
 namespace Deve.Clients.Wpf.ViewModels
 {
     public abstract class BaseViewModel : UIBase
     {
-        #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
-        private readonly IMessageHandler _messageHandler;
-        private bool _isBusy = false;
-        private string _errorText = string.Empty;
-        #endregion
-
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
 
-        protected IMessageHandler MessageHandler => _messageHandler;
+        protected IMessageHandler MessageHandler { get; }
 
         public bool IsBusy
         {
-            get => _isBusy;
-            set
+            get; set
             {
-                if (_isBusy != value)
+                if (field != value)
                 {
-                    _isBusy = value;
+                    field = value;
                     OnPropertyChanged(nameof(IsBusy));
                     OnPropertyChanged(nameof(IsIdle));
                     OnIsBusyChanged();
                 }
             }
-        }
+        } = false;
 
         public bool IsIdle
         {
@@ -44,17 +35,16 @@ namespace Deve.Clients.Wpf.ViewModels
 
         public string ErrorText
         {
-            get => _errorText;
-            set
+            get; set
             {
-                if (SetProperty(ref _errorText, value))
+                if (SetProperty(ref field, value))
                 {
                     OnPropertyChanged(nameof(HasError));
                 }
             }
-        }
+        } = string.Empty;
 
-        public bool HasError => !string.IsNullOrWhiteSpace(_errorText);
+        public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
 
         public Action<bool>? SetResultAction { get; set; }
 
@@ -64,14 +54,14 @@ namespace Deve.Clients.Wpf.ViewModels
         #region Constructor
         protected BaseViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
         {
-            _navigationService = navigationService;
-            _data = data;
-            _messageHandler = messageHandler;
+            NavigationService = navigationService;
+            Data = data;
+            MessageHandler = messageHandler;
         }
         #endregion
 
         #region Virtual Methods
-        protected virtual void OnIsBusyChanged() {}
+        protected virtual void OnIsBusyChanged() { }
         #endregion
 
         #region Helper Methods

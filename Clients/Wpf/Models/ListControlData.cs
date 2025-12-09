@@ -6,43 +6,38 @@ namespace Deve.Clients.Wpf.Models
     public class ListControlData : UIBase
     {
         #region Fields
-        private bool _isBusy = false;
-        private string _searchText = string.Empty;
-        private string _errorText = string.Empty;
-        private IEnumerable<ListData>? _items;
         private readonly Func<Task>? _funcWhenSearch;
-        private ICommand? _searchCommand;
         #endregion
 
         #region Properties
         public bool IsBusy
         {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = false;
 
         public string SearchText
         {
-            get => _searchText;
-            set => SetProperty(ref _searchText, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         public string ErrorText
         {
-            get => _errorText;
-            set => SetProperty(ref _errorText, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         public IEnumerable<ListData>? Items
         {
-            get => _items;
-            set => SetProperty(ref _items, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        public ICommand SearchCommand => _searchCommand ??= new Command(() =>
+        public ICommand SearchCommand => field ??= new Command(() =>
         {
-            _funcWhenSearch?.Invoke();
-        }, () => !_isBusy);
+            _ = (_funcWhenSearch?.Invoke());
+        }, () => !IsBusy);
         #endregion
 
         #region Constructors

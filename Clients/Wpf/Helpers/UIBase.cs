@@ -7,13 +7,7 @@ namespace Deve.Clients.Wpf.Helpers
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string name = "")
-        {
-            if (PropertyChanged is not null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
+        protected virtual void OnPropertyChanged([CallerMemberName] string name = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         protected virtual bool SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
         {

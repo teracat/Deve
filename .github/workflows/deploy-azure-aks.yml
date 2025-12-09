@@ -1,0 +1,360 @@
+# This workflow requires the following GitHub secrets and environment variables (vars) to be defined:
+#
+# Azure Container Registry (ACR) access:
+# - ACR_LOGIN_SERVER (vars): The login server URL of your Azure Container Registry (e.g., myregistry.azurecr.io).
+# - ACR_USERNAME (vars): The username for accessing the ACR (usually the registry name).
+# - ACR_PASSWORD (secrets): The password or access key for the ACR.
+#
+# Azure Kubernetes Service (AKS) access:
+# - AZURE_CREDENTIALS (secrets): A JSON string containing Azure service principal credentials, generated using `az ad sp create-for-rbac --json-auth`.
+# - AKS_CLUSTER_NAME (vars): The name of the AKS cluster to deploy to.
+# - AKS_RESOURCE_GROUP (vars): The name of the Azure resource group containing the AKS cluster.
+#
+# JWT Secret Keys:
+# - JWT_SIGNING_SECRET_KEY (secrets): The secret key used to sign the JWT token (must be 32 bytes).
+# - JWT_ENCRYPTION_SECRET_KEY (secrets): The secret key used to encrypt the JWT token (must be 32 bytes).
+#
+# DataSource:
+# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-internal (optional).
+# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-external (optional).
+#
+# Let's Encrypt:
+# - LETSENCRYPT_EMAIL (vars): Email of the Let's Encrypt account.
+# - HOST_APIINTERNAL (vars): Host name for the Api Internal endpoint.
+# - HOST_APIEXTERNAL (vars): Host name for the Api External endpoint.
+# - HOST_PROMETHEUS (vars): Host name for the Prometheus endpoint.
+# - HOST_GRAFANA (vars): Host name for the Grafana endpoint.
+# - HOST_ZIPKIN (vars): Host name for the Zipkin endpoint.
+# - HOST_OAUTH2 (vars): Host name for the OAuth2 endpoint.
+# 
+# OAuth2:
+# - COOKIE_SECRET (secrets): 32-byte Base64 key used by oauth2-proxy to encrypt and sign session cookies.
+#
+# PostgreSQL:
+# - DB_USERS_PASSWORD (secrets): PostgreSQL password for all the users (if you prefer to use a different password for each user, you'll need a secret for each service and the superuser).
+#
+# Keycloak:
+# - KEYCLOAK_ADMIN_PASSWORD (secrets): Initial password of the admin user to access Keycloak (to manage users with acces to monitoring services with OAuth2).
+# - SECRET_GRAFANA (secrets): Secret for Grafana in Keycloak.
+# - SECRET_PROMETHEUS (secrets): Secret for Prometheus in Keycloak.
+# - SECRET_ZIPKIN (secrets): Secret for Zipkin in Keycloak.
+
+name: Deploy to Azure AKS
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "The GitHub environment used to get the secrets and vars needed"
+        type: string
+        required: true
+      services:
+        description: "Comma-separated list of services to deploy (e.g. api-internal,grafana)"
+        type: string
+        required: true
+
+    secrets:
+      ACR_PASSWORD:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      JWT_SIGNING_SECRET_KEY:
+        required: true
+      JWT_ENCRYPTION_SECRET_KEY:
+        required: true
+      APIINTERNAL_DATASOURCE_CONNECTIONSTRING:
+        required: false
+      APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
+        required: false
+      COOKIE_SECRET:
+        required: true
+      DB_USERS_PASSWORD:
+        required: true
+      KEYCLOAK_ADMIN_PASSWORD:
+        required: true
+      SECRET_GRAFANA:
+        required: true
+      SECRET_PROMETHEUS:
+        required: true
+      SECRET_ZIPKIN:
+        required: true
+
+# Only allow one deploy per environment
+concurrency: ${{ inputs.environment }}
+
+jobs:
+  deploy-azure-aks:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    env:
+      ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
+    steps:
+    - name: Check some secret
+      run: |
+          if [ -z "${{ vars.ACR_USERNAME }}" ]; then
+            echo "ACR_USERNAME is not defined"
+            exit 1
+          else
+            echo "ACR_USERNAME is defined"
+          fi
+
+    - name: Checkout code
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
+
+    - name: Define variables
+      id: vars
+      shell: bash
+      run: |
+        # Services
+        # Normalize input services to a clean, lowercase CSV
+        raw='${{ inputs.services }}'
+        services=$(echo "$raw" | tr '\n' ',' | tr '[:upper:]' '[:lower:]' | sed -E 's/,+/,/g; s/^,+|,+$//g')
+        
+        echo "services=$services" >> "$GITHUB_OUTPUT"
+
+        # Build services_docker
+        expand() {
+              case "$1" in
+                monitoring)   echo "prometheus zipkin grafana" ;;
+                api-internal) echo "redis api-internal" ;;
+                api-external) echo "redis api-external" ;;
+                *)            echo "$1" ;;
+              esac
+            }
+
+        IFS=',' read -r -a req <<< "$services"
+        out=(); seen=" "
+        for k in "${req[@]}"; do
+          for s in $(expand "$k"); do
+            [[ " $seen " == *" $s "* ]] || { out+=("$s"); seen+=" $s"; }
+          done
+        done
+
+        echo "services_docker=${out[*]}" >> "$GITHUB_OUTPUT"
+
+        # Compute IMAGE_TAG from tag or SHA
+        IMAGE_TAG="${{ github.sha }}"
+        HELM_VERSION=""
+
+        REF_TYPE="${{ github.ref_type }}"
+        REF_NAME="${{ github.ref_name }}"
+
+        # If this is a tag and its last segment matches x.y.z, use that as the image tag
+        if [[ "$REF_TYPE" == "tag" ]]; then
+          if [[ "$REF_NAME" =~ ([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            IMAGE_TAG="${BASH_REMATCH[0]}"
+            HELM_VERSION="${BASH_REMATCH[0]}"
+          fi
+        fi
+
+        echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+        echo "helm_version=$HELM_VERSION" >> "$GITHUB_OUTPUT"
+
+    - name: Login to ACR
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  #v3.6.0
+      with:
+        registry: ${{ vars.ACR_LOGIN_SERVER }}
+        username: ${{ vars.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build images with compose (tag computed)
+      env:
+        IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
+      run: |
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build ${{ steps.vars.outputs.services_docker }}
+
+    - name: Push docker images (tag computed)
+      env:
+        IMAGE_TAG: ${{ steps.vars.outputs.image_tag }}
+      run: |
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_docker }}
+
+    - name: Build images with compose (tag latest)
+      env:
+        IMAGE_TAG: 'latest'
+      run: |
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker build ${{ steps.vars.outputs.services_docker }}
+
+    - name: Push docker images (tag latest)
+      env:
+        IMAGE_TAG: 'latest'
+      run: |
+        docker compose -f .docker/compose.yml -f .docker/compose.prod.yml --project-directory .docker push --include-deps ${{ steps.vars.outputs.services_docker }}
+
+    - name: Azure login
+      uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5  #v2.3.0
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Set AKS context
+      uses: azure/aks-set-context@c7eb093e5a5d47caa333f64974d5fd1cd4bf069d  #v4.0.3
+      with:
+        resource-group: ${{ vars.AKS_RESOURCE_GROUP }}
+        cluster-name: ${{ vars.AKS_CLUSTER_NAME }}
+
+    - name: Setup Helm
+      uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 #v4.3.1
+
+    - name: Setup yq
+      uses: dcarbone/install-yq-action@4075b4dca348d74bd83f2bf82d30f25d7c54539b #v1.3.1
+      with:
+        version: v4.49.2
+
+    - name: Install NGINX Ingress Controller if needed
+      run: |
+        NAMESPACE="ingress-nginx"
+        if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
+          helm upgrade --install ingress-nginx .github/helm/ingress-nginx \
+            -f .github/helm/ingress-nginx/values.yaml \
+            --set ingress-nginx.controller.service.loadBalancerIP=${{ vars.AKS_PUBLIC_IP }} \
+            --dependency-update \
+            --namespace ingress-nginx \
+            --create-namespace \
+            --wait \
+            --timeout 20m \
+            --debug \
+            --rollback-on-failure
+        else
+          echo "NGINX Ingress Controller already installed"
+        fi
+
+    - name: Install cert-manager if needed
+      run: |
+        NAMESPACE="cert-manager"
+        if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
+          helm upgrade --install cert-manager .github/helm/cert-manager \
+            -f .github/helm/cert-manager/values.yaml \
+            --dependency-update \
+            --namespace cert-manager \
+            --create-namespace \
+            --wait \
+            --timeout 20m \
+            --debug \
+            --rollback-on-failure
+        else
+          echo "cert-manager already installed"
+        fi
+
+    - name: Install letsencrypt
+      run: |
+        cat > .github/helm/letsencrypt/values.override.yaml << EOF
+        letsEncrypt:
+          email: "${{ vars.LETSENCRYPT_EMAIL }}"
+        EOF
+
+        helm upgrade --install letsencrypt .github/helm/letsencrypt \
+          -f .github/helm/letsencrypt/values.yaml \
+          -f .github/helm/letsencrypt/values.override.yaml \
+          --wait \
+          --timeout 20m \
+          --debug
+
+    - name: Deploy monitoring
+      if: contains(steps.vars.outputs.services, 'monitoring')
+      run: |
+        NAMESPACE="monitoring"
+        cat > .github/helm/monitoring/values.override.yaml << EOF
+        namespace:
+          name: "${NAMESPACE}"
+        oauth2:
+          host: "${{ vars.HOST_OAUTH2 }}"
+          hostRoot: "${{ vars.HOST_ROOT }}"
+          cookieSecret: "${{ secrets.COOKIE_SECRET }}"
+        postgres:
+          superPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        keycloak:
+          host: "${{ vars.HOST_KEYCLOAK }}"
+          adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
+          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        grafana:
+          host: "${{ vars.HOST_GRAFANA }}"
+          clientSecret: "${{ secrets.SECRET_GRAFANA }}"
+          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+        prometheus:
+          host: "${{ vars.HOST_PROMETHEUS }}"
+          clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
+        zipkin:
+          host: "${{ vars.HOST_ZIPKIN }}"
+          clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
+        EOF
+
+        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
+        if [[ -n "$HELM_VERSION" ]]; then
+          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/monitoring/Chart.yaml
+        fi
+
+        helm upgrade --install monitoring .github/helm/monitoring \
+          -f .github/helm/monitoring/values.yaml \
+          -f .github/helm/monitoring/values.override.yaml \
+          --dependency-update \
+          --namespace ${NAMESPACE} \
+          --create-namespace \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
+          --wait \
+          --timeout 20m \
+          --debug \
+          --rollback-on-failure
+
+    - name: Deploy api-internal
+      if: contains(steps.vars.outputs.services, 'api-internal')
+      run: |
+        NAMESPACE="api-internal"
+        cat > .github/helm/api-internal/values.override.yaml << EOF
+        namespace:
+          name: "${NAMESPACE}"
+        apiInternal:
+          dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          host: "${{ vars.HOST_APIINTERNAL }}"
+        EOF
+
+        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
+        if [[ -n "$HELM_VERSION" ]]; then
+          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/api-internal/Chart.yaml
+        fi
+
+        helm upgrade --install api-internal .github/helm/api-internal \
+          -f .github/helm/api-internal/values.yaml \
+          -f .github/helm/api-internal/values.override.yaml \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          --install \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
+          --set "image.tag=latest" \
+          --wait \
+          --timeout 20m \
+          --debug \
+          --rollback-on-failure
+
+    - name: Deploy api-external
+      if: contains(steps.vars.outputs.services, 'api-external')
+      run: |
+        NAMESPACE="api-external"
+        cat > .github/helm/api-external/values.override.yaml << EOF
+        namespace:
+          name: "${NAMESPACE}"
+        apiExternal:
+          dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
+          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
+          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          host: "${{ vars.HOST_APIEXTERNAL }}"
+        EOF
+
+        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
+        if [[ -n "$HELM_VERSION" ]]; then
+          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/api-external/Chart.yaml
+        fi
+
+        helm upgrade --install api-external .github/helm/api-external \
+          -f .github/helm/api-external/values.yaml \
+          -f .github/helm/api-external/values.override.yaml \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          --install \
+          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
+          --set "image.tag=latest" \
+          --wait \
+          --timeout 20m \
+          --debug \
+          --rollback-on-failure
