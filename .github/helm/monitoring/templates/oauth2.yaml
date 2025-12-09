@@ -71,6 +71,8 @@ spec:
                   key: cookie-secret
           ports:
             - containerPort: {{ .Values.oauth2.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -132,6 +134,8 @@ spec:
                   key: cookie-secret
           ports:
             - containerPort: {{ .Values.oauth2.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -193,6 +197,8 @@ spec:
                   key: cookie-secret
           ports:
             - containerPort: {{ .Values.oauth2.internalPort }}
+          securityContext:
+            allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Service

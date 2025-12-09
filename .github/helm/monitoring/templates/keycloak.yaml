@@ -95,6 +95,8 @@ spec:
           containerPort: {{ .Values.keycloak.port }}
         - name: management
           containerPort: {{ .Values.keycloak.portManagement }}
+        securityContext:
+          allowPrivilegeEscalation: false
         startupProbe:
           httpGet:
             path: /health/ready
