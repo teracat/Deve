@@ -121,6 +121,7 @@ spec:
           name: postgres
         securityContext:
           privileged: false
+          allowPrivilegeEscalation: false
         volumeMounts:
         - name: init-sql
           mountPath: /docker-entrypoint-initdb.d

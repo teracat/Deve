@@ -14,8 +14,6 @@ namespace Deve.Clients.Maui
 {
     public static class MauiProgram
     {
-        private static ILogger<MauiApp>? _logger;
-
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -86,10 +84,10 @@ namespace Deve.Clients.Maui
 
             var app = builder.Build();
 
-            _logger = app.Services.GetService<ILogger<MauiApp>>();
-            if (_logger is not null)
+            var logger = app.Services.GetService<ILogger<MauiApp>>();
+            if (logger is not null)
             {
-                Log.Providers.AddNetCore(_logger);
+                Log.Providers.AddNetCore(logger);
                 Log.Providers.RemoveDebug(); // We remove the Debug logger because it's already included in the NetCore provider.
             }
 
