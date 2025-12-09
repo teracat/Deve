@@ -1,6 +1,6 @@
 ![Header](header.png)
 
-[![.NET](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml/badge.svg?branch=main)](https://github.com/teracat/Deve/actions/workflows/main-test-all.yml)
+[![.NET](https://github.com/teracat/Deve/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/teracat/Deve/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Teracat.Deve)](https://www.nuget.org/packages/Teracat.Deve)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Teracat.Deve)](https://www.nuget.org/packages/Teracat.Deve)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/174edf2ae54941d7bd0e857a338ff162)](https://app.codacy.com/gh/teracat/Deve/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
