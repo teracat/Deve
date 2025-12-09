@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using Deve.Logging;
-using Deve.Authenticate;
 using Deve.Auth.Converters;
 using Deve.Auth.Crypt;
+using Deve.Authenticate;
 using Deve.Internal.Model;
+using Deve.Logging;
 
 namespace Deve.Auth.TokenManagers
 {

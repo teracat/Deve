@@ -1,28 +1,31 @@
 name: deve-prod
 services:
   api-internal:
+    image: ${ACR_LOGIN_SERVER}/api-internal:${IMAGE_TAG}
     container_name: prod-api-internal
     expose:
       - "80"
     ports:
       - "80:80"
-    environment:
-      AppSettings__JwtKeys__SigningSecretKey: "change this key (32 bytes)"
-      AppSettings__JwtKeys__EncryptionSecretKey: "change this key (32 bytes)"
-      ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_URLS: "http://+:80"
   
   api-external:
+    image: ${ACR_LOGIN_SERVER}/api-external:${IMAGE_TAG}
     container_name: prod-api-external
     expose:
       - "80"
     ports:
-      - "81:80"
-    environment:
-      AppSettings__JwtKeys__SigningSecretKey: "change this key (32 bytes)"
-      AppSettings__JwtKeys__EncryptionSecretKey: "change this key (32 bytes)"
-      ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_URLS: "http://+:80"
+      - "80:80"
 
-  cache-redis:
-    container_name: prod-cache-redis
+  redis:
+    container_name: prod-redis
+
+  prometheus:
+    image: ${ACR_LOGIN_SERVER}/prometheus:${IMAGE_TAG}
+    container_name: prod-prometheus
+
+  grafana:
+    image: ${ACR_LOGIN_SERVER}/grafana:${IMAGE_TAG}
+    container_name: prod-grafana
+
+  zipkin:
+    container_name: prod-zipkin

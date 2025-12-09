@@ -4,20 +4,16 @@ namespace Deve.Clients.Wpf.Views
 {
     public partial class CountryView : BaseEditView
     {
-        #region Fields
-        private readonly CountryViewModel _viewModel;
-        #endregion
-
         #region Constructors
         public CountryView(CountryViewModel viewModel)
         {
             InitializeComponent();
             
             // When the data is loaded, set initial focus
-            viewModel.LoadDataDoneAction = new Action(() => { uxName.Focus(); });
+            viewModel.LoadDataDoneAction = new Action(() => { _ = uxName.Focus(); });
 
             // Set ViewModel
-            ViewModel = _viewModel = viewModel;
+            ViewModel = viewModel;
         }
         #endregion
 
@@ -26,7 +22,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                uxIsoCode.Focus();
+                _ = uxIsoCode.Focus();
             }
         }
         #endregion

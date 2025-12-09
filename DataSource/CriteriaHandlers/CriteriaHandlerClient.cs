@@ -1,6 +1,6 @@
-﻿using Deve.Internal.Criteria;
+﻿using System.Globalization;
+using Deve.Internal.Criteria;
 using Deve.Internal.Model;
-using System.Globalization;
 
 namespace Deve.DataSource.CriteriaHandlers
 {
@@ -22,7 +22,7 @@ namespace Deve.DataSource.CriteriaHandlers
             {
                 qry = qry.Where(x => x.Name.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase) ||
                                      (!string.IsNullOrEmpty(x.TradeName) && x.TradeName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) ||
-                                     (!string.IsNullOrEmpty(x.TaxName) && x.TaxName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)) );
+                                     (!string.IsNullOrEmpty(x.TaxName) && x.TaxName.Contains(criteria.Name, StringComparison.InvariantCultureIgnoreCase)));
             }
 
             if (criteria.CountryId.HasValue)
@@ -32,37 +32,18 @@ namespace Deve.DataSource.CriteriaHandlers
 
             //OrderBy
             orderBy = criteria.OrderBy ?? nameof(Client.Name);
-            switch (orderBy.ToLower(CultureInfo.InvariantCulture))
+            qry = orderBy.ToLower(CultureInfo.InvariantCulture) switch
             {
-                case "id":
-                    qry = qry.OrderBy(x => x.Id);
-                    break;
-                case "country":
-                    qry = qry.OrderBy(x => x.Location.Country);
-                    break;
-                case "state":
-                    qry = qry.OrderBy(x => x.Location.State);
-                    break;
-                case "city":
-                    qry = qry.OrderBy(x => x.Location.City);
-                    break;
-                case "postalcode":
-                    qry = qry.OrderBy(x => x.Location.PostalCode);
-                    break;
-                case "tradename":
-                    qry = qry.OrderBy(x => x.TradeName);
-                    break;
-                case "taxid":
-                    qry = qry.OrderBy(x => x.TaxId);
-                    break;
-                case "taxname":
-                    qry = qry.OrderBy(x => x.TaxName);
-                    break;
-                default:
-                    qry = qry.OrderBy(x => x.Name);
-                    break;
-            }
-
+                "id" => qry.OrderBy(x => x.Id),
+                "country" => qry.OrderBy(x => x.Location.Country),
+                "state" => qry.OrderBy(x => x.Location.State),
+                "city" => qry.OrderBy(x => x.Location.City),
+                "postalcode" => qry.OrderBy(x => x.Location.PostalCode),
+                "tradename" => qry.OrderBy(x => x.TradeName),
+                "taxid" => qry.OrderBy(x => x.TaxId),
+                "taxname" => qry.OrderBy(x => x.TaxName),
+                _ => qry.OrderBy(x => x.Name),
+            };
             return qry;
         }
     }

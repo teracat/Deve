@@ -3,7 +3,7 @@ using Deve.Authenticate;
 
 namespace Deve.Tests.Api.Fixture
 {
-    public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint: class
+    public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint : class
     {
         public ITokenManager TokenManager { get; }
 
@@ -35,10 +35,13 @@ namespace Deve.Tests.Api.Fixture
 
         protected override void Dispose(bool disposing)
         {
-            ClientNoAuth.Dispose();
-            ClientValidAuth.Dispose();
-            ClientInvalidUser.Dispose();
-            TokenManager.Dispose();
+            if (disposing)
+            {
+                ClientNoAuth?.Dispose();
+                ClientValidAuth?.Dispose();
+                ClientInvalidUser?.Dispose();
+                TokenManager?.Dispose();
+            }
             base.Dispose(disposing);
         }
     }

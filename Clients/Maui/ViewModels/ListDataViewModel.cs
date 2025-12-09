@@ -12,10 +12,10 @@ namespace Deve.Clients.Maui.ViewModels
     {
         #region Fields
         [Reactive]
-        IEnumerable<ListData>? _listData;
+        private IEnumerable<ListData>? _listData;
 
         [Reactive]
-        ListData? _selectedData;
+        private ListData? _selectedData;
         #endregion
 
         #region Properties
@@ -33,11 +33,11 @@ namespace Deve.Clients.Maui.ViewModels
             LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
 
             // Properties
-            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
+            _ = this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
                 .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
 
             // Subscriptions
-            this.WhenAnyValue(vm => vm.SelectedData)
+            _ = this.WhenAnyValue(vm => vm.SelectedData)
                 .Subscribe((value) =>
                 {
                     if (value is not null)
@@ -55,10 +55,7 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Methods
-        protected async Task InitializeAsync()
-        {
-            await LoadData();
-        }
+        protected async Task InitializeAsync() => await LoadData();
 
         public async Task LoadData()
         {
@@ -80,7 +77,7 @@ namespace Deve.Clients.Maui.ViewModels
             {
                 { nameof(BaseDetailsViewModel.Id), data.Id }
             };
-            NavigationService.NavigateToAsync("details", navigationParameter);
+            _ = NavigationService.NavigateToAsync("details", navigationParameter);
         }
         #endregion
     }

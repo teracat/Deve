@@ -65,19 +65,12 @@ namespace Deve.DataSource
 
                 //OrderBy
                 string orderBy = criteria.OrderBy ?? nameof(State.Name);
-                switch (orderBy.ToLower(CultureInfo.InvariantCulture))
+                qry = orderBy.ToLower(CultureInfo.InvariantCulture) switch
                 {
-                    case "id":
-                        qry = qry.OrderBy(x => x.Id);
-                        break;
-                    case "country":
-                        qry = qry.OrderBy(x => x.Country);
-                        break;
-                    default:
-                        qry = qry.OrderBy(x => x.Name);
-                        break;
-                }
-
+                    "id" => qry.OrderBy(x => x.Id),
+                    "country" => qry.OrderBy(x => x.Country),
+                    _ => qry.OrderBy(x => x.Name),
+                };
                 return ApplyOffsetAndLimit(qry, criteria, orderBy);
             });
         }
@@ -149,10 +142,7 @@ namespace Deve.DataSource
         #endregion
 
         #region Methods
-        private State? FindLocal(long id)
-        {
-            return Data.States.FirstOrDefault(x => x.Id == id);
-        }
+        private State? FindLocal(long id) => Data.States.FirstOrDefault(x => x.Id == id);
         #endregion
     }
 }

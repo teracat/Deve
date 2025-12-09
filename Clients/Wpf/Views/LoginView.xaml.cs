@@ -50,10 +50,7 @@ namespace Deve.Clients.Wpf.Views
         #endregion
 
         #region IViewLogin
-        public void ChangeCulture(CultureInfo value, string username)
-        {
-            ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
-        }
+        public void ChangeCulture(CultureInfo value, string username) => ((App)Application.Current).ChangeCulture(value, username, uxPassword.Password);
         #endregion
 
         #region Events
@@ -61,7 +58,7 @@ namespace Deve.Clients.Wpf.Views
         {
             if (e.Key == System.Windows.Input.Key.Return)
             {
-                uxPassword.Focus();
+                _ = uxPassword.Focus();
             }
         }
 
@@ -74,10 +71,7 @@ namespace Deve.Clients.Wpf.Views
             }
         }
 
-        private async void OnLoginClick(object sender, RoutedEventArgs e)
-        {
-            await _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
-        }
+        private async void OnLoginClick(object sender, RoutedEventArgs e) => await _viewModel.LoginCommand.Execute(uxPassword.Password).ToTask();
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {

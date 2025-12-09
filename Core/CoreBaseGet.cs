@@ -1,11 +1,12 @@
-﻿using Deve.Model;
-using Deve.Auth;
+﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
+using Deve.Cache;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Cache;
 using Deve.External.Data;
+using Deve.Logging;
+using Deve.Model;
 
 namespace Deve.Core
 {
@@ -58,12 +59,14 @@ namespace Deve.Core
             // Example of using cache: if the cache is enabled and the item is already in the cache, return it directly.
             if (Cache is not null && Cache.TryGet(UtilsCore.GetCacheKeyForType<Model>(id), out Model value))
             {
+                Log.Debug("Cache hit for {CacheKey}", UtilsCore.GetCacheKeyForType<Model>(id));
                 return Utils.ResultGetOk(value);
             }
 
             var resGet = await DataGet.Get(id);
             if (Cache is not null && resGet.Success)
             {
+                Log.Debug("Cache miss for {CacheKey}. Adding to cache.", UtilsCore.GetCacheKeyForType<Model>(id));
                 // If the item is not in the cache, add it.
                 Cache.Set(UtilsCore.GetCacheKeyForType<Model>(id), resGet.Data);
             }
@@ -73,10 +76,7 @@ namespace Deve.Core
         #endregion
 
         #region Methods
-        protected async virtual Task<Result> CheckPermission(PermissionType type)
-        {
-            return await CheckPermission(type, DataType);
-        }
+        protected virtual async Task<Result> CheckPermission(PermissionType type) => await CheckPermission(type, DataType);
         #endregion
     }
 }

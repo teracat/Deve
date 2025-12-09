@@ -1,11 +1,11 @@
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Moq;
-using Deve.Model;
+using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
-using Deve.Clients.Wpf.Interfaces;
+using Deve.Model;
 using Deve.Tests.Wpf.Fixtures;
-using System.Reactive.Threading.Tasks;
 
 namespace Deve.Tests.Wpf
 {
@@ -64,7 +64,7 @@ namespace Deve.Tests.Wpf
             var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddStateCommand.Execute().ToTask();
+            _ = await mainViewModel.AddStateCommand.Execute().ToTask();
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(), Times.Once);
         }
@@ -80,7 +80,7 @@ namespace Deve.Tests.Wpf
             var state = mainViewModel.CtrlDataStates?.Items?.First();
             var stateId = state?.Id ?? 0;
 
-            await mainViewModel.EditStateCommand.Execute(state!).ToTask();
+            _ = await mainViewModel.EditStateCommand.Execute(state!).ToTask();
 
             navigationService.Verify(x => x.NavigateModalTo<StateView>(stateId), Times.Once);
         }
@@ -95,7 +95,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var state = mainViewModel.CtrlDataStates?.Items?.First();
 
-            await mainViewModel.DeleteStateCommand.Execute(state!).ToTask();
+            _ = await mainViewModel.DeleteStateCommand.Execute(state!).ToTask();
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }
@@ -111,7 +111,7 @@ namespace Deve.Tests.Wpf
             var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataValidAuth, _fixture.MessageHandler.Object, schedulerProvider);
             await mainViewModel.Initialization;
 
-            await mainViewModel.AddCountryCommand.Execute();
+            _ = await mainViewModel.AddCountryCommand.Execute();
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView>(), Times.Once);
         }
@@ -126,7 +126,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.EditCountryCommand.Execute(country!).ToTask();
+            _ = await mainViewModel.EditCountryCommand.Execute(country!).ToTask();
 
             navigationService.Verify(x => x.NavigateModalTo<CountryView, Country>(It.IsNotNull<Country>()), Times.Once);
         }
@@ -141,7 +141,7 @@ namespace Deve.Tests.Wpf
             await mainViewModel.Initialization;
             var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.DeleteCountryCommand.Execute(country!).ToTask();
+            _ = await mainViewModel.DeleteCountryCommand.Execute(country!).ToTask();
 
             messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
         }

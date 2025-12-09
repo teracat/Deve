@@ -11,8 +11,6 @@ namespace Deve.Clients.Maui.ViewModels
     public abstract partial class BaseViewModel : ReactiveValidationObject
     {
         #region Fields
-        private readonly INavigationService _navigationService;
-        private readonly IData _data;
         [Reactive]
         private bool _isBusy = false;
 
@@ -30,16 +28,16 @@ namespace Deve.Clients.Maui.ViewModels
         #endregion
 
         #region Properties
-        protected INavigationService NavigationService => _navigationService;
+        protected INavigationService NavigationService { get; }
 
-        protected IData Data => _data;
+        protected IData Data { get; }
         #endregion
 
         #region Constructor
         protected BaseViewModel(INavigationService navigationService, IData data, ISchedulerProvider scheduler)
         {
-            _navigationService = navigationService;
-            _data = data;
+            NavigationService = navigationService;
+            Data = data;
 
             // Properties
             _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)

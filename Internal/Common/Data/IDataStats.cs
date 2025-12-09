@@ -1,5 +1,5 @@
-﻿using Deve.Model;
-using Deve.Internal.Model;
+﻿using Deve.Internal.Model;
+using Deve.Model;
 
 namespace Deve.Internal.Data
 {

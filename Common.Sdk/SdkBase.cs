@@ -4,14 +4,11 @@ using Deve.Model;
 
 namespace Deve.Sdk
 {
-    internal class SdkBase<SdkType> where SdkType: ISdkCommon
+    internal class SdkBase<SdkType> where SdkType : ISdkCommon
     {
-        #region Atributes
-        private readonly SdkType _sdk;
-        #endregion
-
         #region Properties
-        protected SdkType Sdk => _sdk;
+        protected SdkType Sdk { get; }
+
         public JsonSerializerOptions SerializerOptions { get; set; } = new()
         {
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,
@@ -23,7 +20,7 @@ namespace Deve.Sdk
         #region Constructor
         public SdkBase(SdkType sdk)
         {
-            _sdk = sdk;
+            Sdk = sdk;
         }
         #endregion
 
@@ -33,28 +30,26 @@ namespace Deve.Sdk
             try
             {
                 var apiRequest = new RequestBuilder(path, HttpMethod.Get, authType, Sdk.UserToken, data);
-                using (var request = apiRequest.Build())
+                using var request = apiRequest.Build();
+                var response = await Sdk.Client.SendAsync(request);
+                if (response is null)
                 {
-                    var response = await _sdk.Client.SendAsync(request);
-                    if (response is null)
-                    {
-                        return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    string content = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrWhiteSpace(content))
-                    {
-                        return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    var res = JsonSerializer.Deserialize<ResultGetList<T>>(content, SerializerOptions);
-                    if (res is null)
-                    {
-                        return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    return res;
+                    return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
                 }
+
+                string content = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                var res = JsonSerializer.Deserialize<ResultGetList<T>>(content, SerializerOptions);
+                if (res is null)
+                {
+                    return Utils.ResultGetListError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                return res;
             }
             catch (Exception ex)
             {
@@ -67,28 +62,26 @@ namespace Deve.Sdk
             try
             {
                 var apiRequest = new RequestBuilder(path + (id.HasValue ? id.Value.ToString() : string.Empty), HttpMethod.Get, authType, Sdk.UserToken);
-                using (var request = apiRequest.Build())
+                using var request = apiRequest.Build();
+                var response = await Sdk.Client.SendAsync(request);
+                if (response is null)
                 {
-                    var response = await _sdk.Client.SendAsync(request);
-                    if (response is null)
-                    {
-                        return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    string content = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrWhiteSpace(content))
-                    {
-                        return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    var res = JsonSerializer.Deserialize<ResultGet<T>>(content, SerializerOptions);
-                    if (res is null)
-                    {
-                        return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    return res;
+                    return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
                 }
+
+                string content = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                var res = JsonSerializer.Deserialize<ResultGet<T>>(content, SerializerOptions);
+                if (res is null)
+                {
+                    return Utils.ResultGetError<T>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                return res;
             }
             catch (Exception ex)
             {
@@ -120,37 +113,32 @@ namespace Deve.Sdk
             return await Execute(apiRequest);
         }
 
-        private async Task<Result> Execute(RequestBuilder apiRequest)
-        {
-            return new Result(await ExecuteWithResult<object>(apiRequest));
-        }
+        private async Task<Result> Execute(RequestBuilder apiRequest) => new(await ExecuteWithResult<object>(apiRequest));
 
         private async Task<ResultGet<ResultType>> ExecuteWithResult<ResultType>(RequestBuilder apiRequest)
         {
             try
             {
-                using (var request = apiRequest.Build())
+                using var request = apiRequest.Build();
+                var response = await Sdk.Client.SendAsync(request);
+                if (response is null)
                 {
-                    var response = await _sdk.Client.SendAsync(request);
-                    if (response is null)
-                    {
-                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    string content = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrWhiteSpace(content))
-                    {
-                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    var res = JsonSerializer.Deserialize<ResultGet<ResultType>>(content, SerializerOptions);
-                    if (res is null)
-                    {
-                        return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
-                    }
-
-                    return res;
+                    return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
                 }
+
+                string content = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                var res = JsonSerializer.Deserialize<ResultGet<ResultType>>(content, SerializerOptions);
+                if (res is null)
+                {
+                    return Utils.ResultGetError<ResultType>(Sdk.Options.LangCode, ResultErrorType.Unknown);
+                }
+
+                return res;
             }
             catch (Exception ex)
             {

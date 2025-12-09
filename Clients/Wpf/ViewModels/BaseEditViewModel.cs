@@ -31,11 +31,11 @@ namespace Deve.Clients.Wpf.ViewModels
             LoadCommand = ReactiveCommand.CreateFromTask(GetData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
 
             // Properties
-            this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting, vm => vm.SaveCommand.IsExecuting, vm => vm.CancelCommand.IsExecuting)
+            _ = this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting, vm => vm.SaveCommand.IsExecuting, vm => vm.CancelCommand.IsExecuting)
                 .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
 
             // Subscriptions
-            LoadCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
+            _ = LoadCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
                        .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true (it allows to set the focus to the initial control)
                        .SubscribeOn(scheduler.TaskPool)
                        .ObserveOn(scheduler.MainThread)
@@ -56,7 +56,7 @@ namespace Deve.Clients.Wpf.ViewModels
                             LoadDataDoneAction?.Invoke();
                         });
 
-            SaveCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
+            _ = SaveCommand.CombineLatest(this.WhenAnyValue(vm => vm.IsIdle))
                        .Where(tuple => tuple.Second)   // Waits until IsIdle becomes true
                        .SubscribeOn(scheduler.TaskPool)
                        .ObserveOn(scheduler.MainThread)
@@ -64,17 +64,17 @@ namespace Deve.Clients.Wpf.ViewModels
                        {
                            var res = tuple.First;
                            if (!res.Success)
-                            {
-                                if (res.Errors is not null && res.Errors.Count > 0)
-                                {
-                                    MessageHandler.ShowError(res.Errors);
-                                }
-                                return;
-                            }
+                           {
+                               if (res.Errors is not null && res.Errors.Count > 0)
+                               {
+                                   MessageHandler.ShowError(res.Errors);
+                               }
+                               return;
+                           }
 
-                            SetResult(true);
-                            Close();
-                        });
+                           SetResult(true);
+                           Close();
+                       });
         }
         #endregion
 
@@ -95,7 +95,7 @@ namespace Deve.Clients.Wpf.ViewModels
         #region INavigationAware
         public void OnNavigatedTo(object? parameter)
         {
-            if (parameter is not null && parameter is long id)
+            if (parameter is long id)
             {
                 Id = id;
             }
@@ -104,7 +104,7 @@ namespace Deve.Clients.Wpf.ViewModels
                 Id = 0;
             }
 
-            LoadCommand.Execute().Subscribe();
+            _ = LoadCommand.Execute().Subscribe();
         }
         #endregion
     }

@@ -1,5 +1,5 @@
-﻿using Deve.Model;
-using Deve.External.Data;
+﻿using Deve.External.Data;
+using Deve.Model;
 
 namespace Deve.DataSource
 {

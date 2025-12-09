@@ -1,7 +1,8 @@
 using Moq;
-using Deve.Clients.Maui.Interfaces;
-using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Helpers;
+using Deve.Clients.Maui.Interfaces;
+using Deve.Clients.Maui.Services;
+using Deve.Clients.Maui.ViewModels;
 using Deve.Tests.Maui.Fixtures;
 
 namespace Deve.Tests.Maui
@@ -44,7 +45,7 @@ namespace Deve.Tests.Maui
         {
             var schedulerProvider = new TestSchedulers();
             var viewModel = CreateViewModel(_fixture.NavigationService.Object, _fixture.DataValidAuth, schedulerProvider);
-            
+
             await viewModel.Initialization;
 
             Assert.NotNull(viewModel.ListData);

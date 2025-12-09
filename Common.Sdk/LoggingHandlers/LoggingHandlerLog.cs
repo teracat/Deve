@@ -26,9 +26,6 @@ namespace Deve.Sdk.LoggingHandlers
         {
         }
 
-        protected override void Write(string text)
-        {
-            Log.Debug(text);
-        }
+        protected override void Write(string text) => Log.Debug(text);
     }
 }

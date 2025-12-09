@@ -162,11 +162,11 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="InvalidValue" xml:space="preserve">
-    <value>Valor no válido</value>
-  </data>
   <data name="Identification" xml:space="preserve">
     <value>Identificación</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Valor no válido</value>
   </data>
   <data name="IsoCode" xml:space="preserve">
     <value>Código ISO</value>
@@ -183,8 +183,14 @@
   <data name="MinBalance" xml:space="preserve">
     <value>Saldo mínimo</value>
   </data>
+  <data name="MinLengthIsoCode" xml:space="preserve">
+    <value>El código ISO debe tener una longitud mínima de {1} caracteres</value>
+  </data>
   <data name="MissingCountry" xml:space="preserve">
     <value>El país es obligatorio</value>
+  </data>
+  <data name="MissingIsoCode" xml:space="preserve">
+    <value>El código ISO es obligatorio</value>
   </data>
   <data name="MissingName" xml:space="preserve">
     <value>El nombre es obligatorio</value>
@@ -227,11 +233,5 @@
   </data>
   <data name="Username" xml:space="preserve">
     <value>Usuario</value>
-  </data>
-  <data name="MissingIsoCode" xml:space="preserve">
-    <value>El código ISO es obligatorio</value>
-  </data>
-  <data name="MinLengthIsoCode" xml:space="preserve">
-    <value>El código Iso debe tener una longitud mínima de {1} caracteres</value>
   </data>
 </root>
