@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Deve.Logging;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Clients
 {

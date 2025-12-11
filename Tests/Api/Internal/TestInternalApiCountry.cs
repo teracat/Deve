@@ -1,4 +1,4 @@
-using Deve.Model;
+using Deve.Dto;
 using Deve.Tests.Api.Internal.Fixture;
 
 namespace Deve.Tests.Api.Internal

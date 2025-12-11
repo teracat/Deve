@@ -1,9 +1,8 @@
 ﻿using Deve.Auth;
 using Deve.DataSource;
-using Deve.Internal.Criteria;
+using Deve.Internal.Dto;
 using Deve.Internal.Data;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core.DataSourceWrappers
 {

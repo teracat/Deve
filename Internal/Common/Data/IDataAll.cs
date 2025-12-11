@@ -1,4 +1,4 @@
-﻿using Deve.Model;
+﻿using Deve.Dto;
 
 namespace Deve.Internal.Data
 {

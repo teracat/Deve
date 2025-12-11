@@ -1,6 +1,6 @@
 ﻿using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
-using Deve.Internal.Criteria;
+using Deve.Internal.Dto;
 
 namespace Deve.Clients.Maui.ViewModels
 {

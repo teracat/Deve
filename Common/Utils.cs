@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Deve.Localize;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve
 {

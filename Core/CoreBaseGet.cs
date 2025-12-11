@@ -6,7 +6,7 @@ using Deve.Data;
 using Deve.DataSource;
 using Deve.External.Data;
 using Deve.Logging;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core
 {

@@ -1,7 +1,6 @@
-﻿using Deve.Criteria;
+﻿using Deve.Dto;
 using Deve.DataSource.CriteriaHandlers;
-using Deve.External.Model;
-using Deve.Model;
+using Deve.External.Dto;
 
 namespace Deve.DataSource
 {
@@ -22,7 +21,7 @@ namespace Deve.DataSource
                 if (criteria is null)
                 {
                     var list = Data.Clients
-                                   .Where(x => x.Status == Internal.Model.ClientStatus.Active)
+                                   .Where(x => x.Status == Internal.Dto.ClientStatus.Active)
                                    .OrderBy(x => x.Name)
                                    .Take(Constants.DefaultCriteriaLimit)
                                    .Select(x => new ClientBasic()
@@ -41,9 +40,9 @@ namespace Deve.DataSource
                 }
 
                 //Apply Filters
-                var criteriaClient = new Internal.Criteria.CriteriaClient(criteria)
+                var criteriaClient = new Internal.Dto.CriteriaClient(criteria)
                 {
-                    Status = Internal.Model.ClientStatus.Active
+                    Status = Internal.Dto.ClientStatus.Active
                 };
                 var qry = CriteriaHandlerClient.Apply(Data.Clients.AsQueryable(), criteriaClient, out string orderBy);
 

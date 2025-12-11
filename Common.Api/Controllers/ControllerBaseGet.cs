@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.External.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Api.Controllers
 {

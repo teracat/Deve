@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Api.Helpers
 {

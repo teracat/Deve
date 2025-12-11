@@ -3,7 +3,7 @@ using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core
 {

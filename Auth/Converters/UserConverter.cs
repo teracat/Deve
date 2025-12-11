@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 using Deve.Authenticate;
-using Deve.Internal.Model;
+using Deve.Internal.Dto;
 
 namespace Deve.Auth.Converters
 {

@@ -1,7 +1,7 @@
 using Moq;
 using Deve.Core;
 using Deve.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Tests.Core
 {

@@ -2,12 +2,11 @@
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
 using Deve.Cache;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.External.Data;
-using Deve.External.Model;
-using Deve.Model;
+using Deve.External.Dto;
 
 namespace Deve.Core
 {

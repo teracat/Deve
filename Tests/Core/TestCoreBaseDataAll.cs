@@ -1,5 +1,5 @@
 using Deve.Core;
-using Deve.Model;
+using Deve.Dto;
 using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core

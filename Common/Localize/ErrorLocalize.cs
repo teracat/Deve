@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Deve.Model;
+using Deve.Dto;
 using Deve.Resources;
 
 namespace Deve.Localize

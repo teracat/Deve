@@ -1,6 +1,5 @@
-﻿using Deve.Criteria;
+﻿using Deve.Dto;
 using Deve.External.Data;
-using Deve.Model;
 
 namespace Deve.External.Sdk
 {

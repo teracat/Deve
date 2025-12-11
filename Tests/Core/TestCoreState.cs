@@ -1,7 +1,6 @@
 using Deve.Core;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.Internal.Data;
-using Deve.Model;
 using Deve.Tests.Core.Fixtures;
 
 namespace Deve.Tests.Core

@@ -1,5 +1,4 @@
-﻿using Deve.Criteria;
-using Deve.Model;
+﻿using Deve.Dto;
 
 namespace Deve.External.Data
 {

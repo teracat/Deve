@@ -1,11 +1,10 @@
 ﻿using Deve.Auth;
 using Deve.Auth.Permissions;
 using Deve.Auth.UserIdentityService;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Internal.Data;
-using Deve.Model;
 
 namespace Deve.Core
 {

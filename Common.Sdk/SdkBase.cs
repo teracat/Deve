@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Sdk
 {

@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
-using Deve.Criteria;
-using Deve.Internal.Criteria;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Dto;
+using Deve.Internal.Dto;
 
 namespace Deve.DataSource
 {

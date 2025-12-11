@@ -1,5 +1,5 @@
 using Deve.Internal.Api;
-using Deve.Internal.Model;
+using Deve.Internal.Dto;
 using Deve.Tests.Api.Internal.Fixture;
 
 namespace Deve.Tests.Api.Internal

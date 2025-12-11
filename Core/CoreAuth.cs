@@ -4,7 +4,7 @@ using Deve.Authenticate;
 using Deve.Core.Shield;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core
 {

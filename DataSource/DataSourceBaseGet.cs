@@ -1,9 +1,9 @@
 ﻿using Deve.External.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.DataSource
 {
-    internal abstract class DataSourceBaseGet<ModelList, Model, Criteria> : DataSourceBase, IDataGet<ModelList, Model, Criteria> where Criteria : Deve.Criteria.Criteria
+    internal abstract class DataSourceBaseGet<ModelList, Model, Criteria> : DataSourceBase, IDataGet<ModelList, Model, Criteria> where Criteria : Deve.Dto.Criteria
     {
         #region Static Atributes
         protected static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);

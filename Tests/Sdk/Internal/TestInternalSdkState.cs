@@ -1,7 +1,6 @@
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.Internal.Data;
 using Deve.Internal.Sdk;
-using Deve.Model;
 using Deve.Tests.Sdk.Internal.Fixtures;
 
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Authenticate;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Api.Controllers
 {

@@ -1,5 +1,5 @@
 ﻿using Deve.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core
 {

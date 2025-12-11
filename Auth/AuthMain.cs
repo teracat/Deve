@@ -2,12 +2,10 @@
 using Deve.Auth.Permissions;
 using Deve.Auth.TokenManagers;
 using Deve.Authenticate;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.Data;
 using Deve.DataSource;
-using Deve.Internal.Criteria;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Internal.Dto;
 
 namespace Deve.Auth
 {

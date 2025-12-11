@@ -5,7 +5,7 @@ using Deve.Cache;
 using Deve.Data;
 using Deve.DataSource;
 using Deve.Internal.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core
 {

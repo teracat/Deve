@@ -2,7 +2,7 @@
 using System.Text;
 using Deve.Auth.Converters;
 using Deve.Authenticate;
-using Deve.Internal.Model;
+using Deve.Internal.Dto;
 using Deve.Logging;
 using Microsoft.IdentityModel.Tokens;
 

@@ -1,7 +1,6 @@
-using Deve.Internal.Criteria;
+using Deve.Dto;
 using Deve.Internal.Data;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Internal.Dto;
 
 namespace Deve.Tests
 {

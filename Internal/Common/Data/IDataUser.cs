@@ -1,5 +1,4 @@
-﻿using Deve.Internal.Criteria;
-using Deve.Internal.Model;
+﻿using Deve.Internal.Dto;
 
 namespace Deve.Internal.Data
 {

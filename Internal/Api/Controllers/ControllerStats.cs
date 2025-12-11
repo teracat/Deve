@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api.Controllers;
+using Deve.Dto;
 using Deve.Internal.Data;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Internal.Dto;
 
 namespace Deve.Internal.Api.Controllers
 {

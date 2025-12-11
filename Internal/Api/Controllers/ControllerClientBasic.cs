@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Deve.Api.Controllers;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.External.Data;
-using Deve.External.Model;
-using Deve.Model;
+using Deve.External.Dto;
 
 namespace Deve.Internal.Api.Controllers
 {

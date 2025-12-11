@@ -7,7 +7,7 @@ using Deve.Auth.TokenManagers;
 using Deve.Data;
 using Deve.Localize;
 using Deve.Logging;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Api.Auth
 {

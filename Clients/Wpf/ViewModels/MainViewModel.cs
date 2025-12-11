@@ -3,11 +3,9 @@ using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Models;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Views;
-using Deve.Criteria;
-using Deve.Internal.Criteria;
+using Deve.Dto;
+using Deve.Internal.Dto;
 using Deve.Internal.Data;
-using Deve.Internal.Model;
-using Deve.Model;
 
 namespace Deve.Clients.Wpf.ViewModels
 {

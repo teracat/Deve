@@ -1,4 +1,4 @@
-﻿using Deve.Model;
+﻿using Deve.Dto;
 using Deve.Sdk;
 
 namespace Deve.Internal.Sdk

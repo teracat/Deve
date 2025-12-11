@@ -1,5 +1,5 @@
 ﻿using Deve.External.Data;
-using Deve.Model;
+using Deve.Dto;
 using Deve.Sdk;
 
 namespace Deve.External.Sdk

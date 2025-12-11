@@ -1,6 +1,6 @@
 using Deve.Data;
 using Deve.External.Data;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Tests
 {

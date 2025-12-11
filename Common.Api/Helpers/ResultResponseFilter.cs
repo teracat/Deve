@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Api.Helpers
 {

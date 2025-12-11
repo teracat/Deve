@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Deve.Data;
 using Deve.Localize;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Core.Shield
 {

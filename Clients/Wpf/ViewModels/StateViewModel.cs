@@ -1,6 +1,6 @@
 ﻿using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
-using Deve.Model;
+using Deve.Dto;
 
 namespace Deve.Clients.Wpf.ViewModels
 {

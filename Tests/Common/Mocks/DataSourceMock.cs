@@ -1,9 +1,7 @@
 ﻿using Moq;
-using Deve.Criteria;
+using Deve.Dto;
 using Deve.DataSource;
-using Deve.Internal.Criteria;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Internal.Dto;
 
 namespace Deve.Tests.Mocks
 {
@@ -66,7 +64,7 @@ namespace Deve.Tests.Mocks
             }).ToList();
             _ = Setup(d => d.ClientsBasic.Get(It.IsAny<CriteriaClientBasic?>())).Returns<CriteriaClientBasic>((_) => GetList(clientsBasic));
             _ = Setup(d => d.ClientsBasic.Get()).Returns(() => GetList(clientsBasic));
-            _ = Setup(d => d.ClientsBasic.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Clients.Select(x => x as External.Model.Client).ToList(), id));
+            _ = Setup(d => d.ClientsBasic.Get(It.IsAny<long>())).Returns<long>((id) => Get(DataMock.Clients.Select(x => x as External.Dto.Client).ToList(), id));
         }
 
         #region Helper DataAll methods
