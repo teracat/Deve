@@ -150,6 +150,9 @@ jobs:
         echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
         echo "helm_version=$HELM_VERSION" >> "$GITHUB_OUTPUT"
 
+        echo "image_tag=$IMAGE_TAG"
+        echo "helm_version=$HELM_VERSION"
+
     - name: Login to ACR
       uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef  #v3.6.0
       with:
@@ -201,14 +204,16 @@ jobs:
         version: v4.49.2
 
     - name: Install NGINX Ingress Controller if needed
+      shell: bash
+      env:
+        NAMESPACE: "ingress-nginx"
       run: |
-        NAMESPACE="ingress-nginx"
         if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
           helm upgrade --install ingress-nginx .github/helm/ingress-nginx \
             -f .github/helm/ingress-nginx/values.yaml \
             --set ingress-nginx.controller.service.loadBalancerIP=${{ vars.AKS_PUBLIC_IP }} \
             --dependency-update \
-            --namespace ingress-nginx \
+            --namespace ${NAMESPACE} \
             --create-namespace \
             --wait \
             --timeout 20m \
@@ -219,13 +224,15 @@ jobs:
         fi
 
     - name: Install cert-manager if needed
+      shell: bash
+      env:
+        NAMESPACE: "cert-manager"
       run: |
-        NAMESPACE="cert-manager"
         if ! kubectl get ns ${NAMESPACE} >/dev/null 2>&1; then
           helm upgrade --install cert-manager .github/helm/cert-manager \
             -f .github/helm/cert-manager/values.yaml \
             --dependency-update \
-            --namespace cert-manager \
+            --namespace ${NAMESPACE} \
             --create-namespace \
             --wait \
             --timeout 20m \
@@ -236,6 +243,7 @@ jobs:
         fi
 
     - name: Install letsencrypt
+      shell: bash
       run: |
         cat > .github/helm/letsencrypt/values.override.yaml << EOF
         letsEncrypt:
@@ -251,8 +259,11 @@ jobs:
 
     - name: Deploy monitoring
       if: contains(steps.vars.outputs.services, 'monitoring')
+      shell: bash
+      env:
+        HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
+        NAMESPACE: "monitoring"
       run: |
-        NAMESPACE="monitoring"
         cat > .github/helm/monitoring/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
@@ -278,9 +289,9 @@ jobs:
           clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
         EOF
 
-        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
-        if [[ -n "$HELM_VERSION" ]]; then
-          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/monitoring/Chart.yaml
+        echo "HELM_VERSION=${HELM_VERSION}"
+        if [[ -n "${HELM_VERSION}" ]]; then
+          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/monitoring/Chart.yaml
         fi
 
         helm upgrade --install monitoring .github/helm/monitoring \
@@ -297,8 +308,11 @@ jobs:
 
     - name: Deploy api-internal
       if: contains(steps.vars.outputs.services, 'api-internal')
+      shell: bash
+      env:
+        HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
+        NAMESPACE: "api-internal"
       run: |
-        NAMESPACE="api-internal"
         cat > .github/helm/api-internal/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
@@ -309,9 +323,9 @@ jobs:
           host: "${{ vars.HOST_APIINTERNAL }}"
         EOF
 
-        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
-        if [[ -n "$HELM_VERSION" ]]; then
-          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/api-internal/Chart.yaml
+        echo "HELM_VERSION=${HELM_VERSION}"
+        if [[ -n "${HELM_VERSION}" ]]; then
+          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/api-internal/Chart.yaml
         fi
 
         helm upgrade --install api-internal .github/helm/api-internal \
@@ -329,8 +343,11 @@ jobs:
 
     - name: Deploy api-external
       if: contains(steps.vars.outputs.services, 'api-external')
+      shell: bash
+      env:
+        HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
+        NAMESPACE: "api-external"
       run: |
-        NAMESPACE="api-external"
         cat > .github/helm/api-external/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
@@ -341,9 +358,9 @@ jobs:
           host: "${{ vars.HOST_APIEXTERNAL }}"
         EOF
 
-        HELM_VERSION='${{ steps.vars.outputs.helm_version }}'
-        if [[ -n "$HELM_VERSION" ]]; then
-          yq -i '.version = "$HELM_VERSION" | .appVersion = "$HELM_VERSION"' .github/helm/api-external/Chart.yaml
+        echo "HELM_VERSION=${HELM_VERSION}"
+        if [[ -n "${HELM_VERSION}" ]]; then
+          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/api-external/Chart.yaml
         fi
 
         helm upgrade --install api-external .github/helm/api-external \
