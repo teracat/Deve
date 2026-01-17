@@ -1,11 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <RootNamespace>Deve.Tests</RootNamespace>
@@ -24,9 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\..\DataSource\Deve.DataSource.csproj" />
     <ProjectReference Include="..\..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
-    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
+    <ProjectReference Include="..\..\Modules\Auth\Deve.Modules.Auth.csproj" />
+    <ProjectReference Include="..\..\Modules\Customers\Deve.Modules.Customers.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Deve.Modules.Identity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

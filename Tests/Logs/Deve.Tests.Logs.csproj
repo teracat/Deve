@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    
+  <PropertyGroup>    
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -22,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
     <ProjectReference Include="..\..\Extra\Diagnostics.Sentry\Deve.Diagnostics.Sentry.csproj" />
-    <ProjectReference Include="..\..\Extra\Log.Log4net\Deve.Log.Log4net.csproj" />
+    <ProjectReference Include="..\..\Extra\Log.Log4net\Deve.Log.Log4Net.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NLog\Deve.Log.NLog.csproj" />
     <ProjectReference Include="..\..\Extra\Log.Serilog\Deve.Log.Serilog.csproj" />

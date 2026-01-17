@@ -1,73 +1,72 @@
-﻿using Deve.Authenticate;
-using Deve.Clients.Maui.Helpers;
+﻿using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Resources.Strings;
+using Deve.Auth.Login;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal sealed class LoginViewModel : BaseViewModel
 {
-    public class LoginViewModel : BaseViewModel
+    #region Properties
+    public string Username
     {
-        #region Properties
-        public string Username
-        {
-            get;
-            set => SetProperty(ref field, value);
-        } = string.Empty;
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
 
-        public string Password
-        {
-            get;
-            set => SetProperty(ref field, value);
-        } = string.Empty;
-        #endregion
+    public string Password
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
+    #endregion
 
-        #region Constructor
-        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
-        {
+    #region Constructor
+    public LoginViewModel(INavigationService navigationService, Data.IData data)
+        : base(navigationService, data)
+    {
 //-:cnd
 #if DEBUG
-            Username = "teracat";
-            Password = "teracat";
+        Username = "teracat";
+        Password = "teracat";
 #endif
 //+:cnd
-        }
-        #endregion
+    }
+    #endregion
 
-        #region Methods
-        internal async Task DoLogin()
+    #region Methods
+    internal async Task DoLogin()
+    {
+        ErrorText = string.Empty;
+
+        if (Utils.SomeIsNullOrWhiteSpace(Username, Password))
         {
-            ErrorText = string.Empty;
+            ErrorText = AppResources.MissingUsernamePassword;
+            return;
+        }
 
-            if (Utils.SomeIsNullOrWhiteSpace(Username, Password))
+        IsBusy = true;
+        try
+        {
+            var resLogin = await Data.Auth.Login(new LoginRequest(Username, Password));
+            if (!resLogin.Success || resLogin.Data is null)
             {
-                ErrorText = AppResources.MissingUsernamePassword;
+                ErrorText = Utils.ErrorsToString(resLogin.Errors);
                 return;
             }
 
-            IsBusy = true;
-            try
-            {
-                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, Password));
-                if (!resLogin.Success || resLogin.Data is null)
-                {
-                    ErrorText = Utils.ErrorsToString(resLogin.Errors);
-                    return;
-                }
+            Globals.LoginResponseData = resLogin.Data;
 
-                Globals.UserToken = resLogin.Data;
-
-                await NavigationService.NavigateToAsync("//clients");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            await NavigationService.NavigateToAsync("//clients");
         }
-        #endregion
-
-        #region Commands
-        public AsyncCommand Login { get => field ??= new AsyncCommand(DoLogin, () => IsIdle); private set; }
-        #endregion
+        finally
+        {
+            IsBusy = false;
+        }
     }
+    #endregion
+
+    #region Commands
+    public AsyncCommand Login => field ??= new AsyncCommand(DoLogin, () => IsIdle);
+    #endregion
 }

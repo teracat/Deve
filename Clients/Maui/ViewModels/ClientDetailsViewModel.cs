@@ -1,37 +1,36 @@
 ﻿using Deve.Clients.Maui.Interfaces;
-using Deve.Internal.Dto;
+using Deve.Customers.Clients;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal sealed class ClientDetailsViewModel : BaseDetailsViewModel
 {
-    public class ClientDetailsViewModel : BaseDetailsViewModel
+    #region Properties
+    public ClientResponse? Client
     {
-        #region Properties
-        public Client? Client
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-        #endregion
-
-        #region Constructor
-        public ClientDetailsViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
-        {
-        }
-        #endregion
-
-        #region Methods
-        protected override async Task GetData()
-        {
-            var res = await Data.Clients.Get(Id);
-            if (!res.Success)
-            {
-                ErrorText = Utils.ErrorsToString(res.Errors);
-                return;
-            }
-
-            Client = res.Data;
-        }
-        #endregion
+        get;
+        set => SetProperty(ref field, value);
     }
+    #endregion
+
+    #region Constructor
+    public ClientDetailsViewModel(INavigationService navigationService, Data.IData data)
+        : base(navigationService, data)
+    {
+    }
+    #endregion
+
+    #region Methods
+    protected override async Task GetData()
+    {
+        var res = await Data.Customers.Clients.GetByIdAsync(Id);
+        if (!res.Success)
+        {
+            ErrorText = Utils.ErrorsToString(res.Errors);
+            return;
+        }
+
+        Client = res.Data;
+    }
+    #endregion
 }

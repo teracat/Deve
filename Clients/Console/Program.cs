@@ -1,4 +1,5 @@
-﻿using Deve;
+﻿#pragma warning disable CA1303 // Do not pass literals as localized parameters
+using Deve;
 using Deve.Clients;
 using Deve.Data;
 using Deve.Logging;
@@ -20,36 +21,27 @@ var options = new DataOptions()
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// External Sdk (External Api must be running)
+// Sdk (Api must be running)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-ClientSampleBase.LogTitle("External Sdk...");
+SampleBaseClient.LogTitle("Sdk...");
 
-ClientSampleExecutors.ExternalSdk(options);
+await SampleExecutorsClient.Sdk(options);
 
-Console.WriteLine("External Sdk finished. Press a key to continue...");
-Console.ReadKey();
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// Internal Sdk (Internal Api must be running)
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-ClientSampleBase.LogTitle("Internal Sdk...");
-
-ClientSampleExecutors.InternalSdk(options);
-
-Console.WriteLine("Internal Sdk finished. Press a key to continue...");
+Console.WriteLine("Sdk done. Press a key to continue...");
 Console.ReadKey();
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Embedded (uses Core, no other projects must be running)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-ClientSampleBase.LogTitle("Embedded...");
+SampleBaseClient.LogTitle("Embedded...");
 
-ClientSampleExecutors.InternalEmbedded(options);
+await SampleExecutorsClient.Embedded(options);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Finish
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-Console.WriteLine("Press a key to finish...");
+Console.WriteLine("Embedded done. Press a key to finish...");
 Console.ReadKey();
+
+#pragma warning restore CA1303 // Do not pass literals as localized parameters

@@ -1,109 +1,91 @@
 ﻿using System.Text.Json;
-using Deve.Auth.Converters;
-using Deve.Auth.Crypt;
-using Deve.Authenticate;
-using Deve.Internal.Dto;
+using Deve.Auth.Token;
+using Deve.Crypt;
 using Deve.Logging;
 
-namespace Deve.Auth.TokenManagers
+namespace Deve.Auth.TokenManagers;
+
+/// <summary>
+/// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
+/// </summary>
+public sealed class TokenManagerCrypt : ITokenManager
 {
-    /// <summary>
-    /// Class used to create and validate tokens using an ICrypt implementation to encrypt/decrypt the token content.
-    /// </summary>
-    public class TokenManagerCrypt : ITokenManager
+    private readonly ICrypt _crypt;
+    private readonly bool _disposeCrypt;
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
-        private readonly ICrypt _crypt;
-        private readonly bool _disposeCrypt;
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
-        {
-            WriteIndented = false,
-        };
+        WriteIndented = false,
+    };
 
-        /// <summary>
-        /// Constructor. It uses a new CryptAes instance with auto generated Key and IV to encrypt/decrypt data.
-        /// </summary>
-        public TokenManagerCrypt()
+    /// <summary>
+    /// Constructor. It uses a new CryptAes instance with auto generated Key and IV to encrypt/decrypt data.
+    /// </summary>
+    public TokenManagerCrypt()
+    {
+        _crypt = new CryptAes();
+        _disposeCrypt = true;
+    }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
+    /// <param name="autoDisposeCrypt">If true, the crypt will be disposed when this instance is disposed.</param>
+    public TokenManagerCrypt(ICrypt crypt, bool autoDisposeCrypt)
+    {
+        _crypt = crypt;
+        _disposeCrypt = autoDisposeCrypt;
+    }
+
+    ///<inheritdoc/>
+    public UserToken CreateToken(UserIdentity identity, string scheme)
+    {
+        ArgumentNullException.ThrowIfNull(identity);
+
+        var expires = DateTime.UtcNow.AddHours(AuthConstants.TokenExpiresInHours);
+        var tokenData = new TokenData(identity, expires);
+        var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
+        var token = _crypt.Encrypt(content);
+        return UserToken.Create(token, scheme, expires);
+    }
+
+    ///<inheritdoc/>
+    public UserToken CreateToken(UserIdentity identity) => CreateToken(identity, ApiConstants.AuthDefaultScheme);
+
+    ///<inheritdoc/>
+    public bool TryValidateToken(string token, out UserIdentity? identity)
+    {
+        identity = null;
+        if (string.IsNullOrWhiteSpace(token))
         {
-            _crypt = new CryptAes();
-            _disposeCrypt = true;
+            return false;
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="crypt">Crypt implementation to encrypt/decrypt data.</param>
-        /// <param name="autoDisposeCrypt">If true, the crypt will be disposed when this instance is disposed.</param>
-        public TokenManagerCrypt(ICrypt crypt, bool autoDisposeCrypt)
+        try
         {
-            _crypt = crypt;
-            _disposeCrypt = autoDisposeCrypt;
-        }
-
-        /// <summary>
-        /// Generates a new token.
-        /// </summary>
-        /// <param name="user">Generates a new token for the specified user.</param>
-        /// <param name="scheme">Scheme used to generate the token.</param>
-        /// <returns>The new token.</returns>
-        public UserToken CreateToken(User user, string scheme)
-        {
-            ArgumentNullException.ThrowIfNull(user);
-
-            var expires = DateTime.UtcNow.AddHours(AuthConstants.TokenExpiresInHours);
-            var tokenData = new TokenData(user, expires);
-            var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
-            var token = _crypt.Encrypt(content);
-            var subject = UserConverter.ToUserSubject(user);
-            return new UserToken(subject, expires, token, scheme);
-        }
-
-        /// <summary>
-        /// Generates a new token
-        /// </summary>
-        /// <param name="user">Generates a new token for the specified user.</param>
-        /// <returns>The new token.</returns>
-        public UserToken CreateToken(User user) => CreateToken(user, ApiConstants.AuthDefaultScheme);
-
-        /// <summary>
-        /// Attempts to validate the token and retrieve the associated UserIdentity.
-        /// </summary>
-        /// <param name="token">The token to validate.</param>
-        /// <param name="userIdentity">The associated UserIdentity.</param>
-        /// <returns>If the validation is successful.</returns>
-        public bool TryValidateToken(string token, out UserIdentity? userIdentity)
-        {
-            userIdentity = null;
-            if (string.IsNullOrWhiteSpace(token))
+            var decrypted = _crypt.Decrypt(token);
+            var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
+            if (tokenData is null || tokenData.Expires < DateTime.UtcNow)
             {
                 return false;
             }
 
-            try
-            {
-                var decrypted = _crypt.Decrypt(token);
-                var tokenData = JsonSerializer.Deserialize<TokenData>(decrypted, _jsonSerializerOptions);
-                if (tokenData is null || tokenData.Expires < DateTime.UtcNow)
-                {
-                    return false;
-                }
+            identity = tokenData.Subject;
 
-                userIdentity = tokenData.Subject;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-                return false;
-            }
+            return true;
         }
-
-        public void Dispose()
+        catch (Exception ex)
         {
-            if (_disposeCrypt)
-            {
-                _crypt.Dispose();
-            }
+            Log.Error(ex);
+            return false;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_disposeCrypt)
+        {
+            _crypt.Dispose();
         }
     }
 }

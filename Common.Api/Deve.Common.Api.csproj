@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RootNamespace>Deve.Api</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth\Deve.Auth.csproj" />
+    <ProjectReference Include="..\Common.Modules\Deve.Common.Modules.csproj" />
     <ProjectReference Include="..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\Core\Deve.Core.csproj" />
     <ProjectReference Include="..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
     <ProjectReference Include="..\Extra\Cache.Redis\Deve.Cache.Redis.csproj" />
     <ProjectReference Include="..\Extra\Diagnostics.OpenTelemetry.AspNetCore\Deve.Diagnostics.OpenTelemetry.AspNetCore.csproj" />

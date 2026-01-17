@@ -1,36 +1,35 @@
 ﻿using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
-using Deve.Internal.Dto;
+using Deve.Customers.Clients;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal sealed class ClientsViewModel : ListDataViewModel
 {
-    public class ClientsViewModel : ListDataViewModel
+    #region Constructor
+    public ClientsViewModel(INavigationService navigationService, Data.IData data)
+        : base(navigationService, data)
     {
-        #region Constructor
-        public ClientsViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
-        {
-        }
-        #endregion
-
-        #region Overrides
-        protected override async Task GetListData()
-        {
-            CriteriaClient? criteria = null;
-            var res = await Data.Clients.Get(criteria);
-            if (!res.Success)
-            {
-                ErrorText = Utils.ErrorsToString(res.Errors);
-                return;
-            }
-
-            ListData = res.Data.Select(x => new ListData()
-            {
-                Id = x.Id,
-                Main = x.DisplayName,
-                Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
-            }).ToArray();
-        }
-        #endregion
     }
+    #endregion
+
+    #region Overrides
+    protected override async Task GetListData()
+    {
+        ClientGetListRequest? criteria = null;
+        var res = await Data.Customers.Clients.GetAsync(criteria);
+        if (!res.Success)
+        {
+            ErrorText = Utils.ErrorsToString(res.Errors);
+            return;
+        }
+
+        ListData = res.Data.Select(x => new ListData()
+        {
+            Id = x.Id,
+            Main = x.TradeName ?? x.Name,
+            Detail = x.CityName + ", " + x.StateName + " (" + x.CountryName + ")",
+        }).ToArray();
+    }
+    #endregion
 }

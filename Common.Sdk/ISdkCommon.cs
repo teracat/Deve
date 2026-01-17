@@ -1,14 +1,16 @@
-﻿using Deve.Authenticate;
-using Deve.Data;
+﻿using Deve.Data;
+using Deve.Auth.Token;
 
-namespace Deve.Sdk
+namespace Deve.Sdk;
+
+/// <summary>
+/// Definitions available in all Sdk implementations (External & Internal).
+/// </summary>
+public interface ISdkCommon : IDisposable
 {
-    /// <summary>
-    /// Definitions available in all Sdk implementations (External & Internal).
-    /// </summary>
-    public interface ISdkCommon : IDataCommon
-    {
-        UserToken? UserToken { get; set; }
-        HttpClient Client { get; }
-    }
+    IDataOptions Options { get; }
+
+    UserToken? UserToken { get; set; }
+
+    HttpClient Client { get; }
 }

@@ -1,0 +1,30 @@
+﻿using Deve.Customers.Countries;
+using Deve.Tests.Api.Fixture;
+
+namespace Deve.Tests.Api.Modules.Customers;
+
+public class CountryApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
+{
+    protected override string Path => ApiConstants.PathCountryV1;
+
+    public CountryApiTest(FixtureApiClients fixture)
+        : base(fixture)
+    {
+    }
+
+    protected override object CreateInvalidRequestToAdd() => new CountryAddRequest(string.Empty, string.Empty);
+
+    protected override object CreateInvalidRequestToUpdate() => new CountryUpdateRequest(string.Empty, string.Empty);
+
+    protected override object CreateValidRequestToAdd() => new CountryAddRequest
+    (
+        Name: "Tests Country",
+        IsoCode: "TE"
+    );
+
+    protected override object CreateValidRequestToUpdate() => new CountryUpdateRequest
+    (
+        Name: "España",
+        IsoCode: "ES"
+    );
+}

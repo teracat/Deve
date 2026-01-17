@@ -1,48 +1,54 @@
 ﻿using Deve.Auth.TokenManagers;
-using Deve.Authenticate;
+using Deve.Auth;
+using Deve.Identity.Enums;
 
-namespace Deve.Tests.Api.Fixture
+namespace Deve.Tests.Api.Fixture;
+
+public class FixtureApiClients : FixtureApi
 {
-    public class FixtureApiClients<TEntryPoint> : FixtureApi<TEntryPoint> where TEntryPoint : class
+    public ITokenManager TokenManager { get; }
+
+    public HttpClient ClientNoAuth { get; }
+    public HttpClient ClientAuthUser { get; }
+    public HttpClient ClientAuthAdmin { get; }
+    public HttpClient ClientInvalidUser { get; }
+
+    public UserToken UserTokenValid { get; }
+    public UserToken UserTokenInactiveUser { get; }
+    public UserToken AdminTokenValid { get; }
+
+    public FixtureApiClients()
     {
-        public ITokenManager TokenManager { get; }
+        // TokenManager
+        TokenManager = TestsHelpers.CreateTokenManager();
 
-        public HttpClient ClientNoAuth { get; private set; }
-        public HttpClient ClientValidAuth { get; private set; }
-        public HttpClient ClientInvalidUser { get; private set; }
+        // Tokens
+        UserTokenInactiveUser = TestsHelpers.CreateTokenInactiveUser(TokenManager, Role.User);
+        UserTokenValid = TestsHelpers.CreateTokenValid(TokenManager, Role.User);
+        AdminTokenValid = TestsHelpers.CreateTokenValid(TokenManager, Role.Admin);
 
-        public UserToken UserTokenValid { get; private set; }
-        public UserToken UserTokenInactiveUser { get; private set; }
+        // Clients
+        ClientNoAuth = CreateClient();
+        ClientAuthUser = CreateClient();
+        ClientAuthAdmin = CreateClient();
+        ClientInvalidUser = CreateClient();
 
-        public FixtureApiClients()
+        // Authorization
+        ClientAuthUser.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenValid.Scheme, UserTokenValid.Token);
+        ClientAuthAdmin.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(AdminTokenValid.Scheme, AdminTokenValid.Token);
+        ClientInvalidUser.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenInactiveUser.Scheme, UserTokenInactiveUser.Token);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            // TokenManager
-            TokenManager = TestsHelpers.CreateTokenManager();
-
-            // Tokens
-            UserTokenInactiveUser = TestsHelpers.CreateTokenInactiveUser(TokenManager);
-            UserTokenValid = TestsHelpers.CreateTokenValid(TokenManager);
-
-            // Clients
-            ClientNoAuth = _factory.CreateClient();
-            ClientValidAuth = _factory.CreateClient();
-            ClientInvalidUser = _factory.CreateClient();
-
-            // Authorization
-            ClientValidAuth.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenValid.Scheme, UserTokenValid.Token);
-            ClientInvalidUser.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(UserTokenInactiveUser.Scheme, UserTokenInactiveUser.Token);
+            ClientNoAuth?.Dispose();
+            ClientAuthUser?.Dispose();
+            ClientAuthAdmin?.Dispose();
+            ClientInvalidUser?.Dispose();
+            TokenManager?.Dispose();
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                ClientNoAuth?.Dispose();
-                ClientValidAuth?.Dispose();
-                ClientInvalidUser?.Dispose();
-                TokenManager?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        base.Dispose(disposing);
     }
 }

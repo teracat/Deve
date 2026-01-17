@@ -1,42 +1,41 @@
 ﻿using Deve.Clients.Wpf.ViewModels;
 
-namespace Deve.Clients.Wpf.Views
+namespace Deve.Clients.Wpf.Views;
+
+internal sealed partial class StateView : BaseEditView
 {
-    public partial class StateView : BaseEditView
+    #region Fields
+    private readonly BaseEditViewModel _viewModel;
+    #endregion
+
+    #region Constructors
+    public StateView(StateViewModel viewModel)
     {
-        #region Fields
-        private readonly BaseEditViewModel _viewModel;
-        #endregion
+        InitializeComponent();
 
-        #region Constructors
-        public StateView(StateViewModel viewModel)
-        {
-            InitializeComponent();
+        // When the data is loaded, set initial focus
+        viewModel.LoadDataDoneAction = new Action(() => { _ = uxName.Focus(); });
 
-            // When the data is loaded, set initial focus
-            viewModel.LoadDataDoneAction = new Action(() => { _ = uxName.Focus(); });
-
-            // Set ViewModel
-            ViewModel = _viewModel = viewModel;
-        }
-        #endregion
-
-        #region Events
-        private void OnNameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return)
-            {
-                _ = uxCountry.Focus();
-            }
-        }
-
-        private void OnCountryKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Return)
-            {
-                _ = _viewModel.DoSave();
-            }
-        }
-        #endregion
+        // Set ViewModel
+        ViewModel = _viewModel = viewModel;
     }
+    #endregion
+
+    #region Events
+    private void OnNameKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Return)
+        {
+            _ = uxCountry.Focus();
+        }
+    }
+
+    private void OnCountryKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Return)
+        {
+            _ = _viewModel.DoSave();
+        }
+    }
+    #endregion
 }

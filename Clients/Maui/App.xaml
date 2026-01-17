@@ -2,7 +2,8 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Deve.Clients.Maui"
-             x:Class="Deve.Clients.Maui.App">
+             x:Class="Deve.Clients.Maui.App"
+             x:ClassModifier="internal">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

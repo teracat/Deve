@@ -19,7 +19,7 @@ namespace Deve.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ErrorTypesResource {
@@ -70,7 +70,25 @@ namespace Deve.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Id.
+        ///   Looks up a localized string similar to The field exceeds the maximum length of {0} characters.
+        /// </summary>
+        internal static string FieldValueTooLong {
+            get {
+                return ResourceManager.GetString("FieldValueTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field is shorter than the minimum length of {0} characters.
+        /// </summary>
+        internal static string FieldValueTooShort {
+            get {
+                return ResourceManager.GetString("FieldValueTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InvalidId.
         /// </summary>
         internal static string InvalidId {
             get {
