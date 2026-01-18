@@ -1,8 +1,5 @@
 ﻿namespace Deve.Auth;
 
-/// <summary>
-/// Provides authentication-related constants.
-/// </summary>
 public static class AuthConstants
 {
     /// <summary>
@@ -29,4 +26,11 @@ public static class AuthConstants
     /// The claim key for the user's role.
     /// </summary>
     public const string UserClaimRole = "Role";
+
+    public const string PathAuthV1 = ApiConstants.BasePathV1 + "Auth/";
+
+    public const string MethodLogin = "Login";
+    public const string MethodRefreshToken = "RefreshToken";
+
+    public const string TagAuth = "Auth";
 }

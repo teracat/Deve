@@ -3,7 +3,7 @@
 internal sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder builder) =>
-        _ = builder.MapGet(ApiConstants.PathCountryV1, async ([AsParameters] CountryGetListRequest request, ICountryData data, CancellationToken cancellationToken) =>
+        _ = builder.MapGet(CustomersConstants.PathCountryV1, async ([AsParameters] CountryGetListRequest request, ICountryData data, CancellationToken cancellationToken) =>
             await data.GetAsync(request, cancellationToken))
-        .WithTags(ApiConstants.TagCustomersCountry);
+        .WithTags(CustomersConstants.TagCustomersCountry);
 }

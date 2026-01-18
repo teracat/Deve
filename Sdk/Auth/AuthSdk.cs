@@ -19,7 +19,7 @@ internal class AuthSdk : BaseSdk, IAuthData
     {
         try
         {
-            var res = await PostWithResult<LoginResponse>(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin, RequestAuthType.None, request, cancellationToken);
+            var res = await PostWithResult<LoginResponse>(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, RequestAuthType.None, request, cancellationToken);
             if (res?.Data is null)
             {
                 return Result.FailGet<LoginResponse>(Sdk.Options.LangCode, ResultErrorType.Unknown);
@@ -38,7 +38,7 @@ internal class AuthSdk : BaseSdk, IAuthData
     {
         try
         {
-            var res = await PostWithResult<RefreshTokenResponse>(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, RequestAuthType.None, request, cancellationToken);
+            var res = await PostWithResult<RefreshTokenResponse>(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, RequestAuthType.None, request, cancellationToken);
             return res ?? Result.FailGet<RefreshTokenResponse>(Sdk.Options.LangCode, ResultErrorType.Unknown);
         }
         catch (Exception ex)

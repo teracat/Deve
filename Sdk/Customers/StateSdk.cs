@@ -1,12 +1,13 @@
-﻿using Deve.Dto.Responses;
-using Deve.Dto.Responses.Results;
+﻿using Deve.Customers;
 using Deve.Customers.States;
+using Deve.Dto.Responses;
+using Deve.Dto.Responses.Results;
 
 namespace Deve.Sdk.Customers;
 
 internal class StateSdk : BaseSdk, IStateData
 {
-    private const string Path = ApiConstants.PathStateV1;
+    private const string Path = CustomersConstants.PathStateV1;
 
     public StateSdk(ISdk sdk)
         : base(sdk)

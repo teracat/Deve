@@ -1,11 +1,12 @@
-﻿using Deve.Customers.States;
+﻿using Deve.Customers;
+using Deve.Customers.States;
 using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Api.Modules.Customers;
 
 public class StateApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
 {
-    protected override string Path => ApiConstants.PathStateV1;
+    protected override string Path => CustomersConstants.PathStateV1;
 
     public StateApiTest(FixtureApiClients fixture)
         : base(fixture)

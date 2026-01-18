@@ -1,11 +1,12 @@
-﻿using Deve.Customers.Countries;
+﻿using Deve.Customers;
+using Deve.Customers.Countries;
 using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Api.Modules.Customers;
 
 public class CountryApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
 {
-    protected override string Path => ApiConstants.PathCountryV1;
+    protected override string Path => CustomersConstants.PathCountryV1;
 
     public CountryApiTest(FixtureApiClients fixture)
         : base(fixture)

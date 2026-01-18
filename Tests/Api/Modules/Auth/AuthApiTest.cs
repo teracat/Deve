@@ -1,4 +1,5 @@
-﻿using Deve.Auth.Login;
+﻿using Deve.Auth;
+using Deve.Auth.Login;
 using Deve.Auth.RefreshToken;
 using Deve.Tests.Api.Fixture;
 
@@ -18,8 +19,8 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
 
     #region Common
     [Theory]
-    [InlineData(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin)]
-    [InlineData(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken)]
+    [InlineData(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin)]
+    [InlineData(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken)]
     public async Task Get_NullRequest_NotSuccessStatusCode(string path)
     {
         var response = await Fixture.ClientNoAuth.PostAsync(path, null);
@@ -35,7 +36,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new LoginRequest("", "");
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -46,7 +47,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new LoginRequest("aa", "aa");
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -57,7 +58,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new LoginRequest(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive);
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -69,7 +70,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         using var clientNoAuth = Fixture.CreateClient();  // We don't want to keep the useridentity
         using var httpContent = ToHttpContent(data);
 
-        var response = await clientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodLogin, httpContent);
+        var response = await clientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, httpContent);
 
         Assert.True(response.IsSuccessStatusCode);
     }
@@ -79,7 +80,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task RefreshToken_NullRequest_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, null);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, null);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -90,7 +91,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new RefreshTokenRequest("");
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -101,7 +102,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new RefreshTokenRequest("aa");
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -112,7 +113,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new RefreshTokenRequest(TestsConstants.TokenExpired);
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -123,7 +124,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         var data = new RefreshTokenRequest(Fixture.UserTokenInactiveUser.Token);
         using var httpContent = ToHttpContent(data);
 
-        var response = await Fixture.ClientNoAuth.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, httpContent);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -135,7 +136,7 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
         using var client = Fixture.CreateClient(); // We don't want to keep the useridentity
         using var httpContent = ToHttpContent(data);
 
-        var response = await client.PostAsync(ApiConstants.PathAuthV1 + ApiConstants.MethodRefreshToken, httpContent);
+        var response = await client.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken, httpContent);
 
         Assert.True(response.IsSuccessStatusCode);
     }

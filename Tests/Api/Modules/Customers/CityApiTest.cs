@@ -1,11 +1,12 @@
-﻿using Deve.Customers.Cities;
+﻿using Deve.Customers;
+using Deve.Customers.Cities;
 using Deve.Tests.Api.Fixture;
 
 namespace Deve.Tests.Api.Modules.Customers;
 
 public class CityApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
 {
-    protected override string Path => ApiConstants.PathCityV1;
+    protected override string Path => CustomersConstants.PathCityV1;
 
     public CityApiTest(FixtureApiClients fixture)
         : base(fixture)

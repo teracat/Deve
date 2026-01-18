@@ -1,4 +1,5 @@
-﻿using Deve.Customers.Clients;
+﻿using Deve.Customers;
+using Deve.Customers.Clients;
 using Deve.Customers.Enums;
 using Deve.Tests.Api.Fixture;
 
@@ -6,7 +7,7 @@ namespace Deve.Tests.Api.Modules.Customers;
 
 public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
 {
-    protected override string Path => ApiConstants.PathClientV1;
+    protected override string Path => CustomersConstants.PathClientV1;
 
     public ClientApiTest(FixtureApiClients fixture)
         : base(fixture)
@@ -64,7 +65,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + ApiConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -72,7 +73,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task UpdateStatus_NullRequest_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + ApiConstants.MethodUpdateStatus, null);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, null);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -83,7 +84,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + ApiConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -94,7 +95,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + ApiConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + CustomersConstants.MethodUpdateStatus, httpContent);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -105,7 +106,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{ValidId}/" + ApiConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, httpContent);
 
         Assert.True(response.IsSuccessStatusCode);
     }

@@ -1,12 +1,13 @@
-﻿using Deve.Dto.Responses;
-using Deve.Dto.Responses.Results;
+﻿using Deve.Customers;
 using Deve.Customers.Cities;
+using Deve.Dto.Responses;
+using Deve.Dto.Responses.Results;
 
 namespace Deve.Sdk.Customers;
 
 internal class CitySdk : BaseSdk, ICityData
 {
-    private const string Path = ApiConstants.PathCityV1;
+    private const string Path = CustomersConstants.PathCityV1;
 
     public CitySdk(ISdk sdk)
         : base(sdk)

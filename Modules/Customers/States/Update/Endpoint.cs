@@ -3,7 +3,7 @@
 internal sealed class Endpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder builder) =>
-        _ = builder.MapPut(ApiConstants.PathStateV1 + "{id:guid}", async (Guid id, StateUpdateRequest request, IStateData data, CancellationToken cancellationToken) =>
+        _ = builder.MapPut(CustomersConstants.PathStateV1 + "{id:guid}", async (Guid id, StateUpdateRequest request, IStateData data, CancellationToken cancellationToken) =>
             await data.UpdateAsync(id, request, cancellationToken))
-        .WithTags(ApiConstants.TagCustomersState);
+        .WithTags(CustomersConstants.TagCustomersState);
 }

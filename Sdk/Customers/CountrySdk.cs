@@ -1,12 +1,13 @@
-﻿using Deve.Dto.Responses;
-using Deve.Dto.Responses.Results;
+﻿using Deve.Customers;
 using Deve.Customers.Countries;
+using Deve.Dto.Responses;
+using Deve.Dto.Responses.Results;
 
 namespace Deve.Sdk.Customers;
 
 internal class CountrySdk : BaseSdk, ICountryData
 {
-    private const string Path = ApiConstants.PathCountryV1;
+    private const string Path = CustomersConstants.PathCountryV1;
 
     public CountrySdk(ISdk sdk)
         : base(sdk)
