@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Deve.Auth.Token;
 using Deve.Crypt;
 using Deve.Logging;
 
@@ -50,7 +49,7 @@ public sealed class TokenManagerCrypt : ITokenManager
     }
 
     ///<inheritdoc/>
-    public UserToken CreateToken(UserIdentity identity) => CreateToken(identity, ApiConstants.AuthDefaultScheme);
+    public UserToken CreateToken(UserIdentity identity) => CreateToken(identity, AuthConstants.DefaultScheme);
 
     ///<inheritdoc/>
     public bool TryValidateToken(string token, out UserIdentity? identity)

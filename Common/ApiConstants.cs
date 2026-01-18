@@ -5,13 +5,6 @@
 /// </summary>
 public static class ApiConstants
 {
-    #region Auth
-    /// <summary>
-    /// The default authentication scheme used for API requests.
-    /// </summary>
-    public static readonly string AuthDefaultScheme = "Bearer";
-    #endregion
-
     #region Paths
     public const string BasePath = "/";
     public const string BasePathV1 = BasePath + "v1/";

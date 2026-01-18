@@ -6,6 +6,11 @@
 public static class AuthConstants
 {
     /// <summary>
+    /// The default authentication scheme used for API requests.
+    /// </summary>
+    public static readonly string DefaultScheme = "Bearer";
+
+    /// <summary>
     /// The number of hours before an authentication token expires.
     /// </summary>
     public static readonly int TokenExpiresInHours = 24;
@@ -13,15 +18,15 @@ public static class AuthConstants
     /// <summary>
     /// The claim key for the user's unique identifier.
     /// </summary>
-    internal const string UserClaimId = "Id";
+    public const string UserClaimId = "Id";
 
     /// <summary>
     /// The claim key for the user's username.
     /// </summary>
-    internal const string UserClaimUsername = "Username";
+    public const string UserClaimUsername = "Username";
 
     /// <summary>
     /// The claim key for the user's role.
     /// </summary>
-    internal const string UserClaimRole = "Role";
+    public const string UserClaimRole = "Role";
 }

@@ -55,7 +55,7 @@ public sealed class JwtTokenManager : ITokenManager
     }
 
     ///<inheritdoc/>
-    public UserToken CreateToken(UserIdentity identity) => CreateToken(identity, ApiConstants.AuthDefaultScheme);
+    public UserToken CreateToken(UserIdentity identity) => CreateToken(identity, AuthConstants.DefaultScheme);
 
     ///<inheritdoc/>
     public bool TryValidateToken(string token, out UserIdentity? identity)

@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
+    <ProjectReference Include="..\..\Common.Modules\Deve.Common.Modules.csproj" />
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
   </ItemGroup>
 

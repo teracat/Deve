@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Api\Deve.Api.csproj" />
-    <ProjectReference Include="..\..\Auth\Deve.Auth.csproj" />
     <ProjectReference Include="..\..\Common.Api\Deve.Common.Api.csproj" />
     <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />
   </ItemGroup>

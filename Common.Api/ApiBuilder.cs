@@ -5,6 +5,7 @@ using Deve.Api.Auth;
 using Deve.Api.Helpers;
 using Deve.Api.Options;
 using Deve.Api.Swagger;
+using Deve.Auth;
 using Deve.Auth.TokenManagers;
 using Deve.Auth.TokenManagers.Jwt;
 using Deve.Auth.UserIdentityService;
@@ -239,21 +240,21 @@ public sealed class ApiBuilder
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "Deve.Api v1", Version = "v1" });
 
             // Defines the authentication scheme for Swagger UI.
-            options.AddSecurityDefinition(ApiConstants.AuthDefaultScheme, new OpenApiSecurityScheme
+            options.AddSecurityDefinition(AuthConstants.DefaultScheme, new OpenApiSecurityScheme
             {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
-                Scheme = ApiConstants.AuthDefaultScheme,
+                Scheme = AuthConstants.DefaultScheme,
                 In = ParameterLocation.Header,
-                Description = @$"Authorization header using the {ApiConstants.AuthDefaultScheme} scheme.
-                      Enter '{ApiConstants.AuthDefaultScheme}' [space] and then your token in the text input below.
-                      Example: '{ApiConstants.AuthDefaultScheme} xxxxxxxxxx'",
+                Description = @$"Authorization header using the {AuthConstants.DefaultScheme} scheme.
+                      Enter '{AuthConstants.DefaultScheme}' [space] and then your token in the text input below.
+                      Example: '{AuthConstants.DefaultScheme} xxxxxxxxxx'",
             });
 
             // Requires the authentication scheme to be used in API requests.
             options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                [new OpenApiSecuritySchemeReference(ApiConstants.AuthDefaultScheme, document)] = []
+                [new OpenApiSecuritySchemeReference(AuthConstants.DefaultScheme, document)] = []
             });
 
             // Adds a custom filter to include the "Accept-Language" header parameter in Swagger UI.
@@ -298,13 +299,13 @@ public sealed class ApiBuilder
         _ = _builder.Services.AddAuthentication((o) =>
         {
             // Adds a custom authentication scheme using DefaultAuthenticationHandler.
-            o.AddScheme<DefaultAuthenticationHandler>(ApiConstants.AuthDefaultScheme, ApiConstants.AuthDefaultScheme);
+            o.AddScheme<DefaultAuthenticationHandler>(AuthConstants.DefaultScheme, AuthConstants.DefaultScheme);
 
             // Sets the default authentication scheme.
-            o.DefaultAuthenticateScheme = ApiConstants.AuthDefaultScheme;
+            o.DefaultAuthenticateScheme = AuthConstants.DefaultScheme;
 
             // Sets the default challenge scheme.
-            o.DefaultChallengeScheme = ApiConstants.AuthDefaultScheme;
+            o.DefaultChallengeScheme = AuthConstants.DefaultScheme;
         });
 
         // We register the TokenManagerJwt so we can use it as the Default Scheme (you should change the keys in the appsettings.json in the Api project).

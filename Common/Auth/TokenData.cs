@@ -1,4 +1,4 @@
-﻿namespace Deve.Auth.Token;
+﻿namespace Deve.Auth;
 
 /// <summary>
 /// Information that includes the token (used in TokenManagerCrypt).
