@@ -17,9 +17,6 @@ public static class CoreDependencyInjection
                 .AddModuleIdentity()
                 .AddModuleCustomers()
                 .AddSingleton(options)
-                .Register(typeof(MainCore).Assembly,
-                          typeof(IModule),
-                          ServiceLifetime.Scoped)
                 .AddSingleton<ICache, SimpleInMemoryCache>()
                 // TokenManager that uses CryptAes with auto generated Key and IV.
                 // Due to the auto-generation of the Key and IV, tokens are only valid during a single program execution.

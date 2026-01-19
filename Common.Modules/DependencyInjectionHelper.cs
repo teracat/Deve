@@ -46,6 +46,11 @@ public static class DependencyInjectionHelper
 
         _ = Register(services,
                      assembly,
+                     typeof(IModule),
+                     ServiceLifetime.Scoped);
+
+        _ = Register(services,
+                     assembly,
                      typeof(IRepository),
                      ServiceLifetime.Scoped);
 
