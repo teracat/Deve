@@ -1,6 +1,7 @@
 ﻿using Deve.Modules;
 using Deve.Auth;
 using Deve.Customers;
+using Deve.Identity;
 
 namespace Deve.Api;
 

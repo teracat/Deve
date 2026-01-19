@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Deve.Auth;
+namespace Deve.Identity;
 
 public static class IdentityDependencyInjection
 {

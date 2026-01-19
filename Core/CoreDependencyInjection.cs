@@ -5,6 +5,7 @@ using Deve.Cache;
 using Deve.Data;
 using Deve.Auth;
 using Deve.Customers;
+using Deve.Identity;
 
 namespace Deve.Core;
 
