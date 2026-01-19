@@ -8,5 +8,5 @@ public static class IdentityConstants
     public const string MethodPassword = "Password";
     public const string MethodGetByUsernamePassword = "GetByUsernamePassword";
 
-    public const string TagIdentityUser = "User";
+    public const string TagUser = "User";
 }

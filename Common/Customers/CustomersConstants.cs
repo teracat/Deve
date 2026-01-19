@@ -13,9 +13,9 @@ public static class CustomersConstants
     public const string MethodGetClientStats = "GetClientStats";
     public const string MethodUpdateStatus = "UpdateStatus";
 
-    public const string TagCustomersCountry = "Country";
-    public const string TagCustomersState = "State";
-    public const string TagCustomersCity = "City";
-    public const string TagCustomersClient = "Client";
-    public const string TagCustomersStats = "Stats";
+    public const string TagCountry = "Country";
+    public const string TagState = "State";
+    public const string TagCity = "City";
+    public const string TagClient = "Client";
+    public const string TagStats = "Stats";
 }
