@@ -1,0 +1,28 @@
+<Solution>
+  <Project Path="Api/Deve.Api.csproj" />
+  <Folder Name="/Extra/">
+    <Project Path="Extra/Auth.Jwt/Deve.Auth.Jwt.csproj" />
+    <Project Path="Extra/Cache.Memory/Deve.Cache.Memory.csproj" />
+    <Project Path="Extra/Cache.Redis/Deve.Cache.Redis.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry.AspNetCore/Deve.Diagnostics.OpenTelemetry.AspNetCore.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry/Deve.Diagnostics.OpenTelemetry.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry.AspNetCore/Deve.Diagnostics.Sentry.AspNetCore.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
+    <Project Path="Extra/Log.NetCore/Deve.Log.NetCore.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Api/Deve.Tests.Api.csproj" />
+    <Project Path="Tests/Auth/Deve.Tests.Auth.csproj" />
+    <Project Path="Tests/Cache/Deve.Tests.Cache.csproj" />
+    <Project Path="Tests/Common/Deve.Tests.Common.csproj" />
+    <Project Path="Tests/Core/Deve.Tests.Core.csproj" />
+    <Project Path="Tests/Logs/Deve.Tests.Logs.csproj" />
+  </Folder>
+  <Project Path="Common.Api/Deve.Common.Api.csproj" />
+  <Project Path="Common.Modules/Deve.Common.Modules.csproj" />
+  <Project Path="Common/Deve.Common.csproj" />
+  <Project Path="Core/Deve.Core.csproj" />
+  <Project Path="Modules/Auth/Deve.Modules.Auth.csproj" />
+  <Project Path="Modules/Customers/Deve.Modules.Customers.csproj" />
+  <Project Path="Modules/Identity/Deve.Modules.Identity.csproj" />
+</Solution>
