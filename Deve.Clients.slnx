@@ -14,6 +14,5 @@
     <Project Path="Extra/Log.Log4net/Deve.Log.Log4net.csproj" />
     <Project Path="Extra/Log.NLog/Deve.Log.NLog.csproj" />
   </Folder>
-  <Project Path="Common.Sdk/Deve.Common.Sdk.csproj" />
   <Project Path="Common/Deve.Common.csproj" />
 </Solution>
