@@ -1,13 +1,12 @@
-﻿using Deve.Customers;
-using Deve.Customers.Cities;
+﻿using Deve.Customers.Cities;
 using Deve.Customers.Clients;
 using Deve.Customers.Countries;
 using Deve.Customers.States;
 using Deve.Customers.Stats;
 
-namespace Deve.Core;
+namespace Deve.Customers;
 
-internal sealed class CustomersCore(
+internal sealed class Core(
     ICountryData countries,
     IStateData states,
     ICityData city,
