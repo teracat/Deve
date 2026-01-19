@@ -10,6 +10,11 @@
     <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
     <Project Path="Extra/Log.NetCore/Deve.Log.NetCore.csproj" />
   </Folder>
+  <Folder Name="/Modules/">
+    <Project Path="Modules/Auth/Deve.Modules.Auth.csproj" />
+    <Project Path="Modules/Customers/Deve.Modules.Customers.csproj" />
+    <Project Path="Modules/Identity/Deve.Modules.Identity.csproj" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Api/Deve.Tests.Api.csproj" />
     <Project Path="Tests/Auth/Deve.Tests.Auth.csproj" />
@@ -22,7 +27,4 @@
   <Project Path="Common.Modules/Deve.Common.Modules.csproj" />
   <Project Path="Common/Deve.Common.csproj" />
   <Project Path="Core/Deve.Core.csproj" />
-  <Project Path="Modules/Auth/Deve.Modules.Auth.csproj" />
-  <Project Path="Modules/Customers/Deve.Modules.Customers.csproj" />
-  <Project Path="Modules/Identity/Deve.Modules.Identity.csproj" />
 </Solution>
