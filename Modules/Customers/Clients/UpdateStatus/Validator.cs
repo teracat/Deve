@@ -1,8 +1,8 @@
 ﻿namespace Deve.Customers.Clients.UpdateStatus;
 
-internal sealed class Validator(IDataOptions options) : IValidator<UpdateClientStatusCommand>
+internal sealed class Validator(IDataOptions options) : IValidator<Command>
 {
-    public Task<Result> ValidateAsync(UpdateClientStatusCommand command, CancellationToken cancellationToken = default) =>
+    public Task<Result> ValidateAsync(Command command, CancellationToken cancellationToken = default) =>
         Task.Run(() =>
         {
             if (command is null)

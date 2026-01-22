@@ -7,14 +7,11 @@ namespace Deve.Sdk.Auth;
 
 internal class AuthSdk : BaseSdk, IAuthData
 {
-    #region Constructor
     public AuthSdk(ISdk sdk)
         : base(sdk)
     {
     }
-    #endregion
 
-    #region IAuthenticate
     public async Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
         try
@@ -46,5 +43,4 @@ internal class AuthSdk : BaseSdk, IAuthData
             return Result.FailGet<RefreshTokenResponse>(ResultErrorType.Unknown, null, ex.Message);
         }
     }
-    #endregion
 }

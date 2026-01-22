@@ -2,4 +2,4 @@
 
 namespace Deve.Customers.Clients.UpdateStatus;
 
-internal sealed record UpdateClientStatusCommand(Guid Id, ClientStatus Status) : IRequest<Result>;
+internal sealed record Command(Guid Id, ClientStatus Status) : IRequest<Result>;

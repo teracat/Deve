@@ -60,11 +60,13 @@ internal sealed class Handler(
             };
 
             // Apply pagination
-            var data = query.Select(x => x.ToResponse())
-                            .Skip(request.Offset ?? 0)
-                            .Take(request.Limit ?? Constants.DefaultCriteriaLimit)
+            var offset = request?.Offset ?? 0;
+            var limit = request?.Limit ?? Constants.DefaultCriteriaLimit;
+            var list = query.Select(x => x.ToResponse())
+                            .Skip(offset)
+                            .Take(limit)
                             .ToList();
 
-            return Result.OkGetList(data, request?.Offset, request?.Limit, orderBy, totalCount);
+            return Result.OkGetList(list, offset, limit, orderBy, totalCount);
         }, cancellationToken);
 }

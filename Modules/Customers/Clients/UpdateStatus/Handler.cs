@@ -5,9 +5,9 @@ namespace Deve.Customers.Clients.UpdateStatus;
 internal sealed class Handler(
     IDataOptions options,
     IRepository<Client> repository,
-    IMediator mediator) : ICommandUpdateHandler<UpdateClientStatusCommand>
+    IMediator mediator) : ICommandUpdateHandler<Command>
 {
-    public async Task<Result> HandleAsync(UpdateClientStatusCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken = default)
     {
         var entity = repository.GetAsQueryable()
                                .FirstOrDefault(x => x.Id == command.Id);
