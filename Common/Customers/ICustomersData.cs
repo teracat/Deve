@@ -1,4 +1,5 @@
-﻿using Deve.Customers.Countries;
+﻿// <hooks:data-using>
+using Deve.Customers.Countries;
 using Deve.Customers.States;
 using Deve.Customers.Stats;
 using Deve.Customers.Cities;
@@ -8,6 +9,8 @@ namespace Deve.Customers;
 
 public interface ICustomersData : IModule
 {
+    // <hooks:data-properties>
+
     ICountryData Countries { get; }
 
     IStateData States { get; }

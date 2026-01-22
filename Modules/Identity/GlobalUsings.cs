@@ -16,3 +16,4 @@ global using Deve.Behaviors;
 global using Deve.Identity.Enums;
 global using Deve.Identity.Entities;
 global using Deve.Identity.Users;
+// <hooks:global-using>

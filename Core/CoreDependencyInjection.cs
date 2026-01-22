@@ -3,6 +3,7 @@ using Deve.Auth.UserIdentityService;
 using Deve.Auth.TokenManagers;
 using Deve.Cache;
 using Deve.Data;
+// <hooks:core-di-using>
 using Deve.Auth;
 using Deve.Customers;
 using Deve.Identity;
@@ -13,6 +14,7 @@ public static class CoreDependencyInjection
 {
     public static IServiceCollection AddCoreEmbedded(this IServiceCollection services, IDataOptions options) =>
         services.AddCommon()
+                // <hooks:core-di-addmodule>
                 .AddModuleAuth()
                 .AddModuleIdentity()
                 .AddModuleCustomers()

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
     <ProjectReference Include="..\..\Extra\Auth.Jwt\Deve.Auth.Jwt.csproj" />
+    <!-- <hooks:tests-common-projectref> -->
     <ProjectReference Include="..\..\Modules\Auth\Deve.Modules.Auth.csproj" />
     <ProjectReference Include="..\..\Modules\Customers\Deve.Modules.Customers.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Deve.Modules.Identity.csproj" />

@@ -1,4 +1,5 @@
 ﻿using Deve.Data;
+// <hooks:core-main-using>
 using Deve.Customers;
 using Deve.Identity;
 using Deve.Auth;
@@ -6,15 +7,18 @@ using Deve.Auth;
 namespace Deve.Core;
 
 internal sealed class MainCore(
-    IAuthData auth,
-    ICustomersData customers,
-    IIdentityData identity) : IData
+    // <hooks:core-main-contructor>
+    IAuthData dataAuth,
+    ICustomersData dataCustomers,
+    IIdentityData dataIdentity) : IData
 {
-    public IAuthData Auth => auth;
+    // <hooks:core-main-properties>
 
-    public ICustomersData Customers => customers;
+    public IAuthData Auth => dataAuth;
 
-    public IIdentityData Identity => identity;
+    public ICustomersData Customers => dataCustomers;
+
+    public IIdentityData Identity => dataIdentity;
 
     public void Dispose()
     {

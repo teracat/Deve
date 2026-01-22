@@ -1,4 +1,5 @@
-﻿using Deve.Customers.Cities;
+﻿// <hooks:core-using>
+using Deve.Customers.Cities;
 using Deve.Customers.Clients;
 using Deve.Customers.Countries;
 using Deve.Customers.States;
@@ -7,19 +8,22 @@ using Deve.Customers.Stats;
 namespace Deve.Customers;
 
 internal sealed class Core(
-    ICountryData countries,
-    IStateData states,
-    ICityData city,
-    IClientData client,
-    IStatsData stats) : ICustomersData
+    // <hooks:core-contructor>
+    ICountryData dataCountry,
+    IStateData dataState,
+    ICityData dataCity,
+    IClientData dataClient,
+    IStatsData dataStats) : ICustomersData
 {
-    public ICountryData Countries => countries;
+    // <hooks:core-properties>
 
-    public IStateData States => states;
+    public ICountryData Countries => dataCountry;
 
-    public ICityData Cities => city;
+    public IStateData States => dataState;
 
-    public IClientData Clients => client;
+    public ICityData Cities => dataCity;
 
-    public IStatsData Stats => stats;
+    public IClientData Clients => dataClient;
+
+    public IStatsData Stats => dataStats;
 }

@@ -1,7 +1,9 @@
 ﻿using Deve.Data;
+// <hooks:sdk-main-using>
 using Deve.Auth;
 using Deve.Customers;
 using Deve.Identity;
+// <hooks:sdk-main-using-sdks>
 using Deve.Sdk.Auth;
 using Deve.Sdk.Customers;
 using Deve.Sdk.Identity;
@@ -65,13 +67,13 @@ internal sealed class MainSdk : ISdk
     #endregion
 
     #region IData
+    // <hooks:sdk-main-properties>
+
     public IAuthData Auth => field ??= new AuthSdk(this);
 
     public ICustomersData Customers => field ??= new CustomersSdk(this);
 
     public IIdentityData Identity => field ??= new IdentitySdk(this);
-
-    //public IDataStats Stats => field ??= new SdkStats(this);
     #endregion
 
     #region IDisposable

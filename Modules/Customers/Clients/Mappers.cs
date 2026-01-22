@@ -12,4 +12,6 @@ internal static class Mappers
     public static Update.Command ToCommand(this ClientUpdateRequest request, Guid id) => new(id, request.Name, request.CityId);
 
     public static UpdateClientStatusCommand ToCommand(this ClientUpdateStatusRequest request, Guid id) => new(id, request.Status);
+
+    // <hooks:mappers>
 }

@@ -1,4 +1,5 @@
 ﻿using Deve.Customers;
+// <hooks:sdk-module-using>
 using Deve.Customers.Cities;
 using Deve.Customers.Clients;
 using Deve.Customers.Countries;
@@ -9,6 +10,8 @@ namespace Deve.Sdk.Customers;
 
 internal class CustomersSdk(ISdk sdk) : ICustomersData
 {
+    // <hooks:sdk-module-properties>
+
     public ICountryData Countries => field ??= new CountrySdk(sdk);
 
     public IStateData States => field ??= new StateSdk(sdk);

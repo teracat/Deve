@@ -11,4 +11,6 @@ internal static class Mappers
     public static Add.Command ToCommand(this UserAddRequest request) => new(request.Name, request.Username, request.Password, request.Status, request.Role, request.Email, request.Birthday);
 
     public static Update.Command ToCommand(this UserUpdateRequest request, Guid id) => new(id, request.Name, request.Username, request.Status, request.Role, request.Email, request.Birthday);
+
+    // <hooks:mappers>
 }

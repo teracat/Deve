@@ -1,6 +1,12 @@
-﻿namespace Deve.Identity;
+﻿// <hooks:core-using>
 
-internal sealed class Core(IUserData users) : IIdentityData
+namespace Deve.Identity;
+
+internal sealed class Core(
+    // <hooks:core-contructor>
+    IUserData dataUser) : IIdentityData
 {
-    public IUserData Users => users;
+    // <hooks:core-properties>
+
+    public IUserData Users => dataUser;
 }

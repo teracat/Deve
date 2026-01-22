@@ -10,9 +10,13 @@ public interface IClientData : IModuleItem
     Task<ResultGetList<ClientListResponse>> GetAsync(CancellationToken cancellationToken = default);
     Task<ResultGet<ClientResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+    // <hooks:data-queries>
+
     // Commands
     Task<ResultGet<ResponseId>> AddAsync(ClientAddRequest request, CancellationToken cancellationToken = default);
     Task<Result> UpdateAsync(Guid id, ClientUpdateRequest request, CancellationToken cancellationToken = default);
     Task<Result> UpdateStatusAsync(Guid id, ClientUpdateStatusRequest request, CancellationToken cancellationToken = default);
     Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    // <hooks:data-commands>
 }

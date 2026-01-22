@@ -21,6 +21,8 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IClientDa
         return await mediator.SendAsync(query, cancellationToken);
     }
 
+    // <hooks:core-queries>
+
     // Commands
     public async Task<ResultGet<ResponseId>> AddAsync(ClientAddRequest request, CancellationToken cancellationToken = default)
     {
@@ -55,4 +57,6 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IClientDa
         var command = new Delete.Command(id);
         return await mediator.SendAsync(command, cancellationToken);
     }
+
+    // <hooks:core-commands>
 }

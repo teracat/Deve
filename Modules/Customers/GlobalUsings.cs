@@ -16,3 +16,4 @@ global using Deve.Dto;
 global using Deve.Dto.Responses;
 global using Deve.Dto.Responses.Results;
 global using Deve.Validators;
+// <hooks:global-using>

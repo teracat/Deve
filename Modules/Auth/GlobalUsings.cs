@@ -8,3 +8,4 @@ global using Deve.Validators;
 global using Deve.Data;
 global using Deve.Dto;
 global using Deve.Dto.Responses.Results;
+// <hooks:global-using>

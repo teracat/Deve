@@ -29,8 +29,12 @@ public static class AuthConstants
 
     public const string PathAuthV1 = ApiConstants.BasePathV1 + "Auth/";
 
+    // <hooks:constants-path>
+
+    // <hooks:constants-method>
     public const string MethodLogin = "Login";
     public const string MethodRefreshToken = "RefreshToken";
 
+    // <hooks:constants-tag>
     public const string TagAuth = "Auth";
 }

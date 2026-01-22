@@ -1,4 +1,5 @@
 ﻿using Deve.Modules;
+// <hooks:api-di-using>
 using Deve.Auth;
 using Deve.Customers;
 using Deve.Identity;
@@ -11,6 +12,7 @@ internal static class ApiDependencyInjection
     {
         _ = builder.Services
                    .AddCommon()
+                   // <hooks:api-di-addmodule>
                    .AddModuleIdentity()
                    .AddModuleAuth()
                    .AddModuleCustomers();
@@ -22,6 +24,7 @@ internal static class ApiDependencyInjection
         _ = app
             .MapGroup("/")
             .AddEndpointFilter<ResultResponseFilter>()
+            // <hooks:api-di-mapendpoints>
             .MapEndpointsAuth()
             .MapEndpointsIdentity()
             .MapEndpointsCustomers();

@@ -2,6 +2,7 @@
 using Deve.Core;
 using Deve.Data;
 using Deve.Auth;
+// <hooks:tests-core-main-using>
 using Deve.Customers;
 using Deve.Identity;
 using Deve.Identity.Enums;
@@ -12,6 +13,8 @@ namespace Deve.Tests.Core;
 public sealed class MainTestsCore : IData
 {
     private readonly ServiceProvider _serviceProvider;
+
+    // <hooks:tests-core-main-properties>
 
     public IAuthData Auth => _serviceProvider.GetRequiredService<IAuthData>();
 

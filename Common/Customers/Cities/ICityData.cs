@@ -10,8 +10,12 @@ public interface ICityData : IModuleItem
     Task<ResultGetList<CityResponse>> GetAsync(CancellationToken cancellationToken = default);
     Task<ResultGet<CityResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+    // <hooks:data-queries>
+
     // Commands
     Task<ResultGet<ResponseId>> AddAsync(CityAddRequest request, CancellationToken cancellationToken = default);
     Task<Result> UpdateAsync(Guid id, CityUpdateRequest request, CancellationToken cancellationToken = default);
     Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    // <hooks:data-commands>
 }

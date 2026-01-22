@@ -9,6 +9,7 @@ public static class CommonTestsDependencyInjection
         services.AddSingleton(_ => TestsHelpers.CreateCrypt())
                 .AddSingleton(_ => TestsHelpers.CreateHash())
                 .AddSingleton(_ => TestsHelpers.CreateTokenManager())
+                // <hooks:tests-di-repository-mock>
                 .AddScoped(_ => new CountryRepositoryMock().Object)
                 .AddScoped(_ => new StateRepositoryMock().Object)
                 .AddScoped(_ => new CityRepositoryMock().Object)

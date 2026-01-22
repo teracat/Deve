@@ -11,4 +11,6 @@ internal static class Mappers
     public static Add.Command ToCommand(this CountryAddRequest request) => new(request.Name, request.IsoCode);
 
     public static Update.Command ToCommand(this CountryUpdateRequest request, Guid id) => new(id, request.Name, request.IsoCode);
+
+    // <hooks:mappers>
 }

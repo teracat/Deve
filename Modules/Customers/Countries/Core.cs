@@ -21,6 +21,8 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryD
         return await mediator.SendAsync(query, cancellationToken);
     }
 
+    // <hooks:core-queries>
+
     // Commands
     public async Task<ResultGet<ResponseId>> AddAsync(CountryAddRequest request, CancellationToken cancellationToken = default)
     {
@@ -49,4 +51,6 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryD
         var command = new Delete.Command(id);
         return await mediator.SendAsync(command, cancellationToken);
     }
+
+    // <hooks:core-commands>
 }
