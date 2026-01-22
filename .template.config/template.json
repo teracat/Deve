@@ -3,6 +3,7 @@
   "author": "Jordi Badia Santaulària",
   "classifications": [ "Common", "API", "Console", "C#" ],
   "identity": "Deve.Template",
+  "groupIdentity": "Deve.Templates",
   "name": ".NET DEVEloper Template",
   "shortName": "deve",
   "tags": {
@@ -10,5 +11,14 @@
     "type": "project"
   },
   "sourceName": "Deve",
-  "preferNameDirectory": true
+  "preferNameDirectory": true,
+
+  "sources": [
+    {
+      "source": "./",
+      "modifiers": [
+        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**", ".vs/**" ] }
+      ]
+    }
+  ]
 }
