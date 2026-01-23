@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jordi Badia Santaulària",
+  "classifications": [ "Common", "C#", "Item" ],
+  "identity": "Deve.Template.ItemCrudQuery",
+  "groupIdentity": "Deve.Templates.ItemCrudQuery",
+  "name": ".NET DEVEloper Template (CRUD Query)",
+  "shortName": "deve-crud-query",
+  "tags": { "language": "C#", "type": "item" },
+
+  "sourceName": "Deve",
+  "preferNameDirectory": false,
+
+  "symbols": {
+    "MethodName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "Identity",
+      "replaces": "METHOD_NAME",
+      "fileRename": "METHOD_NAME"
+    },
+    "PluralItemName": {
+      "type": "parameter",
+      "valueSource": "text",
+      "description": "Item name (plural)",
+      "isRequired": "true",
+      "replaces": "ITEM_NAME_PLURAL",
+      "fileRename": "ITEM_NAME_PLURAL"
+    },
+    "SingularItemName": {
+      "type": "parameter",
+      "valueSource": "text",
+      "description": "Item name (singular)",
+      "isRequired": "true",
+      "replaces": "ITEM_NAME_SINGULAR",
+      "fileRename": "ITEM_NAME_SINGULAR"
+    },
+    "ModuleName": {
+      "type": "parameter",
+      "valueSource": "text",
+      "isRequired": "true",
+      "description": "Module name",
+      "replaces": "MODULE_NAME",
+      "fileRename": "MODULE_NAME"
+    },
+    "ProjectName": {
+      "type": "parameter",
+      "datatype": "text",
+      "isRequired": "true",
+      "description": "Project name (replaces 'Deve')",
+      "replaces": "Deve",
+      "fileRename": "Deve"
+    }
+  },
+
+  "forms": {
+    "Identity": { "identifier": "identity" }
+  },
+
+  "sources": [
+    {
+      "source": "./content",
+      "modifiers": [
+        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**" ] }
+      ]
+    }
+  ],
+
+  "postActions": [
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add mapper",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Mappers.cs \"<hooks:mappers>\" \"    public static METHOD_NAME.Query ToMETHOD_NAMEQuery(this ITEM_NAME_SINGULARMETHOD_NAMERequest request) => new(request.Id);\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add query to core",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=both ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default)\r\n{\r\n    var query = request?.ToMETHOD_NAMEQuery() ?? new METHOD_NAME.Query(null);\r\n    return await mediator.SendAsync(query, cancellationToken);\r\n}\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add method to data interface",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/ITEM_NAME_PLURAL/IITEM_NAME_SINGULARData.cs \"<hooks:data-queries>\" \"    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default);\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add Method to module Constants",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-method>\" \"    public const string MethodMETHOD_NAME = \\\"METHOD_NAME\\\";\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add method to Sdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/ITEM_NAME_SINGULARSdk.cs \"<hooks:sdk-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default) => await Get<ITEM_NAME_SINGULARMETHOD_NAMEResponse, ITEM_NAME_SINGULARMETHOD_NAMERequest>(Path + MODULE_NAMEConstants.MethodMETHOD_NAME, request, RequestAuthType.Default, cancellationToken);\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    }
+  ]
+}
