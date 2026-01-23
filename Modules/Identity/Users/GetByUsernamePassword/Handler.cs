@@ -21,8 +21,8 @@ internal sealed class Handler(
 
         var passwordHash = hash.Calc(request.Password);
         var query = repositoryUser.GetAsQueryable()
-                                    .Where(x => x.Username == request.Username &&
-                                                x.PasswordHash == passwordHash);
+                                  .Where(x => x.Username == request.Username &&
+                                              x.PasswordHash == passwordHash);
 
         switch (request.ActiveType)
         {

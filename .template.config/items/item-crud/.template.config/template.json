@@ -4,7 +4,7 @@
   "classifications": [ "Common", "C#", "Item" ],
   "identity": "Deve.Template.ItemCrud",
   "groupIdentity": "Deve.Templates.ItemCrud",
-  "name": ".NET DEVEloper Template (CRUD Item)",
+  "name": ".NET DEVEloper Template (CRUD)",
   "shortName": "deve-crud",
   "tags": { "language": "C#", "type": "item" },
 
@@ -86,7 +86,7 @@
       "description": "Add property Core",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/Core.cs \"<hooks:core-properties>\" \"\npublic IITEM_NAME_SINGULARData ITEM_NAME_PLURAL => dataITEM_NAME_SINGULAR;\""
+        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/Core.cs \"<hooks:core-properties>\" \"\n    public IITEM_NAME_SINGULARData ITEM_NAME_PLURAL => dataITEM_NAME_SINGULAR;\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -97,7 +97,7 @@
       "description": "Add argument in Core constructor",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- --smart-comma=true ./Modules/MODULE_NAME/Core.cs \"<hooks:core-contructor>\" \"IITEM_NAME_SINGULARData dataITEM_NAME_SINGULAR\""
+        "args": "run InsertAfterHook.cs -- --smart-comma=true ./Modules/MODULE_NAME/Core.cs \"<hooks:core-contructor>\" \"    IITEM_NAME_SINGULARData dataITEM_NAME_SINGULAR\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -141,7 +141,7 @@
       "description": "Add property to module IData",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/IMODULE_NAMEData.cs \"<hooks:data-properties>\" \"IITEM_NAME_SINGULARData ITEM_NAME_PLURAL { get; }\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/IMODULE_NAMEData.cs \"<hooks:data-properties>\" \"    IITEM_NAME_SINGULARData ITEM_NAME_PLURAL { get; }\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
