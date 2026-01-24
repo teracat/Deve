@@ -1,7 +1,7 @@
-﻿using Medicum.Tests.Sdk.Fixtures;
-using Medicum.Tests.Modules.MODULE_NAME;
+﻿using Deve.Tests.Sdk.Fixtures;
+using Deve.Tests.Modules.MODULE_NAME;
 
-namespace Medicum.Tests.Sdk.Modules.MODULE_NAME;
+namespace Deve.Tests.Sdk.Modules.MODULE_NAME;
 
 public class METHOD_NAMESdkTest : METHOD_NAMETest, IClassFixture<SdkFixture>
 {
