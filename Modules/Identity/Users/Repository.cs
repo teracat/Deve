@@ -1,8 +1,17 @@
-﻿namespace Deve.Identity.Users;
+﻿using Microsoft.Extensions.Options;
+using Deve.Api.Options;
+
+namespace Deve.Identity.Users;
 
 internal sealed class Repository : IRepository<User>
 {
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
+
+    public Repository(IOptions<ConnectionStringsOptions> options)
+    {
+        // Open connection to database using options.Value.IdentityConnection
+        System.Diagnostics.Debug.WriteLine(options.Value.IdentityConnection);
+    }
 
     public IQueryable<User> GetAsQueryable() => Data.Users.AsQueryable();
 

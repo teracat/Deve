@@ -1,4 +1,7 @@
-﻿namespace Deve.MODULE_NAME.ITEM_NAME_PLURAL;
+﻿using Microsoft.Extensions.Options;
+using Deve.Api.Options;
+
+namespace Deve.MODULE_NAME.ITEM_NAME_PLURAL;
 
 internal sealed class Repository : IRepository<ITEM_NAME_SINGULAR>
 {
@@ -10,6 +13,12 @@ internal sealed class Repository : IRepository<ITEM_NAME_SINGULAR>
         new ITEM_NAME_SINGULAR() { Id = Guid.NewGuid(), Name = "ITEM_NAME_SINGULAR 1" },
         new ITEM_NAME_SINGULAR() { Id = Guid.NewGuid(), Name = "ITEM_NAME_SINGULAR 2" },
     ];
+
+    public Repository(IOptions<ConnectionStringsOptions> options)
+    {
+        // Open connection to database using options.Value.MODULE_NAMEConnection
+        System.Diagnostics.Debug.WriteLine(options.Value.MODULE_NAMEConnection);
+    }
 
     public IQueryable<ITEM_NAME_SINGULAR> GetAsQueryable() => _data.AsQueryable();
 

@@ -267,6 +267,28 @@
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
       "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to ConnectionStringsOptions",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Common.Api/Options/ConnectionStringsOptions.cs \"<hooks:api-connectionstringsoptions-properties>\" \"    public string MODULE_NAMEConnection { get; set; } = string.Empty;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add ConnectionString to api appsettings.json",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/appsettings.json \"<hooks:api-appsettings-connectionstrings>\" \"    //You should set the MODULE_NAMEConnection (if needed by your module)\r\n    \\\"MODULE_NAMEConnection\\\": \\\"Server=localhost;Database=dbname;User Id=user;Password=pwd;\\\",\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
     }
   ]
 }

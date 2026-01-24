@@ -1,8 +1,17 @@
-﻿namespace Deve.Customers.Countries;
+﻿using Microsoft.Extensions.Options;
+using Deve.Api.Options;
+
+namespace Deve.Customers.Countries;
 
 internal sealed class Repository : IRepository<Country>
 {
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
+
+    public Repository(IOptions<ConnectionStringsOptions> options)
+    {
+        // Open connection to database using options.Value.CustomersConnection
+        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnection);
+    }
 
     public IQueryable<Country> GetAsQueryable() => Data.Countries.AsQueryable();
 
