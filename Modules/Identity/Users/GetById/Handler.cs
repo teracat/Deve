@@ -5,7 +5,7 @@ internal sealed class Handler(
     IRepository<User> repositoryUser,
     IUserIdentityService identityService) : IGetQueryHandler<Query, UserResponse>
 {
-    public Task<ResultGet<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             if (!identityService.IsAuthenticated || identityService.UserIdentity is null)

@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<ITEM_NAME_SINGULAR> repositoryITEM_NAME_SINGULAR) : ICommandAddHandler<Command>
 {
-    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var entity = new ITEM_NAME_SINGULAR()
         {

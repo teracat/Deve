@@ -11,7 +11,7 @@ internal sealed class Core(
 {
     // <hooks:core-properties>
 
-    public async Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default) => await loginHandler.HandleAsync(request, cancellationToken);
+    public async Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken) => await loginHandler.HandleAsync(request, cancellationToken);
 
-    public async Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken = default) => await refreshTokenHandler.HandleAsync(request, cancellationToken);
+    public async Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken) => await refreshTokenHandler.HandleAsync(request, cancellationToken);
 }

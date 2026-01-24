@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<State> repositoryState) : ICommandAddHandler<Command>
 {
-    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var entity = new State()
         {

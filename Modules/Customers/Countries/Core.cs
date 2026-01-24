@@ -3,19 +3,13 @@
 internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryData
 {
     // Queries
-    public async Task<ResultGetList<CountryResponse>> GetAsync(CountryGetListRequest? request, CancellationToken cancellationToken = default)
+    public async Task<ResultGetList<CountryResponse>> GetAsync(CountryGetListRequest? request, CancellationToken cancellationToken)
     {
         var query = request?.ToQuery() ?? new GetList.Query(null, null, null, null, null, null);
         return await mediator.SendAsync(query, cancellationToken);
     }
 
-    public async Task<ResultGetList<CountryResponse>> GetAsync(CancellationToken cancellationToken = default)
-    {
-        var query = new GetList.Query(null, null, null, null, null, null);
-        return await mediator.SendAsync(query, cancellationToken);
-    }
-
-    public async Task<ResultGet<CountryResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<CountryResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetById.Query(id);
         return await mediator.SendAsync(query, cancellationToken);
@@ -24,7 +18,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryD
     // <hooks:core-queries>
 
     // Commands
-    public async Task<ResultGet<ResponseId>> AddAsync(CountryAddRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ResponseId>> AddAsync(CountryAddRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -35,7 +29,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryD
         return await mediator.SendAsync(command, cancellationToken);
     }
 
-    public async Task<Result> UpdateAsync(Guid id, CountryUpdateRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result> UpdateAsync(Guid id, CountryUpdateRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -46,7 +40,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : ICountryD
         return await mediator.SendAsync(command, cancellationToken);
     }
 
-    public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var command = new Delete.Command(id);
         return await mediator.SendAsync(command, cancellationToken);

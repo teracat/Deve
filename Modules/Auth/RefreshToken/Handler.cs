@@ -15,7 +15,7 @@ internal sealed class Handler(
 {
     private static readonly ShieldItemConfig shieldItemConfig = ShieldItemConfig.Create(3);
 
-    public async Task<ResultGet<RefreshTokenResponse>> HandleAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<RefreshTokenResponse>> HandleAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var resShield = await shield.Protect(options, shieldItemConfig);
         if (!resShield.Success)
@@ -39,7 +39,7 @@ internal sealed class Handler(
         return Result.OkGet(refreshTokenResponse);
     }
 
-    private async Task<ResultGet<UserIdentity>> ValidateAndFindUserIdentity(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+    private async Task<ResultGet<UserIdentity>> ValidateAndFindUserIdentity(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var resultValidate = await validator.ValidateAsync(request, cancellationToken);
         if (!resultValidate.Success)

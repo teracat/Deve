@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<Country> repositoryCountry) : ICommandUpdateHandler<Command>
 {
-    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var entity = new Country()
         {

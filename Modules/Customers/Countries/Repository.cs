@@ -6,7 +6,7 @@ internal sealed class Repository : IRepository<Country>
 
     public IQueryable<Country> GetAsQueryable() => Data.Countries.AsQueryable();
 
-    public async Task<Guid> AddAsync(Country entity, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(Country entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -21,7 +21,7 @@ internal sealed class Repository : IRepository<Country>
         }, cancellationToken);
     }
 
-    public async Task<bool> UpdateAsync(Country entity, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(Country entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -38,7 +38,7 @@ internal sealed class Repository : IRepository<Country>
         }, cancellationToken);
     }
 
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {

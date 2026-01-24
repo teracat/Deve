@@ -3,7 +3,7 @@
 internal sealed class Handler(
     IRepository<User> repositoryUser) : IGetListQueryHandler<Query, UserResponse>
 {
-    public Task<ResultGetList<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGetList<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             var query = repositoryUser.GetAsQueryable();

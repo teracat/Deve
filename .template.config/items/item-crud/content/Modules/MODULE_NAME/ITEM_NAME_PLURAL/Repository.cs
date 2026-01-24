@@ -13,7 +13,7 @@ internal sealed class Repository : IRepository<ITEM_NAME_SINGULAR>
 
     public IQueryable<ITEM_NAME_SINGULAR> GetAsQueryable() => _data.AsQueryable();
 
-    public async Task<Guid> AddAsync(ITEM_NAME_SINGULAR entity, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(ITEM_NAME_SINGULAR entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -28,7 +28,7 @@ internal sealed class Repository : IRepository<ITEM_NAME_SINGULAR>
         }, cancellationToken);
     }
 
-    public async Task<bool> UpdateAsync(ITEM_NAME_SINGULAR entity, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(ITEM_NAME_SINGULAR entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -44,7 +44,7 @@ internal sealed class Repository : IRepository<ITEM_NAME_SINGULAR>
         }, cancellationToken);
     }
 
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {

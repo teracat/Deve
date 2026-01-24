@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<User> repositoryUser) : ICommandDeleteHandler<Command>
 {
-    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         if (!await repositoryUser.DeleteAsync(command.Id, cancellationToken))
         {

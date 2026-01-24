@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<Country> repositoryCountry) : IGetQueryHandler<Query, CountryResponse>
 {
-    public Task<ResultGet<CountryResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<CountryResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             var country = repositoryCountry.GetAsQueryable()

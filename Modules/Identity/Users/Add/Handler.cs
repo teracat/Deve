@@ -7,7 +7,7 @@ internal sealed class Handler(
     IHash hash,
     IRepository<User> repositoryUser) : ICommandAddHandler<Command>
 {
-    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var entity = new User()
         {

@@ -3,19 +3,13 @@
 internal sealed class Core(IDataOptions options, IMediator mediator) : IITEM_NAME_SINGULARData
 {
     // Queries
-    public async Task<ResultGetList<ITEM_NAME_SINGULARResponse>> GetAsync(ITEM_NAME_SINGULARGetListRequest? request, CancellationToken cancellationToken = default)
+    public async Task<ResultGetList<ITEM_NAME_SINGULARResponse>> GetAsync(ITEM_NAME_SINGULARGetListRequest? request, CancellationToken cancellationToken)
     {
         var query = request?.ToQuery() ?? new GetList.Query(null, null, null, null, null);
         return await mediator.SendAsync(query, cancellationToken);
     }
 
-    public async Task<ResultGetList<ITEM_NAME_SINGULARResponse>> GetAsync(CancellationToken cancellationToken = default)
-    {
-        var query = new GetList.Query(null, null, null, null, null);
-        return await mediator.SendAsync(query, cancellationToken);
-    }
-
-    public async Task<ResultGet<ITEM_NAME_SINGULARResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ITEM_NAME_SINGULARResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetById.Query(id);
         return await mediator.SendAsync(query, cancellationToken);
@@ -24,7 +18,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IITEM_NAM
     // <hooks:core-queries>
 
     // Commands
-    public async Task<ResultGet<ResponseId>> AddAsync(ITEM_NAME_SINGULARAddRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<ResponseId>> AddAsync(ITEM_NAME_SINGULARAddRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -35,7 +29,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IITEM_NAM
         return await mediator.SendAsync(command, cancellationToken);
     }
 
-    public async Task<Result> UpdateAsync(Guid id, ITEM_NAME_SINGULARUpdateRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result> UpdateAsync(Guid id, ITEM_NAME_SINGULARUpdateRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -46,11 +40,11 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IITEM_NAM
         return await mediator.SendAsync(command, cancellationToken);
     }
 
-    public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var command = new Delete.Command(id);
         return await mediator.SendAsync(command, cancellationToken);
     }
-    
+
     // <hooks:core-commands>
 }

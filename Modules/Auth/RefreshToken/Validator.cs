@@ -2,7 +2,7 @@
 
 internal sealed class Validator(IDataOptions options) : IValidator<RefreshTokenRequest>
 {
-    public Task<Result> ValidateAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default) =>
+    public Task<Result> ValidateAsync(RefreshTokenRequest request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             if (request is null)

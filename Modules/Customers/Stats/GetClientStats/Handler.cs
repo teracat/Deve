@@ -5,7 +5,7 @@ internal sealed class Handler(
     ICache cache,
     IRepository<Client> repositoryClient) : IGetQueryHandler<Query, ClientStatsResponse>
 {
-    public Task<ResultGet<ClientStatsResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<ClientStatsResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             // Example of using cache: if the item is already in the cache, return it directly.

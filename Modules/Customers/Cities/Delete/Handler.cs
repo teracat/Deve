@@ -5,7 +5,7 @@ internal sealed class Handler(
     IRepository<City> repositoryCity,
     IRepository<Client> repositoryClient) : ICommandDeleteHandler<Command>
 {
-    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var hasClients = repositoryClient.GetAsQueryable()
                                          .Any(x => x.CityId == command.Id);

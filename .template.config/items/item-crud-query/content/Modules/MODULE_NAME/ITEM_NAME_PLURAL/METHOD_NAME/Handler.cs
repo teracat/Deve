@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<ITEM_NAME_SINGULAR> repositoryITEM_NAME_SINGULAR) : IGetQueryHandler<Query, ITEM_NAME_SINGULARMETHOD_NAMEResponse>
 {
-    public Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             var query = repositoryITEM_NAME_SINGULAR.GetAsQueryable()

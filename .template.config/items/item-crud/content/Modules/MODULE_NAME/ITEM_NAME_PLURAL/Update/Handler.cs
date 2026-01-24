@@ -4,7 +4,7 @@ internal sealed class Handler(
     IDataOptions options,
     IRepository<ITEM_NAME_SINGULAR> repositoryITEM_NAME_SINGULAR) : ICommandUpdateHandler<Command>
 {
-    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
         var entity = repositoryITEM_NAME_SINGULAR.GetAsQueryable().FirstOrDefault(x => x.Id == command.Id);
         if (entity is null)

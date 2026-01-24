@@ -14,5 +14,5 @@ internal class StatsSdk : BaseSdk, IStatsData
     }
 
     // Query
-    public async Task<ResultGet<ClientStatsResponse>> GetClientStatsAsync(CancellationToken cancellationToken = default) => await Get<ClientStatsResponse>(Path + CustomersConstants.MethodGetClientStats, RequestAuthType.Default, null, cancellationToken);
+    public async Task<ResultGet<ClientStatsResponse>> GetClientStatsAsync(CancellationToken cancellationToken) => await Get<ClientStatsResponse>(Path + CustomersConstants.MethodGetClientStats, RequestAuthType.Default, null, cancellationToken);
 }

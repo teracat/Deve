@@ -15,7 +15,9 @@ public interface IAuthData : IModuleItem
     /// <param name="request">Credentials used to validate the user.</param>
     /// <param name="cancellationToken">Token to cancel the request.</param>
     /// <returns>Returns a new token if authentication is successful.</returns>
-    Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default);
+    Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken);
+    Task<ResultGet<LoginResponse>> Login(LoginRequest request) => Login(request, CancellationToken.None);
+
 
     /// <summary>
     /// Refreshes the authentication token for an active session.
@@ -23,5 +25,6 @@ public interface IAuthData : IModuleItem
     /// <param name="request">The token to refresh.</param>
     /// <param name="cancellationToken">Token to cancel the request.</param>
     /// <returns>A new token if the refresh operation is successful.</returns>
-    Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken = default);
+    Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken);
+    Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request) => RefreshToken(request, CancellationToken.None);
 }

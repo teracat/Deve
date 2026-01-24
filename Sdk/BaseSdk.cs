@@ -25,7 +25,9 @@ internal class BaseSdk
     #endregion
 
     #region Methods
-    protected async Task<ResultGetList<T>> GetList<T, RequestData>(string? path, RequestData? data, RequestAuthType authType, CancellationToken cancellationToken = default)
+    protected Task<ResultGetList<T>> GetList<T, RequestData>(string? path, RequestAuthType authType, RequestData? data) => GetList<T, RequestData>(path, authType, data, CancellationToken.None);
+
+    protected async Task<ResultGetList<T>> GetList<T, RequestData>(string? path, RequestAuthType authType, RequestData? data, CancellationToken cancellationToken)
     {
         try
         {
@@ -52,7 +54,11 @@ internal class BaseSdk
         }
     }
 
-    protected async Task<ResultGet<T>> Get<T>(string? path, RequestAuthType authType, Guid? id = null, CancellationToken cancellationToken = default)
+    protected Task<ResultGet<T>> Get<T>(string? path, RequestAuthType authType) => Get<T>(path, authType, null, CancellationToken.None);
+
+    protected Task<ResultGet<T>> Get<T>(string? path, RequestAuthType authType, Guid? id) => Get<T>(path, authType, id, CancellationToken.None);
+
+    protected async Task<ResultGet<T>> Get<T>(string? path, RequestAuthType authType, Guid? id, CancellationToken cancellationToken)
     {
         try
         {
@@ -79,7 +85,9 @@ internal class BaseSdk
         }
     }
 
-    protected async Task<ResultGet<T>> Get<T, RequestData>(string? path, RequestData? data, RequestAuthType authType, CancellationToken cancellationToken = default)
+    protected Task<ResultGet<T>> Get<T, RequestData>(string? path, RequestAuthType authType, RequestData? data) => Get<T, RequestData>(path, authType, data, CancellationToken.None);
+
+    protected async Task<ResultGet<T>> Get<T, RequestData>(string? path, RequestAuthType authType, RequestData? data, CancellationToken cancellationToken)
     {
         try
         {
@@ -105,32 +113,49 @@ internal class BaseSdk
             return Result.FailGet<T>(ResultErrorType.Unknown, null, ex.Message);
         }
     }
+    protected Task<Result> Post(string? path, RequestAuthType authType) => Post(path, authType, null, CancellationToken.None);
 
-    protected async Task<Result> Post(string? path, RequestAuthType authType, object? requestObj = null, CancellationToken cancellationToken = default)
+    protected Task<Result> Post(string? path, RequestAuthType authType, object? requestObj) => Post(path, authType, requestObj, CancellationToken.None);
+
+    protected async Task<Result> Post(string? path, RequestAuthType authType, object? requestObj, CancellationToken cancellationToken)
     {
         var apiRequest = new RequestBuilder(path, HttpMethod.Post, authType, Sdk.UserToken, requestObj);
         return await Execute(apiRequest, cancellationToken);
     }
 
-    protected async Task<ResultGet<ResultType>> PostWithResult<ResultType>(string? path, RequestAuthType authType, object? requestObj = null, CancellationToken cancellationToken = default)
+    protected Task<ResultGet<ResultType>> PostWithResult<ResultType>(string? path, RequestAuthType authType) => PostWithResult<ResultType>(path, authType, null, CancellationToken.None);
+
+    protected Task<ResultGet<ResultType>> PostWithResult<ResultType>(string? path, RequestAuthType authType, object? requestObj) => PostWithResult<ResultType>(path, authType, requestObj, CancellationToken.None);
+
+    protected async Task<ResultGet<ResultType>> PostWithResult<ResultType>(string? path, RequestAuthType authType, object? requestObj, CancellationToken cancellationToken)
     {
         var apiRequest = new RequestBuilder(path, HttpMethod.Post, authType, Sdk.UserToken, requestObj);
         return await ExecuteWithResult<ResultType>(apiRequest, cancellationToken);
     }
 
-    protected async Task<Result> Put(string? path, RequestAuthType authType, object? requestObj = null, CancellationToken cancellationToken = default)
+    protected Task<Result> Put(string? path, RequestAuthType authType) => Put(path, authType, null, CancellationToken.None);
+
+    protected Task<Result> Put(string? path, RequestAuthType authType, object? requestObj) => Put(path, authType, requestObj, CancellationToken.None);
+
+    protected async Task<Result> Put(string? path, RequestAuthType authType, object? requestObj, CancellationToken cancellationToken)
     {
         var apiRequest = new RequestBuilder(path, HttpMethod.Put, authType, Sdk.UserToken, requestObj);
         return await Execute(apiRequest, cancellationToken);
     }
 
-    protected async Task<Result> Patch(string? path, RequestAuthType authType, object? requestObj = null, CancellationToken cancellationToken = default)
+    protected Task<Result> Patch(string? path, RequestAuthType authType) => Patch(path, authType, null, CancellationToken.None);
+
+    protected Task<Result> Patch(string? path, RequestAuthType authType, object? requestObj) => Patch(path, authType, requestObj, CancellationToken.None);
+
+    protected async Task<Result> Patch(string? path, RequestAuthType authType, object? requestObj, CancellationToken cancellationToken)
     {
         var apiRequest = new RequestBuilder(path, HttpMethod.Patch, authType, Sdk.UserToken, requestObj);
         return await Execute(apiRequest, cancellationToken);
     }
 
-    protected async Task<Result> Delete(string? path, RequestAuthType authType, CancellationToken cancellationToken = default)
+    protected Task<Result> Delete(string? path, RequestAuthType authType) => Delete(path, authType, CancellationToken.None);
+
+    protected async Task<Result> Delete(string? path, RequestAuthType authType, CancellationToken cancellationToken)
     {
         var apiRequest = new RequestBuilder(path, HttpMethod.Delete, authType, Sdk.UserToken);
         return await Execute(apiRequest, cancellationToken);

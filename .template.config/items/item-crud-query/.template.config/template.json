@@ -83,7 +83,7 @@
       "description": "Add query to core",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- --extra-eol=both ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default)\r\n{\r\n    var query = request?.ToMETHOD_NAMEQuery() ?? new METHOD_NAME.Query(null);\r\n    return await mediator.SendAsync(query, cancellationToken);\r\n}\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=both ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken)\r\n    {\r\n        var query = request?.ToMETHOD_NAMEQuery() ?? new METHOD_NAME.Query(null);\r\n        return await mediator.SendAsync(query, cancellationToken);\r\n    }\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -94,7 +94,7 @@
       "description": "Add method to data interface",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/ITEM_NAME_PLURAL/IITEM_NAME_SINGULARData.cs \"<hooks:data-queries>\" \"    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default);\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/ITEM_NAME_PLURAL/IITEM_NAME_SINGULARData.cs \"<hooks:data-queries>\" \"    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request) => METHOD_NAMEAsync(request, CancellationToken.None);\r\n    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken);\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -116,7 +116,7 @@
       "description": "Add method to Sdk",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/ITEM_NAME_SINGULARSdk.cs \"<hooks:sdk-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken = default) => await Get<ITEM_NAME_SINGULARMETHOD_NAMEResponse, ITEM_NAME_SINGULARMETHOD_NAMERequest>(Path + MODULE_NAMEConstants.MethodMETHOD_NAME, request, RequestAuthType.Default, cancellationToken);\""
+        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/ITEM_NAME_SINGULARSdk.cs \"<hooks:sdk-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken) => await Get<ITEM_NAME_SINGULARMETHOD_NAMEResponse, ITEM_NAME_SINGULARMETHOD_NAMERequest>(Path + MODULE_NAMEConstants.MethodMETHOD_NAME, RequestAuthType.Default, request, cancellationToken);\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

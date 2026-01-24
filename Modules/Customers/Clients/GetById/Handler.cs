@@ -8,7 +8,7 @@ internal sealed class Handler(
     IRepository<Country> repositoryCountry,
     ICache cache) : IGetQueryHandler<Query, ClientResponse>
 {
-    public Task<ResultGet<ClientResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<ClientResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             var cacheKey = Utils.GetCacheKeyForType<ClientResponse>(request.Id);

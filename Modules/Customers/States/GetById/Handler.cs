@@ -5,7 +5,7 @@ internal sealed class Handler(
     IRepository<State> repositoryState,
     IRepository<Country> repositoryCountry) : IGetQueryHandler<Query, StateResponse>
 {
-    public Task<ResultGet<StateResponse>> HandleAsync(Query request, CancellationToken cancellationToken = default) =>
+    public Task<ResultGet<StateResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>
         {
             var state = FullData.CreateQuery(repositoryState, repositoryCountry)

@@ -12,7 +12,7 @@ internal class AuthSdk : BaseSdk, IAuthData
     {
     }
 
-    public async Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -31,7 +31,7 @@ internal class AuthSdk : BaseSdk, IAuthData
         }
     }
 
-    public async Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         try
         {

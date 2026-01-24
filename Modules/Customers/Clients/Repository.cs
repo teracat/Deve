@@ -6,7 +6,7 @@ internal sealed class Repository : IRepository<Client>
 
     public IQueryable<Client> GetAsQueryable() => Data.Clients.AsQueryable();
 
-    public async Task<Guid> AddAsync(Client entity, CancellationToken cancellationToken = default) =>
+    public async Task<Guid> AddAsync(Client entity, CancellationToken cancellationToken) =>
         await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
             var found = FindLocal(entity.Id);
@@ -19,7 +19,7 @@ internal sealed class Repository : IRepository<Client>
             return entity.Id;
         }, cancellationToken);
 
-    public async Task<bool> UpdateAsync(Client entity, CancellationToken cancellationToken = default) =>
+    public async Task<bool> UpdateAsync(Client entity, CancellationToken cancellationToken) =>
         await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
             var found = FindLocal(entity.Id);
@@ -34,7 +34,7 @@ internal sealed class Repository : IRepository<Client>
             return true;
         }, cancellationToken);
 
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default) =>
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken) =>
         await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
             var found = FindLocal(id);

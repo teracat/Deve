@@ -15,7 +15,7 @@ internal sealed class Handler(
 {
     private static readonly ShieldItemConfig shieldItemConfig = ShieldItemConfig.Create(3);
 
-    public async Task<ResultGet<LoginResponse>> HandleAsync(LoginRequest request, CancellationToken cancellationToken = default)
+    public async Task<ResultGet<LoginResponse>> HandleAsync(LoginRequest request, CancellationToken cancellationToken)
     {
         var resShield = await shield.Protect(options, shieldItemConfig);
         if (!resShield.Success)

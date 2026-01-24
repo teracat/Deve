@@ -6,7 +6,7 @@ internal sealed class Repository : IRepository<State>
 
     public IQueryable<State> GetAsQueryable() => Data.States.AsQueryable();
 
-    public async Task<Guid> AddAsync(State entity, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(State entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -21,7 +21,7 @@ internal sealed class Repository : IRepository<State>
         }, cancellationToken);
     }
 
-    public async Task<bool> UpdateAsync(State entity, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(State entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -38,7 +38,7 @@ internal sealed class Repository : IRepository<State>
         }, cancellationToken);
     }
 
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
