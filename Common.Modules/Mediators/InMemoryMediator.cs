@@ -6,7 +6,7 @@ namespace Deve.Mediators;
 
 internal sealed class InMemoryMediator(IServiceProvider serviceProvider) : IMediator
 {
-    public Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : IResult
+    public Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken) where TResponse : IResult
     {
         ArgumentNullException.ThrowIfNull(request);
 
