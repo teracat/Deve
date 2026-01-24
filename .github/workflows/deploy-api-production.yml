@@ -1,36 +1,36 @@
 # This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
 
-name: Deploy Api Internal to Production
+name: Deploy Api to Production
 
 on:
   push:
     branches:
-      - production/api-internal
+      - production/api
     tags:
-      - 'api-internal/v[0-9]+.[0-9]+.[0-9]+'
+      - 'api/v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build-and-test:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      solution: "Deve.Api.Internal.sln"
+      solution: "Deve.Api.slnx"
 
-  deploy-aks-api-internal:
+  deploy-aks-api:
     if: ${{ vars.DEPLOY_TYPE == 'aks' }}
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
-      services: "api-internal"
+      services: "api"
     secrets: inherit
 
-  deploy-app-api-internal:
-    if: ${{ vars.DEPLOY_TYPE == 'app' }}
+  deploy-app-api:
+    if: ${{ vars.DEPLOY_TYPE == 'api' }}
     needs: build-and-test
     uses: ./.github/workflows/deploy-azure-app.yml
     with:
       environment: "production"
-      project: "Internal/Api/Deve.Internal.Api.csproj"
-      name: "API Internal"
+      project: "Api/Deve.Api.csproj"
+      name: "API"
     secrets:
-      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

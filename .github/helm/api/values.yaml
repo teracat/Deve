@@ -1,18 +1,18 @@
 namespace:
-  name: api-internal
+  name: api
 
 image:
   tag: latest
   repositories:
     redis: redis
-    apiInternal: api-internal
+    api: api
 
 redis:
   port: 6379
   
-apiInternal:
+api:
   host: ''
   port: 80
-  dataSourceConnectionString: ''
+  yourModuleConnectionString: ''
   jwtSigningSecretKey: ''
   jwtEncryptionSecretKey: ''

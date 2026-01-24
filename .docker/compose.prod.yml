@@ -1,21 +1,13 @@
 name: deve-prod
 services:
-  api-internal:
-    image: ${ACR_LOGIN_SERVER}/api-internal:${IMAGE_TAG}
-    container_name: prod-api-internal
+  api:
+    image: ${ACR_LOGIN_SERVER}/api:${IMAGE_TAG}
+    container_name: prod-api
     expose:
       - "80"
     ports:
       - "80:80"
   
-  api-external:
-    image: ${ACR_LOGIN_SERVER}/api-external:${IMAGE_TAG}
-    container_name: prod-api-external
-    expose:
-      - "80"
-    ports:
-      - "80:80"
-
   redis:
     container_name: prod-redis
 
