@@ -7,7 +7,7 @@ namespace Deve.Sdk.MODULE_NAME;
 
 internal class ITEM_NAME_SINGULARSdk : BaseSdk, IITEM_NAME_SINGULARData
 {
-    private const string Path = MODULE_NAMEConstants.PathITEM_NAME_SINGULARV1;
+    private static readonly string Path = MODULE_NAMEConstants.PathITEM_NAME_SINGULARV1;
 
     public ITEM_NAME_SINGULARSdk(ISdk sdk)
         : base(sdk)

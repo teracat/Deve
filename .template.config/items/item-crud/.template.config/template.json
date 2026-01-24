@@ -108,7 +108,7 @@
       "description": "Add Path to module Constants",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-path>\" \"    public const string PathITEM_NAME_SINGULARV1 = PathMODULE_NAMEV1 + \\\"ITEM_NAME_SINGULAR\\\";\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-path>\" \"    public static readonly string PathITEM_NAME_SINGULARV1 = PathMODULE_NAMEV1 + \\\"ITEM_NAME_SINGULAR\\\";\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -119,7 +119,7 @@
       "description": "Add Tag to module Constants",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-tag>\" \"    public const string TagITEM_NAME_SINGULAR = \\\"ITEM_NAME_SINGULAR\\\";\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-tag>\" \"    public static readonly string TagITEM_NAME_SINGULAR = \\\"ITEM_NAME_SINGULAR\\\";\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

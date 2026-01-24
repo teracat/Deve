@@ -105,7 +105,7 @@
       "description": "Add Method to module Constants",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-method>\" \"    public const string MethodMETHOD_NAME = \\\"METHOD_NAME\\\";\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-method>\" \"    public static readonly string MethodMETHOD_NAME = \\\"METHOD_NAME\\\";\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

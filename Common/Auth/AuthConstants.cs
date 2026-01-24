@@ -15,26 +15,26 @@ public static class AuthConstants
     /// <summary>
     /// The claim key for the user's unique identifier.
     /// </summary>
-    public const string UserClaimId = "Id";
+    public static readonly string UserClaimId = "Id";
 
     /// <summary>
     /// The claim key for the user's username.
     /// </summary>
-    public const string UserClaimUsername = "Username";
+    public static readonly string UserClaimUsername = "Username";
 
     /// <summary>
     /// The claim key for the user's role.
     /// </summary>
-    public const string UserClaimRole = "Role";
+    public static readonly string UserClaimRole = "Role";
 
-    public const string PathAuthV1 = ApiConstants.BasePathV1 + "Auth/";
+    public static readonly string PathAuthV1 = ApiConstants.BasePathV1 + "Auth/";
 
     // <hooks:constants-path>
 
     // <hooks:constants-method>
-    public const string MethodLogin = "Login";
-    public const string MethodRefreshToken = "RefreshToken";
+    public static readonly string MethodLogin = "Login";
+    public static readonly string MethodRefreshToken = "RefreshToken";
 
     // <hooks:constants-tag>
-    public const string TagAuth = "Auth";
+    public static readonly string TagAuth = "Auth";
 }

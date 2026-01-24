@@ -7,7 +7,7 @@ namespace Deve.Sdk.Customers;
 
 internal class CitySdk : BaseSdk, ICityData
 {
-    private const string Path = CustomersConstants.PathCityV1;
+    private static readonly string Path = CustomersConstants.PathCityV1;
 
     public CitySdk(ISdk sdk)
         : base(sdk)

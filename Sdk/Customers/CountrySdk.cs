@@ -7,7 +7,7 @@ namespace Deve.Sdk.Customers;
 
 internal class CountrySdk : BaseSdk, ICountryData
 {
-    private const string Path = CustomersConstants.PathCountryV1;
+    private static readonly string Path = CustomersConstants.PathCountryV1;
 
     public CountrySdk(ISdk sdk)
         : base(sdk)

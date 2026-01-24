@@ -7,7 +7,7 @@ namespace Deve.Sdk.Identity;
 
 internal class UserSdk : BaseSdk, IUserData
 {
-    private const string Path = IdentityConstants.PathUserV1;
+    private static readonly string Path = IdentityConstants.PathUserV1;
 
     public UserSdk(ISdk sdk)
         : base(sdk)

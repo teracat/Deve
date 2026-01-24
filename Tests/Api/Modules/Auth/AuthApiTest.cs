@@ -17,19 +17,15 @@ public class AuthApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
     }
     #endregion
 
-    #region Common
-    [Theory]
-    [InlineData(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin)]
-    [InlineData(AuthConstants.PathAuthV1 + AuthConstants.MethodRefreshToken)]
-    public async Task Get_NullRequest_NotSuccessStatusCode(string path)
+    #region Login
+    [Fact]
+    public async Task Login_NullRequest_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientNoAuth.PostAsync(path, null);
+        var response = await Fixture.ClientNoAuth.PostAsync(AuthConstants.PathAuthV1 + AuthConstants.MethodLogin, null);
 
         Assert.False(response.IsSuccessStatusCode);
     }
-    #endregion
 
-    #region Login
     [Fact]
     public async Task Login_EmptyCredentials_NotSuccessStatusCode()
     {

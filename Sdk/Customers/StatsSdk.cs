@@ -6,7 +6,7 @@ namespace Deve.Sdk.Customers;
 
 internal class StatsSdk : BaseSdk, IStatsData
 {
-    private const string Path = CustomersConstants.PathStatsV1;
+    private static readonly string Path = CustomersConstants.PathStatsV1;
 
     public StatsSdk(ISdk sdk)
         : base(sdk)

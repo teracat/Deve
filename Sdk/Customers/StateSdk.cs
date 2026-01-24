@@ -7,7 +7,7 @@ namespace Deve.Sdk.Customers;
 
 internal class StateSdk : BaseSdk, IStateData
 {
-    private const string Path = CustomersConstants.PathStateV1;
+    private static readonly string Path = CustomersConstants.PathStateV1;
 
     public StateSdk(ISdk sdk)
         : base(sdk)

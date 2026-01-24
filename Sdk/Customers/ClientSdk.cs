@@ -7,7 +7,7 @@ namespace Deve.Sdk.Customers;
 
 internal class ClientSdk : BaseSdk, IClientData
 {
-    private const string Path = CustomersConstants.PathClientV1;
+    private static readonly string Path = CustomersConstants.PathClientV1;
 
     public ClientSdk(ISdk sdk)
         : base(sdk)

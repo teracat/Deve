@@ -2,7 +2,7 @@
 
 public static class MODULE_NAMEConstants
 {
-    public const string PathMODULE_NAMEV1 = ApiConstants.BasePathV1 + "MODULE_NAME/";
+    public static readonly string PathMODULE_NAMEV1 = ApiConstants.BasePathV1 + "MODULE_NAME/";
 
     // <hooks:constants-path>
 
