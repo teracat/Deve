@@ -16,33 +16,43 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => ClientGetListRequest.Create();
+    protected override object CreateRequestGetList() => new ClientGetListRequest();
 
-    protected override object CreateInvalidRequestToAdd() => new ClientAddRequest("", null, null, null, Guid.Empty, ClientStatus.Inactive, 0);
+    protected override object CreateInvalidRequestToAdd() => new ClientAddRequest
+    {
+        Name = "",
+        CityId = Guid.Empty,
+        Status = ClientStatus.Inactive,
+        Balance = 0
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new ClientUpdateRequest("", null, null, null, Guid.Empty, ClientStatus.Inactive, 0);
+    protected override object CreateInvalidRequestToUpdate() => new ClientUpdateRequest
+    {
+        Name = "",
+        CityId = Guid.Empty,
+        Status = ClientStatus.Inactive,
+        Balance = 0
+    };
 
     protected override object CreateValidRequestToAdd() => new ClientAddRequest
-    (
-        Name: "Tests Client",
-        TradeName: "Tests",
-        TaxId: null,
-        TaxName: "Tests Client Corporation",
-        CityId: TestsConstants.SantpedorCityId,
-        Status: ClientStatus.Active,
-        Balance: 12
-    );
+    {
+        Name = "Tests Client",
+        TradeName = "Tests",
+        TaxName = "Tests Client Corporation",
+        CityId = TestsConstants.SantpedorCityId,
+        Status = ClientStatus.Active,
+        Balance = 12
+    };
 
     protected override object CreateValidRequestToUpdate() => new ClientUpdateRequest
-    (
-        Name: "Jordi Badia",
-        TradeName: "Teracat",
-        TaxId: null,
-        TaxName: "Jordi Badia Santaulària",
-        CityId: TestsConstants.SantpedorCityId,
-        Status: ClientStatus.Active,
-        Balance: 50
-    );
+    {
+        Name = "Jordi Badia",
+        TradeName = "Teracat",
+        TaxName = "Jordi Badia Santaulària",
+        CityId = TestsConstants.SantpedorCityId,
+        Status = ClientStatus.Active,
+        Balance = 50
+    };
 
     protected override Task<ResultGetList<ClientListResponse>> GetListAsync(IData data, object? request) => data.Customers.Clients.GetAsync((ClientGetListRequest?)request);
     protected override Task<ResultGet<ClientResponse>> GetByIdAsync(IData data, Guid? id) => data.Customers.Clients.GetByIdAsync(id ?? Guid.Empty);

@@ -15,46 +15,38 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     }
 
     protected override object CreateInvalidRequestToAdd() => new UserAddRequest
-    (
-        Name: string.Empty,
-        Username: string.Empty,
-        Password: string.Empty,
-        Status: UserStatus.Inactive,
-        Role: Role.User,
-        Email: null,
-        Birthday: null
-    );
+    {
+        Name = string.Empty,
+        Username = string.Empty,
+        Password = string.Empty,
+        Status = UserStatus.Inactive,
+        Role = Role.User
+    };
 
     protected override object CreateInvalidRequestToUpdate() => new UserUpdateRequest
-    (
-        Name: string.Empty,
-        Username: string.Empty,
-        Status: UserStatus.Inactive,
-        Role: Role.User,
-        Email: null,
-        Birthday: null
-    );
+    {
+        Name = string.Empty,
+        Username = string.Empty,
+        Status = UserStatus.Inactive,
+        Role = Role.User
+    };
 
     protected override object CreateValidRequestToAdd() => new UserAddRequest
-    (
-        Name: "Tests User",
-        Username: "new.user",
-        Password: "new-user",
-        Status: UserStatus.Active,
-        Role: Role.User,
-        Email: null,
-        Birthday: null
-    );
+    {
+        Name = "Tests User",
+        Username = "new.user",
+        Password = "new-user",
+        Status = UserStatus.Active,
+        Role = Role.User
+    };
 
     protected override object CreateValidRequestToUpdate() => new UserUpdateRequest
-    (
-        Name: "Fake User 2",
-        Username: "fake2",
-        Status: UserStatus.Inactive,
-        Role: Role.User,
-        Email: null,
-        Birthday: null
-    );
+    {
+        Name = "Fake User 2",
+        Username = "fake2",
+        Status = UserStatus.Inactive,
+        Role = Role.User
+    };
 
     #region UpdatePassword Tests
     [Fact]

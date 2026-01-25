@@ -15,7 +15,7 @@ public abstract class CountryTest : DataAllBaseTest<IData, CountryResponse, Coun
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => CountryGetListRequest.Create();
+    protected override object CreateRequestGetList() => new CountryGetListRequest();
 
     protected override object CreateInvalidRequestToAdd() => new CountryAddRequest(string.Empty, string.Empty);
 

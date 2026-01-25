@@ -15,48 +15,40 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     }
 
     protected override object CreateInvalidRequestToAdd() => new ClientAddRequest
-    (
-        Name: string.Empty,
-        TradeName: null,
-        TaxId: null,
-        TaxName: null,
-        CityId: Guid.Empty,
-        Status: ClientStatus.Active,
-        Balance: 0
-     );
+    {
+        Name = string.Empty,
+        CityId = Guid.Empty,
+        Status = ClientStatus.Active,
+        Balance = 0
+    };
 
     protected override object CreateInvalidRequestToUpdate() => new ClientUpdateRequest
-    (
-        Name: string.Empty,
-        TradeName: null,
-        TaxId: null,
-        TaxName: null,
-        CityId: Guid.Empty,
-        Status: ClientStatus.Active,
-        Balance: 0
-     );
+    {
+        Name = string.Empty,
+        CityId = Guid.Empty,
+        Status = ClientStatus.Active,
+        Balance = 0
+    };
 
     protected override object CreateValidRequestToAdd() => new ClientAddRequest
-    (
-        Name: "Tests Client",
-        TradeName: "Tests",
-        TaxId: null,
-        TaxName: "Tests Client Corporation",
-        CityId: TestsConstants.SantpedorCityId,
-        Status: ClientStatus.Active,
-        Balance: 12
-    );
+    {
+        Name = "Tests Client",
+        TradeName = "Tests",
+        TaxName = "Tests Client Corporation",
+        CityId = TestsConstants.SantpedorCityId,
+        Status = ClientStatus.Active,
+        Balance = 12
+    };
 
     protected override object CreateValidRequestToUpdate() => new ClientUpdateRequest
-    (
-        Name: "Jordi Badia",
-        TradeName: "Teracat",
-        TaxId: null,
-        TaxName: "Jordi Badia Santaulària",
-        CityId: TestsConstants.SantpedorCityId,
-        Status: ClientStatus.Active,
-        Balance: 50
-    );
+    {
+        Name = "Jordi Badia",
+        TradeName = "Teracat",
+        TaxName = "Jordi Badia Santaulària",
+        CityId = TestsConstants.SantpedorCityId,
+        Status = ClientStatus.Active,
+        Balance = 50
+    };
 
     #region UpdateStatus Tests
     [Fact]

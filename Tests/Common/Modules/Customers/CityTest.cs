@@ -15,7 +15,7 @@ public abstract class CityTest : DataAllBaseTest<IData, CityResponse, CityRespon
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => CityGetListRequest.Create();
+    protected override object CreateRequestGetList() => new CityGetListRequest();
 
     protected override object CreateInvalidRequestToAdd() => new CityAddRequest(string.Empty, Guid.Empty);
 

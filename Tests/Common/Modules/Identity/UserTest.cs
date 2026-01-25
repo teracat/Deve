@@ -16,30 +16,41 @@ public abstract class UserTest : DataAllBaseTest<IData, UserResponse, UserRespon
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => UserGetListRequest.Create();
+    protected override object CreateRequestGetList() => new UserGetListRequest();
 
-    protected override object CreateInvalidRequestToAdd() => new UserAddRequest("", "", "", UserStatus.Inactive, Role.User, null, null);
+    protected override object CreateInvalidRequestToAdd() => new UserAddRequest
+    {
+        Name = "",
+        Username = "",
+        Password = "",
+        Status = UserStatus.Inactive,
+        Role = Role.User,
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new UserUpdateRequest("", "", UserStatus.Inactive, Role.User, null, null);
+    protected override object CreateInvalidRequestToUpdate() => new UserUpdateRequest
+    {
+        Name = "",
+        Username = "",
+        Status = UserStatus.Inactive,
+        Role = Role.User
+    };
 
-    protected override object CreateValidRequestToAdd() => new UserAddRequest(
-        Name: "New Tests User",
-        Username: "tests.new",
-        Password: "Tests.New",
-        Status: UserStatus.Active,
-        Role: Role.User,
-        Email: null,
-        Birthday: null
-    );
+    protected override object CreateValidRequestToAdd() => new UserAddRequest
+    {
+        Name = "New Tests User",
+        Username = "tests.new",
+        Password = "Tests.New",
+        Status = UserStatus.Active,
+        Role = Role.User
+    };
 
-    protected override object CreateValidRequestToUpdate() => new UserUpdateRequest(
-        Name: "Fake User Updated",
-        Username: "fake",
-        Status: UserStatus.Active,
-        Role: Role.Admin,
-        Email: "",
-        Birthday: null
-    );
+    protected override object CreateValidRequestToUpdate() => new UserUpdateRequest
+    {
+        Name = "Fake User Updated",
+        Username = "fake",
+        Status = UserStatus.Active,
+        Role = Role.Admin
+    };
 
     protected override Task<ResultGetList<UserResponse>> GetListAsync(IData data, object? request) => data.Identity.Users.GetAsync((UserGetListRequest?)request);
     protected override Task<ResultGet<UserResponse>> GetByIdAsync(IData data, Guid? id) => data.Identity.Users.GetByIdAsync(id ?? Guid.Empty);

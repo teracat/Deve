@@ -2,18 +2,16 @@
 
 namespace Deve.Customers.Clients;
 
-public sealed record ClientGetListRequest(Guid? Id, string? Name, string? TradeName, string? TaxId, string? TaxName, Guid? CityId, ClientStatusFilterType? StatusFilterType, int? Offset, int? Limit, string? OrderBy)
+public sealed record ClientGetListRequest
 {
-    public static ClientGetListRequest Create(Guid? id = null, string? name = null, string? tradeName = null, string? taxId = null, string? taxName = null, Guid? cityId = null, ClientStatusFilterType? statusFilterType = null, int? offset = null, int? limit = null, string? orderBy = null) =>
-        new(
-            Id: id,
-            Name: name,
-            TradeName: tradeName,
-            TaxId: taxId,
-            TaxName: taxName,
-            CityId: cityId,
-            StatusFilterType: statusFilterType,
-            Offset: offset,
-            Limit: limit,
-            OrderBy: orderBy);
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public string? TradeName { get; init; }
+    public string? TaxId { get; init; }
+    public string? TaxName { get; init; }
+    public Guid? CityId { get; init; }
+    public ClientStatusFilterType? StatusFilterType { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
 }

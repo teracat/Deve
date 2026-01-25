@@ -83,7 +83,10 @@ internal sealed class MainViewModel : BaseViewModel, IAsyncInitialization
 
     private async Task LoadDataClients()
     {
-        var request = ClientGetListRequest.Create(name: _ctrlDataClients.SearchText);
+        var request = new ClientGetListRequest
+        {
+            Name = _ctrlDataClients.SearchText
+        };
         await LoadDataList(_ctrlDataClients, Data.Customers.Clients.GetAsync, request, x => new ListDataClient()
         {
             Id = x.Id,
@@ -95,7 +98,10 @@ internal sealed class MainViewModel : BaseViewModel, IAsyncInitialization
 
     private async Task LoadDataCities()
     {
-        var request = CityGetListRequest.Create(name: _ctrlDataCities.SearchText);
+        var request = new CityGetListRequest
+        {
+            Name = _ctrlDataCities.SearchText
+        };
         await LoadDataList(_ctrlDataCities, Data.Customers.Cities.GetAsync, request, x => new ListData()
         {
             Id = x.Id,
@@ -106,7 +112,10 @@ internal sealed class MainViewModel : BaseViewModel, IAsyncInitialization
 
     private async Task LoadDataStates()
     {
-        var request = StateGetListRequest.Create(name: _ctrlDataStates.SearchText);
+        var request = new StateGetListRequest
+        {
+            Name = _ctrlDataStates.SearchText
+        };
         await LoadDataList(_ctrlDataStates, Data.Customers.States.GetAsync, request, x => new ListData()
         {
             Id = x.Id,
@@ -117,7 +126,10 @@ internal sealed class MainViewModel : BaseViewModel, IAsyncInitialization
 
     private async Task LoadDataCountries()
     {
-        var request = CountryGetListRequest.Create(name: _ctrlDataCountries.SearchText);
+        var request = new CountryGetListRequest
+        {
+            Name = _ctrlDataCountries.SearchText
+        };
         await LoadDataList(_ctrlDataCountries, Data.Customers.Countries.GetAsync, request, x => new ListData()
         {
             Id = x.Id,

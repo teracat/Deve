@@ -2,15 +2,13 @@
 
 namespace Deve.Identity.Users;
 
-public sealed record UserGetListRequest(Guid? Id, string? Name, string? Username, UserActiveType? ActiveType, int? Offset, int? Limit, string? OrderBy)
+public sealed record UserGetListRequest
 {
-    public static UserGetListRequest Create(Guid? id = null, string? name = null, string? username = null, UserActiveType? activeType = null, int? offset = null, int? limit = null, string? orderBy = null) =>
-        new(
-            Id: id,
-            Name: name,
-            Username: username,
-            ActiveType: activeType,
-            Offset: offset,
-            Limit: limit,
-            OrderBy: orderBy);
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public string? Username { get; init; }
+    public UserActiveType? ActiveType { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
 }

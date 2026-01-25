@@ -1,13 +1,11 @@
 ﻿namespace Deve.Customers.States;
 
-public sealed record StateGetListRequest(Guid? Id, string? Name, Guid? CountryId, int? Offset, int? Limit, string? OrderBy)
+public sealed record StateGetListRequest
 {
-    public static StateGetListRequest Create(Guid? id = null, string? name = null, Guid? countryId = null, int? offset = null, int? limit = null, string? orderBy = null) =>
-        new(
-            Id: id,
-            Name: name,
-            CountryId: countryId,
-            Offset: offset,
-            Limit: limit,
-            OrderBy: orderBy);
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public Guid? CountryId { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
 }

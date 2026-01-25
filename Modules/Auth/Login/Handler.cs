@@ -57,7 +57,12 @@ internal sealed class Handler(
             return Result.FailGet<UserResponse>(resultValidate);
         }
 
-        var getUserRequest = new UserGetByUsernamePasswordRequest(request.Username, request.Password, UserActiveType.OnlyActive);
+        var getUserRequest = new UserGetByUsernamePasswordRequest
+        {
+            Username = request.Username,
+            Password = request.Password,
+            ActiveType = UserActiveType.OnlyActive
+        };
 
         var userResult = await dataUser.GetByUsernamePasswordAsync(getUserRequest, cancellationToken);
         if (!userResult.Success || userResult.Data is null)

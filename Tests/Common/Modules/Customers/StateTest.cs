@@ -15,7 +15,7 @@ public abstract class StateTest : DataAllBaseTest<IData, StateResponse, StateRes
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => StateGetListRequest.Create();
+    protected override object CreateRequestGetList() => new StateGetListRequest();
 
     protected override object CreateInvalidRequestToAdd() => new StateAddRequest(string.Empty, Guid.Empty);
 

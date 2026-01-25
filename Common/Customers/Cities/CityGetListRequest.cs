@@ -1,13 +1,11 @@
 ﻿namespace Deve.Customers.Cities;
 
-public sealed record CityGetListRequest(Guid? Id, string? Name, Guid? StateId, int? Offset, int? Limit, string? OrderBy)
+public sealed record CityGetListRequest
 {
-    public static CityGetListRequest Create(Guid? id = null, string? name = null, Guid? stateId = null, int? offset = null, int? limit = null, string? orderBy = null) =>
-        new(
-            Id: id,
-            Name: name,
-            StateId: stateId,
-            Offset: offset,
-            Limit: limit,
-            OrderBy: orderBy);
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public Guid? StateId { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
 }
