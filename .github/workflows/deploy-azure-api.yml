@@ -61,7 +61,7 @@ jobs:
   deploy-azure-api:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    needs: build-azure-app
+    needs: build-azure-api
 
     steps:
       - name: Download artifact from build job
