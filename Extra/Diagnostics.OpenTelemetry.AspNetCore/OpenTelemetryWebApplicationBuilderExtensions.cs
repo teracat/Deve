@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using StackExchange.Redis;
 using Deve.Logging;
 
 namespace Deve.Diagnostics;
@@ -13,7 +14,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
 {
     private const string DiagnosticsProvider = "OpenTelemetry.AspNetCore";
 
-    public static WebApplicationBuilder AddDiagnosticsOpenTelemetry(this WebApplicationBuilder builder, string? redisServiceKey, Action<MeterProviderBuilder>? funcConfigMetrics, Action<TracerProviderBuilder>? funcConfigTracing)
+    public static WebApplicationBuilder AddDiagnosticsOpenTelemetry(this WebApplicationBuilder builder, ConnectionMultiplexer? redisConnectionMultiplexer, Action<MeterProviderBuilder>? funcConfigMetrics, Action<TracerProviderBuilder>? funcConfigTracing)
     {
         Log.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
 
@@ -22,7 +23,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
         var zipkinUrl = builder.Configuration["ZIPKIN_URL"];
         var prometheusScrapeEndpoint = builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"];
 
-        Log.Debug($"RedisServiceKey={redisServiceKey}");
+        Log.Debug($"RedisConnectionMultiplexer.Configuration={redisConnectionMultiplexer?.Configuration}");
         Log.Debug($"OTEL_EXPORTER_OTLP_ENDPOINT={tracingOtlpEndpoint}");
         Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
         Log.Debug($"ZIPKIN_URL={zipkinUrl}");
@@ -95,11 +96,11 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                     .AddHttpClientInstrumentation();
 
                 // Enable to collect redis calls
-                if (!string.IsNullOrEmpty(redisServiceKey))
+                if (redisConnectionMultiplexer is not null)
                 {
                     Log.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
 
-                    _ = tracing.AddRedisInstrumentation(redisServiceKey);
+                    _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer);
                 }
 
                 // Zipkin exporter (for distributed tracing)

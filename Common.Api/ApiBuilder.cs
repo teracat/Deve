@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi;
+using StackExchange.Redis;
 
 namespace Deve.Api;
 
@@ -95,14 +96,14 @@ public sealed class ApiBuilder
         RegisterContextServices();
 
         // Add Cache
-        string? redisServiceKey = AddCache();
+        ConnectionMultiplexer? redisConnectionMultiplexer = AddCache();
 
         // Logging
         _ = _builder.Logging.AddDebug();
         _ = _builder.Logging.AddConsole();
 
         // Diagnostics
-        AddDiagnostics(redisServiceKey);
+        AddDiagnostics(redisConnectionMultiplexer);
 
         return this;
     }
@@ -360,9 +361,8 @@ public sealed class ApiBuilder
     /// application startup to ensure the appropriate cache service is available throughout the application's
     /// lifetime.</remarks>
     /// <returns>A RedisCache instance if the RedisCacheConnection string is set in the configuration; otherwise, null.</returns>
-    private string? AddCache()
+    private ConnectionMultiplexer? AddCache()
     {
-        string? redisServiceKey = null;
         // Registers RedisCache as the implementation for ICache with singleton lifetime (only if the RedisCacheConnection is set in the appsettings.json file).
         // The RedisCacheConnection string is retrieved from the configuration file.
         // The RedisCache class is defined in the Extra/Cache.Redis project (you can remove it if you don't use it).
@@ -385,16 +385,20 @@ public sealed class ApiBuilder
 
             // If you want to throw an exception when the RedisCacheConnection is not set, uncomment the next line.
             //throw new Exception("The RedisCacheConnection is empty. Please set the RedisCacheConnection in the appsettings.json file.");
+
+            return null;
         }
         else
         {
             Log.Debug("The RedisCacheConnection is set. Using RedisCache as the ICache implementation.");
 
-            redisServiceKey = "RedisCache";
+#pragma warning disable CA2000 // Dispose objects before losing scope: it will be disposed by the DI container.
+            var redisCache = new RedisCache(redisConnection);
+#pragma warning restore CA2000 // Dispose objects before losing scope
+            _ = _builder.Services.AddSingleton<ICache>(redisCache);
 
-            _ = _builder.Services.AddKeyedSingleton(typeof(ICache), redisServiceKey, (_, _) => new RedisCache(redisConnection));
+            return redisCache.ConnectionMultiplexer;
         }
-        return redisServiceKey;
     }
 
     /// <summary>
@@ -402,13 +406,13 @@ public sealed class ApiBuilder
     /// </summary>
     /// <remarks>To enable OpenTelemetry diagnostics, ensure the required packages are referenced.
     /// For Sentry integration, additional configuration and packages may be necessary.</remarks>
-    /// <param name="redisServiceKey">An optional Redis cache service key that will be used to get the redis connection from the services for diagnostics, if provided.
+    /// <param name="redisConnectionMultiplexer">An optional Redis ConnectionMultiplexer instance whose connection will be instrumented for diagnostics if provided.
     /// If null, Redis diagnostics will not be configured.</param>
-    private void AddDiagnostics(string? redisServiceKey)
+    private void AddDiagnostics(ConnectionMultiplexer? redisConnectionMultiplexer)
     {
         // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.AspNetCore as a reference and comment the next lines.
         // To use OpenTelemetry with Sentry, you need to add the Sentry.OpenTelemetry package and the line "options.UseOpenTelemetry();" in the SentryOptionsExtensions class in the Diagnostics.Sentry project.
-        _ = _builder.AddDiagnosticsOpenTelemetry(redisServiceKey,
+        _ = _builder.AddDiagnosticsOpenTelemetry(redisConnectionMultiplexer,
             funcConfigMetrics: (metrics) =>
             {
                 // Configure extra Metrics exporters here (if you want to use other exporters).
