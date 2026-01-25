@@ -27,7 +27,7 @@ jobs:
   deploy-app-api:
     if: ${{ vars.DEPLOY_TYPE == 'api' }}
     needs: build-and-test
-    uses: ./.github/workflows/deploy-azure-app.yml
+    uses: ./.github/workflows/deploy-azure-api.yml
     with:
       environment: "production"
       project: "Api/Deve.Api.csproj"
