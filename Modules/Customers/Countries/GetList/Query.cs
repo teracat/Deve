@@ -1,3 +1,11 @@
 ﻿namespace Deve.Customers.Countries.GetList;
 
-internal sealed record Query(Guid? Id, string? Name, string? IsoCode, int? Offset, int? Limit, string? OrderBy) : IRequest<ResultGetList<CountryResponse>>;
+internal sealed record Query : IRequest<ResultGetList<CountryResponse>>
+{
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public string? IsoCode { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
+}

@@ -1,3 +1,7 @@
 ﻿namespace Deve.Customers.Countries.Add;
 
-internal sealed record Command(string Name, string IsoCode) : IRequest<ResultGet<ResponseId>>;
+internal sealed record Command : IRequest<ResultGet<ResponseId>>
+{
+    public required string Name { get; init; }
+    public required string IsoCode { get; init; }
+}

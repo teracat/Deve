@@ -65,12 +65,20 @@ internal sealed class StateViewModel : BaseEditViewModel, INavigationAwareWithTy
             IResult res;
             if (_state.Id == Guid.Empty)
             {
-                var request = new StateAddRequest(Name!.Trim(), SelectedCountry.Id);
+                var request = new StateAddRequest
+                {
+                    Name = Name!.Trim(),
+                    CountryId = SelectedCountry.Id
+                };
                 res = await Data.Customers.States.AddAsync(request);
             }
             else
             {
-                var request = new StateUpdateRequest(Name!.Trim(), SelectedCountry.Id);
+                var request = new StateUpdateRequest
+                {
+                    Name = Name!.Trim(),
+                    CountryId = SelectedCountry.Id
+                };
                 res = await Data.Customers.States.UpdateAsync(_state.Id, request);
             }
 
@@ -97,7 +105,13 @@ internal sealed class StateViewModel : BaseEditViewModel, INavigationAwareWithTy
         {
             if (Id == Guid.Empty)
             {
-                _state = new StateResponse(Guid.Empty, string.Empty, Guid.Empty, string.Empty);
+                _state = new StateResponse
+                {
+                    Id = Guid.Empty,
+                    Name = string.Empty,
+                    CountryId = Guid.Empty,
+                    CountryName = string.Empty
+                };
             }
             else
             {

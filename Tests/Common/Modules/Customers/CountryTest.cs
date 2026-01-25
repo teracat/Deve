@@ -17,21 +17,29 @@ public abstract class CountryTest : DataAllBaseTest<IData, CountryResponse, Coun
     #region Overrides
     protected override object CreateRequestGetList() => new CountryGetListRequest();
 
-    protected override object CreateInvalidRequestToAdd() => new CountryAddRequest(string.Empty, string.Empty);
+    protected override object CreateInvalidRequestToAdd() => new CountryAddRequest
+    {
+        Name = string.Empty,
+        IsoCode = string.Empty
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new CountryUpdateRequest(string.Empty, string.Empty);
+    protected override object CreateInvalidRequestToUpdate() => new CountryUpdateRequest
+    {
+        Name = string.Empty,
+        IsoCode = string.Empty
+    };
 
     protected override object CreateValidRequestToAdd() => new CountryAddRequest
-    (
-        Name: "Tests Country",
-        IsoCode: "TE"
-    );
+    {
+        Name = "Tests Country",
+        IsoCode = "TE"
+    };
 
     protected override object CreateValidRequestToUpdate() => new CountryUpdateRequest
-    (
-        Name: "España",
-        IsoCode: "ES"
-    );
+    {
+        Name = "España",
+        IsoCode = "ES"
+    };
 
     protected override Task<ResultGetList<CountryResponse>> GetListAsync(IData data, object? request) => data.Customers.Countries.GetAsync((CountryGetListRequest?)request);
     protected override Task<ResultGet<CountryResponse>> GetByIdAsync(IData data, Guid? id) => data.Customers.Countries.GetByIdAsync(id ?? Guid.Empty);

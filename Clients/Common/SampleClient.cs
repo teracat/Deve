@@ -160,7 +160,11 @@ Expires: {loginRes.Data.Token.Expires}");
 
         try
         {
-            var addCountryRes = await _data.Customers.Countries.AddAsync(new CountryAddRequest(Name: "Andorra", IsoCode: "AD"));
+            var addCountryRes = await _data.Customers.Countries.AddAsync(new CountryAddRequest
+            {
+                Name = "Andorra",
+                IsoCode = "AD"
+            });
             if (!addCountryRes.Success)
             {
                 LogError(addCountryRes);

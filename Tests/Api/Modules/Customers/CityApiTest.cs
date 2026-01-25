@@ -13,11 +13,27 @@ public class CityApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     {
     }
 
-    protected override object CreateInvalidRequestToAdd() => new CityAddRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToAdd() => new CityAddRequest()
+    {
+        Name = string.Empty,
+        StateId =  Guid.Empty
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new CityUpdateRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToUpdate() => new CityUpdateRequest()
+    {
+        Name = string.Empty,
+        StateId = Guid.Empty
+    };
 
-    protected override object CreateValidRequestToAdd() => new CityAddRequest("Tests City", TestsConstants.BarcelonaStateId);
+    protected override object CreateValidRequestToAdd() => new CityAddRequest()
+    {
+        Name = "Tests City",
+        StateId = TestsConstants.BarcelonaStateId
+    };
 
-    protected override object CreateValidRequestToUpdate() => new CityUpdateRequest("Santpedor", TestsConstants.BarcelonaStateId);
+    protected override object CreateValidRequestToUpdate() => new CityUpdateRequest()
+    {
+        Name = "Santpedor",
+        StateId = TestsConstants.BarcelonaStateId
+    };
 }

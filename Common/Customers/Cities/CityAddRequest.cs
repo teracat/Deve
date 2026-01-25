@@ -1,3 +1,7 @@
 ﻿namespace Deve.Customers.Cities;
 
-public sealed record CityAddRequest(string Name, Guid StateId);
+public sealed record CityAddRequest
+{
+    public required string Name { get; init; }
+    public required Guid StateId { get; init; }
+}

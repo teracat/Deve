@@ -2,13 +2,50 @@
 
 internal static class Mappers
 {
-    public static UserResponse ToResponse(this User user) => new(user.Id, user.Name, user.Username, user.Status, user.Role, user.Email, user.Birthday, user.Joined);
+    public static UserResponse ToResponse(this User user) => new()
+    {
+        Id = user.Id,
+        Name = user.Name,
+        Username = user.Username,
+        Status = user.Status,
+        Role = user.Role,
+        Email = user.Email,
+        Birthday = user.Birthday,
+        Joined = user.Joined
+    };
 
-    public static GetList.Query ToQuery(this UserGetListRequest request) => new(request.Id, request.Name, request.Username, null, request.ActiveType, request.Offset, request.Limit, request.OrderBy);
+    public static GetList.Query ToQuery(this UserGetListRequest request) => new()
+    {
+        Id = request.Id,
+        Name = request.Name,
+        Username = request.Username,
+        UserActiveType = request.ActiveType,
+        Offset = request.Offset,
+        Limit = request.Limit,
+        OrderBy = request.OrderBy
+    };
 
-    public static Add.Command ToCommand(this UserAddRequest request) => new(request.Name, request.Username, request.Password, request.Status, request.Role, request.Email, request.Birthday);
+    public static Add.Command ToCommand(this UserAddRequest request) => new()
+    {
+        Name = request.Name,
+        Username = request.Username,
+        Password = request.Password,
+        Status = request.Status,
+        Role = request.Role,
+        Email = request.Email,
+        Birthday = request.Birthday
+    };
 
-    public static Update.Command ToCommand(this UserUpdateRequest request, Guid id) => new(id, request.Name, request.Username, request.Status, request.Role, request.Email, request.Birthday);
+    public static Update.Command ToCommand(this UserUpdateRequest request, Guid id) => new()
+    {
+        Id = id,
+        Name = request.Name,
+        Username = request.Username,
+        Status = request.Status,
+        Role = request.Role,
+        Email = request.Email,
+        Birthday = request.Birthday
+    };
 
     // <hooks:mappers>
 }

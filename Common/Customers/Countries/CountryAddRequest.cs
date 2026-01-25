@@ -1,3 +1,7 @@
 ﻿namespace Deve.Customers.Countries;
 
-public sealed record CountryAddRequest(string Name, string IsoCode);
+public sealed record CountryAddRequest
+{
+    public required string Name { get; init; }
+    public required string IsoCode { get; init; }
+}

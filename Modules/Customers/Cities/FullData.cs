@@ -2,7 +2,14 @@
 
 internal sealed record FullData(City City, State? State, Country? Country)
 {
-    public CityResponse ToResponse() => new(City.Id, City.Name, City.StateId, State?.Name, Country?.Name);
+    public CityResponse ToResponse() => new()
+    {
+        Id = City.Id,
+        Name = City.Name,
+        StateId = City.StateId,
+        StateName = State?.Name,
+        CountryName = Country?.Name
+    };
 
     public static IQueryable<FullData> CreateQuery(IRepository<City> repositoryCity, IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>
         repositoryCity.GetAsQueryable()

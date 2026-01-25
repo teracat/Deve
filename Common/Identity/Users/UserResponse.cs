@@ -2,4 +2,14 @@
 
 namespace Deve.Identity.Users;
 
-public sealed record UserResponse(Guid Id, string Name, string Username, UserStatus Status, Role Role, string? Email, DateTime? Birthday, DateTimeOffset Joined);
+public sealed record UserResponse
+{
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required string Username { get; init; }
+    public required UserStatus Status { get; init; }
+    public required Role Role { get; init; }
+    public required string? Email { get; init; }
+    public required DateTime? Birthday { get; init; }
+    public required DateTimeOffset Joined { get; init; }
+}

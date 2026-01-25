@@ -17,21 +17,29 @@ public abstract class CityTest : DataAllBaseTest<IData, CityResponse, CityRespon
     #region Overrides
     protected override object CreateRequestGetList() => new CityGetListRequest();
 
-    protected override object CreateInvalidRequestToAdd() => new CityAddRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToAdd() => new CityAddRequest()
+    {
+        Name = string.Empty,
+        StateId = Guid.Empty
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new CityUpdateRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToUpdate() => new CityUpdateRequest
+    {
+        Name = string.Empty,
+        StateId = Guid.Empty
+    };
 
     protected override object CreateValidRequestToAdd() => new CityAddRequest
-    (
-        Name: "Tests City",
-        StateId: TestsConstants.BarcelonaStateId
-    );
+    {
+        Name = "Tests City",
+        StateId = TestsConstants.BarcelonaStateId
+    };
 
     protected override object CreateValidRequestToUpdate() => new CityUpdateRequest
-    (
-        Name: "Santpedor",
-        StateId: TestsConstants.BarcelonaStateId
-    );
+    {
+        Name = "Santpedor",
+        StateId = TestsConstants.BarcelonaStateId
+    };
 
     protected override Task<ResultGetList<CityResponse>> GetListAsync(IData data, object? request) => data.Customers.Cities.GetAsync((CityGetListRequest?)request);
     protected override Task<ResultGet<CityResponse>> GetByIdAsync(IData data, Guid? id) => data.Customers.Cities.GetByIdAsync(id ?? Guid.Empty);

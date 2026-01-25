@@ -13,19 +13,27 @@ public class StateApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     {
     }
 
-    protected override object CreateInvalidRequestToAdd() => new StateAddRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToAdd() => new StateAddRequest
+    {
+        Name = string.Empty,
+        CountryId = Guid.Empty
+    };
 
-    protected override object CreateInvalidRequestToUpdate() => new StateUpdateRequest(string.Empty, Guid.Empty);
+    protected override object CreateInvalidRequestToUpdate() => new StateUpdateRequest
+    {
+        Name = string.Empty,
+        CountryId = Guid.Empty
+    };
 
     protected override object CreateValidRequestToAdd() => new StateAddRequest
-    (
-        Name: "Tests State",
-        CountryId: TestsConstants.SpainCountryId
-    );
+    {
+        Name = "Tests State",
+        CountryId = TestsConstants.SpainCountryId
+    };
 
     protected override object CreateValidRequestToUpdate() => new StateUpdateRequest
-    (
-        Name: "Barcelona",
-        CountryId: TestsConstants.SpainCountryId
-    );
+    {
+        Name = "Barcelona",
+        CountryId = TestsConstants.SpainCountryId
+    };
 }

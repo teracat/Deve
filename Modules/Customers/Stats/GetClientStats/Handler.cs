@@ -49,5 +49,10 @@ internal sealed class GetClientStatsAcum
 
     public decimal Avg => Count == 0 ? 0 : Math.Round(Sum / Count, 2);
 
-    public ClientStatsResponse ToResponse() => new(Min ?? 0, Avg, Max ?? 0);
+    public ClientStatsResponse ToResponse() => new()
+    {
+        MinBalance = Min ?? 0,
+        AvgBalance = Avg,
+        MaxBalance = Max ?? 0
+    };
 }

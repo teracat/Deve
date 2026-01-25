@@ -38,7 +38,12 @@ internal sealed class CountryViewModel : BaseEditViewModel, INavigationAwareWith
         {
             if (Id == Guid.Empty)
             {
-                _country = new CountryResponse(Guid.Empty, string.Empty, string.Empty);
+                _country = new CountryResponse
+                {
+                    Id = Guid.Empty,
+                    Name = string.Empty,
+                    IsoCode = string.Empty
+                };
             }
             else
             {
@@ -77,12 +82,20 @@ internal sealed class CountryViewModel : BaseEditViewModel, INavigationAwareWith
             IResult res;
             if (_country.Id == Guid.Empty)
             {
-                var request = new CountryAddRequest(Name!.Trim(), IsoCode!.Trim());
+                var request = new CountryAddRequest
+                {
+                    Name = Name!.Trim(),
+                    IsoCode = IsoCode!.Trim()
+                };
                 res = await Data.Customers.Countries.AddAsync(request);
             }
             else
             {
-                var request = new CountryUpdateRequest(Name!.Trim(), IsoCode!.Trim());
+                var request = new CountryUpdateRequest
+                {
+                    Name = Name!.Trim(),
+                    IsoCode = IsoCode!.Trim()
+                };
                 res = await Data.Customers.Countries.UpdateAsync(_country.Id, request);
             }
 

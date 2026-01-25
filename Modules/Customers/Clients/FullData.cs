@@ -2,31 +2,35 @@
 
 internal sealed record FullData(Client Client, City? City, State? State, Country? Country)
 {
-    public ClientListResponse ToListResponse() => new(
-        Client.Id,
-        Client.Name,
-        Client.TradeName,
-        Client.TaxId,
-        City?.Name,
-        State?.Name,
-        Country?.Name,
-        Client.Status,
-        Client.Balance);
+    public ClientListResponse ToListResponse() => new()
+    {
+        Id = Client.Id,
+        Name = Client.Name,
+        TradeName = Client.TradeName,
+        TaxId = Client.TaxId,
+        CityName = City?.Name,
+        StateName = State?.Name,
+        CountryName = Country?.Name,
+        Status = Client.Status,
+        Balance = Client.Balance
+    };
 
-    public ClientResponse ToResponse() => new(
-        Client.Id,
-        Client.Name,
-        Client.TradeName,
-        Client.TaxId,
-        Client.TaxName,
-        City?.Id,
-        City?.Name,
-        State?.Id,
-        State?.Name,
-        Country?.Id,
-        Country?.Name,
-        Client.Status,
-        Client.Balance);
+    public ClientResponse ToResponse() => new()
+    {
+        Id = Client.Id,
+        Name = Client.Name,
+        TradeName = Client.TradeName,
+        TaxId = Client.TaxId,
+        TaxName = Client.TaxName,
+        CityId = City?.Id,
+        CityName = City?.Name,
+        StateId = State?.Id,
+        StateName = State?.Name,
+        CountryId = Country?.Id,
+        CountryName = Country?.Name,
+        Status = Client.Status,
+        Balance =Client.Balance
+    };
 
     public static IQueryable<FullData> CreateQuery(IRepository<Client> repositoryClient, IRepository<City> repositoryCity, IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>
         repositoryClient.GetAsQueryable()
