@@ -9,35 +9,16 @@ internal sealed class Handler(
         {
             var query = FullData.CreateQuery(repositoryState, repositoryCountry);
 
-            // Apply filters
-            if (request.Id.HasValue)
-            {
-                query = query.Where(x => x.State.Id == request.Id.Value);
-            }
-            if (!string.IsNullOrEmpty(request.Name))
-            {
-                query = query.Where(x => x.State.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase));
-            }
-            if (request.CountryId.HasValue)
-            {
-                query = query.Where(x => x.State.CountryId.Equals(request.CountryId));
-            }
+            query = ApplyFilters(query, request);
 
             // Get total count before pagination
             int totalCount = query.Count();
 
-            // Apply ordering
-            string orderBy = request.OrderBy ?? nameof(StateGetListRequest.Name);
-            query = orderBy.ToUpperInvariant() switch
-            {
-                "ID" => query.OrderBy(x => x.State.Id),
-                "COUNTRYID" => query.OrderBy(x => x.State.CountryId),
-                _ => query.OrderBy(x => x.State.Name),
-            };
+            query = ApplyOrder(query, request, out string orderBy);
 
             // Apply pagination
-            var offset = request?.Offset ?? 0;
-            var limit = request?.Limit ?? Constants.DefaultLimit;
+            var offset = request.Offset ?? 0;
+            var limit = request.Limit ?? Constants.DefaultLimit;
             var list = query.Select(x => x.ToResponse())
                             .Skip(offset)
                             .Take(limit)
@@ -45,4 +26,35 @@ internal sealed class Handler(
 
             return Result.OkGetList(list, offset, limit, orderBy, totalCount);
         }, cancellationToken);
+
+    private static IQueryable<FullData> ApplyFilters(IQueryable<FullData> query, Query request)
+    {
+        if (request.Id.HasValue)
+        {
+            query = query.Where(x => x.State.Id == request.Id.Value);
+        }
+
+        if (!string.IsNullOrEmpty(request.Name))
+        {
+            query = query.Where(x => x.State.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (request.CountryId.HasValue)
+        {
+            query = query.Where(x => x.State.CountryId.Equals(request.CountryId));
+        }
+
+        return query;
+    }
+
+    private static IQueryable<FullData> ApplyOrder(IQueryable<FullData> query, Query request, out string orderBy)
+    {
+        orderBy = request.OrderBy ?? nameof(StateGetListRequest.Name);
+        return orderBy.ToUpperInvariant() switch
+        {
+            "ID" => query.OrderBy(x => x.State.Id),
+            "COUNTRYID" => query.OrderBy(x => x.State.CountryId),
+            _ => query.OrderBy(x => x.State.Name),
+        };
+    }
 }
