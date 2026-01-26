@@ -2,7 +2,7 @@
 
 namespace Deve.Customers.Clients;
 
-public sealed record ClientUpdateRequest()
+public sealed record ClientUpdateRequest
 {
     public required string Name { get; init; }
     public required Guid CityId { get; init; }
