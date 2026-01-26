@@ -258,6 +258,12 @@ jobs:
       env:
         HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
         NAMESPACE: "monitoring"
+        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+        DB_USERS_PASSWORD: ${{ secrets.DB_USERS_PASSWORD }}
+        KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+        SECRET_GRAFANA: ${{ secrets.SECRET_GRAFANA }}
+        SECRET_PROMETHEUS: ${{ secrets.SECRET_PROMETHEUS }}
+        SECRET_ZIPKIN: ${{ secrets.SECRET_ZIPKIN }}
       run: |
         cat > .github/helm/monitoring/values.override.yaml << EOF
         namespace:
@@ -265,23 +271,23 @@ jobs:
         oauth2:
           host: "${{ vars.HOST_OAUTH2 }}"
           hostRoot: "${{ vars.HOST_ROOT }}"
-          cookieSecret: "${{ secrets.COOKIE_SECRET }}"
+          cookieSecret: "${COOKIE_SECRET}"
         postgres:
-          superPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          superPassword: "${DB_USERS_PASSWORD}"
         keycloak:
           host: "${{ vars.HOST_KEYCLOAK }}"
-          adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
-          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          adminPassword: "${KEYCLOAK_ADMIN_PASSWORD}"
+          dbPassword: "${DB_USERS_PASSWORD}"
         grafana:
           host: "${{ vars.HOST_GRAFANA }}"
-          clientSecret: "${{ secrets.SECRET_GRAFANA }}"
-          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          clientSecret: "${SECRET_GRAFANA}"
+          dbPassword: "${DB_USERS_PASSWORD}"
         prometheus:
           host: "${{ vars.HOST_PROMETHEUS }}"
-          clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
+          clientSecret: "${SECRET_PROMETHEUS}"
         zipkin:
           host: "${{ vars.HOST_ZIPKIN }}"
-          clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
+          clientSecret: "${SECRET_ZIPKIN}"
         EOF
 
         echo "HELM_VERSION=${HELM_VERSION}"
@@ -307,14 +313,17 @@ jobs:
       env:
         HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
         NAMESPACE: "api"
+        YOURMODULE_DATASOURCE_CONNECTIONSTRING: ${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}
+        JWT_SIGNING_SECRET_KEY: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+        JWT_ENCRYPTION_SECRET_KEY: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
       run: |
         cat > .github/helm/api/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
         api:
-          yourModuleConnectionString: "${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}"
-          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
+          yourModuleConnectionString: "${YOURMODULE_DATASOURCE_CONNECTIONSTRING}"
+          jwtSigningSecretKey: "${JWT_SIGNING_SECRET_KEY}"
+          jwtEncryptionSecretKey: "${JWT_ENCRYPTION_SECRET_KEY}"
           host: "${{ vars.HOST_API }}"
         EOF
 
