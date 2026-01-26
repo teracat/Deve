@@ -2,7 +2,7 @@
 
 public static class IdentityConstants
 {
-    public static readonly string PathIdentityV1 = ApiConstants.BasePathV1 + "Identity/";
+    public static readonly string PathIdentityV1 = Constants.BasePathApiV1 + "Identity/";
 
     // <hooks:constants-path>
     public static readonly string PathUserV1 = PathIdentityV1 + "User/";

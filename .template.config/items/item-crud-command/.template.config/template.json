@@ -105,7 +105,7 @@
       "description": "Add method to Sdk",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/ITEM_NAME_SINGULARSdk.cs \"<hooks:sdk-commands>\" \"    public async Task<Result> METHOD_NAMEAsync(Guid id, ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken) => await Patch(Path + id + ApiConstants.MethodSeparator + MODULE_NAMEConstants.MethodMETHOD_NAME, RequestAuthType.Default, request, cancellationToken);\""
+        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/ITEM_NAME_SINGULARSdk.cs \"<hooks:sdk-commands>\" \"    public async Task<Result> METHOD_NAMEAsync(Guid id, ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken) => await Patch(Path + id + Constants.MethodSeparator + MODULE_NAMEConstants.MethodMETHOD_NAME, RequestAuthType.Default, request, cancellationToken);\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

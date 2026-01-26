@@ -2,7 +2,7 @@
 
 public static class CustomersConstants
 {
-    public static readonly string PathCustomersV1 = ApiConstants.BasePathV1 + "Customers/";
+    public static readonly string PathCustomersV1 = Constants.BasePathApiV1 + "Customers/";
 
     // <hooks:constants-path>
     public static readonly string PathCountryV1 = PathCustomersV1 + "Country/";

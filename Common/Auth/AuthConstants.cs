@@ -27,7 +27,7 @@ public static class AuthConstants
     /// </summary>
     public static readonly string UserClaimRole = "Role";
 
-    public static readonly string PathAuthV1 = ApiConstants.BasePathV1 + "Auth/";
+    public static readonly string PathAuthV1 = Constants.BasePathApiV1 + "Auth/";
 
     // <hooks:constants-path>
 

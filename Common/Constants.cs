@@ -6,6 +6,21 @@
 public static class Constants
 {
     /// <summary>
+    /// Root path used as the base for API.
+    /// </summary>
+    public static readonly string BasePathApi = "/";
+
+    /// <summary>
+    /// Base URL path for version 1 of the API.
+    /// </summary>
+    public static readonly string BasePathApiV1 = BasePathApi + "v1/";
+
+    /// <summary>
+    /// Character used to separate method names in URLs.
+    /// </summary>
+    public static readonly string MethodSeparator = "/";
+
+    /// <summary>
     /// The default limit for queries.
     /// </summary>
     public static readonly int DefaultLimit = 50;
