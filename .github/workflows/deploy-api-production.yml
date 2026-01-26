@@ -22,7 +22,18 @@ jobs:
     with:
       environment: "production"
       services: "api"
-    secrets: inherit
+    secrets:
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      JWT_SIGNING_SECRET_KEY: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+      JWT_ENCRYPTION_SECRET_KEY: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
+      YOURMODULE_DATASOURCE_CONNECTIONSTRING: ${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      DB_USERS_PASSWORD: ${{ secrets.DB_USERS_PASSWORD }}
+      KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+      SECRET_GRAFANA: ${{ secrets.SECRET_GRAFANA }}
+      SECRET_PROMETHEUS: ${{ secrets.SECRET_PROMETHEUS }}
+      SECRET_ZIPKIN: ${{ secrets.SECRET_ZIPKIN }}
 
   deploy-app-api:
     if: ${{ vars.DEPLOY_TYPE == 'api' }}
