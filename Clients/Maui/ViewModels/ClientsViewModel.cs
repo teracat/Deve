@@ -16,8 +16,8 @@ internal sealed class ClientsViewModel : ListDataViewModel
     #region Overrides
     protected override async Task GetListData()
     {
-        ClientGetListRequest? criteria = null;
-        var res = await Data.Customers.Clients.GetAsync(criteria);
+        ClientGetListRequest? request = null;
+        var res = await Data.Customers.Clients.GetAsync(request);
         if (!res.Success)
         {
             ErrorText = Utils.ErrorsToString(res.Errors);
