@@ -4,6 +4,9 @@
 [![NuGet](https://img.shields.io/nuget/v/Teracat.Deve)](https://www.nuget.org/packages/Teracat.Deve)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Teracat.Deve)](https://www.nuget.org/packages/Teracat.Deve)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/174edf2ae54941d7bd0e857a338ff162)](https://app.codacy.com/gh/teracat/Deve/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![SonarQube Badge](https://sonarcloud.io/api/project_badges/measure?project=teracat_Deve&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=teracat_Deve)
+[![SonarQube Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=teracat_Deve&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=teracat_Deve)
+[![SonarQube Security Rating](https://sonarcloud.io/api/project_badges/measure?project=teracat_Deve&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=teracat_Deve)
 
 # Deve
 Welcome to the **.NET DEVEloper Template**! This project serves as a starting point for developers who need to create applications with data access requirements. The template is designed to be flexible and adaptable, allowing you to change data access strategies without needing to overhaul the entire project.
