@@ -6,9 +6,9 @@
 public static class Constants
 {
     /// <summary>
-    /// The default limit for query criteria.
+    /// The default limit for queries.
     /// </summary>
-    public static readonly int DefaultCriteriaLimit = 50;
+    public static readonly int DefaultLimit = 50;
 
     /// <summary>
     /// The language code for English.
