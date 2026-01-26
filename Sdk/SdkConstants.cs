@@ -8,9 +8,9 @@ internal static class SdkConstants
     public static readonly Uri UrlProduction = new("https://localhost:7245");
     public static readonly Uri UrlStaging = new("https://localhost:7245");
 #else
-    //TODO: change with real URLs
-    public static readonly Uri UrlProduction = new("https://api-int.deve.com/");
-    public static readonly Uri UrlStaging = new("https://dev.api-int.deve.com/");
+    //Change with real URLs
+    public static readonly Uri UrlProduction = new("https://api.deve.teracat.com/");
+    public static readonly Uri UrlStaging = new("https://api-dev.deve.teracat.com/");
 #endif
 //+:cnd
 #pragma warning restore S1075 // URIs should not be hardcoded
