@@ -14,21 +14,22 @@ public class ITEM_NAME_SINGULARApiTest : BaseAllApiTest, IClassFixture<FixtureAp
     }
 
     protected override object CreateInvalidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest
-    (
-        Name: string.Empty
-    );
+    {
+        Name = string.Empty
+    };
 
     protected override object CreateInvalidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest
-    (
-        Name: string.Empty    );
+    {
+        Name = string.Empty
+    };
 
     protected override object CreateValidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest
-    (
-        Name: "Add Tests"
-    );
+    {
+        Name = "Add Tests"
+    };
 
     protected override object CreateValidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest
-    (
-        Name: "Update Test"
-    );
+    {
+        Name = "Update Test"
+    };
 }

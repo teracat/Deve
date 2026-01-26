@@ -1,12 +1,10 @@
 ﻿namespace Deve.MODULE_NAME.ITEM_NAME_PLURAL;
 
-public sealed record ITEM_NAME_SINGULARGetListRequest(Guid? Id, string? Name, int? Offset, int? Limit, string? OrderBy)
+public sealed record ITEM_NAME_SINGULARGetListRequest
 {
-    public static ITEM_NAME_SINGULARGetListRequest Create(Guid? id = null, string? name = null, int? offset = null, int? limit = null, string? orderBy = null) =>
-        new(
-            Id: id,
-            Name: name,
-            Offset: offset,
-            Limit: limit,
-            OrderBy: orderBy);
+    public Guid? Id { get; init; }
+    public string? Name { get; init; }
+    public int? Offset { get; init; }
+    public int? Limit { get; init; }
+    public string? OrderBy { get; init; }
 }

@@ -32,7 +32,11 @@ internal sealed class Handler(
             // Apply pagination
             var offset = request?.Offset ?? 0;
             var limit = request?.Limit ?? Constants.DefaultCriteriaLimit;
-            var list = query.Select(x => new ITEM_NAME_SINGULARMETHOD_NAMEResponse(x.Id, x.Name))
+            var list = query.Select(x => new ITEM_NAME_SINGULARMETHOD_NAMEResponse
+                                    {
+                                        Id = x.Id,
+                                        Name = x.Name
+                                    })
                             .Skip(offset)
                             .Take(limit)
                             .ToList();

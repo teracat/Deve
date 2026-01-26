@@ -15,19 +15,21 @@ public abstract class ITEM_NAME_SINGULARTest : DataAllBaseTest<IData, ITEM_NAME_
     #endregion
 
     #region Overrides
-    protected override object CreateRequestGetList() => ITEM_NAME_SINGULARGetListRequest.Create();
+    protected override object CreateRequestGetList() => new ITEM_NAME_SINGULARGetListRequest();
 
-    protected override object CreateInvalidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest("");
+    protected override object CreateInvalidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest { Name = "" };
 
-    protected override object CreateInvalidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest("");
+    protected override object CreateInvalidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest { Name = "" };
 
-    protected override object CreateValidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest(
-        Name: "Add Tests"
-    );
+    protected override object CreateValidRequestToAdd() => new ITEM_NAME_SINGULARAddRequest
+    {
+        Name = "Add Tests"
+    };
 
-    protected override object CreateValidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest(
-        Name: "Update Test"
-    );
+    protected override object CreateValidRequestToUpdate() => new ITEM_NAME_SINGULARUpdateRequest
+    {
+        Name = "Update Test"
+    };
 
     protected override Task<ResultGetList<ITEM_NAME_SINGULARResponse>> GetListAsync(IData data, object? request) => data.MODULE_NAME.ITEM_NAME_PLURAL.GetAsync((ITEM_NAME_SINGULARGetListRequest?)request);
     protected override Task<ResultGet<ITEM_NAME_SINGULARResponse>> GetByIdAsync(IData data, Guid? id) => data.MODULE_NAME.ITEM_NAME_PLURAL.GetByIdAsync(id ?? Guid.Empty);

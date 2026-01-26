@@ -72,7 +72,7 @@
       "description": "Add query to core",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- --extra-eol=both ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-commands>\" \"    public async Task<Result> METHOD_NAMEAsync(Guid id, ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken)\r\n{\r\n    if (request is null)\r\n    {\r\n    return Result.Fail(options.LangCode, ResultErrorType.MissingRequiredField);\r\n    }\r\n    var command = request.ToMETHOD_NAMECommand(id);\r\n    return await mediator.SendAsync(command, cancellationToken);\r\n}\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-commands>\" \"    public async Task<Result> METHOD_NAMEAsync(Guid id, ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken)\r\n{\r\n    if (request is null)\r\n    {\r\n    return Result.Fail(options.LangCode, ResultErrorType.MissingRequiredField);\r\n    }\r\n    var command = request.ToMETHOD_NAMECommand(id);\r\n    return await mediator.SendAsync(command, cancellationToken);\r\n}\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -116,7 +116,7 @@
       "description": "Add mapper",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Mappers.cs \"<hooks:mappers>\" \"    public static METHOD_NAME.Command ToMETHOD_NAMECommand(this ITEM_NAME_SINGULARMETHOD_NAMERequest request, Guid id) => new(id, request.Name);\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Mappers.cs \"<hooks:mappers>\" \"    public static METHOD_NAME.Command ToMETHOD_NAMECommand(this ITEM_NAME_SINGULARMETHOD_NAMERequest request, Guid id) => new()\r\n    {\r\n        Id = id,\r\n        Name = request.Name\r\n    };\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

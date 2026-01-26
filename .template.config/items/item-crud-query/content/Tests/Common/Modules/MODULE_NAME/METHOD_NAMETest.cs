@@ -29,7 +29,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_Empty_ReturnNotSuccess()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(Guid.Empty));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = Guid.Empty });
 
         Assert.False(res.Success);
     }
@@ -37,7 +37,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_Empty_ReturnDataNull()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(Guid.Empty));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = Guid.Empty });
 
         Assert.Null(res.Data);
     }
@@ -45,7 +45,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_InvalidId_ReturnNotSuccess()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(TestsConstants.DefaultInvalidId));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = TestsConstants.DefaultInvalidId });
 
         Assert.False(res.Success);
     }
@@ -53,7 +53,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_ValidId_ReturnResultNotNull()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(TestsConstants.DefaultValidId));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = TestsConstants.DefaultValidId });
 
         Assert.NotNull(res);
     }
@@ -61,7 +61,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_ValidId_ReturnSuccess()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(TestsConstants.DefaultValidId));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = TestsConstants.DefaultValidId });
 
         Assert.True(res.Success);
     }
@@ -69,7 +69,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_ValidId_ReturnDataNotNull()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(TestsConstants.DefaultValidId));
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = TestsConstants.DefaultValidId });
 
         Assert.NotNull(res.Data);
     }
@@ -77,7 +77,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_NoAuthValidId_ReturnNotSuccess()
     {
-        var res = await Fixture.DataNoAuth.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest(TestsConstants.DefaultValidId));
+        var res = await Fixture.DataNoAuth.MODULE_NAME.ITEM_NAME_PLURAL.METHOD_NAMEAsync(new ITEM_NAME_SINGULARMETHOD_NAMERequest() { Id = TestsConstants.DefaultValidId });
 
         Assert.False(res.Success);
     }

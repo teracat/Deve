@@ -16,7 +16,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_Unauthorized_NotSuccessStatusCode()
     {
-        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest("Test");
+        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
         using var httpContent = ToHttpContent(request);
         var response = await Fixture.ClientNoAuth.PatchAsync(Path + $"{Guid.Empty}/" + MODULE_NAMEConstants.MethodMETHOD_NAME, httpContent);
@@ -35,7 +35,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_EmptyId_NotSuccessStatusCode()
     {
-        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest("Test");
+        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
         using var httpContent = ToHttpContent(request);
         var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{Guid.Empty}/" + MODULE_NAMEConstants.MethodMETHOD_NAME, httpContent);
@@ -46,7 +46,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_InvalidId_NotSuccessStatusCode()
     {
-        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest("Test");
+        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
         using var httpContent = ToHttpContent(request);
         var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{TestsConstants.DefaultInvalidId}/" + MODULE_NAMEConstants.MethodMETHOD_NAME, httpContent);
@@ -57,7 +57,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_ValidIdEmptyValue_NotSuccessStatusCode()
     {
-        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest("");
+        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest { Name = "" };
 
         using var httpContent = ToHttpContent(request);
         var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{TestsConstants.DefaultInvalidId}/" + MODULE_NAMEConstants.MethodMETHOD_NAME, httpContent);
@@ -68,7 +68,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_Valid_SuccessStatusCode()
     {
-        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest("Test");
+        var request = new ITEM_NAME_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
         using var httpContent = ToHttpContent(request);
         var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{TestsConstants.DefaultValidId}/" + MODULE_NAMEConstants.MethodMETHOD_NAME, httpContent);

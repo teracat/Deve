@@ -5,7 +5,7 @@ internal sealed class Core(IDataOptions options, IMediator mediator) : IITEM_NAM
     // Queries
     public async Task<ResultGetList<ITEM_NAME_SINGULARResponse>> GetAsync(ITEM_NAME_SINGULARGetListRequest? request, CancellationToken cancellationToken)
     {
-        var query = request?.ToQuery() ?? new GetList.Query(null, null, null, null, null);
+        var query = request?.ToQuery() ?? new GetList.Query();
         return await mediator.SendAsync(query, cancellationToken);
     }
 

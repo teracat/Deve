@@ -16,6 +16,10 @@ internal sealed class Handler(
                 return Result.FailGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>(options.LangCode, ResultErrorType.NotFound);
             }
 
-            return Result.OkGet(new ITEM_NAME_SINGULARMETHOD_NAMEResponse(item.Id, item.Name));
+            return Result.OkGet(new ITEM_NAME_SINGULARMETHOD_NAMEResponse()
+            {
+                Id = item.Id,
+                Name = item.Name
+            });
         }, cancellationToken);
 }

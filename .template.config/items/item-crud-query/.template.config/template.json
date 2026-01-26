@@ -72,7 +72,7 @@
       "description": "Add mapper",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Mappers.cs \"<hooks:mappers>\" \"    public static METHOD_NAME.Query ToMETHOD_NAMEQuery(this ITEM_NAME_SINGULARMETHOD_NAMERequest request) => new(request.Id);\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Mappers.cs \"<hooks:mappers>\" \"    public static METHOD_NAME.Query ToMETHOD_NAMEQuery(this ITEM_NAME_SINGULARMETHOD_NAMERequest request) => new()\r\n    {\r\n        Id = request.Id\r\n    };\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -83,7 +83,7 @@
       "description": "Add query to core",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- --extra-eol=both ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken)\r\n    {\r\n        var query = request?.ToMETHOD_NAMEQuery() ?? new METHOD_NAME.Query(null);\r\n        return await mediator.SendAsync(query, cancellationToken);\r\n    }\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Modules/MODULE_NAME/ITEM_NAME_PLURAL/Core.cs \"<hooks:core-queries>\" \"    public async Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest request, CancellationToken cancellationToken)\r\n    {\r\n    if (request is null)\r\n    {\r\n    return Result.FailGet<OrderGetLastResponse>(options.LangCode, ResultErrorType.MissingRequiredField);\r\n    }\r\n\r\n        var query = request.ToMETHOD_NAMEQuery();\r\n        return await mediator.SendAsync(query, cancellationToken);\r\n    }\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
@@ -94,7 +94,7 @@
       "description": "Add method to data interface",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/ITEM_NAME_PLURAL/IITEM_NAME_SINGULARData.cs \"<hooks:data-queries>\" \"    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request) => METHOD_NAMEAsync(request, CancellationToken.None);\r\n    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest? request, CancellationToken cancellationToken);\""
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/ITEM_NAME_PLURAL/IITEM_NAME_SINGULARData.cs \"<hooks:data-queries>\" \"    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest request) => METHOD_NAMEAsync(request, CancellationToken.None);\r\n    Task<ResultGet<ITEM_NAME_SINGULARMETHOD_NAMEResponse>> METHOD_NAMEAsync(ITEM_NAME_SINGULARMETHOD_NAMERequest request, CancellationToken cancellationToken);\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,
