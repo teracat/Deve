@@ -16,7 +16,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: redis
-          image: redis:latest # We use the standard image
+          image: redis:8.4 # We use the standard image
           # If you want to use a custom image from your ACR, uncomment the line below
           # and remove the 'image' line above. Also update docker-compose accordingly.
           #image: "{{ .Values.acrLoginServer }}/{{ .Values.image.repositories.redis }}:{{ .Values.image.tag }}"
@@ -31,6 +31,7 @@ spec:
             requests:
               memory: 300Mi
               cpu: 500m
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: Service
