@@ -1,5 +1,12 @@
 ﻿using System.Globalization;
 using System.Net;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi;
+using StackExchange.Redis;
 //using Sentry.OpenTelemetry;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
@@ -13,13 +20,6 @@ using Deve.Cache;
 using Deve.Data;
 using Deve.Diagnostics;
 using Deve.Logging;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi;
-using StackExchange.Redis;
 
 namespace Deve.Api;
 

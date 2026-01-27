@@ -1,19 +1,27 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Deve.Auth.UserIdentityService;
-using Deve.Auth.TokenManagers;
-using Deve.Cache;
-using Deve.Data;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Deve.Api.Options;
 // <hooks:core-di-using>
 using Deve.Auth;
+using Deve.Auth.TokenManagers;
+using Deve.Auth.UserIdentityService;
+using Deve.Cache;
 using Deve.Customers;
+using Deve.Data;
 using Deve.Identity;
 
 namespace Deve.Core;
 
 public static class CoreDependencyInjection
 {
-    public static IServiceCollection AddCoreEmbedded(this IServiceCollection services, IDataOptions options) =>
-        services.AddCommon()
+    public static IServiceCollection AddCoreEmbedded(this IServiceCollection services, IDataOptions options)
+    {
+        IConfiguration config = GetConfiguration();
+
+        _ = services.Configure<ConnectionStringsOptions>(config.GetSection("ConnectionStrings"));
+
+        return services.AddCommon()
+                .AddSingleton(config)
                 // <hooks:core-di-addmodule>
                 .AddModuleAuth()
                 .AddModuleIdentity()
@@ -25,4 +33,16 @@ public static class CoreDependencyInjection
                 .AddSingleton<ITokenManager, TokenManagerCrypt>()
                 .AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>()
                 .AddSingleton<IData, MainCore>();
+    }
+
+    private static IConfiguration GetConfiguration()
+    {
+        IConfigurationBuilder builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+        _ = builder.AddJsonFile("appsettings.json");
+
+        return builder.Build();
+    }
 }
