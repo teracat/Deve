@@ -117,31 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Unknown" xml:space="preserve">
-    <value>Desconocido</value>
+  <data name="DuplicatedValue" xml:space="preserve">
+    <value>Valor duplicado</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>No autorizado</value>
+  <data name="FieldValueTooLong" xml:space="preserve">
+    <value>El campo excede la longitud máxima de {0} caracteres</value>
   </data>
-  <data name="MissingRequiredField" xml:space="preserve">
-    <value>Falta campo requerido</value>
+  <data name="FieldValueTooShort" xml:space="preserve">
+    <value>El campo es más corto que la longitud mínima de {0} caracteres</value>
   </data>
   <data name="InvalidId" xml:space="preserve">
     <value>Id no válido</value>
   </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>No encontrado</value>
+  <data name="Locked" xml:space="preserve">
+    <value>Bloqueado, reintentar en {0} segundo</value>
   </data>
-  <data name="DuplicatedValue" xml:space="preserve">
-    <value>Valor duplicado</value>
+  <data name="MissingRequiredField" xml:space="preserve">
+    <value>Falta campo requerido</value>
   </data>
   <data name="NotAllowed" xml:space="preserve">
     <value>No permitido</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>No encontrado</value>
+  </data>
   <data name="TooManyAttempts" xml:space="preserve">
     <value>Demasiados intentos</value>
   </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Bloqueado, reintentar en {0} segundos</value>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>No autorizado</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconocido</value>
   </data>
 </root>

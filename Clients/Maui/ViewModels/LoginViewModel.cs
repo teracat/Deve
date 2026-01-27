@@ -1,67 +1,66 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Deve.Authenticate;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Resources.Strings;
+using Deve.Auth.Login;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal sealed class LoginViewModel : BaseViewModel
 {
-    public partial class LoginViewModel : BaseViewModel
+    #region Fields
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
+    private string _username = string.Empty;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
+    private string _password = string.Empty;
+    #endregion
+
+    #region Constructor
+    public LoginViewModel(INavigationService navigationService, Data.IData data)
+        : base(navigationService, data)
     {
-        #region Fields
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
-        private string _username = string.Empty;
-
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
-        [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
-        private string _password = string.Empty;
-        #endregion
-
-        #region Constructor
-        public LoginViewModel(INavigationService navigationService, Internal.Data.IData data)
-            : base(navigationService, data)
-        {
 //-:cnd
 #if DEBUG
-            Username = "teracat";
-            Password = "teracat";
+        Username = "teracat";
+        Password = "teracat";
 #endif
 //+:cnd
-        }
-        #endregion
+    }
+    #endregion
 
-        #region Methods
-        [RelayCommand(CanExecute = nameof(IsIdle))]
-        internal async Task Login()
+    #region Methods
+    [RelayCommand(CanExecute = nameof(IsIdle))]
+    internal async Task Login()
+    {
+        if (!Validate())
         {
-            if (!Validate())
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            var resLogin = await Data.Auth.Login(new LoginRequest(Username, Password));
+            if (!resLogin.Success || resLogin.Data is null)
             {
+                ErrorText = Utils.ErrorsToString(resLogin.Errors);
                 return;
             }
 
-            IsBusy = true;
-            try
-            {
-                var resLogin = await Data.Authenticate.Login(new UserCredentials(Username, Password));
-                if (!resLogin.Success || resLogin.Data is null)
-                {
-                    ErrorText = Utils.ErrorsToString(resLogin.Errors);
-                    return;
-                }
+            Globals.LoginResponseData = resLogin.Data;
 
-                Globals.UserToken = resLogin.Data;
-
-                await NavigationService.NavigateToAsync("//clients");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            await NavigationService.NavigateToAsync("//clients");
         }
-        #endregion
+        finally
+        {
+            IsBusy = false;
+        }
     }
+    #endregion
 }

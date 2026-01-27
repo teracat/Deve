@@ -1,20 +1,20 @@
-using System.Security;
+﻿using System.Security;
 using Moq;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
 using Deve.Tests.Wpf.Fixtures;
 
-namespace Deve.Tests.Wpf
-{
-    public class TestLoginViewModel : IClassFixture<FixtureWpf>
-    {
-        private readonly FixtureWpf _fixture;
+namespace Deve.Tests.Wpf;
 
-        public TestLoginViewModel(FixtureWpf fixture)
-        {
-            _fixture = fixture;
-        }
+public class TestLoginViewModel : IClassFixture<FixtureWpf>
+{
+    private readonly FixtureWpf _fixture;
+
+    public TestLoginViewModel(FixtureWpf fixture)
+    {
+        _fixture = fixture;
+    }
 
         [Fact]
         public async Task Login_EmptyUsernamePassword_HasErrors()
@@ -66,8 +66,8 @@ namespace Deve.Tests.Wpf
 
             await loginViewModel.Login(TestsConstants.UserPasswordValid);
 
-            Assert.False(loginViewModel.HasError);
-        }
+        Assert.False(loginViewModel.HasError);
+    }
 
         [Fact]
         public async Task Login_ValidUsernamePassword_NavigatesToClients()
@@ -82,7 +82,6 @@ namespace Deve.Tests.Wpf
 
             await loginViewModel.Login(TestsConstants.UserPasswordValid);
 
-            navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
-        }
+        navigationService.Verify(x => x.NavigateTo<MainView>(), Times.Once);
     }
 }

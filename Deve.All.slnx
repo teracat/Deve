@@ -1,0 +1,52 @@
+<Solution>
+  <Folder Name="/Clients/">
+    <Project Path="Clients/Wpf/Deve.Clients.Wpf.csproj" />
+    <Project Path="Clients/Common/Deve.Clients.Common.csproj" />
+    <Project Path="Clients/Console/Deve.Clients.Console.csproj" />
+    <Project Path="Clients/Maui/Deve.Clients.Maui.csproj">
+      <Deploy />
+    </Project>
+    <Project Path="Clients/Service/Deve.Clients.Service.csproj" />
+  </Folder>
+  <Folder Name="/Extra/">
+    <Project Path="Extra/Auth.Jwt/Deve.Auth.Jwt.csproj" />
+    <Project Path="Extra/Cache.Memory/Deve.Cache.Memory.csproj" />
+    <Project Path="Extra/Cache.Redis/Deve.Cache.Redis.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry.AspNetCore/Deve.Diagnostics.OpenTelemetry.AspNetCore.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry.Maui/Deve.Diagnostics.OpenTelemetry.Maui.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry/Deve.Diagnostics.OpenTelemetry.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry.AspNetCore/Deve.Diagnostics.Sentry.AspNetCore.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry.Maui/Deve.Diagnostics.Sentry.Maui.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
+    <Project Path="Extra/Log.Log4net/Deve.Log.Log4Net.csproj" />
+    <Project Path="Extra/Log.NetCore/Deve.Log.NetCore.csproj" />
+    <Project Path="Extra/Log.NLog/Deve.Log.NLog.csproj" />
+    <Project Path="Extra/Log.Serilog/Deve.Log.Serilog.csproj" />
+  </Folder>
+  <Folder Name="/Modules/">
+    <Project Path="Modules/Auth/Deve.Modules.Auth.csproj" />
+    <Project Path="Modules/Customers/Deve.Modules.Customers.csproj" />
+    <Project Path="Modules/Identity/Deve.Modules.Identity.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Api/Deve.Tests.Api.csproj" />
+    <Project Path="Tests/Auth/Deve.Tests.Auth.csproj" />
+    <Project Path="Tests/Cache/Deve.Tests.Cache.csproj" />
+    <Project Path="Tests/Common/Deve.Tests.Common.csproj" />
+    <Project Path="Tests/Core/Deve.Tests.Core.csproj" />
+    <Project Path="Tests/Logs/Deve.Tests.Logs.csproj" />
+    <Project Path="Tests/Maui/Deve.Tests.Maui.csproj" />
+    <Project Path="Tests/Sdk/Deve.Tests.Sdk.csproj" />
+    <Project Path="Tests/Wpf/Deve.Tests.Wpf.csproj" />
+  </Folder>
+  <Project Path="Api/Deve.Api.csproj" />
+  <Project Path="Common.Api/Deve.Common.Api.csproj" />
+  <Project Path="Common.Modules/Deve.Common.Modules.csproj" />
+  <Project Path="Common/Deve.Common.csproj" />
+  <Project Path="Core/Deve.Core.csproj" />
+  <Project Path="Sdk/Deve.Sdk.csproj" />
+</Solution>

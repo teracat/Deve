@@ -1,21 +1,9 @@
 name: deve
 services:
-  api-internal:
+  api:
     build:
       context: ../
-      dockerfile: ./.docker/Dockerfile.ApiInternal
-    depends_on:
-      - redis
-      - prometheus
-      - zipkin
-      - grafana
-    networks:
-      - deve-network
-
-  api-external:
-    build:
-      context: ../
-      dockerfile: ./.docker/Dockerfile.ApiExternal
+      dockerfile: ./.docker/Dockerfile.Api
     depends_on:
       - redis
       - prometheus

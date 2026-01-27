@@ -1,25 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <RootNamespace>Deve</RootNamespace>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Update="Resources\ErrorTypesResource.Designer.cs">
-      <DependentUpon>ErrorTypesResource.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorTypesResource.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\ErrorTypesResource.resx">
-      <LastGenOutput>ErrorTypesResource.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorTypesResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

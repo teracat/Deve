@@ -15,78 +15,65 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     outputs:
-      app_internal: ${{ steps.checks.outputs.app_internal }}
-      app_external: ${{ steps.checks.outputs.app_external }}
+      api: ${{ steps.checks.outputs.api }}
       aks: ${{ steps.checks.outputs.aks }}
     steps:
       - name: Check secrets
         id: checks
         shell: bash        
         env:
-          INTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
-          EXTERNAL_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
+          API_SECRET: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           DEPLOY_TYPE: ${{ vars.DEPLOY_TYPE }}
         run: |
-          app_internal=false
-          app_external=false
+          api=false
           aks=false
 
-          if [[ "$INTERNAL_SECRET" != "" && "$DEPLOY_TYPE" == "app" ]]; then
-            app_internal=true
-          fi
-          if [[ "$EXTERNAL_SECRET" != "" && "$DEPLOY_TYPE" == "app" ]]; then
-            app_external=true
+          if [[ "$API_SECRET" != "" && "$DEPLOY_TYPE" == "api" ]]; then
+            api=true
           fi
           if [[ "$DEPLOY_TYPE" == "aks" ]]; then
             aks=true
           fi
 
-          echo "app_internal=$app_internal" >> "$GITHUB_OUTPUT"
-          echo "app_external=$app_external" >> "$GITHUB_OUTPUT"
+          echo "api=$api" >> "$GITHUB_OUTPUT"
           echo "aks=$aks" >> "$GITHUB_OUTPUT"
           
           echo "DEPLOY_TYPE=$DEPLOY_TYPE"
-          echo "app_internal=$app_internal"
-          echo "app_external=$app_external"
+          echo "api=$api"
           echo "aks=$aks"
     
-  build-and-test-api-internal:
+  build-and-test-api:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      solution: "Deve.Api.Internal.sln"
-
-  build-and-test-api-external:
-    uses: ./.github/workflows/build-and-test.yml
-    with:
-      solution: "Deve.Api.External.sln"
+      solution: "Deve.Api.slnx"
 
   deploy-all-aks:
     if: ${{ needs.checks.outputs.aks == 'true' }}
-    needs: [checks,build-and-test-api-internal,build-and-test-api-external]
+    needs: [checks,build-and-test-api]
     uses: ./.github/workflows/deploy-azure-aks.yml
     with:
       environment: "production"
-      services: "api-internal,api-external,monitoring"
-    secrets: inherit
+      services: "api,monitoring"
+    secrets:
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      JWT_SIGNING_SECRET_KEY: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+      JWT_ENCRYPTION_SECRET_KEY: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
+      YOURMODULE_DATASOURCE_CONNECTIONSTRING: ${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      DB_USERS_PASSWORD: ${{ secrets.DB_USERS_PASSWORD }}
+      KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+      SECRET_GRAFANA: ${{ secrets.SECRET_GRAFANA }}
+      SECRET_PROMETHEUS: ${{ secrets.SECRET_PROMETHEUS }}
+      SECRET_ZIPKIN: ${{ secrets.SECRET_ZIPKIN }}
 
-  deploy-all-api-internal:
-    if: ${{ needs.checks.outputs.app_internal == 'true' }}
-    needs: [checks,build-and-test-api-internal]
-    uses: ./.github/workflows/deploy-azure-app.yml
+  deploy-all-api:
+    if: ${{ needs.checks.outputs.api == 'true' }}
+    needs: [checks,build-and-test-api]
+    uses: ./.github/workflows/deploy-azure-api.yml
     with:
       environment: "production"
-      project: "Internal/Api/Deve.Internal.Api.csproj"
-      name: ${{ vars.AZURE_WEBAPP_NAME_INTERNAL }}
+      project: "Api/Deve.Api.csproj"
+      name: ${{ vars.AZURE_WEBAPP_NAME }}
     secrets:
-      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_INTERNAL }}
-
-  deploy-all-api-external:
-    if: ${{ needs.checks.outputs.app_external == 'true' }}
-    needs: [checks,build-and-test-api-external]
-    uses: ./.github/workflows/deploy-azure-app.yml
-    with:
-      environment: "production"
-      project: "External/Api/Deve.External.Api.csproj"
-      name: ${{ vars.AZURE_WEBAPP_NAME_EXTERNAL }}
-    secrets:
-      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_EXTERNAL }}
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

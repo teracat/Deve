@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Clients/">
+    <Project Path="Clients/Wpf/Deve.Clients.Wpf.csproj" />
+    <Project Path="Clients/Common/Deve.Clients.Common.csproj" />
+    <Project Path="Clients/Console/Deve.Clients.Console.csproj" />
+    <Project Path="Clients/Maui/Deve.Clients.Maui.csproj">
+      <Deploy />
+    </Project>
+    <Project Path="Clients/Service/Deve.Clients.Service.csproj" />
+  </Folder>
+  <Folder Name="/Extra/">
+    <Project Path="Extra/Diagnostics.Sentry.Maui/Deve.Diagnostics.Sentry.Maui.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
+    <Project Path="Extra/Log.Log4net/Deve.Log.Log4net.csproj" />
+    <Project Path="Extra/Log.NLog/Deve.Log.NLog.csproj" />
+  </Folder>
+  <Project Path="Common/Deve.Common.csproj" />
+</Solution>

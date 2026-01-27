@@ -1,7 +1,6 @@
-﻿namespace Deve.Clients.Wpf.Interfaces
+﻿namespace Deve.Clients.Wpf.Interfaces;
+
+internal interface INavigationAware
 {
-    public interface INavigationAware
-    {
-        void OnNavigatedTo(object? parameter);
-    }
+    void OnNavigatedTo(object? parameter);
 }

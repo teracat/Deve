@@ -117,31 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Unknown" xml:space="preserve">
-    <value>Unknown</value>
+  <data name="DuplicatedValue" xml:space="preserve">
+    <value>Duplicated value</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>Unauthorized</value>
+  <data name="FieldValueTooLong" xml:space="preserve">
+    <value>The field exceeds the maximum length of {0} characters</value>
+  </data>
+  <data name="FieldValueTooShort" xml:space="preserve">
+    <value>The field is shorter than the minimum length of {0} characters</value>
+  </data>
+  <data name="InvalidId" xml:space="preserve">
+    <value>InvalidId</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Locked, retry in {0} seconds</value>
   </data>
   <data name="MissingRequiredField" xml:space="preserve">
     <value>Missing required field</value>
   </data>
-  <data name="InvalidId" xml:space="preserve">
-    <value>Invalid Id</value>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>Not allowed</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not found</value>
   </data>
-  <data name="DuplicatedValue" xml:space="preserve">
-    <value>Duplicated value</value>
-  </data>
-  <data name="NotAllowed" xml:space="preserve">
-    <value>Not allowed</value>
-  </data>
   <data name="TooManyAttempts" xml:space="preserve">
     <value>Too many attempts</value>
   </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Locked, retry in {0} seconds</value>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
   </data>
 </root>

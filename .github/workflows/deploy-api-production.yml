@@ -1,0 +1,47 @@
+# This workflow requires the environment production with the secrets used in the deploy-azure-aks.yml
+
+name: Deploy Api to Production
+
+on:
+  push:
+    branches:
+      - production/api
+    tags:
+      - 'api/v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      solution: "Deve.Api.slnx"
+
+  deploy-aks-api:
+    if: ${{ vars.DEPLOY_TYPE == 'aks' }}
+    needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-aks.yml
+    with:
+      environment: "production"
+      services: "api"
+    secrets:
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      JWT_SIGNING_SECRET_KEY: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+      JWT_ENCRYPTION_SECRET_KEY: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
+      YOURMODULE_DATASOURCE_CONNECTIONSTRING: ${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      DB_USERS_PASSWORD: ${{ secrets.DB_USERS_PASSWORD }}
+      KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+      SECRET_GRAFANA: ${{ secrets.SECRET_GRAFANA }}
+      SECRET_PROMETHEUS: ${{ secrets.SECRET_PROMETHEUS }}
+      SECRET_ZIPKIN: ${{ secrets.SECRET_ZIPKIN }}
+
+  deploy-app-api:
+    if: ${{ vars.DEPLOY_TYPE == 'api' }}
+    needs: build-and-test
+    uses: ./.github/workflows/deploy-azure-api.yml
+    with:
+      environment: "production"
+      project: "Api/Deve.Api.csproj"
+      name: "API"
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

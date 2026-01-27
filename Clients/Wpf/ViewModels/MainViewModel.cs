@@ -4,272 +4,278 @@ using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Models;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Views;
-using Deve.Criteria;
-using Deve.Internal.Criteria;
-using Deve.Internal.Data;
-using Deve.Internal.Model;
-using Deve.Model;
+using Deve.Data;
+using Deve.Dto.Responses.Results;
+using Deve.Customers.Cities;
+using Deve.Customers.Clients;
+using Deve.Customers.Countries;
+using Deve.Customers.States;
+using Deve.Customers.Stats;
 
-namespace Deve.Clients.Wpf.ViewModels
+namespace Deve.Clients.Wpf.ViewModels;
+
+internal sealed partial class MainViewModel : BaseViewModel, IAsyncInitialization
 {
-    public partial class MainViewModel : BaseViewModel, IAsyncInitialization
+    #region Fields
+    [ObservableProperty]
+    private ListControlData _ctrlDataClients;
+
+    [ObservableProperty]
+    private ListControlData _ctrlDataCities;
+
+    [ObservableProperty]
+    private ListControlData _ctrlDataStates;
+
+    [ObservableProperty]
+    private ListControlData _ctrlDataCountries;
+
+    [ObservableProperty]
+    private bool _isLoadingClientStats = false;
+
+    [ObservableProperty]
+    private ClientStatsResponse? _clientStats;
+    #endregion
+
+    #region Properties
+    public Task Initialization { get; private set; }
+    #endregion
+
+    #region Constructor
+    public MainViewModel(INavigationService navigationService, IData data, IMessageHandler messageHandler)
+        : base(navigationService, data, messageHandler)
     {
-        #region Fields
-        [ObservableProperty]
-        private ListControlData _ctrlDataClients;
+        _ctrlDataClients = new(LoadDataClients);
+        _ctrlDataCities = new(LoadDataCities);
+        _ctrlDataStates = new(LoadDataStates);
+        _ctrlDataCountries = new(LoadDataCountries);
+        Initialization = LoadData();
+    }
+    #endregion
 
-        [ObservableProperty]
-        private ListControlData _ctrlDataCities;
+    #region Methods
+    private async Task LoadData()
+    {
+        var taskClients = LoadDataClients();
+        var taskCities = LoadDataCities();
+        var taskStates = LoadDataStates();
+        var taskCountries = LoadDataCountries();
+        var taskStats = LoadClientStats();
 
-        [ObservableProperty]
-        private ListControlData _ctrlDataStates;
+        await Task.WhenAll(taskClients, taskCities, taskStates, taskCountries, taskStats);
+    }
 
-        [ObservableProperty]
-        private ListControlData _ctrlDataCountries;
-
-        [ObservableProperty]
-        private bool _isLoadingClientStats = false;
-
-        [ObservableProperty]
-        private ClientStats? _clientStats;
-        #endregion
-
-        #region Properties
-        public Task Initialization { get; private set; }
-        #endregion
-
-        #region Constructor
-        public MainViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
-            : base(navigationService, data, messageHandler)
+    private async Task LoadDataClients()
+    {
+        var request = new ClientGetListRequest
         {
-            _ctrlDataClients = new(LoadDataClients);
-            _ctrlDataCities = new(LoadDataCities);
-            _ctrlDataStates = new(LoadDataStates);
-            _ctrlDataCountries = new(LoadDataCountries);
-            Initialization = LoadData();
-        }
-        #endregion
-
-        #region Methods
-        private async Task LoadData()
+            Name = CtrlDataClients.SearchText
+        };
+        await LoadDataList(CtrlDataClients, Data.Customers.Clients.GetAsync, request, x => new ListDataClient()
         {
-            var taskClients = LoadDataClients();
-            var taskCities = LoadDataCities();
-            var taskStates = LoadDataStates();
-            var taskCountries = LoadDataCountries();
-            var taskStats = LoadClientStats();
+            Id = x.Id,
+            Main = x.TradeName ?? x.Name,
+            Detail = x.CityName + ", " + x.StateName + " (" + x.CountryName + ")",
+            Balance = x.Balance,
+        });
+    }
 
-            await Task.WhenAll(taskClients, taskCities, taskStates, taskCountries, taskStats);
-        }
-
-        private async Task LoadDataClients()
+    private async Task LoadDataCities()
+    {
+        var request = new CityGetListRequest
         {
-            var criteria = new CriteriaClient()
-            {
-                Name = CtrlDataClients.SearchText,
-            };
-            await GetDataList(CtrlDataClients, Data.Clients, criteria, x => new ListDataClient()
-            {
-                Id = x.Id,
-                Main = x.DisplayName,
-                Detail = x.Location.City + ", " + x.Location.State + " (" + x.Location.Country + ")",
-                Balance = x.Balance,
-            });
-        }
-
-        private async Task LoadDataCities()
+            Name = CtrlDataCities.SearchText,
+        };
+        await LoadDataList(CtrlDataCities, Data.Customers.Cities.GetAsync, request, x => new ListData()
         {
-            var criteria = new CriteriaCity()
-            {
-                Name = CtrlDataCities.SearchText,
-            };
-            await GetDataList(CtrlDataCities, Data.Cities, criteria, x => new ListData()
-            {
-                Id = x.Id,
-                Main = x.Name,
-                Detail = x.State,
-            });
-        }
+            Id = x.Id,
+            Main = x.Name,
+            Detail = x.StateName ?? string.Empty,
+        });
+    }
 
-        private async Task LoadDataStates()
+    private async Task LoadDataStates()
+    {
+        var request = new StateGetListRequest
         {
-            var criteria = new CriteriaState()
-            {
-                Name = CtrlDataStates.SearchText,
-            };
-            await GetDataList(CtrlDataStates, Data.States, criteria, x => new ListData()
-            {
-                Id = x.Id,
-                Main = x.Name,
-                Detail = x.Country,
-            });
-        }
-
-        private async Task LoadDataCountries()
+            Name = CtrlDataStates.SearchText
+        };
+        await LoadDataList(CtrlDataStates, Data.Customers.States.GetAsync, request, x => new ListData()
         {
-            var criteria = new CriteriaCountry()
-            {
-                Name = CtrlDataCountries.SearchText,
-            };
-            await GetDataList(CtrlDataCountries, Data.Countries, criteria, x => new ListData()
-            {
-                Id = x.Id,
-                Main = x.Name,
-                Detail = x.IsoCode,
-            });
-        }
+            Id = x.Id,
+            Main = x.Name,
+            Detail = x.CountryName ?? string.Empty,
+        });
+    }
 
-        private async Task LoadClientStats()
+    private async Task LoadDataCountries()
+    {
+        var request = new CountryGetListRequest
         {
-            IsLoadingClientStats = true;
-            try
-            {
-                var res = await Data.Stats.GetClientStats();
-                if (!res.Success)
-                {
-                    CtrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
-                    return;
-                }
+            Name = CtrlDataCountries.SearchText
+        };
+        await LoadDataList(CtrlDataCountries, Data.Customers.Countries.GetAsync, request, x => new ListData()
+        {
+            Id = x.Id,
+            Main = x.Name,
+            Detail = x.IsoCode,
+        });
+    }
 
-                ClientStats = res.Data;
+    private async Task LoadClientStats()
+    {
+        IsLoadingClientStats = true;
+        try
+        {
+            var res = await Data.Customers.Stats.GetClientStatsAsync();
+            if (!res.Success)
+            {
+                CtrlDataCountries.ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
             }
-            finally
+
+            ClientStats = res.Data;
+        }
+        finally
+        {
+            IsLoadingClientStats = false;
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+    private async Task AddState()
+    {
+        if (NavigationService.NavigateModalTo<StateView>())
+        {
+            await LoadDataStates();
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+    private async Task EditState(ListData? listData)
+    {
+        await Edit(listData, CtrlDataStates, Data.Customers.States.GetByIdAsync, (o) =>
+        {
+            // Use case 1: sending Id to force data download again
+            if (NavigationService.NavigateModalTo<StateView>(o.Id))
             {
-                IsLoadingClientStats = false;
+                _ = LoadDataStates();
+                return true;
             }
-        }
+            return false;
+        });
+    }
 
-        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task AddState()
+    [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
+    private async Task DeleteState(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.Customers.States.DeleteAsync, LoadDataStates);
+
+    [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+    private async Task AddCountry()
+    {
+        if (NavigationService.NavigateModalTo<CountryView>())
         {
-            if (NavigationService.NavigateModalTo<StateView>())
+            await LoadDataCountries();
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+    private async Task EditCountry(ListData? listData)
+    {
+        await Edit(listData, CtrlDataCountries, Data.Customers.Countries.GetByIdAsync, (o) =>
+        {
+            // Use case 2: sending Country object to avoid data download again
+            if (NavigationService.NavigateModalTo<CountryView, CountryResponse>(o))
             {
-                await LoadDataStates();
+                _ = LoadDataCountries();
+                return true;
             }
-        }
+            return false;
+        });
+    }
 
-        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task EditState(ListData? listData)
+    [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
+    private async Task DeleteCountry(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Customers.Countries.DeleteAsync, LoadDataCountries);
+    #endregion
+
+    #region Generic Methods
+    private static async Task LoadDataList<TRequest, TResponse>(ListControlData data, Func<TRequest, CancellationToken, Task<ResultGetList<TResponse>>> funcGetListAsync, TRequest request, Func<TResponse, ListData> selector) where TResponse : class
+    {
+        data.IsBusy = true;
+        try
         {
-            await Edit(listData, CtrlDataStates, Data.States, (o) =>
+            var res = await funcGetListAsync(request, default);
+            if (!res.Success)
             {
-                // Use case 1: sending Id to force data download again
-                if (NavigationService.NavigateModalTo<StateView>(o.Id))
-                {
-                    _ = LoadDataStates();
-                    return true;
-                }
-                return false;
-            });
-        }
-
-        [RelayCommand(CanExecute = nameof(CtrlDataStates.IsIdle))]
-        private async Task DeleteState(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteState, CtrlDataStates, Data.States, LoadDataStates);
-
-        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task AddCountry()
-        {
-            if (NavigationService.NavigateModalTo<CountryView>())
-            {
-                await LoadDataCountries();
+                data.ErrorText = Utils.ErrorsToString(res.Errors);
+                return;
             }
+
+            data.Items = res.Data
+                            .Select(selector)
+                            .ToList();
         }
-
-        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task EditCountry(ListData? listData)
+        finally
         {
-            await Edit(listData, CtrlDataCountries, Data.Countries, (o) =>
-            {
-                // Use case 2: sending Country object to avoid data download again
-                if (NavigationService.NavigateModalTo<CountryView, Country>(o))
-                {
-                    _ = LoadDataCountries();
-                    return true;
-                }
-                return false;
-            });
+            data.IsBusy = false;
         }
+    }
 
-        [RelayCommand(CanExecute = nameof(CtrlDataCountries.IsIdle))]
-        private async Task DeleteCountry(ListData? listData) => await Delete(listData, AppResources.ConfirmDeleteCountry, CtrlDataCountries, Data.Countries, LoadDataCountries);
-        #endregion
-
-        #region Generic Methods
-        private async Task GetDataList<ModelList, Model, Criteria>(ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Criteria criteria, Func<ModelList, ListData> selector) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
+    private async Task Edit<TResponse>(ListData? listData, ListControlData data, Func<Guid, CancellationToken, Task<ResultGet<TResponse>>> funcGetByIdAsync, Func<TResponse, bool> editFunc) where TResponse : class
+    {
+        if (listData is not null)
         {
+            TResponse? obj = null;
+
             data.IsBusy = true;
             try
             {
-                var res = await dataAll.Get(criteria);
+                var res = await funcGetByIdAsync(listData.Id, default);
                 if (!res.Success)
                 {
-                    data.ErrorText = Utils.ErrorsToString(res.Errors);
+                    MessageHandler.ShowError(res.Errors);
                     return;
                 }
 
-                data.Items = res.Data.Select(selector).ToList();
+                obj = res.Data;
             }
             finally
             {
                 data.IsBusy = false;
             }
-        }
 
-        private async Task Edit<ModelList, Model, Criteria>(ListData? listData, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Model, bool> editFunc) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
-        {
-            if (listData is not null)
+            if (obj is not null)
             {
-                Model? obj = null;
-
-                data.IsBusy = true;
-                try
-                {
-                    var res = await dataAll.Get(listData.Id);
-                    if (!res.Success)
-                    {
-                        MessageHandler.ShowError(res.Errors);
-                        return;
-                    }
-
-                    obj = res.Data;
-                }
-                finally
-                {
-                    data.IsBusy = false;
-                }
-
-                if (obj is not null)
-                {
-                    _ = editFunc(obj);
-                }
+                _ = editFunc(obj);
             }
         }
-
-        private async Task Delete<ModelList, Model, Criteria>(ListData? listData, string message, ListControlData data, IDataAll<ModelList, Model, Criteria> dataAll, Func<Task> actionWhenDone) where ModelList : ModelId where Model : ModelId where Criteria : CriteriaId
-        {
-            if (listData is not null)
-            {
-                if (MessageHandler.ShowQuestion(string.Format(message, listData.Main), AppResources.Delete))
-                {
-                    data.IsBusy = true;
-                    try
-                    {
-                        var res = await dataAll.Delete(listData.Id);
-                        if (!res.Success)
-                        {
-                            MessageHandler.ShowError(res.Errors);
-                            return;
-                        }
-
-                        await actionWhenDone();
-                    }
-                    finally
-                    {
-                        data.IsBusy = false;
-                    }
-                }
-            }
-        }
-        #endregion
     }
+
+    private async Task Delete(ListData? listData, string message, ListControlData data, Func<Guid, CancellationToken, Task<Result>> funcDeleteAsync, Func<Task> actionWhenDone)
+    {
+        if (listData is null)
+        {
+            return;
+        }
+        if (!MessageHandler.ShowQuestion(string.Format(Thread.CurrentThread.CurrentCulture, message, listData.Main), AppResources.Delete))
+        {
+            return;
+        }
+
+        data.IsBusy = true;
+        try
+        {
+            var res = await funcDeleteAsync(listData.Id, default);
+            if (!res.Success)
+            {
+                MessageHandler.ShowError(res.Errors);
+                return;
+            }
+
+            await actionWhenDone();
+        }
+        finally
+        {
+            data.IsBusy = false;
+        }
+    }
+    #endregion
 }

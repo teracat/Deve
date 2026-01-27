@@ -10,7 +10,7 @@
             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
             xmlns:vm="clr-namespace:Deve.Clients.Wpf.ViewModels"
             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-            mc:Ignorable="d"
+            mc:Ignorable="d" x:ClassModifier="internal"
             Width="750" Height="500" MinWidth="750" MinHeight="500"
             ResizeMode="CanResizeWithGrip" WindowState="Maximized"
             x:Name="root">
