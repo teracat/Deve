@@ -12,7 +12,7 @@ redis:
   
 api:
   host: ''
-  port: 80
+  port: 8080
   yourModuleConnectionString: ''
   jwtSigningSecretKey: ''
   jwtEncryptionSecretKey: ''
