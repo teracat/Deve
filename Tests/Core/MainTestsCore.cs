@@ -25,8 +25,8 @@ public sealed class MainTestsCore : IData
     public MainTestsCore(IDataOptions options, Role? role)
     {
         var services = new ServiceCollection();
-        _ = services.AddCoreEmbedded(options);
-        _ = services.AddTests();
+        _ = services.AddCoreEmbedded(options)
+                    .AddTests();
 
         if (role is not null)
         {
