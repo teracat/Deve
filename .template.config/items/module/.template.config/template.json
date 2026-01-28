@@ -71,6 +71,17 @@
     },
     {
       "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project to solutions Deve.Clients.slnx",
+      "args": {
+        "executable": "dotnet",
+        "args": "sln Deve.Clients.slnx add -s Modules ./Modules/MODULE_NAME/Deve.Modules.MODULE_NAME.csproj"
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
       "description": "Add module project as a reference to Core project",
       "args": {
         "executable": "dotnet",
