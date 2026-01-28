@@ -11,6 +11,7 @@ internal static class Mappers
         TaxName = request?.TaxName,
         CityId = request?.CityId,
         StatusFilterType = request?.StatusFilterType,
+        Search = request?.Search,
         Offset = request?.Offset,
         Limit = request?.Limit,
         OrderBy = request?.OrderBy

@@ -11,6 +11,8 @@ internal sealed record Query : IRequest<ResultGetList<ClientListResponse>>
     public string? TaxName { get; init; }
     public Guid? CityId { get; init; }
     public ClientStatusFilterType? StatusFilterType { get; init; }
+
+    public string? Search { get; init; }
     public int? Offset { get; init; }
     public int? Limit { get; init; }
     public string? OrderBy { get; init; }

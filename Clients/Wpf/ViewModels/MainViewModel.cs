@@ -85,7 +85,7 @@ internal sealed class MainViewModel : BaseViewModel, IAsyncInitialization
     {
         var request = new ClientGetListRequest
         {
-            Name = _ctrlDataClients.SearchText
+            Search = _ctrlDataClients.SearchText
         };
         await LoadDataList(_ctrlDataClients, Data.Customers.Clients.GetAsync, request, x => new ListDataClient()
         {
