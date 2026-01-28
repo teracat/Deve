@@ -4,13 +4,13 @@ namespace Deve.Customers.Clients;
 
 public sealed record ClientListResponse
 {
-    public required Guid Id { get; init; }
-    public required string Name { get; init; }
-    public required string? TradeName { get; init; }
-    public required string? TaxId { get; init; }
-    public required string? CityName { get; init; }
-    public required string? StateName { get; init; }
-    public required string? CountryName { get; init; }
-    public required ClientStatus Status { get; init; }
-    public required decimal Balance { get; init; }
+    public Guid Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string? TradeName { get; init; }
+    public string? TaxId { get; init; }
+    public string? CityName { get; init; }
+    public string? StateName { get; init; }
+    public string? CountryName { get; init; }
+    public ClientStatus Status { get; init; } = ClientStatus.Inactive;
+    public decimal Balance { get; init; } = 0;
 }

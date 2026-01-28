@@ -2,6 +2,6 @@
 
 public sealed record CountryAddRequest
 {
-    public required string Name { get; init; }
-    public required string IsoCode { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string IsoCode { get; init; } = string.Empty;
 }
