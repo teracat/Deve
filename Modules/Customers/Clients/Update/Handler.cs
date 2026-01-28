@@ -12,7 +12,7 @@ internal sealed class Handler(
         var entity = new Client()
         {
             Id = command.Id,
-            Name = command.Name,
+            Name = command.Name.Trim(),
             CityId = command.CityId
         };
 

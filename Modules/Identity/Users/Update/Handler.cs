@@ -12,11 +12,11 @@ internal sealed class Handler(
             return Result.Fail(options.LangCode, ResultErrorType.NotFound);
         }
 
-        entity.Name = command.Name;
-        entity.Username = command.Username;
+        entity.Name = command.Name.Trim();
+        entity.Username = command.Username.Trim();
         entity.Status = command.Status;
         entity.Role = command.Role;
-        entity.Email = command.Email;
+        entity.Email = command.Email?.Trim();
         entity.Birthday = command.Birthday;
 
         if (!await repositoryUser.UpdateAsync(entity, cancellationToken))

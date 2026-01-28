@@ -9,8 +9,8 @@ internal sealed class Handler(
         var entity = new Country()
         {
             Id = command.Id,
-            Name = command.Name,
-            IsoCode = command.IsoCode,
+            Name = command.Name.Trim(),
+            IsoCode = command.IsoCode.Trim(),
         };
 
         if (!await repositoryCountry.UpdateAsync(entity, cancellationToken))

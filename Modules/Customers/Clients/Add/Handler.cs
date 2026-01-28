@@ -9,10 +9,10 @@ internal sealed class Handler(
         var entity = new Client()
         {
             Id = Guid.NewGuid(),
-            Name = command.Name,
-            TradeName = command.TradeName,
-            TaxId = command.TaxId,
-            TaxName = command.TaxName,
+            Name = command.Name.Trim(),
+            TradeName = command.TradeName?.Trim(),
+            TaxId = command.TaxId?.Trim(),
+            TaxName = command.TaxName?.Trim(),
             CityId = command.CityId,
             Status = command.Status,
             Balance = command.Balance,
