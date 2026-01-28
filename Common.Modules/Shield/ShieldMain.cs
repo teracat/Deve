@@ -111,7 +111,7 @@ internal sealed class ShieldMain : IShield
     #endregion
 
     #region IShield
-    public Task<Result> Protect(IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "") => Protect(options, ShieldItemConfig.Create(), category, method);
+    public Task<Result> Protect(IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "") => Protect(options, new ShieldItemConfig(), category, method);
 
     public Task<Result> Protect(IDataOptions options, ShieldItemConfig config, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
     {
@@ -163,7 +163,7 @@ internal sealed class ShieldMain : IShield
         });
     }
 
-    public Task SetAttemptResult(bool succeeded, IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "") => SetAttemptResult(succeeded, options, ShieldItemConfig.Create(), category, method);
+    public Task SetAttemptResult(bool succeeded, IDataOptions options, [CallerFilePath] string category = "", [CallerMemberName] string method = "") => SetAttemptResult(succeeded, options, new ShieldItemConfig(), category, method);
 
     public Task SetAttemptResult(bool succeeded, IDataOptions options, ShieldItemConfig config, [CallerFilePath] string category = "", [CallerMemberName] string method = "")
     {

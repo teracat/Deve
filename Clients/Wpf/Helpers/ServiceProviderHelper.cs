@@ -11,17 +11,16 @@ namespace Deve.Clients.Wpf.Helpers;
 
 internal static class ServiceProviderHelper
 {
-    public static void RegisterServices(IServiceCollection services)
-    {
-        _ = services.AddSingleton<INavigationService, NavigationService>();
-        _ = services.AddSingleton<IMessageHandler, MessageBoxMessageHandler>();
-        _ = services.AddCoreEmbedded(new DataOptions()
-        {
-            LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
-        });
-    }
+    public static IServiceCollection RegisterServices(this IServiceCollection services) =>
+        services.AddSingleton<INavigationService, NavigationService>()
+                .AddSingleton<IMessageHandler, MessageBoxMessageHandler>()
+                .AddConfigurationAppSettings()
+                .AddCoreEmbedded(new DataOptions()
+                {
+                    LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
+                });
 
-    public static void RegisterViewModels(IServiceCollection services)
+    public static IServiceCollection RegisterViewModels(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var viewModels = assembly.GetTypes()
@@ -30,9 +29,10 @@ internal static class ServiceProviderHelper
         {
             _ = services.AddTransient(vm);
         }
+        return services;
     }
 
-    public static void RegisterViews(IServiceCollection services)
+    public static IServiceCollection RegisterViews(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var views = assembly.GetTypes()
@@ -41,5 +41,6 @@ internal static class ServiceProviderHelper
         {
             _ = services.AddTransient(v);
         }
+        return services;
     }
 }

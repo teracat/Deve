@@ -45,7 +45,7 @@ public sealed class TokenManagerCrypt : ITokenManager
         var tokenData = new TokenData(identity, expires);
         var content = JsonSerializer.Serialize(tokenData, _jsonSerializerOptions);
         var token = _crypt.Encrypt(content);
-        return UserToken.Create(token, scheme, expires);
+        return new UserToken(token, scheme, expires);
     }
 
     ///<inheritdoc/>

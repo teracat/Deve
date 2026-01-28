@@ -1,4 +1,5 @@
 ﻿using Moq;
+using Deve.Customers.Countries;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
@@ -60,7 +61,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataAuthAdmin, _fixture.MessageHandler.Object);
         await mainViewModel.Initialization;
 
-            await mainViewModel.AddStateCommand.ExecuteAsync(null);
+        await mainViewModel.AddStateCommand.ExecuteAsync(null);
 
         navigationService.Verify(x => x.NavigateModalTo<StateView>(), Times.Once);
     }
@@ -75,7 +76,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         var state = mainViewModel.CtrlDataStates?.Items?.First();
         var stateId = state?.Id ?? Guid.Empty;
 
-            await mainViewModel.EditStateCommand.ExecuteAsync(state);
+        await mainViewModel.EditStateCommand.ExecuteAsync(state);
 
         navigationService.Verify(x => x.NavigateModalTo<StateView>(stateId), Times.Once);
     }
@@ -89,7 +90,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         await mainViewModel.Initialization;
         var state = mainViewModel.CtrlDataStates?.Items?.First();
 
-            await mainViewModel.DeleteStateCommand.ExecuteAsync(state);
+        await mainViewModel.DeleteStateCommand.ExecuteAsync(state);
 
         messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
     }
@@ -104,7 +105,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         var mainViewModel = new MainViewModel(navigationService.Object, _fixture.DataAuthAdmin, _fixture.MessageHandler.Object);
         await mainViewModel.Initialization;
 
-            await mainViewModel.AddCountryCommand.ExecuteAsync(null);
+        await mainViewModel.AddCountryCommand.ExecuteAsync(null);
 
         navigationService.Verify(x => x.NavigateModalTo<CountryView>(), Times.Once);
     }
@@ -118,7 +119,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         await mainViewModel.Initialization;
         var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.EditCountryCommand.ExecuteAsync(country);
+        await mainViewModel.EditCountryCommand.ExecuteAsync(country);
 
         navigationService.Verify(x => x.NavigateModalTo<CountryView, CountryResponse>(It.IsNotNull<CountryResponse>()), Times.Once);
     }
@@ -132,7 +133,7 @@ public class TestMainViewModel : IClassFixture<FixtureWpfWithMainViewModel>
         await mainViewModel.Initialization;
         var country = mainViewModel.CtrlDataCountries?.Items?.First();
 
-            await mainViewModel.DeleteCountryCommand.ExecuteAsync(country);
+        await mainViewModel.DeleteCountryCommand.ExecuteAsync(country);
 
         messageHandler.Verify(x => x.ShowQuestion(It.IsNotNull<string>(), It.IsNotNull<string>()), Times.Once);
     }

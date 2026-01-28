@@ -2,8 +2,8 @@
 
 public sealed record StateResponse
 {
-    public required Guid Id { get; init; }
-    public required string Name { get; init; }
-    public required Guid CountryId { get; init; }
-    public required string? CountryName { get; init; }
+    public Guid Id { get; init; } = Guid.Empty;
+    public string Name { get; init; } = string.Empty;
+    public Guid CountryId { get; init; } = Guid.Empty;
+    public string? CountryName { get; init; }
 }

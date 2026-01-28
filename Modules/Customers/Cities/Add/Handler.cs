@@ -9,7 +9,7 @@ internal sealed class Handler(
         var entity = new City()
         {
             Id = Guid.NewGuid(),
-            Name = command.Name,
+            Name = command.Name.Trim(),
             StateId = command.StateId
         };
 

@@ -12,12 +12,12 @@ internal sealed class Handler(
         var entity = new User()
         {
             Id = Guid.NewGuid(),
-            Name = command.Name,
-            Username = command.Username,
+            Name = command.Name.Trim(),
+            Username = command.Username.Trim(),
             Status = command.Status,
             Joined = DateTimeOffset.UtcNow,
             Role = command.Role,
-            Email = command.Email,
+            Email = command.Email?.Trim(),
             Birthday = command.Birthday,
             PasswordHash = hash.Calc(command.Password)
         };

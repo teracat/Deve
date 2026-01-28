@@ -4,7 +4,7 @@ using Deve.Customers.Cities;
 
 namespace Deve.Clients.Maui.ViewModels;
 
-internal sealed class CitiesViewModel : ListDataViewModel
+internal sealed partial class CitiesViewModel : ListDataViewModel
 {
     #region Constructor
     public CitiesViewModel(INavigationService navigationService, Data.IData data)

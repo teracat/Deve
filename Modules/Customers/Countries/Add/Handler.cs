@@ -9,8 +9,8 @@ internal sealed class Handler(
         var entity = new Country()
         {
             Id = Guid.NewGuid(),
-            Name = command.Name,
-            IsoCode = command.IsoCode,
+            Name = command.Name.Trim(),
+            IsoCode = command.IsoCode.Trim(),
         };
 
         var newId = await repositoryCountry.AddAsync(entity, cancellationToken);

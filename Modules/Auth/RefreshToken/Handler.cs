@@ -13,7 +13,7 @@ internal sealed class Handler(
     IValidator<RefreshTokenRequest> validator,
     IUserIdentityService identityService) : IRequestHandler<RefreshTokenRequest, ResultGet<RefreshTokenResponse>>
 {
-    private static readonly ShieldItemConfig shieldItemConfig = ShieldItemConfig.Create(3);
+    private static readonly ShieldItemConfig shieldItemConfig = new(3);
 
     public async Task<ResultGet<RefreshTokenResponse>> HandleAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {

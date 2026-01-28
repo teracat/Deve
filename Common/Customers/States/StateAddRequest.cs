@@ -2,6 +2,6 @@
 
 public sealed record StateAddRequest
 {
-    public required string Name { get; init; }
-    public required Guid CountryId { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public Guid CountryId { get; init; } = Guid.Empty;
 }

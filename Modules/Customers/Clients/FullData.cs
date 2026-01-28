@@ -29,7 +29,7 @@ internal sealed record FullData(Client Client, City? City, State? State, Country
         CountryId = Country?.Id,
         CountryName = Country?.Name,
         Status = Client.Status,
-        Balance =Client.Balance
+        Balance = Client.Balance
     };
 
     public static IQueryable<FullData> CreateQuery(IRepository<Client> repositoryClient, IRepository<City> repositoryCity, IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>

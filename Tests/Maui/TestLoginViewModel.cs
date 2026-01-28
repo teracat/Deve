@@ -23,7 +23,7 @@ public class TestLoginViewModel : IClassFixture<FixtureMaui>
             Password = string.Empty
         };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+        await loginViewModel.LoginCommand.ExecuteAsync(null);
 
         Assert.True(loginViewModel.HasError);
     }
@@ -37,7 +37,7 @@ public class TestLoginViewModel : IClassFixture<FixtureMaui>
             Password = TestsConstants.UserPasswordInactive
         };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+        await loginViewModel.LoginCommand.ExecuteAsync(null);
 
         Assert.True(loginViewModel.HasError);
     }
@@ -51,7 +51,7 @@ public class TestLoginViewModel : IClassFixture<FixtureMaui>
             Password = TestsConstants.UserPasswordValid
         };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+        await loginViewModel.LoginCommand.ExecuteAsync(null);
 
         Assert.False(loginViewModel.HasError);
     }
@@ -67,7 +67,7 @@ public class TestLoginViewModel : IClassFixture<FixtureMaui>
             Password = TestsConstants.UserPasswordValid
         };
 
-            await loginViewModel.LoginCommand.ExecuteAsync(null);
+        await loginViewModel.LoginCommand.ExecuteAsync(null);
 
         navigationService.Verify(x => x.NavigateToAsync("//clients"), Times.Once);
     }

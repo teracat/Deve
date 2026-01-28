@@ -13,7 +13,7 @@ internal sealed class Handler(
     IValidator<LoginRequest> validator,
     IUserIdentityService identityService) : IRequestHandler<LoginRequest, ResultGet<LoginResponse>>
 {
-    private static readonly ShieldItemConfig shieldItemConfig = ShieldItemConfig.Create(3);
+    private static readonly ShieldItemConfig shieldItemConfig = new(3);
 
     public async Task<ResultGet<LoginResponse>> HandleAsync(LoginRequest request, CancellationToken cancellationToken)
     {
@@ -42,7 +42,13 @@ internal sealed class Handler(
         var user = resValidateAndFind.Data;
         var userIdentity = new UserIdentity(user.Id, user.Username, user.Role);
         var userToken = tokenManager.CreateToken(userIdentity);
-        var loginResponse = new LoginResponse(user.Name, user.Username, user.Joined, userToken);
+        var loginResponse = new LoginResponse
+        {
+            Name = user.Name,
+            Username = user.Username,
+            Joined = user.Joined,
+            Token = userToken
+        };
 
         identityService.UserIdentity = userIdentity;    // Set the current user identity for embedded usage
 

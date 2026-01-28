@@ -9,7 +9,7 @@ internal sealed class Handler(
         var entity = new State()
         {
             Id = command.Id,
-            Name = command.Name,
+            Name = command.Name.Trim(),
             CountryId = command.CountryId
         };
 

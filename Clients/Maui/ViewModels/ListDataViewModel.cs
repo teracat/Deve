@@ -5,7 +5,7 @@ using Deve.Clients.Maui.Models;
 
 namespace Deve.Clients.Maui.ViewModels;
 
-internal abstract class ListDataViewModel : BaseViewModel, IAsyncInitialization
+internal abstract partial class ListDataViewModel : BaseViewModel, IAsyncInitialization
 {
     #region Fields
     [ObservableProperty]

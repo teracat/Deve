@@ -74,6 +74,13 @@ internal sealed class Handler(
             };
         }
 
+        if (!string.IsNullOrEmpty(request.Search))
+        {
+            query = query.Where(x => x.Client.Name.Contains(request.Search, StringComparison.OrdinalIgnoreCase) ||
+                                     (!string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.Search, StringComparison.OrdinalIgnoreCase)) ||
+                                     (!string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.Search, StringComparison.OrdinalIgnoreCase)));
+        }
+
         return query;
     }
 

@@ -71,9 +71,9 @@ internal sealed partial class App : Application
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        ServiceProviderHelper.RegisterServices(services);
-        ServiceProviderHelper.RegisterViewModels(services);
-        ServiceProviderHelper.RegisterViews(services);
+        _ = services.RegisterServices()
+                    .RegisterViewModels()
+                    .RegisterViews();
     }
 
     public void ChangeCulture(CultureInfo newCulture, string username, string password)

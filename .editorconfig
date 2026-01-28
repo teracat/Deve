@@ -289,3 +289,18 @@ dotnet_diagnostic.CA1052.severity = suggestion
 
 # CA1826: Use property instead of Linq Enumerable method
 dotnet_diagnostic.CA1826.severity = suggestion
+
+# CA1862: Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+dotnet_diagnostic.CA1862.severity = suggestion
+
+# RCS1155: Use StringComparison when comparing strings
+dotnet_diagnostic.RCS1155.severity = suggestion
+
+# CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = suggestion
+
+# CA1311: Specify a culture or use an invariant version to avoid implicit dependency on current culture
+dotnet_diagnostic.CA1311.severity = suggestion
+
+# CA1305: Specify IFormatProvider
+dotnet_diagnostic.CA1305.severity = suggestion

@@ -7,7 +7,7 @@ using Deve.Auth.Login;
 
 namespace Deve.Clients.Maui.ViewModels;
 
-internal sealed class LoginViewModel : BaseViewModel
+internal sealed partial class LoginViewModel : BaseViewModel
 {
     #region Fields
     [ObservableProperty]

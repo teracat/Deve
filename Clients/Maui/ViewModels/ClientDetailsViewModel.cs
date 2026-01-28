@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Deve.Clients.Maui.Interfaces;
 using Deve.Customers.Clients;
+using Deve.Clients.Maui.Interfaces;
 
 namespace Deve.Clients.Maui.ViewModels;
 
-internal sealed class ClientDetailsViewModel : BaseDetailsViewModel
+internal sealed partial class ClientDetailsViewModel : BaseDetailsViewModel
 {
     #region Atributes
     [ObservableProperty]
-    private Client? _client;
+    private ClientResponse? _client;
     #endregion
 
     #region Constructor

@@ -4,11 +4,11 @@ namespace Deve.Identity.Users;
 
 public sealed record UserAddRequest
 {
-    public required string Name { get; init; }
-    public required string Username { get; init; }
-    public required string Password { get; init; }
-    public required UserStatus Status { get; init; }
-    public required Role Role { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string Username { get; init; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
+    public UserStatus Status { get; init; } = UserStatus.Inactive;
+    public Role Role { get; init; } = Role.User;
 
     public string? Email { get; init; }
     public DateTime? Birthday { get; init; }

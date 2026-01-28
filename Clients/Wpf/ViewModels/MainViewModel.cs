@@ -68,7 +68,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IAsyncInitializatio
     {
         var request = new ClientGetListRequest
         {
-            Name = CtrlDataClients.SearchText
+            Search = CtrlDataClients.SearchText
         };
         await LoadDataList(CtrlDataClients, Data.Customers.Clients.GetAsync, request, x => new ListDataClient()
         {
