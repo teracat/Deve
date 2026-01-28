@@ -24,7 +24,7 @@ internal sealed partial class StateViewModel : BaseEditViewModel, INavigationAwa
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [GreaterThanOrEqual(nameof(SelectedCountry.Id), 1, ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
+    [GuidNotEmpty(nameof(SelectedCountry.Id), ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingCountry))]
     private CountryResponse? _selectedCountry;
     #endregion
 
