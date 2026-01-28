@@ -33,36 +33,37 @@ internal sealed class Handler(
 
     private static IQueryable<FullData> ApplyFilters(IQueryable<FullData> query, Query request)
     {
-        if (request.Id.HasValue)
-        {
-            query = query.Where(x => x.Client.Id == request.Id.Value);
-        }
+        // Id
+        query = ApplyFilter(query,
+                            () => request.Id.HasValue,
+                            x => x.Client.Id == request.Id!.Value);
 
-        if (!string.IsNullOrEmpty(request.Name))
-        {
-            query = query.Where(x => x.Client.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase));
-        }
+        // Name
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.Name),
+                            x => x.Client.Name.Contains(request.Name!, StringComparison.OrdinalIgnoreCase));
 
-        if (!string.IsNullOrEmpty(request.TradeName))
-        {
-            query = query.Where(x => !string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.TradeName, StringComparison.OrdinalIgnoreCase));
-        }
+        // TradeName
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TradeName),
+                            x => !string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.TradeName!, StringComparison.OrdinalIgnoreCase));
 
-        if (!string.IsNullOrEmpty(request.TaxId))
-        {
-            query = query.Where(x => !string.IsNullOrEmpty(x.Client.TaxId) && x.Client.TaxId.Contains(request.TaxId, StringComparison.OrdinalIgnoreCase));
-        }
+        // TaxId
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TaxId),
+                            x => !string.IsNullOrEmpty(x.Client.TaxId) && x.Client.TaxId.Contains(request.TaxId!, StringComparison.OrdinalIgnoreCase));
 
-        if (!string.IsNullOrEmpty(request.TaxName))
-        {
-            query = query.Where(x => !string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.TaxName, StringComparison.OrdinalIgnoreCase));
-        }
+        // TaxName
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TaxName),
+                            x => !string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.TaxName!, StringComparison.OrdinalIgnoreCase));
 
-        if (request.CityId.HasValue)
-        {
-            query = query.Where(x => x.Client.CityId.Equals(request.CityId));
-        }
+        // CityId
+        query = ApplyFilter(query,
+                            () => request.CityId.HasValue,
+                            x => x.Client.CityId.Equals(request.CityId));
 
+        // Status
         if (request.StatusFilterType.HasValue)
         {
             query = request.StatusFilterType.Value switch
@@ -74,13 +75,20 @@ internal sealed class Handler(
             };
         }
 
-        if (!string.IsNullOrEmpty(request.Search))
-        {
-            query = query.Where(x => x.Client.Name.Contains(request.Search, StringComparison.OrdinalIgnoreCase) ||
-                                     (!string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.Search, StringComparison.OrdinalIgnoreCase)) ||
-                                     (!string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.Search, StringComparison.OrdinalIgnoreCase)));
-        }
+        // Search
+        return ApplyFilter(query,
+                           () => !string.IsNullOrEmpty(request.Search),
+                           x => x.Client.Name.Contains(request.Search!, StringComparison.OrdinalIgnoreCase) ||
+                                (!string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.Search!, StringComparison.OrdinalIgnoreCase)) ||
+                                (!string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.Search!, StringComparison.OrdinalIgnoreCase)));
+    }
 
+    private static IQueryable<FullData> ApplyFilter(IQueryable<FullData> query, Func<bool> condition, Func<FullData, bool> predicate)
+    {
+        if (condition())
+        {
+            query = query.Where(x => predicate(x));
+        }
         return query;
     }
 
