@@ -16,7 +16,7 @@ public class CityApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     protected override object CreateInvalidRequestToAdd() => new CityAddRequest()
     {
         Name = string.Empty,
-        StateId =  Guid.Empty
+        StateId = Guid.Empty
     };
 
     protected override object CreateInvalidRequestToUpdate() => new CityUpdateRequest()

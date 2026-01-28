@@ -28,7 +28,7 @@ public class CountryApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     protected override object CreateValidRequestToAdd() => new CountryAddRequest
     {
         Name = "Tests Country",
-        IsoCode= "TE"
+        IsoCode = "TE"
     };
 
     protected override object CreateValidRequestToUpdate() => new CountryUpdateRequest
