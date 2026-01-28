@@ -1,8 +1,29 @@
 ﻿namespace Deve.Auth;
 
-public sealed record UserToken(string Token, string Scheme, DateTimeOffset Expires, DateTimeOffset Created)
+public sealed record UserToken
 {
-    public static UserToken Create(string token, DateTimeOffset expires) => new(token, AuthConstants.DefaultScheme, expires, DateTimeOffset.Now);
+    public string Token { get; init; }
+    public string Scheme { get; init; }
+    public DateTimeOffset Expires { get; init; }
+    public DateTimeOffset Created { get; init; }
 
-    public static UserToken Create(string token, string scheme, DateTimeOffset expires) => new(token, scheme, expires, DateTimeOffset.Now);
+    public UserToken()
+    {
+        Token = string.Empty;
+        Scheme = string.Empty;
+        Expires = DateTimeOffset.MinValue;
+        Created = DateTimeOffset.Now;
+    }
+
+    public UserToken(string token, DateTimeOffset expires) : this(token, AuthConstants.DefaultScheme, expires, DateTimeOffset.Now) { }
+
+    public UserToken(string token, string scheme, DateTimeOffset expires) : this(token, scheme, expires, DateTimeOffset.Now) { }
+
+    public UserToken(string token, string scheme, DateTimeOffset expires, DateTimeOffset created)
+    {
+        Token = token;
+        Scheme = scheme;
+        Expires = expires;
+        Created = created;
+    }
 }

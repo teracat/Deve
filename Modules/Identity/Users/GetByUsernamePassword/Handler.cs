@@ -9,7 +9,7 @@ internal sealed class Handler(
     IShield shield,
     IRepository<User> repositoryUser) : IGetQueryHandler<Query, UserResponse>
 {
-    private static readonly ShieldItemConfig shieldItemConfig = ShieldItemConfig.Create(3);
+    private static readonly ShieldItemConfig shieldItemConfig = new(3);
 
     public async Task<ResultGet<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken)
     {

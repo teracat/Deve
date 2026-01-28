@@ -2,15 +2,34 @@
 
 /// <summary>
 /// Default shield item configuration.
-/// <paramref name="MaxInvalidAttempts"/>Maximum number of invalid attempts before locking.</param>
-/// <param name="LockSeconds">Number of seconds to lock after reaching the maximum invalid attempts.</param>
-/// <param name="MaxAttemptsLockType">Type of lock to apply when maximum attempts are reached.</param>
 /// </summary>
-public sealed record ShieldItemConfig(byte MaxInvalidAttempts, short LockSeconds, ShieldMaxAttemptsLockType MaxAttemptsLockType)
+public sealed record ShieldItemConfig
 {
-    public static ShieldItemConfig Create() => new(5, 300, ShieldMaxAttemptsLockType.Origin);
+    /// <summary>
+    /// Maximum number of invalid attempts before locking.
+    /// </summary>
+    public byte MaxInvalidAttempts { get; init; }
 
-    public static ShieldItemConfig Create(byte maxInvalidAttempts, short lockSeconds) => new(maxInvalidAttempts, lockSeconds, ShieldMaxAttemptsLockType.Origin);
+    /// <summary>
+    /// Number of seconds to lock after reaching the maximum invalid attempts.
+    /// </summary>
+    public short LockSeconds { get; init; }
 
-    public static ShieldItemConfig Create(byte maxInvalidAttempts) => new(maxInvalidAttempts, 300, ShieldMaxAttemptsLockType.Origin);
+    /// <summary>
+    /// Type of lock to apply when maximum attempts are reached.
+    /// </summary>
+    public ShieldMaxAttemptsLockType MaxAttemptsLockType { get; init; }
+
+    public ShieldItemConfig() : this(5, 300, ShieldMaxAttemptsLockType.Origin) { }
+
+    public ShieldItemConfig(byte maxInvalidAttempts, short lockSeconds) : this(maxInvalidAttempts, lockSeconds, ShieldMaxAttemptsLockType.Origin) { }
+
+    public ShieldItemConfig(byte maxInvalidAttempts) : this(maxInvalidAttempts, 300, ShieldMaxAttemptsLockType.Origin) { }
+
+    public ShieldItemConfig(byte maxInvalidAttempts, short lockSeconds, ShieldMaxAttemptsLockType maxAttemptsLockType)
+    {
+        MaxInvalidAttempts = maxInvalidAttempts;
+        LockSeconds = lockSeconds;
+        MaxAttemptsLockType = maxAttemptsLockType;
+    }
 }

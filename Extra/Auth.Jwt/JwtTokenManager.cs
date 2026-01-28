@@ -51,7 +51,7 @@ public sealed class JwtTokenManager : ITokenManager
         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
         var token = tokenHandler.WriteToken(securityToken);
 
-        return UserToken.Create(token, scheme, expires);
+        return new UserToken(token, scheme, expires);
     }
 
     ///<inheritdoc/>
