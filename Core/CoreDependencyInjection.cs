@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Deve.Api.Options;
 // <hooks:core-di-using>
 using Deve.Auth;
@@ -9,7 +10,6 @@ using Deve.Cache;
 using Deve.Customers;
 using Deve.Data;
 using Deve.Identity;
-using Microsoft.Extensions.Options;
 
 namespace Deve.Core;
 

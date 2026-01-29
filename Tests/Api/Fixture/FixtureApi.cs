@@ -15,7 +15,18 @@ public class FixtureApi : WebApplicationFactory<Program>
     {
         _factory = WithWebHostBuilder(builder =>
         {
-            _ = builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build());
+            var inMemorySettings = new Dictionary<string, string?>
+            {
+                {"AppSettings:JwtKeys:SigningSecretKey", "NotUsed_OnlyForChecksInProgram_!"},
+                {"AppSettings:JwtKeys:EncryptionSecretKey", "NotUsed_OnlyForChecksInProgram;)"}
+            };
+
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
+            _ = builder.UseConfiguration(configuration);
+
             _ = builder.ConfigureServices(services =>
             {
                 _ = services.AddScoped<IDataOptions, DataOptions>();
