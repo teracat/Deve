@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <!-- Create a template package: https://learn.microsoft.com/en-us/dotnet/core/tutorials/cli-templates-create-template-package -->
