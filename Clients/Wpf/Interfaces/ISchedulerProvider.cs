@@ -1,11 +1,10 @@
 ﻿using System.Reactive.Concurrency;
 
-namespace Deve.Clients.Wpf.Interfaces
+namespace Deve.Clients.Wpf.Interfaces;
+
+public interface ISchedulerProvider
 {
-    public interface ISchedulerProvider
-    {
-        IScheduler MainThread { get; }
-        IScheduler CurrentThread { get; }
-        IScheduler TaskPool { get; }
-    }
+    IScheduler MainThread { get; }
+    IScheduler CurrentThread { get; }
+    IScheduler TaskPool { get; }
 }

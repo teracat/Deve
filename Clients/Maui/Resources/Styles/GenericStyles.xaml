@@ -156,7 +156,6 @@
 
     <!-- ImageButton -->
     <Style TargetType="ImageButton">
-        <Setter Property="Opacity" Value="1" />
         <Setter Property="BorderColor" Value="Transparent"/>
         <Setter Property="BorderWidth" Value="0"/>
         <Setter Property="CornerRadius" Value="0"/>
@@ -168,7 +167,6 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.5" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="PointerOver" />
@@ -326,7 +324,6 @@
     <!-- Shadow -->
     <Style TargetType="Shadow">
         <Setter Property="Radius" Value="15" />
-        <Setter Property="Opacity" Value="0.5" />
         <Setter Property="Brush" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
         <Setter Property="Offset" Value="10,10" />
     </Style>

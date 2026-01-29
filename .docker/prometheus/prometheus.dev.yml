@@ -35,12 +35,7 @@ otlp:
     - host.name
 
 scrape_configs:
-  - job_name: 'api-internal'
+  - job_name: 'api'
     static_configs:
-      - targets: ['api-internal:80']
-    metrics_path: '/metrics'
-
-  - job_name: 'api-external'
-    static_configs:
-      - targets: ['api-external:80']
+      - targets: ['api:80']
     metrics_path: '/metrics'

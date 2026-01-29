@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Sdk/Deve.Sdk.csproj" />
+  <Project Path="Common/Deve.Common.csproj" />
+</Solution>

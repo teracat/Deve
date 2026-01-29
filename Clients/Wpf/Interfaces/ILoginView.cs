@@ -1,9 +1,8 @@
 ﻿using System.Globalization;
 
-namespace Deve.Clients.Wpf.Interfaces
+namespace Deve.Clients.Wpf.Interfaces;
+
+internal interface ILoginView
 {
-    public interface ILoginView
-    {
-        void ChangeCulture(CultureInfo value, string username);
-    }
+    void ChangeCulture(CultureInfo value, string username);
 }

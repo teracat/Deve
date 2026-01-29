@@ -1,0 +1,105 @@
+﻿using Deve.Customers.Enums;
+
+namespace Deve.Customers.Clients.GetList;
+
+internal sealed class Handler(
+    IRepository<Client> repositoryClient,
+    IRepository<City> repositoryCity,
+    IRepository<State> repositoryState,
+    IRepository<Country> repositoryCountry) : IGetListQueryHandler<Query, ClientListResponse>
+{
+    public Task<ResultGetList<ClientListResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
+        Task.Run(() =>
+        {
+            var query = FullData.CreateQuery(repositoryClient, repositoryCity, repositoryState, repositoryCountry);
+
+            query = ApplyFilters(query, request);
+
+            // Get total count before pagination
+            int totalCount = query.Count();
+
+            query = ApplyOrder(query, request, out string orderBy);
+
+            // Apply pagination
+            var offset = request.Offset ?? 0;
+            var limit = request.Limit ?? Constants.DefaultLimit;
+            var list = query.Select(x => x.ToListResponse())
+                            .Skip(offset)
+                            .Take(limit)
+                            .ToList();
+
+            return Result.OkGetList(list, offset, limit, orderBy, totalCount);
+        }, cancellationToken);
+
+    private static IQueryable<FullData> ApplyFilters(IQueryable<FullData> query, Query request)
+    {
+        // Id
+        query = ApplyFilter(query,
+                            () => request.Id.HasValue,
+                            x => x.Client.Id == request.Id!.Value);
+
+        // Name
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.Name),
+                            x => x.Client.Name.Contains(request.Name!, StringComparison.OrdinalIgnoreCase));
+
+        // TradeName
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TradeName),
+                            x => !string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.TradeName!, StringComparison.OrdinalIgnoreCase));
+
+        // TaxId
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TaxId),
+                            x => !string.IsNullOrEmpty(x.Client.TaxId) && x.Client.TaxId.Contains(request.TaxId!, StringComparison.OrdinalIgnoreCase));
+
+        // TaxName
+        query = ApplyFilter(query,
+                            () => !string.IsNullOrEmpty(request.TaxName),
+                            x => !string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.TaxName!, StringComparison.OrdinalIgnoreCase));
+
+        // CityId
+        query = ApplyFilter(query,
+                            () => request.CityId.HasValue,
+                            x => x.Client.CityId.Equals(request.CityId));
+
+        // Status
+        if (request.StatusFilterType.HasValue)
+        {
+            query = request.StatusFilterType.Value switch
+            {
+                ClientStatusFilterType.OnlyActive => query.Where(x => x.Client.Status == ClientStatus.Active),
+                ClientStatusFilterType.OnlyInactive => query.Where(x => x.Client.Status == ClientStatus.Inactive),
+                ClientStatusFilterType.All => query,
+                _ => query,
+            };
+        }
+
+        // Search
+        return ApplyFilter(query,
+                           () => !string.IsNullOrEmpty(request.Search),
+                           x => x.Client.Name.Contains(request.Search!, StringComparison.OrdinalIgnoreCase) ||
+                                (!string.IsNullOrEmpty(x.Client.TradeName) && x.Client.TradeName.Contains(request.Search!, StringComparison.OrdinalIgnoreCase)) ||
+                                (!string.IsNullOrEmpty(x.Client.TaxName) && x.Client.TaxName.Contains(request.Search!, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    private static IQueryable<FullData> ApplyFilter(IQueryable<FullData> query, Func<bool> condition, Func<FullData, bool> predicate)
+    {
+        if (condition())
+        {
+            query = query.Where(x => predicate(x));
+        }
+        return query;
+    }
+
+    private static IQueryable<FullData> ApplyOrder(IQueryable<FullData> query, Query request, out string orderBy)
+    {
+        orderBy = request.OrderBy ?? nameof(ClientGetListRequest.Name);
+        return orderBy.ToUpperInvariant() switch
+        {
+            "ID" => query.OrderBy(x => x.Client.Id),
+            "CITYID" => query.OrderBy(x => x.Client.CityId),
+            _ => query.OrderBy(x => x.Client.Name),
+        };
+    }
+}

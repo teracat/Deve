@@ -1,0 +1,79 @@
+# Based on the worflow available here: https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/net-to-azure-app-service
+name: Build and deploy ASP.Net Core app to an Azure Web App
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "The GitHub environment used to get the secrets and vars needed"
+        type: string
+        required: true
+      project:
+        description: "The project to build and publish"
+        type: string
+        required: true
+      name:
+        description: "The name of the project"
+        type: string
+        required: true
+
+    secrets:
+      AZURE_WEBAPP_PUBLISH_PROFILE:
+        required: true
+
+# Only allow one deploy per environment
+concurrency: ${{ inputs.environment }}
+
+jobs:
+  build-azure-api:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 #v5.0.1
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  #v4.3.0
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release ${{ inputs.project }}
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ./publish ${{ inputs.project }}
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4  #v5.0.0
+        with:
+          name: .net-app
+          path: ./publish
+
+  deploy-azure-api:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    needs: build-azure-api
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53  #v6.0.0
+        with:
+          name: .net-app
+          path: ./publish
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ inputs.name }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish

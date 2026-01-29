@@ -1,33 +1,32 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
-using Deve.Model;
+using Deve.Dto.Responses.Results;
 
-namespace Deve.Api.Helpers
+namespace Deve.Api.Helpers;
+
+/// <summary>
+/// If the response StatusCode is TooManyRequests, return the body with the error information to the client.
+/// </summary>
+public class TooManyRequestsMiddleware
 {
-    /// <summary>
-    /// If the response StatusCode is TooManyRequests, return the body with the error information to the client.
-    /// </summary>
-    public class TooManyRequestsMiddleware
+    private readonly RequestDelegate _next;
+
+    public TooManyRequestsMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public TooManyRequestsMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
+    {
+        await _next(context);
+
+        if (context?.Response.StatusCode == (int)HttpStatusCode.TooManyRequests)
         {
-            _next = next;
-        }
+            string langCode = UtilsApi.GetLangCodeFromRequest(context.Request) ?? Constants.DefaultLangCode;
 
-        public async Task InvokeAsync(HttpContext context)
-        {
-            await _next(context);
+            var response = Result.Fail(langCode, ResultErrorType.TooManyAttempts);
 
-            if (context.Response.StatusCode == (int)HttpStatusCode.TooManyRequests)
-            {
-                string langCode = UtilsApi.GetLangCodeFromRequest(context.Request) ?? Constants.DefaultLangCode;
-
-                var response = Utils.ResultError(langCode, ResultErrorType.TooManyAttempts);
-
-                await context.Response.WriteAsJsonAsync(response);
-            }
+            await context.Response.WriteAsJsonAsync(response);
         }
     }
 }

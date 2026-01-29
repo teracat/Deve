@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Api\Deve.Common.Api.csproj" />
+    <ProjectReference Include="..\Common.Modules\Deve.Common.Modules.csproj" />
+    <ProjectReference Include="..\Common\Deve.Common.csproj" />
+    <!-- <hooks:api-projectref> -->
+    <ProjectReference Include="..\Modules\Auth\Deve.Modules.Auth.csproj" />
+    <ProjectReference Include="..\Modules\Customers\Deve.Modules.Customers.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Deve.Modules.Identity.csproj" />
+  </ItemGroup>
+
+</Project>

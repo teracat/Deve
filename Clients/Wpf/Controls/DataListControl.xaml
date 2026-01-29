@@ -7,7 +7,7 @@
              xmlns:strings="clr-namespace:Deve.Clients.Wpf.Resources.Strings"
              xmlns:ctrl="clr-namespace:Deve.Clients.Wpf.Controls"
              xmlns:fa="http://schemas.fontawesome.com/icons/svg"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" x:ClassModifier="internal"
              d:DesignWidth="400" d:DesignHeight="300"
              x:Name="root">
     <Border Style="{StaticResource MainBorder}">

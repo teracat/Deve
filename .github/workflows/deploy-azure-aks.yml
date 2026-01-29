@@ -15,13 +15,11 @@
 # - JWT_ENCRYPTION_SECRET_KEY (secrets): The secret key used to encrypt the JWT token (must be 32 bytes).
 #
 # DataSource:
-# - APIINTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-internal (optional).
-# - APIEXTERNAL_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for your DataSource (Database) in api-external (optional).
+# - YOURMODULE_DATASOURCE_CONNECTIONSTRING (secrets): ConnectionString for the Repositories (Database) of your Modules in api (optional).
 #
 # Let's Encrypt:
 # - LETSENCRYPT_EMAIL (vars): Email of the Let's Encrypt account.
-# - HOST_APIINTERNAL (vars): Host name for the Api Internal endpoint.
-# - HOST_APIEXTERNAL (vars): Host name for the Api External endpoint.
+# - HOST_API (vars): Host name for the Api endpoint.
 # - HOST_PROMETHEUS (vars): Host name for the Prometheus endpoint.
 # - HOST_GRAFANA (vars): Host name for the Grafana endpoint.
 # - HOST_ZIPKIN (vars): Host name for the Zipkin endpoint.
@@ -49,7 +47,7 @@ on:
         type: string
         required: true
       services:
-        description: "Comma-separated list of services to deploy (e.g. api-internal,grafana)"
+        description: "Comma-separated list of services to deploy (e.g. api,grafana)"
         type: string
         required: true
 
@@ -62,9 +60,7 @@ on:
         required: true
       JWT_ENCRYPTION_SECRET_KEY:
         required: true
-      APIINTERNAL_DATASOURCE_CONNECTIONSTRING:
-        required: false
-      APIEXTERNAL_DATASOURCE_CONNECTIONSTRING:
+      YOURMODULE_DATASOURCE_CONNECTIONSTRING:
         required: false
       COOKIE_SECRET:
         required: true
@@ -116,8 +112,7 @@ jobs:
         expand() {
               case "$1" in
                 monitoring)   echo "prometheus zipkin grafana" ;;
-                api-internal) echo "redis api-internal" ;;
-                api-external) echo "redis api-external" ;;
+                api)          echo "redis api" ;;
                 *)            echo "$1" ;;
               esac
             }
@@ -263,6 +258,12 @@ jobs:
       env:
         HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
         NAMESPACE: "monitoring"
+        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+        DB_USERS_PASSWORD: ${{ secrets.DB_USERS_PASSWORD }}
+        KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
+        SECRET_GRAFANA: ${{ secrets.SECRET_GRAFANA }}
+        SECRET_PROMETHEUS: ${{ secrets.SECRET_PROMETHEUS }}
+        SECRET_ZIPKIN: ${{ secrets.SECRET_ZIPKIN }}
       run: |
         cat > .github/helm/monitoring/values.override.yaml << EOF
         namespace:
@@ -270,23 +271,23 @@ jobs:
         oauth2:
           host: "${{ vars.HOST_OAUTH2 }}"
           hostRoot: "${{ vars.HOST_ROOT }}"
-          cookieSecret: "${{ secrets.COOKIE_SECRET }}"
+          cookieSecret: "${COOKIE_SECRET}"
         postgres:
-          superPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          superPassword: "${DB_USERS_PASSWORD}"
         keycloak:
           host: "${{ vars.HOST_KEYCLOAK }}"
-          adminPassword: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
-          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          adminPassword: "${KEYCLOAK_ADMIN_PASSWORD}"
+          dbPassword: "${DB_USERS_PASSWORD}"
         grafana:
           host: "${{ vars.HOST_GRAFANA }}"
-          clientSecret: "${{ secrets.SECRET_GRAFANA }}"
-          dbPassword: "${{ secrets.DB_USERS_PASSWORD }}"
+          clientSecret: "${SECRET_GRAFANA}"
+          dbPassword: "${DB_USERS_PASSWORD}"
         prometheus:
           host: "${{ vars.HOST_PROMETHEUS }}"
-          clientSecret: "${{ secrets.SECRET_PROMETHEUS }}"
+          clientSecret: "${SECRET_PROMETHEUS}"
         zipkin:
           host: "${{ vars.HOST_ZIPKIN }}"
-          clientSecret: "${{ secrets.SECRET_ZIPKIN }}"
+          clientSecret: "${SECRET_ZIPKIN}"
         EOF
 
         echo "HELM_VERSION=${HELM_VERSION}"
@@ -306,31 +307,34 @@ jobs:
           --debug \
           --rollback-on-failure
 
-    - name: Deploy api-internal
-      if: contains(steps.vars.outputs.services, 'api-internal')
+    - name: Deploy api
+      if: contains(steps.vars.outputs.services, 'api')
       shell: bash
       env:
         HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
-        NAMESPACE: "api-internal"
+        NAMESPACE: "api"
+        YOURMODULE_DATASOURCE_CONNECTIONSTRING: ${{ secrets.YOURMODULE_DATASOURCE_CONNECTIONSTRING }}
+        JWT_SIGNING_SECRET_KEY: ${{ secrets.JWT_SIGNING_SECRET_KEY }}
+        JWT_ENCRYPTION_SECRET_KEY: ${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}
       run: |
-        cat > .github/helm/api-internal/values.override.yaml << EOF
+        cat > .github/helm/api/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
-        apiInternal:
-          dataSourceConnectionString: "${{ secrets.APIINTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-          host: "${{ vars.HOST_APIINTERNAL }}"
+        api:
+          yourModuleConnectionString: "${YOURMODULE_DATASOURCE_CONNECTIONSTRING}"
+          jwtSigningSecretKey: "${JWT_SIGNING_SECRET_KEY}"
+          jwtEncryptionSecretKey: "${JWT_ENCRYPTION_SECRET_KEY}"
+          host: "${{ vars.HOST_API }}"
         EOF
 
         echo "HELM_VERSION=${HELM_VERSION}"
         if [[ -n "${HELM_VERSION}" ]]; then
-          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/api-internal/Chart.yaml
+          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/api/Chart.yaml
         fi
 
-        helm upgrade --install api-internal .github/helm/api-internal \
-          -f .github/helm/api-internal/values.yaml \
-          -f .github/helm/api-internal/values.override.yaml \
+        helm upgrade --install api .github/helm/api \
+          -f .github/helm/api/values.yaml \
+          -f .github/helm/api/values.override.yaml \
           --namespace "${NAMESPACE}" \
           --create-namespace \
           --install \
@@ -341,37 +345,3 @@ jobs:
           --debug \
           --rollback-on-failure
 
-    - name: Deploy api-external
-      if: contains(steps.vars.outputs.services, 'api-external')
-      shell: bash
-      env:
-        HELM_VERSION: "${{ steps.vars.outputs.helm_version }}"
-        NAMESPACE: "api-external"
-      run: |
-        cat > .github/helm/api-external/values.override.yaml << EOF
-        namespace:
-          name: "${NAMESPACE}"
-        apiExternal:
-          dataSourceConnectionString: "${{ secrets.APIEXTERNAL_DATASOURCE_CONNECTIONSTRING }}"
-          jwtSigningSecretKey: "${{ secrets.JWT_SIGNING_SECRET_KEY }}"
-          jwtEncryptionSecretKey: "${{ secrets.JWT_ENCRYPTION_SECRET_KEY }}"
-          host: "${{ vars.HOST_APIEXTERNAL }}"
-        EOF
-
-        echo "HELM_VERSION=${HELM_VERSION}"
-        if [[ -n "${HELM_VERSION}" ]]; then
-          yq -i '.version = strenv(HELM_VERSION) | .appVersion = strenv(HELM_VERSION)' .github/helm/api-external/Chart.yaml
-        fi
-
-        helm upgrade --install api-external .github/helm/api-external \
-          -f .github/helm/api-external/values.yaml \
-          -f .github/helm/api-external/values.override.yaml \
-          --namespace "${NAMESPACE}" \
-          --create-namespace \
-          --install \
-          --set "acrLoginServer=${{ vars.ACR_LOGIN_SERVER }}" \
-          --set "image.tag=latest" \
-          --wait \
-          --timeout 20m \
-          --debug \
-          --rollback-on-failure

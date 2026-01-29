@@ -1,85 +1,75 @@
-﻿using System.Linq;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using ReactiveUI.Validation.Helpers;
-using Deve.Internal.Data;
+using Deve.Data;
 using Deve.Clients.Maui.Interfaces;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal abstract partial class BaseViewModel : ReactiveValidationObject
 {
-    public abstract partial class BaseViewModel : ReactiveValidationObject
+    #region Fields
+    [Reactive]
+    private bool _isBusy = false;
+
+    [Reactive]
+    private bool _shouldValidate = false;
+
+    [Reactive]
+    private string _errorText = string.Empty;
+
+    [ObservableAsProperty]
+    private bool _isIdle;
+
+    [ObservableAsProperty]
+    private bool _hasError;
+    #endregion
+
+    #region Properties
+    protected INavigationService NavigationService { get; }
+
+    protected IData Data { get; }
+    #endregion
+
+    #region Constructor
+    protected BaseViewModel(INavigationService navigationService, IData data, ISchedulerProvider scheduler)
     {
-        #region Fields
-        [Reactive]
-        private bool _isBusy = false;
+        NavigationService = navigationService;
+        Data = data;
 
-        [Reactive]
-        private bool _shouldValidate = false;
+        // Properties
+        _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
+                            .Select(isBusy => !isBusy)
+                            .ToProperty(this, vm => vm.IsIdle, initialValue: true, scheduler: scheduler.MainThread);
 
-        [Reactive]
-        private string _errorText = string.Empty;
+        _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
+                                .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
+                                .ToProperty(this, vm => vm.HasError, initialValue: false, scheduler: scheduler.MainThread);
+    }
+    #endregion
 
-        [ObservableAsProperty]
-        private bool _isIdle;
+    #region Virtual Methods
+    public virtual bool OnViewBackButtonPressed() => IsBusy;
 
-        [ObservableAsProperty]
-        private bool _hasError;
-        #endregion
-
-        #region Properties
-        protected INavigationService NavigationService { get; }
-
-        protected IData Data { get; }
-        #endregion
-
-        #region Constructor
-        protected BaseViewModel(INavigationService navigationService, IData data, ISchedulerProvider scheduler)
+    protected virtual bool Validate()
+    {
+        ErrorText = string.Empty;
+        ShouldValidate = true;
+        if (HasErrors)
         {
-            NavigationService = navigationService;
-            Data = data;
-
-            // Properties
-            _isIdleHelper = this.WhenAnyValue(vm => vm.IsBusy)
-                                .Select(isBusy => !isBusy)
-                                .ToProperty(this, vm => vm.IsIdle, scheduler: scheduler.MainThread, initialValue: true);
-
-            _hasErrorHelper = this.WhenAnyValue(x => x.ErrorText)
-                                  .Select((errorText) => !string.IsNullOrWhiteSpace(errorText))
-                                  .ToProperty(this, vm => vm.HasError, scheduler: scheduler.MainThread, initialValue: false);
-        }
-        #endregion
-
-        #region Virtual Methods
-        public virtual bool OnViewBackButtonPressed()
-        {
-            if (IsBusy)
+            var errors = GetErrors(null);
+            if (errors is string[] arrayErrors)
             {
-                return true;
+                ErrorText = string.Join("\n", arrayErrors);
             }
-
             return false;
         }
-
-        protected virtual bool Validate()
-        {
-            ErrorText = string.Empty;
-            ShouldValidate = true;
-            if (HasErrors)
-            {
-                var errors = GetErrors(null);
-                if (errors is string[] arrayErrors)
-                {
-                    ErrorText = string.Join("\n", arrayErrors);
-                }
-                return false;
-            }
-            return ValidationContext.IsValid;
-        }
-        #endregion
-
-        #region Helper Methods
-        protected void GoBack() => _ = NavigationService.PopAsync();
-        #endregion
+        return ValidationContext.IsValid;
     }
+    #endregion
+
+    #region Helper Methods
+    protected void GoBack() => _ = NavigationService.PopAsync();
+    #endregion
 }

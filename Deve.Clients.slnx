@@ -1,0 +1,33 @@
+<Solution>
+  <Folder Name="/Clients/">
+    <Project Path="Clients/Wpf/Deve.Clients.Wpf.csproj" />
+    <Project Path="Clients/Common/Deve.Clients.Common.csproj" />
+    <Project Path="Clients/Console/Deve.Clients.Console.csproj" />
+    <Project Path="Clients/Maui/Deve.Clients.Maui.csproj">
+      <Deploy />
+    </Project>
+    <Project Path="Clients/Service/Deve.Clients.Service.csproj" />
+  </Folder>
+  <Folder Name="/Common/">
+    <Project Path="Common.Api/Deve.Common.Api.csproj" />
+    <Project Path="Common.Modules/Deve.Common.Modules.csproj" />
+    <Project Path="Common/Deve.Common.csproj" />
+  </Folder>
+  <Folder Name="/Extra/">
+    <Project Path="Extra/Auth.Jwt/Deve.Auth.Jwt.csproj" />
+    <Project Path="Extra/Cache.Redis/Deve.Cache.Redis.csproj" />
+    <Project Path="Extra/Diagnostics.OpenTelemetry.AspNetCore/Deve.Diagnostics.OpenTelemetry.AspNetCore.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry.Maui/Deve.Diagnostics.Sentry.Maui.csproj" />
+    <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
+    <Project Path="Extra/Log.Log4net/Deve.Log.Log4net.csproj" />
+    <Project Path="Extra/Log.NetCore/Deve.Log.NetCore.csproj" />
+    <Project Path="Extra/Log.NLog/Deve.Log.NLog.csproj" />
+  </Folder>
+  <Folder Name="/Modules/">
+    <Project Path="Modules/Auth/Deve.Modules.Auth.csproj" />
+    <Project Path="Modules/Customers/Deve.Modules.Customers.csproj" />
+    <Project Path="Modules/Identity/Deve.Modules.Identity.csproj" />
+  </Folder>
+  <Project Path="Core/Deve.Core.csproj" />
+  <Project Path="Sdk/Deve.Sdk.csproj" />
+</Solution>

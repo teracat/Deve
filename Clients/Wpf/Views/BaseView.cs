@@ -2,42 +2,41 @@
 using System.Windows;
 using Deve.Clients.Wpf.ViewModels;
 
-namespace Deve.Clients.Wpf.Views
+namespace Deve.Clients.Wpf.Views;
+
+internal class BaseView : Window
 {
-    public class BaseView : Window
+    #region Properties
+    public BaseViewModel? ViewModel
     {
-        #region Properties
-        public BaseViewModel? ViewModel
+        get;
+        set
         {
-            get;
-            set
+            if (field != value)
             {
-                if (field != value)
+                DataContext = field = value;
+                if (field is not null)
                 {
-                    DataContext = field = value;
-                    if (field is not null)
-                    {
-                        field.SetResultAction = SetResult;
-                        field.CloseAction = Close;
-                    }
+                    field.SetResultAction = SetResult;
+                    field.CloseAction = Close;
                 }
             }
         }
-        #endregion
-
-        #region Overrides
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            if (ViewModel is not null && ViewModel.IsBusy)
-            {
-                e.Cancel = true;
-            }
-        }
-        #endregion
-
-        #region IView
-        public void SetResult(bool result) => DialogResult = result;
-        #endregion
     }
+    #endregion
+
+    #region Overrides
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        base.OnClosing(e);
+        if (ViewModel is not null && ViewModel.IsBusy)
+        {
+            e.Cancel = true;
+        }
+    }
+    #endregion
+
+    #region IView
+    public void SetResult(bool result) => DialogResult = result;
+    #endregion
 }
