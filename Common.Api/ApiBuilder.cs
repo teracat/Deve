@@ -1,12 +1,6 @@
 ﻿using System.Globalization;
 using System.Net;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi;
-using StackExchange.Redis;
+using Azure;
 //using Sentry.OpenTelemetry;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
@@ -19,7 +13,17 @@ using Deve.Auth.UserIdentityService;
 using Deve.Cache;
 using Deve.Data;
 using Deve.Diagnostics;
+using Deve.Dto.Responses.Results;
 using Deve.Logging;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi;
+using StackExchange.Redis;
 
 namespace Deve.Api;
 
@@ -77,13 +81,10 @@ public sealed class ApiBuilder
 
     public ApiBuilder Configure()
     {
-        // Configure localization settings for the application.
         AddLocalization();
 
-        // Configure request rate limiting for the application.
         AddRateLimiter();
 
-        // Add API explorer support.
         AddSwagger();
 
         // Register the IHttpContextAccessor service, allowing access to the current HTTP context.
@@ -95,15 +96,15 @@ public sealed class ApiBuilder
         // Register some needed classes
         RegisterContextServices();
 
-        // Add Cache
         ConnectionMultiplexer? redisConnectionMultiplexer = AddCache();
 
         // Logging
         _ = _builder.Logging.AddDebug();
         _ = _builder.Logging.AddConsole();
 
-        // Diagnostics
         AddDiagnostics(redisConnectionMultiplexer);
+
+        AddExceptionHandler();
 
         return this;
     }
@@ -438,6 +439,37 @@ public sealed class ApiBuilder
                 _ = app.MapPrometheusScrapingEndpoint()
                        .DisableHttpMetrics();   // We don't want metrics about the /metrics endpoint (https://github.com/dotnet/aspnetcore/issues/50654).
             }
+        });
+    }
+
+    /// <summary>
+    /// Configures a global exception handler for the application to capture unhandled exceptions and return a
+    /// standardized error response.
+    /// </summary>
+    /// <remarks>This method sets up middleware that intercepts unhandled exceptions, logs the error, and
+    /// returns a JSON response with an internal server error status code. The error details included in the response
+    /// are limited to the exception message. Use this method to ensure consistent error handling and response
+    /// formatting across the application.</remarks>
+    private void AddExceptionHandler()
+    {
+        AddAppAction(app =>
+        {
+            _ = app.UseExceptionHandler(appError =>
+            {
+                appError.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                    {
+                        Log.Error(contextFeature.Error);
+
+                        var response = Result.Fail(ResultErrorType.Unknown, null, contextFeature.Error.Message);
+                        await context.Response.WriteAsJsonAsync(response);
+                    }
+                });
+            });
         });
     }
 }
