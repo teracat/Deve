@@ -20,14 +20,14 @@ internal static class MauiProgram
 
         builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
-//-:cnd
+        //-:cnd
 #if DEBUG
         // We add the Debug logger for the logs generated before the MauiApp is built.
         Log.Providers.AddDebug();
 
         builder.Logging.AddDebug();
 #endif
-//+:cnd
+        //+:cnd
 
         builder
             .UseMauiApp<App>()
@@ -55,7 +55,7 @@ internal static class MauiProgram
             })
             .ConfigureLifecycleEvents(events =>
             {
-//-:cnd
+                //-:cnd
 #if WINDOWS
                 events.AddWindows(w =>
                 {
@@ -79,7 +79,7 @@ internal static class MauiProgram
                     });
                 });
 #endif
-//+:cnd
+                //+:cnd
             });
 
         var app = builder.Build();

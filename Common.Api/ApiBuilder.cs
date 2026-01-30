@@ -275,12 +275,12 @@ public sealed class ApiBuilder
             // If you don't want to publish the Swagger, uncomment this condition
             //if (app.Environment.IsDevelopment())
             //{
-                _ = app.UseSwagger();
-                _ = app.UseSwaggerUI(options =>
-                {
-                    // Adds a Swagger UI endpoint for the API documentation.
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Deve.Api v1");
-                });
+            _ = app.UseSwagger();
+            _ = app.UseSwaggerUI(options =>
+            {
+                // Adds a Swagger UI endpoint for the API documentation.
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Deve.Api v1");
+            });
             //}
         });
     }
