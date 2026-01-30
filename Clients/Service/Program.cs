@@ -1,33 +1,29 @@
-using Deve.Logging;
+﻿using Deve.Logging;
 
-namespace Deve.Clients
+namespace Deve.Clients;
+
+/// <summary>
+/// Main Sdk Client Service program.
+/// https://learn.microsoft.com/en-us/dotnet/core/extensions/windows-service
+/// </summary>
+internal static class Program
 {
-    /// <summary>
-    /// Main Sdk Client Service program.
-    /// https://learn.microsoft.com/en-us/dotnet/core/extensions/windows-service
-    /// </summary>
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            //Log.Providers.AddLog4net();
-            //Log.Providers.AddNLog();
-//-:cnd
+        //Log.Providers.AddLog4net();
+        //Log.Providers.AddNLog();
+        //-:cnd
 #if DEBUG
-            Log.Providers.AddDebug();
+        Log.Providers.AddDebug();
 #endif
-//+:cnd
+        //+:cnd
 
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddWindowsService(options =>
-            {
-                options.ServiceName = "Deve Client";
-            });
-            //builder.Logging.AddDebug();
-            builder.Services.AddHostedService<Worker>();
+        var builder = Host.CreateApplicationBuilder(args);
+        builder.Services.AddWindowsService(options => options.ServiceName = "Deve Client");
+        //builder.Logging.AddDebug();
+        builder.Services.AddHostedService<Worker>();
 
-            var host = builder.Build();
-            host.Run();
-        }
+        var host = builder.Build();
+        host.Run();
     }
 }

@@ -1,46 +1,42 @@
 ﻿using System.Windows.Input;
 using Deve.Clients.Wpf.ViewModels;
 
-namespace Deve.Clients.Wpf.Views
+namespace Deve.Clients.Wpf.Views;
+
+internal class BaseEditView : BaseView
 {
-    public class BaseEditView : BaseView
+    #region Properties
+    protected new BaseEditViewModel? ViewModel
     {
-        #region Fields
-        #endregion
-
-        #region Properties
-        protected new BaseEditViewModel? ViewModel
+        get;
+        set
         {
-            get;
-            set
+            if (field != value)
             {
-                if (field != value)
-                {
-                    DataContext = base.ViewModel = field = value;
-                }
+                DataContext = base.ViewModel = field = value;
             }
         }
-        #endregion
-
-        #region Overrides
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-            if (e.Key == Key.Escape)
-            {
-                _ = (ViewModel?.CancelCommand.Execute().Subscribe());
-            }
-        }
-        #endregion
-
-        #region Events
-        protected void OnLastControlKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return && ViewModel is not null)
-            {
-                _ = ViewModel.SaveCommand.Execute().Subscribe();
-            }
-        }
-        #endregion
     }
+    #endregion
+
+    #region Overrides
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+        if (e.Key == Key.Escape)
+        {
+            _ = (ViewModel?.CancelCommand.Execute().Subscribe());
+        }
+    }
+    #endregion
+
+    #region Events
+    protected void OnLastControlKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Return && ViewModel is not null)
+        {
+            _ = ViewModel.SaveCommand.Execute().Subscribe();
+        }
+    }
+    #endregion
 }

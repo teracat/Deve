@@ -2,10 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -22,8 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Clients\Wpf\Deve.Clients.Wpf.csproj" />
-    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
     <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />
+    <ProjectReference Include="..\Core\Deve.Tests.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

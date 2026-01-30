@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net10.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -20,8 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Clients\Maui\Deve.Clients.Maui.csproj" />
     <ProjectReference Include="..\..\Core\Deve.Core.csproj" />
-    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
     <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />
+    <ProjectReference Include="..\Core\Deve.Tests.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

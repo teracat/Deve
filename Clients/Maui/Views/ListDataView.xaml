@@ -7,7 +7,8 @@
             xmlns:vm="clr-namespace:Deve.Clients.Maui.ViewModels"
             xmlns:m="clr-namespace:Deve.Clients.Maui.Models"
             x:DataType="vm:ListDataViewModel"
-            x:Class="Deve.Clients.Maui.Views.ListDataView">
+            x:Class="Deve.Clients.Maui.Views.ListDataView"
+            x:ClassModifier="internal">
 
     <ScrollView>
         <VerticalStackLayout Spacing="5" Padding="10">

@@ -5,7 +5,7 @@
     xmlns:local="clr-namespace:Deve.Clients.Maui"
     xmlns:v="clr-namespace:Deve.Clients.Maui.Views"
     xmlns:strings="clr-namespace:Deve.Clients.Maui.Resources.Strings"
-    x:Class="Deve.Clients.Maui.AppShell"
+    x:Class="Deve.Clients.Maui.AppShell" x:ClassModifier="internal"
     Shell.FlyoutBehavior="Flyout"
     FlyoutHeaderBehavior="Fixed"
     Title="Maui">

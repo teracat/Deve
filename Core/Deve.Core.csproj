@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auth\Deve.Auth.csproj" />
+    <ProjectReference Include="..\Common.Modules\Deve.Common.Modules.csproj" />
     <ProjectReference Include="..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\DataSource\Deve.DataSource.csproj" />
-    <ProjectReference Include="..\Internal\Common\Deve.Internal.Common.csproj" />
+    <!-- <hooks:core-projectref> -->
+    <ProjectReference Include="..\Modules\Auth\Deve.Modules.Auth.csproj" />
+    <ProjectReference Include="..\Modules\Customers\Deve.Modules.Customers.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Deve.Modules.Identity.csproj" />
   </ItemGroup>
 
 </Project>

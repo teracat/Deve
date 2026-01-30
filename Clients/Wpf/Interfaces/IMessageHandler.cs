@@ -1,15 +1,14 @@
-﻿using Deve.Model;
+﻿using Deve.Dto.Responses.Results;
 
-namespace Deve.Clients.Wpf.Interfaces
+namespace Deve.Clients.Wpf.Interfaces;
+
+internal interface IMessageHandler
 {
-    public interface IMessageHandler
-    {
-        void ShowError(string message);
+    void ShowError(string message);
 
-        void ShowError(IList<ResultError> errors, char separator);
+    void ShowError(IReadOnlyList<ResultError>? errors, char separator);
 
-        void ShowError(IList<ResultError> errors);
+    void ShowError(IReadOnlyList<ResultError>? errors);
 
-        bool ShowQuestion(string message, string caption);
-    }
+    bool ShowQuestion(string message, string caption);
 }

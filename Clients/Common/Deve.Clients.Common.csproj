@@ -1,20 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RootNamespace>Deve.Clients</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
     <ProjectReference Include="..\..\Core\Deve.Core.csproj" />
-    <ProjectReference Include="..\..\External\Common\Deve.External.Common.csproj" />
-    <ProjectReference Include="..\..\External\Sdk\Deve.External.Sdk.csproj" />
-    <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
-    <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
+    <ProjectReference Include="..\..\Sdk\Deve.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,15 +1,14 @@
-﻿namespace Deve.Clients.Maui.Interfaces
+﻿namespace Deve.Clients.Maui.Interfaces;
+
+/// <summary>
+/// Interface for the navigation service.
+/// Based on https://learn.microsoft.com/en-us/dotnet/architecture/maui/navigation
+/// </summary>
+internal interface INavigationService
 {
-    /// <summary>
-    /// Interface for the navigation service.
-    /// Based on https://learn.microsoft.com/en-us/dotnet/architecture/maui/navigation
-    /// </summary>
-    public interface INavigationService
-    {
-        Task NavigateToAsync(string route, INavigationParameters routeParameters);
+    Task NavigateToAsync(string route, INavigationParameters routeParameters);
 
-        Task NavigateToAsync(string route);
+    Task NavigateToAsync(string route);
 
-        Task PopAsync();
-    }
+    Task PopAsync();
 }

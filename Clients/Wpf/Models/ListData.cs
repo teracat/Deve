@@ -1,9 +1,8 @@
-﻿namespace Deve.Clients.Wpf.Models
+﻿namespace Deve.Clients.Wpf.Models;
+
+internal class ListData
 {
-    public class ListData
-    {
-        public long Id { get; set; } = 0;
-        public string Main { get; set; } = string.Empty;
-        public string Detail { get; set; } = string.Empty;
-    }
+    public Guid Id { get; set; }
+    public string Main { get; set; } = string.Empty;
+    public string Detail { get; set; } = string.Empty;
 }

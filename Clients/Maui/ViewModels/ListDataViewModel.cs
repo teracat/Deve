@@ -1,84 +1,83 @@
 ﻿using System.Reactive;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
-using Deve.Model;
 using Deve.Clients.Maui.Helpers;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Models;
+using Deve.Dto.Responses.Results;
 
-namespace Deve.Clients.Maui.ViewModels
+namespace Deve.Clients.Maui.ViewModels;
+
+internal abstract partial class ListDataViewModel : BaseViewModel, IAsyncInitialization
 {
-    public abstract partial class ListDataViewModel : BaseViewModel, IAsyncInitialization
+    #region Fields
+    [Reactive]
+    private IEnumerable<ListData>? _listData;
+
+    [Reactive]
+    private ListData? _selectedData;
+    #endregion
+
+    #region Properties
+    public Task Initialization { get; private set; }
+
+    public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+    #endregion
+
+    #region Constructor
+    protected ListDataViewModel(INavigationService navigationService, Data.IData data, ISchedulerProvider scheduler)
+        : base(navigationService, data, scheduler)
     {
-        #region Fields
-        [Reactive]
-        private IEnumerable<ListData>? _listData;
+        // Commands
+        var canExecuteIsIdle = this.WhenAnyValue(vm => vm.IsIdle);
+        LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
 
-        [Reactive]
-        private ListData? _selectedData;
-        #endregion
+        // Properties
+        _ = this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
+            .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
 
-        #region Properties
-        public Task Initialization { get; private set; }
-
-        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
-        #endregion
-
-        #region Constructor
-        protected ListDataViewModel(INavigationService navigationService, Internal.Data.IData data, ISchedulerProvider scheduler)
-            : base(navigationService, data, scheduler)
-        {
-            // Commands
-            var canExecuteIsIdle = this.WhenAnyValue(vm => vm.IsIdle);
-            LoadCommand = ReactiveCommand.CreateFromTask(LoadData, canExecuteIsIdle, outputScheduler: scheduler.TaskPool);
-
-            // Properties
-            _ = this.WhenAnyObservable(vm => vm.LoadCommand.IsExecuting)
-                .ToProperty(this, vm => vm.IsBusy, scheduler: scheduler.TaskPool);
-
-            // Subscriptions
-            _ = this.WhenAnyValue(vm => vm.SelectedData)
-                .Subscribe((value) =>
+        // Subscriptions
+        _ = this.WhenAnyValue(vm => vm.SelectedData)
+            .Subscribe((value) =>
+            {
+                if (value is not null)
                 {
-                    if (value is not null)
-                    {
-                        DoSelected(value);
+                    DoSelected(value);
 
-                        // Clear the selection to allow the same item to be selected again
-                        SelectedData = null;
-                    }
-                });
+                    // Clear the selection to allow the same item to be selected again
+                    SelectedData = null;
+                }
+            });
 
-            // Initialization
-            Initialization = InitializeAsync();
-        }
-        #endregion
-
-        #region Methods
-        protected async Task InitializeAsync() => await LoadData();
-
-        public async Task LoadData()
-        {
-            ErrorText = string.Empty;
-            var res = await GetListData();
-            if (!res.Success)
-            {
-                ErrorText = Utils.ErrorsToString(res.Errors);
-            }
-        }
-        #endregion
-
-        #region Abstract/Virtual Methods
-        protected abstract Task<Result> GetListData();
-
-        protected virtual void DoSelected(ListData data)
-        {
-            var navigationParameter = new NavigationParameters
-            {
-                { nameof(BaseDetailsViewModel.Id), data.Id }
-            };
-            _ = NavigationService.NavigateToAsync("details", navigationParameter);
-        }
-        #endregion
+        // Initialization
+        Initialization = InitializeAsync();
     }
+    #endregion
+
+    #region Methods
+    protected async Task InitializeAsync() => await LoadData();
+
+    public async Task LoadData()
+    {
+        ErrorText = string.Empty;
+        var res = await GetListData();
+        if (!res.Success)
+        {
+            ErrorText = Utils.ErrorsToString(res.Errors);
+        }
+    }
+    #endregion
+
+    #region Abstract/Virtual Methods
+    protected abstract Task<IResult> GetListData();
+
+    protected virtual void DoSelected(ListData data)
+    {
+        var navigationParameter = new NavigationParameters
+        {
+            { nameof(BaseDetailsViewModel.Id), data.Id }
+        };
+        _ = NavigationService.NavigateToAsync("details", navigationParameter);
+    }
+    #endregion
 }
