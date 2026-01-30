@@ -21,15 +21,15 @@ internal sealed partial class LoginView : BaseView, ILoginView
         viewModel.LoginView = this;
         ViewModel = _viewModel = viewModel;
 
-//-:cnd
+        //-:cnd
 #if DEBUG
         if (string.IsNullOrEmpty(Properties.Settings.Default.Username))
         {
             SetUsernamePassword("teracat", "teracat");
         }
 #endif
-//+:cnd
-            
+        //+:cnd
+
         if (string.IsNullOrEmpty(_viewModel.Username))
         {
             uxUsername.Focus();

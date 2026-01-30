@@ -76,12 +76,12 @@ internal partial class LoginViewModel : BaseViewModel
                 }
             });
 
-//-:cnd
+        //-:cnd
 #if DEBUG
         Username = "teracat";
         Password = "teracat";
 #endif
-//+:cnd
+        //+:cnd
     }
     #endregion
 
