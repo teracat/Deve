@@ -1,50 +1,37 @@
 ﻿using Moq;
-using Deve.Auth.UserIdentityService;
-using Deve.Authenticate;
-using Deve.Cache;
 using Deve.Clients.Wpf.Interfaces;
-using Deve.Core;
-using Deve.Internal.Data;
+using Deve.Data;
+using Deve.Identity.Enums;
+using Deve.Tests.Core;
 
-namespace Deve.Tests.Wpf.Fixtures
+namespace Deve.Tests.Wpf.Fixtures;
+
+public class FixtureWpf : CommonFixture
 {
-    public class FixtureWpf : FixtureCommon
+    internal IData DataNoAuth { get; }
+    internal IData DataAuthUser { get; }
+    internal IData DataAuthAdmin { get; }
+
+    internal Mock<IMessageHandler> MessageHandler { get; }
+    internal Mock<INavigationService> NavigationService { get; }
+
+    public FixtureWpf()
     {
-        #region Properties
-        public IData DataNoAuth { get; }
-        public IData DataValidAuth { get; }
+        DataNoAuth = new MainTestsCore(Options, null);
+        DataAuthUser = new MainTestsCore(Options, Role.User);
+        DataAuthAdmin = new MainTestsCore(Options, Role.Admin);
 
-        public Mock<IMessageHandler> MessageHandler { get; }
-        public Mock<INavigationService> NavigationService { get; }
-        private ICache Cache { get; }
-        private IUserIdentityService UserIdentityServiceNoAuth { get; }
-        private IUserIdentityService UserIdentityServiceAuth { get; }
-        #endregion
-
-        #region Constructor
-        public FixtureWpf()
-        {
-            Cache = new SimpleInMemoryCache();
-            UserIdentityServiceNoAuth = new EmbeddedUserIdentityService();
-            UserIdentityServiceAuth = new EmbeddedUserIdentityService();
-            DataNoAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceNoAuth, Cache);
-            DataValidAuth = new CoreMain(DataSource, Auth, Options, UserIdentityServiceAuth, Cache);
-
-            NavigationService = new Mock<INavigationService>();
-            MessageHandler = new Mock<IMessageHandler>();
-        }
-        #endregion
-
-        #region IAsyncLifetime
-        public override async Task InitializeAsync() => await DataValidAuth.Authenticate.Login(new UserCredentials(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
-
-        public override Task DisposeAsync()
-        {
-            DataNoAuth.Dispose();
-            DataValidAuth.Dispose();
-            Cache.Dispose();
-            return base.DisposeAsync();
-        }
-        #endregion
+        NavigationService = new Mock<INavigationService>();
+        MessageHandler = new Mock<IMessageHandler>();
     }
+
+    #region IAsyncLifetime
+    public override Task DisposeAsync()
+    {
+        DataNoAuth.Dispose();
+        DataAuthUser.Dispose();
+        DataAuthAdmin.Dispose();
+        return base.DisposeAsync();
+    }
+    #endregion
 }

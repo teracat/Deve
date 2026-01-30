@@ -10,7 +10,7 @@
             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
             xmlns:vm="clr-namespace:Deve.Clients.Wpf.ViewModels"
             d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
-            mc:Ignorable="d"
+            mc:Ignorable="d" x:ClassModifier="internal"
             Title="{x:Static strings:AppResources.Identification}"
             Width="475" Height="525"
             ResizeMode="NoResize" WindowStartupLocation="CenterScreen">

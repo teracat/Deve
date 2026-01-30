@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -19,11 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common.Sdk\Deve.Common.Sdk.csproj" />
-    <ProjectReference Include="..\..\External\Api\Deve.External.Api.csproj" />
-    <ProjectReference Include="..\..\External\Sdk\Deve.External.Sdk.csproj" />
-    <ProjectReference Include="..\..\Internal\Api\Deve.Internal.Api.csproj" />
-    <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
+    <ProjectReference Include="..\..\Api\Deve.Api.csproj" />
+    <ProjectReference Include="..\..\Sdk\Deve.Sdk.csproj" />
     <ProjectReference Include="..\Api\Deve.Tests.Api.csproj" />
     <ProjectReference Include="..\Common\Deve.Tests.Common.csproj" />
   </ItemGroup>

@@ -1,64 +1,46 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Deve.Auth;
-using Deve.Auth.Hash;
-using Deve.Auth.TokenManagers;
-using Deve.Auth.UserIdentityService;
-using Deve.Cache;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Services;
 using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
 using Deve.Core;
 using Deve.Data;
-using Deve.DataSource;
-using Deve.DataSource.Config;
-using Deve.Internal.Data;
 
-namespace Deve.Clients.Wpf.Helpers
+namespace Deve.Clients.Wpf.Helpers;
+
+internal static class ServiceProviderHelper
 {
-    public static class ServiceProviderHelper
+    public static IServiceCollection RegisterServices(this IServiceCollection services) =>
+        services.AddSingleton<INavigationService, NavigationService>()
+                .AddSingleton<IMessageHandler, MessageBoxMessageHandler>()
+                .AddConfigurationAppSettings()
+                .AddCoreEmbedded(new DataOptions()
+                {
+                    LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
+                });
+
+    public static IServiceCollection RegisterViewModels(this IServiceCollection services)
     {
-        public static void RegisterServices(IServiceCollection services)
+        var assembly = Assembly.GetExecutingAssembly();
+        var viewModels = assembly.GetTypes()
+                                 .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseViewModel)));
+        foreach (var vm in viewModels)
         {
-            _ = services.AddSingleton<INavigationService, NavigationService>();
-            _ = services.AddSingleton<IMessageHandler, MessageHandlerMessageBox>();
-
-            _ = services.AddSingleton<IHash, HashSha512>();
-            _ = services.AddSingleton<IDataOptions>(new DataOptions()
-            {
-                LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
-            });
-            // TokenManager that uses CryptAes with auto generated Key and IV.
-            // Due to the auto-generation of the Key and IV, tokens are only valid during a single program execution.
-            _ = services.AddSingleton<ITokenManager, TokenManagerCrypt>();
-            _ = services.AddSingleton<IDataSource>(new DataSourceMain(new DataSourceConfig()));
-            _ = services.AddSingleton<IAuth, AuthMain>();
-            _ = services.AddSingleton<ICache, SimpleInMemoryCache>();
-            _ = services.AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>();
-            _ = services.AddSingleton<IData, CoreMain>();
+            _ = services.AddTransient(vm);
         }
+        return services;
+    }
 
-        public static void RegisterViewModels(IServiceCollection services)
+    public static IServiceCollection RegisterViews(this IServiceCollection services)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var views = assembly.GetTypes()
+                            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseView)));
+        foreach (var v in views)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var viewModels = assembly.GetTypes()
-                                     .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseViewModel)));
-            foreach (var vm in viewModels)
-            {
-                _ = services.AddTransient(vm);
-            }
+            _ = services.AddTransient(v);
         }
-
-        public static void RegisterViews(IServiceCollection services)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var views = assembly.GetTypes()
-                                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseView)));
-            foreach (var v in views)
-            {
-                _ = services.AddTransient(v);
-            }
-        }
+        return services;
     }
 }

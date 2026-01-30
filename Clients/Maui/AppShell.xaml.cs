@@ -1,21 +1,20 @@
 ﻿using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Views;
 
-namespace Deve.Clients.Maui
+namespace Deve.Clients.Maui;
+
+internal sealed partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    private readonly INavigationService _navigationService;
+
+    public AppShell(INavigationService navigationService)
     {
-        private readonly INavigationService _navigationService;
+        _navigationService = navigationService;
 
-        public AppShell(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
+        InitializeComponent();
 
-            InitializeComponent();
-
-            Routing.RegisterRoute("//clients/details", typeof(ClientDetailsView));
-        }
-
-        private async void LogoutClicked(object sender, EventArgs e) => await _navigationService.NavigateToAsync("//login");
+        Routing.RegisterRoute("//clients/details", typeof(ClientDetailsView));
     }
+
+    private async void LogoutClicked(object sender, EventArgs e) => await _navigationService.NavigateToAsync("//login");
 }

@@ -1,0 +1,9 @@
+﻿global using System;
+global using System.Collections;
+global using Deve.Auth.UserIdentityService;
+global using Deve.Data;
+global using Deve.Dto.Responses;
+global using Deve.Dto.Responses.Results;
+global using Deve.Handlers;
+global using Deve.Mediators;
+global using Deve.Validators;

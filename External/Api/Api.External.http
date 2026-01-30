@@ -1,6 +1,0 @@
-@Api.External_HostAddress = http://localhost:5057
-
-GET {{Api.External_HostAddress}}/Country/
-Accept: application/json
-
-###

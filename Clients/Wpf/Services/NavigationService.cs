@@ -3,97 +3,96 @@ using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Views;
 using Deve.Logging;
 
-namespace Deve.Clients.Wpf.Services
+namespace Deve.Clients.Wpf.Services;
+
+internal sealed class NavigationService : INavigationService
 {
-    public class NavigationService : INavigationService
+    private readonly IServiceProvider _serviceProvider;
+
+    public NavigationService(IServiceProvider serviceProvider)
     {
-        private readonly IServiceProvider _serviceProvider;
+        _serviceProvider = serviceProvider;
+    }
 
-        public NavigationService(IServiceProvider serviceProvider)
+    public void NavigateTo<TView>(object? parameter) where TView : BaseView
+    {
+        try
         {
-            _serviceProvider = serviceProvider;
+            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            if (view.ViewModel is INavigationAware navAware)
+            {
+                navAware.OnNavigatedTo(parameter);
+            }
+            view.Show();
         }
-
-        public void NavigateTo<TView>(object? parameter) where TView : BaseView
+        catch (Exception ex)
         {
-            try
-            {
-                BaseView view = _serviceProvider.GetRequiredService<TView>();
-                if (view.ViewModel is INavigationAware navAware)
-                {
-                    navAware.OnNavigatedTo(parameter);
-                }
-                view.Show();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-            }
+            Log.Error(ex);
         }
+    }
 
-        public void NavigateTo<TView>() where TView : BaseView => NavigateTo<TView>(null);
+    public void NavigateTo<TView>() where TView : BaseView => NavigateTo<TView>(null);
 
-        public bool NavigateModalTo<TView>(object? parameter) where TView : BaseView
+    public void NavigateTo<TView, TParamType>(TParamType parameter) where TView : BaseView where TParamType : class
+    {
+        try
         {
-            try
+            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
             {
-                BaseView view = _serviceProvider.GetRequiredService<TView>();
-                if (view.ViewModel is INavigationAware navAware)
-                {
-                    navAware.OnNavigatedTo(parameter);
-                }
-                return view.ShowDialog() ?? false;
+                navAwareWithType.OnNavigatedToWithType(parameter);
             }
-            catch (Exception ex)
+            else if (view.ViewModel is INavigationAware navAware)
             {
-                Log.Error(ex);
-                return false;
+                navAware.OnNavigatedTo(parameter);
             }
+            view.Show();
         }
-
-        public bool NavigateModalTo<TView>() where TView : BaseView => NavigateModalTo<TView>(null);
-
-        public void NavigateTo<TView, TParamType>(TParamType parameter) where TView : BaseView where TParamType : class
+        catch (Exception ex)
         {
-            try
-            {
-                BaseView view = _serviceProvider.GetRequiredService<TView>();
-                if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
-                {
-                    navAwareWithType.OnNavigatedToWithType(parameter);
-                }
-                else if (view.ViewModel is INavigationAware navAware)
-                {
-                    navAware.OnNavigatedTo(parameter);
-                }
-                view.Show();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-            }
+            Log.Error(ex);
         }
+    }
 
-        public bool NavigateModalTo<TView, TParamType>(TParamType parameter) where TView : BaseView where TParamType : class
+    public bool NavigateModalTo<TView>(object? parameter) where TView : BaseView
+    {
+        try
         {
-            try
+            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            if (view.ViewModel is INavigationAware navAware)
             {
-                BaseView view = _serviceProvider.GetRequiredService<TView>();
-                if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
-                {
-                    navAwareWithType.OnNavigatedToWithType(parameter);
-                }
-                else if (view.ViewModel is INavigationAware navAware)
-                {
-                    navAware.OnNavigatedTo(parameter);
-                }
-                return view.ShowDialog() ?? false;
+                navAware.OnNavigatedTo(parameter);
             }
-            catch (Exception ex)
+            return view.ShowDialog() ?? false;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex);
+            return false;
+        }
+    }
+
+    public bool NavigateModalTo<TView>() where TView : BaseView => NavigateModalTo<TView>(null);
+
+    public bool NavigateModalTo<TView, TParamType>(TParamType parameter) where TView : BaseView where TParamType : class
+    {
+        try
+        {
+            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
             {
-                Log.Error(ex);
-                return false;
+                navAwareWithType.OnNavigatedToWithType(parameter);
             }
+            else if (view.ViewModel is INavigationAware navAware)
+            {
+                navAware.OnNavigatedTo(parameter);
+            }
+            return view.ShowDialog() ?? false;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex);
+            return false;
         }
     }
 }

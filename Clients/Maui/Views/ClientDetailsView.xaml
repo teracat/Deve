@@ -7,6 +7,7 @@
             xmlns:vm="clr-namespace:Deve.Clients.Maui.ViewModels"
             x:DataType="vm:ClientDetailsViewModel"
             x:Class="Deve.Clients.Maui.Views.ClientDetailsView"
+            x:ClassModifier="internal"
             Title="{x:Static strings:AppResources.Client}">
 
     <ScrollView>

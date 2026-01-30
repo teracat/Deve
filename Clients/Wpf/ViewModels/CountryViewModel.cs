@@ -1,113 +1,125 @@
 ﻿using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
-using Deve.Model;
+using Deve.Dto.Responses.Results;
+using Deve.Customers.Countries;
 
-namespace Deve.Clients.Wpf.ViewModels
+namespace Deve.Clients.Wpf.ViewModels;
+
+internal sealed class CountryViewModel : BaseEditViewModel, INavigationAwareWithType<CountryResponse>
 {
-    public class CountryViewModel : BaseEditViewModel, INavigationAwareWithType<Country>
+    #region Fields
+    private CountryResponse? _country;
+    #endregion
+
+    #region Properties
+    public string? Name
     {
-        #region Fields
-        private Country? _country;
-        #endregion
+        get;
+        set => SetProperty(ref field, value);
+    }
+    public string? IsoCode
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+    #endregion
 
-        #region Properties
-        public string? Name
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-        public string? IsoCode
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-        #endregion
+    #region Constructor
+    public CountryViewModel(INavigationService navigationService, Data.IData data, IMessageHandler messageHandler)
+        : base(navigationService, data, messageHandler)
+    {
+    }
+    #endregion
 
-        #region Constructor
-        public CountryViewModel(INavigationService navigationService, Internal.Data.IData data, IMessageHandler messageHandler)
-            : base(navigationService, data, messageHandler)
+    #region Overrides
+    protected override async Task GetData()
+    {
+        if (_country is null)
         {
-        }
-        #endregion
-
-        #region Overrides
-        protected override async Task GetData()
-        {
-            if (_country is null)
+            if (Id == Guid.Empty)
             {
-                if (Id <= 0)
+                _country = new CountryResponse
                 {
-                    _country = new Country();
-                }
-                else
-                {
-                    var res = await Data.Countries.Get(Id);
-                    if (!res.Success || res.Data is null)
-                    {
-                        MessageHandler.ShowError(res.Errors);
-                        Close();
-                        return;
-                    }
-
-                    _country = res.Data;
-                }
+                    Id = Guid.Empty,
+                    Name = string.Empty,
+                    IsoCode = string.Empty
+                };
             }
-
-            Name = _country.Name;
-            IsoCode = _country.IsoCode;
-        }
-
-        internal override async Task DoSave()
-        {
-            if (_country is null)
+            else
             {
-                return;
-            }
-
-            if (Utils.SomeIsNullOrWhiteSpace(Name, IsoCode))
-            {
-                MessageHandler.ShowError(AppResources.MissingField);
-                return;
-            }
-
-            IsBusy = true;
-            try
-            {
-                _country.Name = Name!.Trim();
-                _country.IsoCode = IsoCode!.Trim();
-
-                Result res;
-                if (_country.Id == 0)
-                {
-                    res = await Data.Countries.Add(_country);
-                }
-                else
-                {
-                    res = await Data.Countries.Update(_country);
-                }
-
-                if (!res.Success)
+                var res = await Data.Customers.Countries.GetByIdAsync(Id);
+                if (!res.Success || res.Data is null)
                 {
                     MessageHandler.ShowError(res.Errors);
+                    Close();
                     return;
                 }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
 
-            SetResult(true);
-            Close();
+                _country = res.Data;
+            }
         }
-        #endregion
 
-        #region INavigationAwareWithType
-        public void OnNavigatedToWithType(Country parameter)
-        {
-            _country = parameter;
-            _ = LoadData();
-        }
-        #endregion
+        Name = _country.Name;
+        IsoCode = _country.IsoCode;
     }
+
+    internal override async Task DoSave()
+    {
+        if (_country is null)
+        {
+            return;
+        }
+
+        if (Utils.SomeIsNullOrWhiteSpace(Name, IsoCode))
+        {
+            MessageHandler.ShowError(AppResources.MissingField);
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            IResult res;
+            if (_country.Id == Guid.Empty)
+            {
+                var request = new CountryAddRequest
+                {
+                    Name = Name!.Trim(),
+                    IsoCode = IsoCode!.Trim()
+                };
+                res = await Data.Customers.Countries.AddAsync(request);
+            }
+            else
+            {
+                var request = new CountryUpdateRequest
+                {
+                    Name = Name!.Trim(),
+                    IsoCode = IsoCode!.Trim()
+                };
+                res = await Data.Customers.Countries.UpdateAsync(_country.Id, request);
+            }
+
+            if (!res.Success)
+            {
+                MessageHandler.ShowError(res.Errors);
+                return;
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        SetResult(true);
+        Close();
+    }
+    #endregion
+
+    #region INavigationAwareWithType
+    public void OnNavigatedToWithType(CountryResponse parameter)
+    {
+        _country = parameter;
+        _ = LoadData();
+    }
+    #endregion
 }

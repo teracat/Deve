@@ -117,31 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Unknown" xml:space="preserve">
-    <value>Desconegut</value>
+  <data name="DuplicatedValue" xml:space="preserve">
+    <value>Valor duplicat</value>
   </data>
-  <data name="Unauthorized" xml:space="preserve">
-    <value>No autoritzat</value>
+  <data name="FieldValueTooLong" xml:space="preserve">
+    <value>El camp supera la longitud màxima de {0} caràcters</value>
   </data>
-  <data name="MissingRequiredField" xml:space="preserve">
-    <value>Falta camp obligatori</value>
+  <data name="FieldValueTooShort" xml:space="preserve">
+    <value>El camp és més curt que la longitud mínima de {0} caràcters</value>
   </data>
   <data name="InvalidId" xml:space="preserve">
     <value>Id no vàlid</value>
   </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>No trobat</value>
+  <data name="Locked" xml:space="preserve">
+    <value>Bloquejat, reintentar en {0} segons</value>
   </data>
-  <data name="DuplicatedValue" xml:space="preserve">
-    <value>Valor duplicat</value>
+  <data name="MissingRequiredField" xml:space="preserve">
+    <value>Falta camp obligatori</value>
   </data>
   <data name="NotAllowed" xml:space="preserve">
     <value>No permès</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>No trobat</value>
+  </data>
   <data name="TooManyAttempts" xml:space="preserve">
     <value>Massa intents</value>
   </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Bloquejat, reintentar en {0} segons</value>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>No autoritza</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconegut</value>
   </data>
 </root>

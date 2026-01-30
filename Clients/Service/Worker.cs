@@ -1,50 +1,43 @@
-using Deve.Data;
+﻿using Deve.Data;
 using Deve.Logging;
 
-namespace Deve.Clients
+namespace Deve.Clients;
+
+internal sealed class Worker : BackgroundService
 {
-    public class Worker : BackgroundService
+    public Worker(ILogger<Worker> logger)
     {
-        public Worker(ILogger<Worker> logger)
-        {
-            Log.Providers.AddNetCore(logger);
-        }
+        Log.Providers.AddNetCore(logger);
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                try
+                var options = new DataOptions()
                 {
-                    var options = new DataOptions()
-                    {
-                        LangCode = Constants.LanguageCodeSpanish
-                    };
+                    LangCode = Constants.LanguageCodeSpanish
+                };
 
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // External Sdk (External Api must be running)
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    ClientSampleBase.LogTitle("External Sdk...");
-                    ClientSampleExecutors.ExternalSdk(options);
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+                // Sdk (Api must be running)
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+                SampleBaseClient.LogTitle("Sdk...");
+                await SampleExecutorsClient.Sdk(options);
 
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // Internal Sdk (Internal Api must be running)
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    ClientSampleBase.LogTitle("Internal Sdk...");
-                    ClientSampleExecutors.InternalSdk(options);
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+                // Embedded (uses Core, no other projects must be running)
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+                SampleBaseClient.LogTitle("Embedded...");
+                await SampleExecutorsClient.Embedded(options);
 
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // Embedded (uses Core, no other projects must be running)
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////
-                    ClientSampleBase.LogTitle("Embedded...");
-                    ClientSampleExecutors.InternalEmbedded(options);
-
-                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
             }
         }
     }

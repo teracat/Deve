@@ -7,7 +7,8 @@
             xmlns:vm="clr-namespace:Deve.Clients.Maui.ViewModels"
             x:DataType="vm:LoginViewModel"
             Shell.NavBarIsVisible="False"
-            x:Class="Deve.Clients.Maui.Views.LoginView">
+            x:Class="Deve.Clients.Maui.Views.LoginView"
+            x:ClassModifier="internal">
 
     <ScrollView>
         <VerticalStackLayout Spacing="5" VerticalOptions="Center">
