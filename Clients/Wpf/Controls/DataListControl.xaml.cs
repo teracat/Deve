@@ -162,7 +162,7 @@ internal sealed partial class DataListControl : UserControl
 
     private void OnSearchTextBoxKeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Return && SearchCommand?.CanExecute(this) == true)
+        if (e.Key == Key.Return && SearchCommand is not null && SearchCommand.CanExecute(this))
         {
             SearchCommand.Execute(null);
         }
