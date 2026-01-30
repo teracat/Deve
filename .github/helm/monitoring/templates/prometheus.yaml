@@ -25,6 +25,7 @@ spec:
       labels:
         app: prometheus
     spec:
+      automountServiceAccountToken: false
       securityContext:
         fsGroup: 65534
         fsGroupChangePolicy: Always
@@ -43,6 +44,14 @@ spec:
           args:
             - --config.file=/etc/prometheus/prometheus.prod.yml
             - --web.enable-otlp-receiver
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "2Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
       volumes:
         - name: prometheus-storage
           persistentVolumeClaim:
