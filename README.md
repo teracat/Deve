@@ -23,10 +23,13 @@ dotnet new install Teracat.Deve
 2. Create a project using the template:
 
 ```bash
-dotnet new deve -n YourNewProjectName
+dotnet new deve -n MyProject
 ```
 
 For more information or alternative options, refer to the [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide) in the Wiki section.
+
+You can add new modules and items, refer to the [New commands in Version 2](https://github.com/teracat/Deve/wiki/Installation#new-commands-in-version-2).
+
 
 ## Versions & Changelog
 
@@ -59,21 +62,21 @@ Read the documentation in the [Wiki](https://github.com/teracat/Deve/wiki) secti
   - [Main Objectives](https://github.com/teracat/Deve/wiki#main-objectives)
   - [Features](https://github.com/teracat/Deve/wiki#features)
   - [Project Structure](https://github.com/teracat/Deve/wiki#project-structure)
-  - [Internal vs External](https://github.com/teracat/Deve/wiki#internal-vs-external)
   - [Client Embedded vs Sdk](https://github.com/teracat/Deve/wiki#client-embedded-vs-sdk)
   - [Publishable Projects](https://github.com/teracat/Deve/wiki#publishable-projects)
   - [Docker](https://github.com/teracat/Deve/wiki#docker)
 - [Installation](https://github.com/teracat/Deve/wiki/Installation)
   - [Prerequisites](https://github.com/teracat/Deve/wiki/Installation#prerequisites)
   - [Step-by-Step Installation Guide](https://github.com/teracat/Deve/wiki/Installation#step-by-step-installation-guide)
+  - [New commands in Version 2](https://github.com/teracat/Deve/wiki/Installation#new-commands-in-version-2)
   - [Uninstall](https://github.com/teracat/Deve/wiki/Installation#uninstall)
   - [Install an Older Version](https://github.com/teracat/Deve/wiki/Installation#install-an-older-version)
 - [Common](https://github.com/teracat/Deve/wiki/Common)
   - [Constants](https://github.com/teracat/Deve/wiki/Common#constants)
   - [Utils](https://github.com/teracat/Deve/wiki/Common#utils)
-  - [IDataCommon](https://github.com/teracat/Deve/wiki/Common#idatacommon)
-  - [Model](https://github.com/teracat/Deve/wiki/Common#model)
-  - [Criteria](https://github.com/teracat/Deve/wiki/Common#criteria)
+  - [IData](https://github.com/teracat/Deve/wiki/Common#idata)
+  - [Dto](https://github.com/teracat/Deve/wiki/Common#dto)
+  - [Requests & Responses](https://github.com/teracat/Deve/wiki/Common#requests--responses)
   - [Localize](https://github.com/teracat/Deve/wiki/Common#localize)
   - [Log](https://github.com/teracat/Deve/wiki/Common#log)
 - [Api](https://github.com/teracat/Deve/wiki/Api)
