@@ -12,11 +12,11 @@ internal static class Program
     {
         //Log.Providers.AddLog4net();
         //Log.Providers.AddNLog();
-//-:cnd
+        //-:cnd
 #if DEBUG
         Log.Providers.AddDebug();
 #endif
-//+:cnd
+        //+:cnd
 
         var builder = Host.CreateApplicationBuilder(args);
         builder.Services.AddWindowsService(options => options.ServiceName = "Deve Client");

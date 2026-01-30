@@ -25,12 +25,12 @@ internal sealed class LoginViewModel : BaseViewModel
     public LoginViewModel(INavigationService navigationService, Data.IData data)
         : base(navigationService, data)
     {
-//-:cnd
+        //-:cnd
 #if DEBUG
         Username = "teracat";
         Password = "teracat";
 #endif
-//+:cnd
+        //+:cnd
     }
     #endregion
 

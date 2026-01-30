@@ -242,9 +242,6 @@ dotnet_code_quality.CA1062.exclude_extension_method_this_parameter = true
 # Default severity for analyzer diagnostics with category 'Style' (escalated to build warnings)
 dotnet_analyzer_diagnostic.category-Style.severity = warning
 
-# IDE0055: Fix formatting
-dotnet_diagnostic.IDE0055.severity = suggestion
-
 # IDE0005: Remove unnecessary import (To enable this rule on build, you need to enable XML documentation comments for the project)
 dotnet_diagnostic.IDE0005.severity = suggestion
 
