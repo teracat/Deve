@@ -12,7 +12,8 @@ spec:
     metadata:
       labels:
         app: zipkin
-    spec:  
+    spec:
+      automountServiceAccountToken: false
       containers:
         - name: zipkin        
           image: openzipkin/zipkin:3.5.1
@@ -23,6 +24,14 @@ spec:
             - containerPort: {{ .Values.zipkin.port }}
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "2Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
