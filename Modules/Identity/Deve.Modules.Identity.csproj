@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Deve.Identity</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common.Api\Deve.Common.Api.csproj" />
+    <ProjectReference Include="..\..\Common.Modules\Deve.Common.Modules.csproj" />
+    <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
+  </ItemGroup>
+
+</Project>

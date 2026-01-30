@@ -1,0 +1,19 @@
+﻿global using System;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Routing;
+global using Deve.Auth.UserIdentityService;
+global using Deve.Behaviors;
+global using Deve.Abstractions.Endpoints;
+global using Deve.Abstractions.Handlers;
+global using Deve.Handlers;
+global using Deve.Repositories;
+global using Deve.Mediators;
+global using Deve.Cache;
+global using Deve.Customers.Entities;
+global using Deve.Data;
+global using Deve.Dto;
+global using Deve.Dto.Responses;
+global using Deve.Dto.Responses.Results;
+global using Deve.Validators;
+// <hooks:global-using>

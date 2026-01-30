@@ -1,0 +1,26 @@
+# Build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+COPY ./Api /src/Api
+COPY ./Common.Api /src/Common.Api
+COPY ./Common.Modules /src/Common.Modules
+COPY ./Common /src/Common
+COPY ./Core /src/Core
+COPY ./Extra /src/Extra
+COPY ./Modules /src/Modules
+COPY ./Tests /src/Tests
+COPY ./LICENSE /src/LICENSE
+COPY ./README.md /src/README.md
+COPY ./VERSION /src/VERSION
+COPY ./.editorconfig /src
+COPY ./Directory.Build.props /src
+COPY ./Deve.Api.slnx /src
+
+RUN dotnet restore /src/Deve.Api.slnx
+RUN dotnet publish /src/Api/Deve.Api.csproj -c Release -o /app --no-restore
+
+# Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+COPY --from=build /app /app
+USER app
+ENTRYPOINT ["dotnet", "/app/Deve.Api.dll"]

@@ -1,16 +1,15 @@
-﻿using Deve.Authenticate;
+﻿using Deve.Auth.Login;
 
-namespace Deve.Clients.Maui
+namespace Deve.Clients.Maui;
+
+internal static class Globals
 {
-    internal static class Globals
-    {
-        #region UserToken
-        public static UserToken? UserToken { get; set; }
-        public static string LoggerUser => UserToken?.Subject.Name ?? string.Empty;
-        #endregion
+    #region UserToken
+    public static LoginResponse? LoginResponseData { get; set; }
+    public static string LoggerUser => LoginResponseData?.Name ?? string.Empty;
+    #endregion
 
-        #region Helpers
-        public static string AppVersion => "v" + AppInfo.Version.ToString(3);
-        #endregion
-    }
+    #region Helpers
+    public static string AppVersion => "v" + AppInfo.Version.ToString(3);
+    #endregion
 }

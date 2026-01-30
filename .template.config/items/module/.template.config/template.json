@@ -1,0 +1,305 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jordi Badia Santaulària",
+  "classifications": [ "Common", "C#", "Library" ],
+  "identity": "Deve.Template.Module",
+  "groupIdentity": "Deve.Templates.Module",
+  "name": ".NET DEVEloper Template (Module)",
+  "shortName": "deve-module",
+  "tags": { "language": "C#", "type": "project" },
+
+  "sourceName": "Deve",
+  "preferNameDirectory": false,
+
+  "symbols": {
+    "ModuleName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "Identity",
+      "replaces": "MODULE_NAME",
+      "fileRename": "MODULE_NAME"
+    },
+    "ProjectName": {
+      "type": "parameter",
+      "datatype": "text",
+      "isRequired": "true",
+      "description": "Project name (replaces 'Deve')",
+      "replaces": "Deve",
+      "fileRename": "Deve"
+    }
+  },
+
+  "forms": {
+    "Identity": { "identifier": "identity" }
+  },
+
+  "primaryOutputs": [
+    { "path": "./Modules/MODULE_NAME/{{ProjectName}}.Modules.MODULE_NAME.csproj" }
+  ],
+
+  "sources": [
+    {
+      "source": "./content",
+      "modifiers": [
+        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**" ] }
+      ]
+    }
+  ],
+
+  "postActions": [
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project to solution Deve.All.slnx",
+      "args": {
+        "executable": "dotnet",
+        "args": "sln Deve.All.slnx add -s Modules ./Modules/MODULE_NAME/Deve.Modules.MODULE_NAME.csproj"
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project to solutions Deve.Api.slnx",
+      "args": {
+        "executable": "dotnet",
+        "args": "sln Deve.Api.slnx add -s Modules ./Modules/MODULE_NAME/Deve.Modules.MODULE_NAME.csproj"
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project to solutions Deve.Clients.slnx",
+      "args": {
+        "executable": "dotnet",
+        "args": "sln Deve.Clients.slnx add -s Modules ./Modules/MODULE_NAME/Deve.Modules.MODULE_NAME.csproj"
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project as a reference to Core project",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Core/Deve.Core.csproj \"<hooks:core-projectref>\" \"<ProjectReference Include=\\\"..\\Modules\\MODULE_NAME\\Deve.Modules.MODULE_NAME.csproj\\\" />\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project as a reference to Api project",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/Deve.Api.csproj \"<hooks:api-projectref>\" \"<ProjectReference Include=\\\"..\\Modules\\MODULE_NAME\\Deve.Modules.MODULE_NAME.csproj\\\" />\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add module project as a reference to Tests.Common project",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Tests/Common/Deve.Tests.Common.csproj \"<hooks:tests-common-projectref>\" \"<ProjectReference Include=\\\"..\\..\\Modules\\MODULE_NAME\\Deve.Modules.MODULE_NAME.csproj\\\" />\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to ApiDependencyInjection",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/ApiDependencyInjection.cs \"<hooks:api-di-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "AddModule in ApiDependencyInjection",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/ApiDependencyInjection.cs \"<hooks:api-di-addmodule>\" \"                   .AddModuleMODULE_NAME()\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "MapEndpoints in ApiDependencyInjection",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/ApiDependencyInjection.cs \"<hooks:api-di-mapendpoints>\" \"            .MapEndpointsMODULE_NAME()\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to CoreDependencyInjection",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Core/CoreDependencyInjection.cs \"<hooks:core-di-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "AddModule in CoreDependencyInjection",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Core/CoreDependencyInjection.cs \"<hooks:core-di-addmodule>\" \"                .AddModuleMODULE_NAME()\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to IData",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/Data/IData.cs \"<hooks:idata-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to IData",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Common/Data/IData.cs \"<hooks:idata-properties>\" \"    IMODULE_NAMEData MODULE_NAME { get; }\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to MainCore",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Core/MainCore.cs \"<hooks:core-main-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add argument to MainCore constructor",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --smart-comma=true ./Core/MainCore.cs \"<hooks:core-main-contructor>\" \"    IMODULE_NAMEData dataMODULE_NAME\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to MainCore",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Core/MainCore.cs \"<hooks:core-main-properties>\" \"    public IMODULE_NAMEData MODULE_NAME => dataMODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to MainSdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Sdk/MainSdk.cs \"<hooks:sdk-main-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to MainSdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Sdk/MainSdk.cs \"<hooks:sdk-main-using-sdks>\" \"using Deve.Sdk.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to MainSdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Sdk/MainSdk.cs \"<hooks:sdk-main-properties>\" \"    public IMODULE_NAMEData MODULE_NAME => field ??= new MODULE_NAMESdk(this);\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to MainTestsCore",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Tests/Core/MainTestsCore.cs \"<hooks:tests-core-main-using>\" \"using Deve.MODULE_NAME;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to MainTestsCore",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Tests/Core/MainTestsCore.cs \"<hooks:tests-core-main-properties>\" \"    public IMODULE_NAMEData MODULE_NAME => _serviceProvider.GetRequiredService<IMODULE_NAMEData>();\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to ConnectionStringsOptions",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Common.Api/Options/ConnectionStringsOptions.cs \"<hooks:api-connectionstringsoptions-properties>\" \"    public string MODULE_NAMEConnection { get; set; } = string.Empty;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add ConnectionString to api appsettings.json",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Api/appsettings.json \"<hooks:api-appsettings-connectionstrings>\" \"    //You should set the MODULE_NAMEConnection (if needed by your module)\r\n    \\\"MODULE_NAMEConnection\\\": \\\"Server=localhost;Database=dbname;User Id=user;Password=pwd;\\\",\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    }
+  ]
+}

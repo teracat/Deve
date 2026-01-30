@@ -1,4 +1,0 @@
-apiVersion: v2
-name: api-external
-version: 0.1.0
-description: A Helm chart to publish API External to Kubernetes

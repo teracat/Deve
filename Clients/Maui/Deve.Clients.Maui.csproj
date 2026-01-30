@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net10.0;net10.0-android36.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
@@ -14,14 +14,12 @@
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 		<RuntimeIdentifiers Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">iossimulator-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
 
     <OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
 		<UseMaui>true</UseMaui>
 		<MauiVersion>10.0.11</MauiVersion>
 		<SingleProject>true</SingleProject>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
 		<!-- Display name -->
 		<ApplicationTitle>Maui</ApplicationTitle>
@@ -38,7 +36,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">28.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+    <!-- <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion> -->
 		<DefaultLanguage>en</DefaultLanguage>
 		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>
@@ -72,8 +70,7 @@
 	  <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
 	  <ProjectReference Include="..\..\Extra\Diagnostics.OpenTelemetry.Maui\Deve.Diagnostics.OpenTelemetry.Maui.csproj" />
 	  <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
-	  <ProjectReference Include="..\..\Internal\Common\Deve.Internal.Common.csproj" />
-	  <ProjectReference Include="..\..\Internal\Sdk\Deve.Internal.Sdk.csproj" />
+	  <ProjectReference Include="..\..\Sdk\Deve.Sdk.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

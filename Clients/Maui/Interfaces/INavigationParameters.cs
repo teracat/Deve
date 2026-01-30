@@ -1,6 +1,3 @@
-﻿namespace Deve.Clients.Maui.Interfaces
-{
-    public interface INavigationParameters : IDictionary<string, object>
-    {
-    }
-}
+﻿namespace Deve.Clients.Maui.Interfaces;
+
+internal interface INavigationParameters : IDictionary<string, object>;
