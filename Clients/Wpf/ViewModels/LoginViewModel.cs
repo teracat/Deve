@@ -26,7 +26,7 @@ internal sealed partial class LoginViewModel : BaseViewModel
     private string _username;
 
     [Reactive]
-    private bool _remember = false;
+    private bool _remember;
 
     [Reactive]
     private SecureString _password = new();
