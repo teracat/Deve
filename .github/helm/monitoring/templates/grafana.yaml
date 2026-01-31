@@ -38,7 +38,10 @@ spec:
       labels:
         app: grafana
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: false      
+      securityContext:
+        fsGroup: 472
+        fsGroupChangePolicy: Always
       volumes:
         - name: grafana-ini
           configMap:
@@ -64,7 +67,9 @@ spec:
           ports:
             - containerPort: {{ .Values.grafana.port }}
           securityContext:
-            allowPrivilegeEscalation: false          
+            runAsUser: 472
+            runAsGroup: 472
+            allowPrivilegeEscalation: false
           env:
             - name: GF_DATABASE_TYPE
               value: postgres
