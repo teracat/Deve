@@ -1,3 +1,9 @@
 FROM prom/prometheus:v3.7.3
 
+USER root
 COPY ./.docker/prometheus/*.yml /etc/prometheus/
+
+RUN chown -R 65534:65534 /etc/prometheus /prometheus \
+    && chmod -R a+r /etc/prometheus
+
+USER 65534:65534
