@@ -73,6 +73,7 @@ spec:
       labels:
         app: postgresql
     spec:
+      automountServiceAccountToken: false
       volumes:
       - name: init-sql
         configMap:
@@ -128,12 +129,14 @@ spec:
         - name: postgres-storage
           mountPath: /var/lib/postgresql
         resources:
-            limits:
-              memory: 1Gi
-              cpu: "1"
-            requests:
-              memory: 512Mi
-              cpu: "0.5"
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+            ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: ConfigMap

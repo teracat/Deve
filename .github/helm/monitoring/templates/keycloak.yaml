@@ -26,6 +26,7 @@ spec:
       labels:
         app: keycloak
     spec:
+      automountServiceAccountToken: false
       volumes:
         - name: realm-import
           configMap:
@@ -120,12 +121,14 @@ spec:
           periodSeconds: 30
           timeoutSeconds: 5
         resources:
-          limits:
-            memory: 1Gi
-            cpu: "1"
           requests:
-            memory: 512Mi
-            cpu: "0.5"
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+            ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: Service

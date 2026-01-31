@@ -38,6 +38,7 @@ spec:
       labels:
         app: grafana
     spec:
+      automountServiceAccountToken: false
       volumes:
         - name: grafana-ini
           configMap:
@@ -106,6 +107,15 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 2
             failureThreshold: 6
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: Service

@@ -24,6 +24,7 @@ spec:
       labels:
         app: oauth2-proxy-grafana
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: oauth2-proxy
           image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
@@ -73,6 +74,15 @@ spec:
             - containerPort: {{ .Values.oauth2.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -89,6 +99,7 @@ spec:
       labels:
         app: oauth2-proxy-prometheus
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: oauth2-proxy
           image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
@@ -136,6 +147,15 @@ spec:
             - containerPort: {{ .Values.oauth2.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -152,6 +172,7 @@ spec:
       labels:
         app: oauth2-proxy-zipkin
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: oauth2-proxy
           image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
@@ -199,6 +220,15 @@ spec:
             - containerPort: {{ .Values.oauth2.internalPort }}
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: Service

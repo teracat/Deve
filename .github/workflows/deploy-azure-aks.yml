@@ -268,6 +268,8 @@ jobs:
         cat > .github/helm/monitoring/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
+        images:
+          tag: "${{ steps.vars.outputs.image_tag }}"
         oauth2:
           host: "${{ vars.HOST_OAUTH2 }}"
           hostRoot: "${{ vars.HOST_ROOT }}"
@@ -320,6 +322,8 @@ jobs:
         cat > .github/helm/api/values.override.yaml << EOF
         namespace:
           name: "${NAMESPACE}"
+        images:
+          tag: "${{ steps.vars.outputs.image_tag }}"
         api:
           yourModuleConnectionString: "${YOURMODULE_DATASOURCE_CONNECTIONSTRING}"
           jwtSigningSecretKey: "${JWT_SIGNING_SECRET_KEY}"
