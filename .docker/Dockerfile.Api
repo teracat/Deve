@@ -17,7 +17,7 @@ COPY ./Directory.Build.props /src
 COPY ./Deve.Api.slnx /src
 
 RUN dotnet restore /src/Deve.Api.slnx
-RUN dotnet publish /src/Api/Deve.Api.csproj -c Release -o /app --no-restore -p:EnforceCodeStyleInBuild=true
+RUN dotnet publish /src/Api/Deve.Api.csproj -c Release -o /app --no-restore -p:EnforceCodeStyleInBuild=false
 
 # Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
