@@ -1,15 +1,15 @@
 ﻿using System.Globalization;
-using System.Security;
 using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.SourceGenerators;
-using ReactiveUI.Validation.Helpers;
-using ReactiveUI.Validation.Extensions;
+using System.Security;
 using Deve.Auth.Login;
 using Deve.Clients.Wpf.Interfaces;
 using Deve.Clients.Wpf.Resources.Strings;
 using Deve.Clients.Wpf.Views;
 using Deve.Dto.Responses.Results;
+using ReactiveUI;
+using ReactiveUI.SourceGenerators;
+using ReactiveUI.Validation.Extensions;
+using ReactiveUI.Validation.Helpers;
 
 namespace Deve.Clients.Wpf.ViewModels;
 
@@ -57,21 +57,28 @@ internal sealed partial class LoginViewModel : BaseViewModel
 
         // Validation Rules
         _ = this.ValidationRule(vm => vm.Username,
-                            this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Username,
-                                                (shouldValidate, username) => !shouldValidate || !string.IsNullOrWhiteSpace(username)),
-                            AppResources.MissingUsername);
+                                this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Username,
+                                                  (shouldValidate, username) => !shouldValidate || !string.IsNullOrWhiteSpace(username)),
+                                AppResources.MissingUsername);
 
         _passwordValidation = this.ValidationRule(vm => vm.Password,
-                                                    this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Password,
-                                                                    (shouldValidate, password) => !shouldValidate || (password is not null && password.Length > 0)),
-                                                    AppResources.MissingPassword);
+                                                  this.WhenAnyValue(vm => vm.ShouldValidate, vm => vm.Password,
+                                                                    (shouldValidate, password) => !shouldValidate || (password?.Length > 0)),
+                                                  AppResources.MissingPassword);
 
         // Properties
         _hasErrorPasswordHelper = this.WhenAnyValue(vm => vm._passwordValidation.IsValid)
-                                        .Select(isValid => !isValid)
-                                        .ToProperty(this, vm => vm.HasErrorPassword, initialValue: false, scheduler: scheduler.TaskPool);
+                                      .Select(isValid => !isValid)
+                                      .ToProperty(this, vm => vm.HasErrorPassword, initialValue: false, scheduler: scheduler.TaskPool);
 
         // Subscriptions
+        CreateSubscriptions(scheduler);
+    }
+    #endregion
+
+    #region Methods
+    private void CreateSubscriptions(ISchedulerProvider scheduler)
+    {
         _ = this.WhenAnyObservable(vm => vm.LoginCommand.IsExecuting)
             .SubscribeOn(scheduler.TaskPool)
             .ObserveOn(scheduler.MainThread)
@@ -79,9 +86,9 @@ internal sealed partial class LoginViewModel : BaseViewModel
             .Subscribe(isExecuting => IsBusy = isExecuting);
 
         _ = _passwordValidation.ValidationChanged
-                            .SubscribeOn(scheduler.TaskPool)
-                            .ObserveOn(scheduler.MainThread)
-                            .Subscribe(_ => this.RaisePropertyChanged(nameof(HasErrorPassword)));
+            .SubscribeOn(scheduler.TaskPool)
+            .ObserveOn(scheduler.MainThread)
+            .Subscribe(_ => this.RaisePropertyChanged(nameof(HasErrorPassword)));
 
         _ = this.WhenAnyValue(vm => vm.SelectedLanguage)
             .SubscribeOn(scheduler.TaskPool)
@@ -129,9 +136,7 @@ internal sealed partial class LoginViewModel : BaseViewModel
                 }
             });
     }
-    #endregion
 
-    #region Methods
     private async Task<ResultGet<LoginResponse>?> Login(string password)
     {
         if (!Validate())
