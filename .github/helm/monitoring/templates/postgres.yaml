@@ -132,10 +132,11 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "500m"
-            ephemeral-storage: "2Gi"
+            ephemeral-storage: "1Gi"
           limits:
             memory: "1Gi"
             cpu: "1"
+            ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: ConfigMap
