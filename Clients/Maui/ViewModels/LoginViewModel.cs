@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 using ReactiveUI.Validation.Extensions;
-using Deve.Auth;
 using Deve.Auth.Login;
 using Deve.Clients.Maui.Interfaces;
 using Deve.Clients.Maui.Resources.Strings;
