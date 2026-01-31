@@ -82,6 +82,7 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -154,6 +155,7 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -226,6 +228,7 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
+              ephemeral-storage: "2Gi"
 ---
 apiVersion: v1
 kind: Service
