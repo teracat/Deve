@@ -1,3 +1,9 @@
 FROM grafana/grafana:12.3
 
+USER root
 COPY ./.docker/grafana/provisioning /etc/grafana/provisioning
+
+RUN chown -R 472:472 /etc/grafana /var/lib/grafana /var/log/grafana \
+    && chmod -R a+r /etc/grafana
+
+USER 472
