@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jordi Badia Santaulària",
+  "classifications": [ "Common", "C#", "Item" ],
+  "identity": "Deve.Template.FeatureEmpty",
+  "groupIdentity": "Deve.Templates.FeatureEmpty",
+  "name": ".NET DEVEloper Template (Feature Empty)",
+  "shortName": "deve-feature-empty",
+  "tags": { "language": "C#", "type": "item" },
+
+  "sourceName": "Deve",
+  "preferNameDirectory": false,
+
+  "symbols": {
+    "FeaturePluralName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "Identity",
+      "replaces": "FEATURE_PLURAL",
+      "fileRename": "FEATURE_PLURAL"
+    },
+    "FeatureSingularName": {
+      "type": "parameter",
+      "valueSource": "text",
+      "description": "Feature name (singular)",
+      "isRequired": "true",
+      "replaces": "FEATURE_SINGULAR",
+      "fileRename": "FEATURE_SINGULAR"
+    },
+    "ModuleName": {
+      "type": "parameter",
+      "valueSource": "text",
+      "isRequired": "true",
+      "description": "Module name",
+      "replaces": "MODULE_NAME",
+      "fileRename": "MODULE_NAME"
+    },
+    "ProjectName": {
+      "type": "parameter",
+      "datatype": "text",
+      "isRequired": "true",
+      "description": "Project name (replaces 'Deve')",
+      "replaces": "Deve",
+      "fileRename": "Deve"
+    }
+  },
+
+  "forms": {
+    "Identity": { "identifier": "identity" }
+  },
+
+  "sources": [
+    {
+      "source": "./content",
+      "modifiers": [
+        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**" ] }
+      ]
+    }
+  ],
+
+  "postActions": [
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Ensure Entities is a global using",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/GlobalUsings.cs \"<hooks:global-using>\" \"global using Deve.MODULE_NAME.Entities;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to item in GlobalUsings",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/GlobalUsings.cs \"<hooks:global-using>\" \"global using Deve.MODULE_NAME.FEATURE_PLURAL;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property Core",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Modules/MODULE_NAME/Core.cs \"<hooks:core-properties>\" \"\n    public IFEATURE_SINGULARData FEATURE_PLURAL => dataFEATURE_SINGULAR;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add argument in Core constructor",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- --smart-comma=true ./Modules/MODULE_NAME/Core.cs \"<hooks:core-contructor>\" \"    IFEATURE_SINGULARData dataFEATURE_SINGULAR\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add Path to module Constants",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-path>\" \"    public static readonly string PathFEATURE_SINGULARV1 = PathMODULE_NAMEV1 + \\\"FEATURE_SINGULAR\\\";\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add Tag to module Constants",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/MODULE_NAMEConstants.cs \"<hooks:constants-tag>\" \"    public static readonly string TagFEATURE_SINGULAR = \\\"FEATURE_SINGULAR\\\";\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to module IData",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/IMODULE_NAMEData.cs \"<hooks:data-using>\" \"using Deve.MODULE_NAME.FEATURE_PLURAL;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to module IData",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Common/MODULE_NAME/IMODULE_NAMEData.cs \"<hooks:data-properties>\" \"    IFEATURE_SINGULARData FEATURE_PLURAL { get; }\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add repository mock to module IData",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Tests/Common/CommonTestsDependencyInjection.cs \"<hooks:tests-di-repository-mock>\" \"                .AddScoped(_ => new FEATURE_SINGULARRepositoryMock().Object)\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add using to module Sdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/MODULE_NAMESdk.cs \"<hooks:sdk-module-using>\" \"using Deve.MODULE_NAME.FEATURE_PLURAL;\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "description": "Add property to module Sdk",
+      "args": {
+        "executable": "dotnet",
+        "args": "run InsertAfterHook.cs -- ./Sdk/MODULE_NAME/MODULE_NAMESdk.cs \"<hooks:sdk-module-properties>\" \"    public IFEATURE_SINGULARData FEATURE_PLURAL => field ??= new FEATURE_SINGULARSdk(sdk);\""
+      },
+      "applyFileRenamesToArgs": [ "args" ],
+      "continueOnError": true,
+      "manualInstructions": []
+    }
+  ]
+}
