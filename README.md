@@ -118,19 +118,19 @@ Telmetry is added to the Api (also to the MAUI Client sample). More information 
 
 Grafana:
 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-metrics-grafana.png" title="Diagnostics - Grafana"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-metrics-grafana.png" width="150" alt="Diagnostics - Grafana"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-metrics-grafana.png" title="Diagnostics - Grafana"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-metrics-grafana.png" width="200" alt="Diagnostics - Grafana"></a> 
 
 Zipkin:
 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-zipkin.png" title="Diagnostics - Zipkin"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-zipkin.png" width="150" alt="Diagnostics - Zipkin"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-zipkin.png" title="Diagnostics - Zipkin"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-zipkin.png" width="250" alt="Diagnostics - Zipkin"></a> 
 
 Sentry:
 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-sentry.png" title="Diagnostics - Sentry"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-sentry.png" width="150" alt="Diagnostics - Sentry"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-sentry.png" title="Diagnostics - Sentry"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-sentry.png" width="200" alt="Diagnostics - Sentry"></a> 
 
 Azure Appication Insights:
 
-<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-azure.png" title="Diagnostics - Azure App Insights"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-azure.png" width="150" alt="Diagnostics - Azure App Insights"></a> 
+<a href="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-azure.png" title="Diagnostics - Azure App Insights"><img src="https://raw.githubusercontent.com/teracat/Deve/refs/heads/main/diagnostics-traces-azure.png" width="200" alt="Diagnostics - Azure App Insights"></a> 
 
 ## Wiki
 
