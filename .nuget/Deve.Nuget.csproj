@@ -49,6 +49,7 @@
     <None Include="..\.editorconfig" Pack="true" PackagePath="" />
     <None Include="..\Directory.Build.props" Pack="true" PackagePath="" />
     <None Include="..\*.slnx" Pack="true" PackagePath="" />
+    <None Include="..\InsertAfterHook.cs" Pack="true" PackagePath="" />
     <None Include="..\.docker\**\*" Pack="true" PackagePath=".docker" />
     <None Include="..\.github\**\*" Pack="true" PackagePath=".github" />
     <None Include="..\.template.config\**\*" Pack="true" PackagePath=".template.config" />
