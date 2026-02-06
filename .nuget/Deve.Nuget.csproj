@@ -40,21 +40,27 @@
   
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="..\AGENTS.md" Pack="true" PackagePath="" />
     <None Include="..\VERSION" Pack="true" PackagePath="" />
     <None Include="..\logo.png" Pack="true" PackagePath="" />
     <None Include="..\diagram.png" Pack="true" PackagePath="" />
-    <None Include="..\*.sln" Pack="true" PackagePath="" />
+    <None Include="..\.gitignore" Pack="true" PackagePath="" />
+    <None Include="..\.dockerignore" Pack="true" PackagePath="" />
+    <None Include="..\.editorconfig" Pack="true" PackagePath="" />
+    <None Include="..\Directory.Build.props" Pack="true" PackagePath="" />
+    <None Include="..\*.slnx" Pack="true" PackagePath="" />
+    <None Include="..\.docker\**\*" Pack="true" PackagePath=".docker" />
+    <None Include="..\.github\**\*" Pack="true" PackagePath=".github" />
     <None Include="..\.template.config\**\*" Pack="true" PackagePath=".template.config" />
-    <None Include="..\Auth\**\*" Pack="true" PackagePath="Auth" />
-    <None Include="..\Client\**\*" Pack="true" PackagePath="Client" />
+    <None Include="..\Api\**\*" Pack="true" PackagePath="Api" />
+    <None Include="..\Clients\**\*" Pack="true" PackagePath="Clients" />
     <None Include="..\Common\**\*" Pack="true" PackagePath="Common" />
     <None Include="..\Common.Api\**\*" Pack="true" PackagePath="Common.Api" />
-    <None Include="..\Common.Sdk\**\*" Pack="true" PackagePath="Common.Sdk" />
+    <None Include="..\Common.Modules\**\*" Pack="true" PackagePath="Common.Modules" />
     <None Include="..\Core\**\*" Pack="true" PackagePath="Core" />
-    <None Include="..\DataSource\**\*" Pack="true" PackagePath="DataSource" />
-    <None Include="..\External\**\*" Pack="true" PackagePath="External" />
     <None Include="..\Extra\**\*" Pack="true" PackagePath="Extra" />
-    <None Include="..\Internal\**\*" Pack="true" PackagePath="Internal" />
+    <None Include="..\Modules\**\*" Pack="true" PackagePath="Modules" />
+    <None Include="..\Sdk\**\*" Pack="true" PackagePath="Sdk" />
     <None Include="..\Tests\**\*" Pack="true" PackagePath="Tests" />
     <None Remove="**\bin\**;**\obj\**" />
   </ItemGroup>
