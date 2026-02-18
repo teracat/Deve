@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.Customers.Clients;
 
-public interface IClientData : IModuleItem
+public interface IClientData : IFeature
 {
     // Queries
     Task<ResultGetList<ClientListResponse>> GetAsync() => GetAsync(null, CancellationToken.None);
