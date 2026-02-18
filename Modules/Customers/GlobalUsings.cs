@@ -9,6 +9,7 @@ global using Deve.Abstractions.Handlers;
 global using Deve.Handlers;
 global using Deve.Repositories;
 global using Deve.Mediators;
+global using Deve.Publishers;
 global using Deve.Cache;
 global using Deve.Customers.Entities;
 global using Deve.Data;
