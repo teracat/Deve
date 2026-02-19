@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.Identity.Users;
 
-public interface IUserData : IModuleItem
+public interface IUserData : IFeature
 {
     // Queries
     Task<ResultGetList<UserResponse>> GetAsync() => GetAsync(null, CancellationToken.None);

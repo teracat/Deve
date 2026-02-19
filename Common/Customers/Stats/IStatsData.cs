@@ -2,7 +2,7 @@
 
 namespace Deve.Customers.Stats;
 
-public interface IStatsData : IModuleItem
+public interface IStatsData : IFeature
 {
     // Queries
     Task<ResultGet<ClientStatsResponse>> GetClientStatsAsync() => GetClientStatsAsync(CancellationToken.None);

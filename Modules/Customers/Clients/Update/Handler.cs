@@ -5,7 +5,7 @@ namespace Deve.Customers.Clients.Update;
 internal sealed class Handler(
     IDataOptions options,
     IRepository<Client> repository,
-    IMediator mediator) : ICommandUpdateHandler<Command>
+    IPublisher mediator) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
