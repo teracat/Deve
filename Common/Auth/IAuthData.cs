@@ -7,7 +7,7 @@ namespace Deve.Auth;
 /// <summary>
 /// Provides authentication functionality.
 /// </summary>
-public interface IAuthData : IModuleItem
+public interface IAuthData : IFeature
 {
     /// <summary>
     /// Authenticates a user and generates an access token.
