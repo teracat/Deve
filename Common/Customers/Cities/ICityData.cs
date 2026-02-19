@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.Customers.Cities;
 
-public interface ICityData : IModuleItem
+public interface ICityData : IFeature
 {
     // Queries
     Task<ResultGetList<CityResponse>> GetAsync() => GetAsync(null, CancellationToken.None);

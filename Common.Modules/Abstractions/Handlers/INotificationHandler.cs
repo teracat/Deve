@@ -1,4 +1,6 @@
-﻿namespace Deve.Abstractions.Handlers;
+﻿using Deve.Abstractions.Publishers;
+
+namespace Deve.Abstractions.Handlers;
 
 public interface INotificationHandler;
 
