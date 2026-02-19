@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.MODULE_NAME.FEATURE_PLURAL;
 
-public interface IFEATURE_SINGULARData : IModuleItem
+public interface IFEATURE_SINGULARData : IFeature
 {
     // Queries
 

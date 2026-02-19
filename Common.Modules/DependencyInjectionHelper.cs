@@ -7,6 +7,7 @@ using Deve.Repositories;
 using Deve.Shield;
 using Deve.Behaviors;
 using Deve.Abstractions.Handlers;
+using Deve.Publishers;
 
 namespace Deve;
 
@@ -41,7 +42,7 @@ public static class DependencyInjectionHelper
 
         _ = Register(services,
                      assembly,
-                     typeof(IModuleItem),
+                     typeof(IFeature),
                      ServiceLifetime.Scoped);
 
         _ = Register(services,
@@ -81,6 +82,7 @@ public static class DependencyInjectionHelper
         services.AddSingleton<IShield, ShieldMain>()
                 .AddSingleton<IHash, HashSha512>()
                 .AddScoped<IMediator, InMemoryMediator>()
+                .AddScoped<IPublisher, InMemoryPublisher>()
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app, Assembly assembly)

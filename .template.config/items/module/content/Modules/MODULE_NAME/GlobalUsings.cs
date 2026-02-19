@@ -7,6 +7,7 @@ global using Deve.Abstractions.Endpoints;
 global using Deve.Handlers;
 global using Deve.Repositories;
 global using Deve.Mediators;
+global using Deve.Publishers;
 global using Deve.Validators;
 global using Deve.Data;
 global using Deve.Dto;

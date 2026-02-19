@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.Customers.Countries;
 
-public interface ICountryData : IModuleItem
+public interface ICountryData : IFeature
 {
     // Queries
     Task<ResultGetList<CountryResponse>> GetAsync() => GetAsync(null, CancellationToken.None);

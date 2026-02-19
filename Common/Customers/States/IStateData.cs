@@ -3,7 +3,7 @@ using Deve.Dto.Responses.Results;
 
 namespace Deve.Customers.States;
 
-public interface IStateData : IModuleItem
+public interface IStateData : IFeature
 {
     // Queries
     Task<ResultGetList<StateResponse>> GetAsync() => GetAsync(null, CancellationToken.None);
