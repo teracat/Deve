@@ -5,7 +5,7 @@ namespace Deve.Customers.Clients.UpdateStatus;
 internal sealed class Handler(
     IDataOptions options,
     IRepository<Client> repository,
-    IMediator mediator) : ICommandUpdateHandler<Command>
+    IPublisher publisher) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
@@ -24,7 +24,7 @@ internal sealed class Handler(
             return Result.Fail(options.LangCode, ResultErrorType.Unknown);
         }
 
-        await mediator.PublishAsync(new ClientUpdated(command.Id));
+        await publisher.PublishAsync(new ClientUpdated(command.Id));
 
         return Result.Ok();
     }
