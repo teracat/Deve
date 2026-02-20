@@ -5,7 +5,7 @@
     <!-- Publish NuGet packages: https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#web-portal-use-the-upload-package-tab-on-nugetorg -->
     <!-- To generate the nupkg file, run the following command from .nuget folder (Debug is used to avoid losing the #if DEBUG statements): dotnet pack -v diag -->
     <PackageId>Teracat.Deve</PackageId>
-    <PackageVersion>2.2.1</PackageVersion>
+    <PackageVersion>2.2.2</PackageVersion>
     <Title>.NET DEVEloper Template</Title>
     <Authors>Jordi Badia Santaulària</Authors>
     <Description>This project serves as a starting point for developers who need to create applications with data access requirements</Description>
