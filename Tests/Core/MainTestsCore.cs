@@ -6,6 +6,7 @@ using Deve.Auth;
 using Deve.Customers;
 using Deve.Identity;
 using Deve.Identity.Enums;
+using Deve.Logging;
 using Deve.Tests.Mocks.IdentityService;
 
 namespace Deve.Tests.Core;
@@ -25,7 +26,7 @@ public sealed class MainTestsCore : IData
     public MainTestsCore(IDataOptions options, Role? role)
     {
         var services = new ServiceCollection();
-        _ = services.AddCoreEmbedded(options)
+        _ = services.AddCoreEmbedded(new DebugLog(), options)
                     .AddTests();
 
         if (role is not null)

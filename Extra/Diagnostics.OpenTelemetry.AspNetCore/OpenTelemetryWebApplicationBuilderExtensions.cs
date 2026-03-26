@@ -14,20 +14,20 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
 {
     private const string DiagnosticsProvider = "OpenTelemetry.AspNetCore";
 
-    public static WebApplicationBuilder AddDiagnosticsOpenTelemetry(this WebApplicationBuilder builder, ConnectionMultiplexer? redisConnectionMultiplexer, Action<MeterProviderBuilder>? funcConfigMetrics, Action<TracerProviderBuilder>? funcConfigTracing)
+    public static WebApplicationBuilder AddDiagnosticsOpenTelemetry(this WebApplicationBuilder builder, ConnectionMultiplexer? redisConnectionMultiplexer, ILog? log, Action<MeterProviderBuilder>? funcConfigMetrics, Action<TracerProviderBuilder>? funcConfigTracing)
     {
-        Log.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
+        log?.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
 
         var tracingOtlpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
         var azureAppInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
         var zipkinUrl = builder.Configuration["ZIPKIN_URL"];
         var prometheusScrapeEndpoint = builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"];
 
-        Log.Debug($"RedisConnectionMultiplexer.Configuration={redisConnectionMultiplexer?.Configuration}");
-        Log.Debug($"OTEL_EXPORTER_OTLP_ENDPOINT={tracingOtlpEndpoint}");
-        Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
-        Log.Debug($"ZIPKIN_URL={zipkinUrl}");
-        Log.Debug($"PROMETHEUS_SCRAPE_ENDPOINT={prometheusScrapeEndpoint}");
+        log?.Debug($"RedisConnectionMultiplexer.Configuration={redisConnectionMultiplexer?.Configuration}");
+        log?.Debug($"OTEL_EXPORTER_OTLP_ENDPOINT={tracingOtlpEndpoint}");
+        log?.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
+        log?.Debug($"ZIPKIN_URL={zipkinUrl}");
+        log?.Debug($"PROMETHEUS_SCRAPE_ENDPOINT={prometheusScrapeEndpoint}");
 
         // Logs: record individual operations, such as an incoming request, a failure in a specific component, or an order being placed.
         _ = builder.Logging.AddOpenTelemetry(options =>
@@ -63,7 +63,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                 // Prometheus exporter
                 if (!string.IsNullOrWhiteSpace(prometheusScrapeEndpoint))
                 {
-                    Log.Debug("{DiagnosticsProvider} - Enabling Prometheus exporter for metrics...", DiagnosticsProvider);
+                    log?.Debug("{DiagnosticsProvider} - Enabling Prometheus exporter for metrics...", DiagnosticsProvider);
 
                     // Expose the Prometheus scrape endpoint
                     _ = metrics.AddPrometheusExporter(o => o.ScrapeEndpointPath = prometheusScrapeEndpoint);
@@ -98,7 +98,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                 // Enable to collect redis calls
                 if (redisConnectionMultiplexer is not null)
                 {
-                    Log.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
+                    log?.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
 
                     _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer);
                 }
@@ -106,7 +106,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                 // Zipkin exporter (for distributed tracing)
                 if (!string.IsNullOrWhiteSpace(zipkinUrl))
                 {
-                    Log.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
+                    log?.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
 
                     _ = tracing.AddZipkinExporter(o => o.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans"));
                 }
@@ -118,7 +118,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
         // Add Azure Monitor
         if (!string.IsNullOrWhiteSpace(azureAppInsightsConnectionString))
         {
-            Log.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
+            log?.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
 
             _ = otel.UseAzureMonitor(o => o.ConnectionString = azureAppInsightsConnectionString);
         }
@@ -126,7 +126,7 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
         // Add OTLP exporter
         if (!string.IsNullOrEmpty(tracingOtlpEndpoint))
         {
-            Log.Debug("{DiagnosticsProvider} - Enabling OTLP exporter...", DiagnosticsProvider);
+            log?.Debug("{DiagnosticsProvider} - Enabling OTLP exporter...", DiagnosticsProvider);
 
             _ = otel.UseOtlpExporter();
         }

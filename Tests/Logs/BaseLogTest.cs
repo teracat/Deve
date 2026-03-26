@@ -5,13 +5,13 @@ namespace Deve.Tests.Logs;
 public abstract class BaseLogTest
 {
     #region Fields
-    private readonly ILogProvider _logProvider;
+    private readonly ILog _log;
     #endregion
 
     #region Constructor
-    protected BaseLogTest(ILogProvider logProvider)
+    protected BaseLogTest(ILog log)
     {
-        _logProvider = logProvider;
+        _log = log;
     }
     #endregion
 
@@ -22,7 +22,7 @@ public abstract class BaseLogTest
     [InlineData(" ")]
     public void Debug_NullOrEmpty_NoException(string? input)
     {
-        var exception = Record.Exception(() => _logProvider.Debug(input!));
+        var exception = Record.Exception(() => _log.Debug(input));
 
         Assert.Null(exception);
     }
@@ -30,7 +30,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_Text_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Sample text"));
+        var exception = Record.Exception(() => _log.Debug("Sample text"));
 
         Assert.Null(exception);
     }
@@ -38,7 +38,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg}", "FirstArg"));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg}", "FirstArg"));
 
         Assert.Null(exception);
     }
@@ -46,7 +46,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithMultipleArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg}", "FirstArg", 2));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg} {SecondArg}", "FirstArg", 2));
 
         Assert.Null(exception);
     }
@@ -54,7 +54,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithObjectArg_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg}", new { Name = "Test", Value = 123 }));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg}", new { Name = "Test", Value = 123 }));
 
         Assert.Null(exception);
     }
@@ -62,7 +62,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithNullArg_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg}", null!));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg}", null));
 
         Assert.Null(exception);
     }
@@ -70,7 +70,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithMultipleObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
 
         Assert.Null(exception);
     }
@@ -78,7 +78,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithNullAndObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg}", null!, new { Name = "Test", Value = 123 }));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg} {SecondArg}", null, new { Name = "Test", Value = 123 }));
 
         Assert.Null(exception);
     }
@@ -86,7 +86,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithNullAndMultipleObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
 
         Assert.Null(exception);
     }
@@ -94,7 +94,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Debug_TextWithMultipleNullArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, null!, null!));
+        var exception = Record.Exception(() => _log.Debug("Some text {FirstArg} {SecondArg} {ThirdArg}", null, null, null));
 
         Assert.Null(exception);
     }
@@ -107,7 +107,7 @@ public abstract class BaseLogTest
     [InlineData(" ")]
     public void Error_NullOrEmpty_NoException(string? input)
     {
-        var exception = Record.Exception(() => _logProvider.Error(input!));
+        var exception = Record.Exception(() => _log.Error(input));
 
         Assert.Null(exception);
     }
@@ -115,7 +115,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_Text_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Sample text"));
+        var exception = Record.Exception(() => _log.Error("Sample text"));
 
         Assert.Null(exception);
     }
@@ -123,7 +123,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_Exception_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error(new InvalidOperationException("Sample exception")));
+        var exception = Record.Exception(() => _log.Error(new InvalidOperationException("Sample exception")));
 
         Assert.Null(exception);
     }
@@ -131,14 +131,14 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_ExceptionAndText_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error(new InvalidOperationException("Sample exception"), "Sample text"));
+        var exception = Record.Exception(() => _log.Error(new InvalidOperationException("Sample exception"), "Sample text"));
         Assert.Null(exception);
     }
 
     [Fact]
     public void Error_NullExceptionAndText_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error(null!, "Sample text"));
+        var exception = Record.Exception(() => _log.Error(null, "Sample text"));
 
         Assert.Null(exception);
     }
@@ -146,7 +146,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_ExceptionAndNullText_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error(new InvalidOperationException("Sample exception"), null!));
+        var exception = Record.Exception(() => _log.Error(new InvalidOperationException("Sample exception"), null));
 
         Assert.Null(exception);
     }
@@ -154,7 +154,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_NullExceptionAndNullText_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error((Exception)null!, null!));
+        var exception = Record.Exception(() => _log.Error((Exception)null, null));
 
         Assert.Null(exception);
     }
@@ -162,7 +162,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg}", "FirstArg"));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg}", "FirstArg"));
 
         Assert.Null(exception);
     }
@@ -170,7 +170,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithMultipleArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg}", "FirstArg", 2));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg} {SecondArg}", "FirstArg", 2));
 
         Assert.Null(exception);
     }
@@ -178,7 +178,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithObjectArg_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg}", new { Name = "Test", Value = 123 }));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg}", new { Name = "Test", Value = 123 }));
 
         Assert.Null(exception);
     }
@@ -186,7 +186,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithNullArg_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg}", null!));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg}", null));
 
         Assert.Null(exception);
     }
@@ -194,7 +194,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithMultipleObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg} {SecondArg}", new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
 
         Assert.Null(exception);
     }
@@ -202,7 +202,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithNullAndObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg}", null!, new { Name = "Test", Value = 123 }));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg} {SecondArg}", null, new { Name = "Test", Value = 123 }));
 
         Assert.Null(exception);
     }
@@ -210,7 +210,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithNullAndMultipleObjectArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null, new { Name = "Test", Value = 123 }, new List<int> { 1, 2, 3 }));
 
         Assert.Null(exception);
     }
@@ -218,7 +218,7 @@ public abstract class BaseLogTest
     [Fact]
     public void Error_TextWithMultipleNullArgs_NoException()
     {
-        var exception = Record.Exception(() => _logProvider.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null!, null!, null!));
+        var exception = Record.Exception(() => _log.Error("Some text {FirstArg} {SecondArg} {ThirdArg}", null, null, null));
 
         Assert.Null(exception);
     }
