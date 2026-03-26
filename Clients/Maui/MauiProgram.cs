@@ -17,6 +17,8 @@ internal static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        MultiLog log = new();
+
         var builder = MauiApp.CreateBuilder();
 
         builder.Logging.SetMinimumLevel(LogLevel.Debug);
@@ -24,7 +26,7 @@ internal static class MauiProgram
         //-:cnd
 #if DEBUG
         // We add the Debug logger for the logs generated before the MauiApp is built.
-        Log.Providers.AddDebug();
+        log.AddDebug();
 
         builder.Logging.AddDebug();
 #endif
@@ -32,13 +34,13 @@ internal static class MauiProgram
 
         builder
             .UseMauiApp<App>()
-            .RegisterServices()
+            .RegisterServices(log)
             .RegisterViewModels()
             .RegisterViews()
             // Diagnostics
             // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.Maui as a reference and comment the next line.
             // You can configure the Azure Application Insights connection string and the Zipkin URL here.
-            .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", zipkinUrl: null, funcConfigTracing: (tracing) =>
+            .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", zipkinUrl: null, log, funcConfigTracing: (tracing) =>
             {
                 // Configure Tracing exporters here (if you want to use other exporters).
 
@@ -88,8 +90,8 @@ internal static class MauiProgram
         var logger = app.Services.GetService<ILogger<MauiApp>>();
         if (logger is not null)
         {
-            Log.Providers.AddNetCore(logger);
-            Log.Providers.RemoveDebug(); // We remove the Debug logger because it's already included in the NetCore provider.
+            log.AddNetCore(logger);
+            log.RemoveDebug(); // We remove the Debug logger because it's already included in the NetCore provider.
         }
 
         return app;

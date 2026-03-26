@@ -11,6 +11,7 @@ public sealed class RedisCache : ICache
 {
     #region Fields
     private readonly IDatabase _database;
+    private readonly ILog? _log;
     #endregion
 
     #region Properties
@@ -26,6 +27,18 @@ public sealed class RedisCache : ICache
     /// <param name="connectionString">The connection string to the Redis server.</param>
     public RedisCache(string connectionString)
     {
+        ConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
+        _database = ConnectionMultiplexer.GetDatabase();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RedisCache"/> class.
+    /// </summary>
+    /// <param name="connectionString">The connection string to the Redis server.</param>
+    /// <param name="log">The <see cref="ILog"/> to log to.</param>
+    public RedisCache(string connectionString, ILog log)
+    {
+        _log = log;
         ConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
         _database = ConnectionMultiplexer.GetDatabase();
     }
@@ -53,6 +66,19 @@ public sealed class RedisCache : ICache
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="RedisCache"/> class with a configuration action.
+    /// </summary>
+    /// <param name="configuration">The string configuration to use for this multiplexer.</param>
+    /// <param name="configure">Action to further modify the parsed configuration options.</param>
+    /// <param name="log">The <see cref="ILog"/> to log to.</param>
+    public RedisCache(string configuration, Action<ConfigurationOptions> configure, ILog log)
+    {
+        _log = log;
+        ConnectionMultiplexer = ConnectionMultiplexer.Connect(configuration, configure);
+        _database = ConnectionMultiplexer.GetDatabase();
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="RedisCache"/> class with a configuration action and logging capabilities.
     /// </summary>
     /// <param name="configuration">The string configuration to use for this multiplexer.</param>
@@ -70,6 +96,18 @@ public sealed class RedisCache : ICache
     /// <param name="database">The existing <see cref="IDatabase"/> instance.</param>
     public RedisCache(IDatabase database)
     {
+        ConnectionMultiplexer = null;
+        _database = database;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RedisCache"/> class with an existing <see cref="IDatabase"/> instance.
+    /// </summary>
+    /// <param name="database">The existing <see cref="IDatabase"/> instance.</param>
+    /// <param name="log">The <see cref="ILog"/> to log to.</param>
+    public RedisCache(IDatabase database, ILog log)
+    {
+        _log = log;
         ConnectionMultiplexer = null;
         _database = database;
     }
@@ -101,7 +139,7 @@ public sealed class RedisCache : ICache
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            _log?.Error(ex);
             value = default!;
             return false;
         }
@@ -126,7 +164,7 @@ public sealed class RedisCache : ICache
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            _log?.Error(ex);
         }
     }
 

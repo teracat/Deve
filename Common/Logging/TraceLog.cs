@@ -5,7 +5,7 @@ namespace Deve.Logging;
 /// <summary>
 /// A logging provider that sends log messages to the trace output.
 /// </summary>
-internal sealed class LogProviderTrace : ILogProvider
+public sealed class TraceLog : ILog
 {
     /// <inheritdoc/>
     public void Debug(string text) => Trace.TraceInformation(text);
@@ -19,7 +19,15 @@ internal sealed class LogProviderTrace : ILogProvider
     public void Error(string text) => Trace.TraceError(text);
 
     /// <inheritdoc/>
-    public void Error(Exception exception) => Trace.TraceError(exception.ToString());
+    public void Error(Exception exception)
+    {
+        if (exception is null)
+        {
+            return;
+        }
+
+        Trace.TraceError(exception.ToString());
+    }
 
     /// <inheritdoc/>
     public void Error(Exception exception, string message) => Trace.TraceError("{0} --> {1}", message, exception);
@@ -30,24 +38,24 @@ internal sealed class LogProviderTrace : ILogProvider
         Trace.TraceError(Utils.ConvertNameArgumentsToIndexed(format), args);
 }
 
-public static class LogProviderTraceExtension
+public static class TraceLogExtension
 {
-    private static LogProviderTrace? _instance;
+    private static ILog? _instance;
 
-    public static void AddTrace(this LogProviders logProviders)
+    public static void AddTrace(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new LogProviderTrace();
-            _ = logProviders.Add(_instance);
+            _instance = new TraceLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveTrace(this LogProviders logProviders)
+    public static void RemoveTrace(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

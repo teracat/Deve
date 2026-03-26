@@ -1,31 +1,49 @@
 ﻿using System.Globalization;
 using System.Text;
-using Deve.Logging;
 using Deve.Dto.Responses.Results;
+using Deve.Logging;
 
 namespace Deve.Clients;
 
 public abstract class SampleBaseClient
 {
-    public static void LogCharacters(char character, int count) => Log.Debug(new string(character, count));
-
-    public static void LogTitle(string title)
+    public static void LogCharacters(ILog log, char character, int count)
     {
-        LogCharacters('#', 80);
-        Log.Debug("# " + title);
-        LogCharacters('#', 80);
+        if (log is null)
+        {
+            return;
+        }
+
+        log.Debug(new string(character, count));
     }
 
-    public static void LogResult(string data)
+    public static void LogTitle(ILog log, string title)
     {
-        LogCharacters('*', 50);
-        Log.Debug("* Result:");
-        LogCharacters('*', 50);
-        Log.Debug("\n" + data + "\n");
-        LogCharacters('*', 50);
+        if (log is null)
+        {
+            return;
+        }
+
+        LogCharacters(log, '#', 80);
+        log.Debug("# " + title);
+        LogCharacters(log, '#', 80);
     }
 
-    public static void LogError(IResult result)
+    public static void LogResult(ILog log, string data)
+    {
+        if (log is null)
+        {
+            return;
+        }
+
+        LogCharacters(log, '*', 50);
+        log.Debug("* Result:");
+        LogCharacters(log, '*', 50);
+        log.Debug("\n" + data + "\n");
+        LogCharacters(log, '*', 50);
+    }
+
+    public static void LogError(ILog log, IResult result)
     {
         if (result?.Errors is null)
         {
@@ -37,8 +55,8 @@ public abstract class SampleBaseClient
         {
             _ = msg.AppendLine(CultureInfo.InvariantCulture, $"{error.Type} - {error.Description} [{error.FieldName}]");
         }
-        LogResult(msg.ToString());
+        LogResult(log, msg.ToString());
     }
 
-    public abstract Task Execute();
+    public abstract Task Execute(CancellationToken cancellationToken);
 }

@@ -7,19 +7,19 @@ namespace Deve.Logging;
 /// Use NLog as a log provider
 /// https://github.com/nlog/nlog/wiki/Tutorial
 /// </summary>
-internal sealed class NLogLogProvider : ILogProvider
+public sealed class NLogLog : ILog
 {
     #region Fields
     private readonly Logger _logger;
     #endregion
 
     #region Constructors
-    public NLogLogProvider()
+    public NLogLog()
     {
         _logger = LogManager.GetCurrentClassLogger();
     }
 
-    public NLogLogProvider(Logger logger)
+    public NLogLog(Logger logger)
     {
         _logger = logger;
     }
@@ -40,24 +40,24 @@ internal sealed class NLogLogProvider : ILogProvider
     #endregion
 }
 
-public static class NLogLogProviderExtension
+public static class NLogLogExtension
 {
-    private static NLogLogProvider? _instance;
+    private static ILog? _instance;
 
-    public static void AddNLog(this LogProviders logProviders)
+    public static void AddNLog(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new NLogLogProvider();
-            _ = logProviders.Add(_instance);
+            _instance = new NLogLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveNLog(this LogProviders logProviders)
+    public static void RemoveNLog(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }
