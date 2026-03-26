@@ -37,12 +37,12 @@ public abstract class SimpleBaseLog : ILog
 
     #region Constructor
     /// <summary>
-    /// Used to write log messages to the console.
+    /// Used to write log messages.
     /// </summary>
     /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
     /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
     /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-    protected SimpleBaseLog(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+    protected SimpleBaseLog(string? dateFormat, string? debugStringFormat, string? errorStringFormat)
     {
         if (dateFormat is not null)
         {
@@ -59,6 +59,25 @@ public abstract class SimpleBaseLog : ILog
             ErrorStringFormat = errorStringFormat;
         }
     }
+
+
+    /// <summary>
+    /// Used to write log messages.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
+    protected SimpleBaseLog(string? dateFormat, string? debugStringFormat) : this(dateFormat, debugStringFormat, null) { }
+
+    /// <summary>
+    /// Used to write log messages.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    protected SimpleBaseLog(string? dateFormat) : this(dateFormat, null, null) { }
+
+    /// <summary>
+    /// Used to write log messages.
+    /// </summary>
+    protected SimpleBaseLog() : this(null, null, null) { }
     #endregion
 
     #region Methods

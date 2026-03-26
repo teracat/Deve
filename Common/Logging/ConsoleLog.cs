@@ -12,10 +12,28 @@ public sealed class ConsoleLog : SimpleBaseLog
     /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
     /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
     /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-    public ConsoleLog(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+    public ConsoleLog(string? dateFormat, string? debugStringFormat, string? errorStringFormat)
         : base(dateFormat, debugStringFormat, errorStringFormat)
     {
     }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
+    public ConsoleLog(string? dateFormat, string? debugStringFormat) : this(dateFormat, debugStringFormat, null) { }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    public ConsoleLog(string? dateFormat) : this(dateFormat, null, null) { }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    public ConsoleLog() : this(null, null, null) { }
     #endregion
 
     #region LogProviderSimpleBase
