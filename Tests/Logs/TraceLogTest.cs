@@ -5,7 +5,7 @@ namespace Deve.Tests.Logs;
 public class TraceLogTest : BaseLogTest
 {
     public TraceLogTest()
-        : base(new LogProviderTrace())
+        : base(new TraceLog())
     {
     }
 }

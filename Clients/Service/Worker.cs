@@ -3,13 +3,8 @@ using Deve.Logging;
 
 namespace Deve.Clients;
 
-internal sealed class Worker : BackgroundService
+internal sealed class Worker(ILog log) : BackgroundService
 {
-    public Worker(ILogger<Worker> logger)
-    {
-        Log.Providers.AddNetCore(logger);
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -24,20 +19,20 @@ internal sealed class Worker : BackgroundService
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Sdk (Api must be running)
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
-                SampleBaseClient.LogTitle("Sdk...");
-                await SampleExecutorsClient.Sdk(options);
+                SampleBaseClient.LogTitle(log, "Sdk...");
+                await SampleExecutorsClient.Sdk(options, log, stoppingToken);
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Embedded (uses Core, no other projects must be running)
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
-                SampleBaseClient.LogTitle("Embedded...");
-                await SampleExecutorsClient.Embedded(options);
+                SampleBaseClient.LogTitle(log, "Embedded...");
+                await SampleExecutorsClient.Embedded(options, log, stoppingToken);
 
                 await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                log.Error(ex);
             }
         }
     }

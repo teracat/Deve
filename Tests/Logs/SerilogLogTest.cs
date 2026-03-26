@@ -11,7 +11,7 @@ public class SerilogLogTest : BaseLogTest
     {
     }
 
-    private static SerilogLogProvider CreateProvider() =>
+    private static SerilogLog CreateProvider() =>
         new(new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .WriteTo.InMemory()

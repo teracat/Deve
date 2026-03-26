@@ -5,7 +5,7 @@ namespace Deve.Logging;
 /// <summary>
 /// Base class for simple logging providers such as Console, Trace, and Debug.
 /// </summary>
-internal abstract class LogProviderSimpleBase : ILogProvider
+public abstract class SimpleBaseLog : ILog
 {
     #region Constants
     /// <summary>
@@ -42,7 +42,7 @@ internal abstract class LogProviderSimpleBase : ILogProvider
     /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
     /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
     /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-    protected LogProviderSimpleBase(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+    protected SimpleBaseLog(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
     {
         if (dateFormat is not null)
         {
@@ -78,7 +78,7 @@ internal abstract class LogProviderSimpleBase : ILogProvider
     protected abstract void Write(string format, params object?[] args);
     #endregion
 
-    #region ILogProvider
+    #region ILog
     /// <inheritdoc/>
     public void Debug(string text) => Write(FormatText(DebugStringFormat, text));
 

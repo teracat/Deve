@@ -5,6 +5,7 @@ using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Views;
 using Deve.Data;
 using Deve.Diagnostics;
+using Deve.Logging;
 using Deve.Sdk;
 using Deve.Sdk.LoggingHandlers;
 
@@ -12,14 +13,15 @@ namespace Deve.Clients.Maui.Helpers;
 
 internal static class ServiceProviderHelper
 {
-    public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
+    public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder, ILog log)
     {
-        RegisterServices(mauiAppBuilder.Services);
+        RegisterServices(mauiAppBuilder.Services, log);
         return mauiAppBuilder;
     }
 
-    public static void RegisterServices(IServiceCollection services)
+    public static void RegisterServices(IServiceCollection services, ILog log)
     {
+        _ = services.AddSingleton(log);
         _ = services.AddSingleton<INavigationService, MauiNavigationService>();
 
         // Register the OpenTelemetry transaction handler for diagnostics
