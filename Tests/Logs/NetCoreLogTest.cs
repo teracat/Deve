@@ -10,9 +10,9 @@ public class NetCoreLogTest : BaseLogTest
     {
     }
 
-    private static NetCoreLogProvider CreateProvider()
+    private static NetCoreLog CreateProvider()
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        return new NetCoreLogProvider(loggerFactory.CreateLogger("Tests"));
+        return new NetCoreLog(loggerFactory.CreateLogger("Tests"));
     }
 }

@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Deve.Api.Options;
+﻿using System.Reflection;
 // <hooks:core-di-using>
 using Deve.Auth;
 using Deve.Auth.TokenManagers;
@@ -10,13 +7,17 @@ using Deve.Cache;
 using Deve.Customers;
 using Deve.Data;
 using Deve.Identity;
+using Deve.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Core;
 
 public static class CoreDependencyInjection
 {
-    public static IServiceCollection AddCoreEmbedded(this IServiceCollection services, IDataOptions options) =>
+    public static IServiceCollection AddCoreEmbedded(this IServiceCollection services, ILog log, IDataOptions options) =>
         services.AddCommon()
+                .AddSingleton(log)
                 // <hooks:core-di-addmodule>
                 .AddModuleAuth()
                 .AddModuleIdentity()
@@ -29,22 +30,23 @@ public static class CoreDependencyInjection
                 .AddSingleton<IUserIdentityService, EmbeddedUserIdentityService>()
                 .AddSingleton<IData, MainCore>();
 
-    public static IServiceCollection AddConfiguration(this IServiceCollection services, ConnectionStringsOptions options) =>
-        services.AddSingleton(Options.Create(options));
+    public static IServiceCollection AddConfiguration(this IServiceCollection services, Options.ConnectionStringsOptions options) =>
+        services.AddSingleton(Microsoft.Extensions.Options.Options.Create(options));
 
     public static IServiceCollection AddConfigurationAppSettings(this IServiceCollection services)
     {
         IConfiguration config = GetConfiguration();
 
-        _ = services.Configure<ConnectionStringsOptions>(config.GetSection("ConnectionStrings"));
+        _ = services.Configure<Options.ConnectionStringsOptions>(config.GetSection("ConnectionStrings"));
 
         return services.AddSingleton(config);
     }
 
     private static IConfiguration GetConfiguration()
     {
+        string path = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? Directory.GetCurrentDirectory();
         IConfigurationBuilder builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(path)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
         return builder.Build();

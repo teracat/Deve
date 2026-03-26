@@ -10,20 +10,27 @@ internal static class Program
 {
     public static void Main(string[] args)
     {
-        //Log.Providers.AddLog4net();
-        //Log.Providers.AddNLog();
+        MultiLog log = new();
+        //log.AddLog4Net();
+        log.AddNLog();
+        //log.AddSerilog();
+        //log.AddSentry();
         //-:cnd
 #if DEBUG
-        Log.Providers.AddDebug();
+        log.AddDebug();
 #endif
         //+:cnd
 
         var builder = Host.CreateApplicationBuilder(args);
-        builder.Services.AddWindowsService(options => options.ServiceName = "Deve Client");
-        //builder.Logging.AddDebug();
-        builder.Services.AddHostedService<Worker>();
+        _ = builder.Services.AddWindowsService(options => options.ServiceName = "Deve Client");
+        _ = builder.Services.AddHostedService<Worker>();
+        _ = builder.Services.AddSingleton<ILog>(log);
 
         var host = builder.Build();
+
+        var logger = host.Services.GetRequiredService<ILogger<Worker>>();
+        log.AddNetCore(logger);
+
         host.Run();
     }
 }

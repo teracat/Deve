@@ -5,7 +5,7 @@ using Deve.Logging;
 
 namespace Deve.Publishers;
 
-internal sealed class InMemoryPublisher(IServiceProvider serviceProvider) : IPublisher
+internal sealed class InMemoryPublisher(IServiceProvider serviceProvider, ILog log) : IPublisher
 {
     public Task PublishAsync(INotification notification) =>
         Task.Run(() =>
@@ -48,7 +48,7 @@ internal sealed class InMemoryPublisher(IServiceProvider serviceProvider) : IPub
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex, $"Error executing handler {handler.GetType().FullName} for {notificationType.FullName}");
+                        log.Error(ex, $"Error executing handler {handler.GetType().FullName} for {notificationType.FullName}");
                     }
                 });
             }

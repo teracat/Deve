@@ -11,12 +11,12 @@ public static class OpenTelemetryServiceCollectionExtensions
 {
     private const string DiagnosticsProvider = "OpenTelemetry.Maui";
 
-    public static MauiAppBuilder AddDiagnosticsOpenTelemetry(this MauiAppBuilder builder, string? azureAppInsightsConnectionString, Uri? zipkinUrl, Action<TracerProviderBuilder>? funcConfigTracing)
+    public static MauiAppBuilder AddDiagnosticsOpenTelemetry(this MauiAppBuilder builder, string? azureAppInsightsConnectionString, Uri? zipkinUrl, ILog? log, Action<TracerProviderBuilder>? funcConfigTracing)
     {
-        Log.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
+        log?.Debug("{DiagnosticsProvider} - Configuring diagnostics...", DiagnosticsProvider);
 
-        Log.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
-        Log.Debug($"ZIPKIN_URL={zipkinUrl}");
+        log?.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
+        log?.Debug($"ZIPKIN_URL={zipkinUrl}");
 
         _ = builder.Logging.AddOpenTelemetry(options =>
         {
@@ -40,7 +40,7 @@ public static class OpenTelemetryServiceCollectionExtensions
 
                               if (zipkinUrl is not null)
                               {
-                                  Log.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
+                                  log?.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
 
                                   _ = tracing.AddZipkinExporter(zipkin => zipkin.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans"));
                               }
@@ -50,7 +50,7 @@ public static class OpenTelemetryServiceCollectionExtensions
 
         if (!string.IsNullOrWhiteSpace(azureAppInsightsConnectionString))
         {
-            Log.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
+            log?.Debug("{DiagnosticsProvider} - Enabling Azure Monitor...", DiagnosticsProvider);
 
             _ = otel.UseAzureMonitorExporter(options => options.ConnectionString = azureAppInsightsConnectionString);
         }

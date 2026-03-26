@@ -6,7 +6,7 @@ namespace Deve.Logging;
 /// Use Sentry as a log provider
 /// https://sentry.io/
 /// </summary>
-internal sealed class SentryLogProvider : ILogProvider
+public sealed class SentryLog : ILog
 {
     public void Debug(string text) => SentrySdk.CaptureMessage(text, SentryLevel.Debug);
 
@@ -57,24 +57,24 @@ internal sealed class SentryLogProvider : ILogProvider
     }
 }
 
-public static class SentryLogProviderExtension
+public static class SentryLogExtension
 {
-    private static SentryLogProvider? _instance;
+    private static ILog? _instance;
 
-    public static void AddSentry(this LogProviders logProviders)
+    public static void AddSentry(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new SentryLogProvider();
-            _ = logProviders.Add(_instance);
+            _instance = new SentryLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveSentry(this LogProviders logProviders)
+    public static void RemoveSentry(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

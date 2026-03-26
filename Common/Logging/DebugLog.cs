@@ -3,7 +3,7 @@
 /// <summary>
 /// A logging provider that outputs log messages to the debug output window.
 /// </summary>
-internal sealed class LogProviderDebug : LogProviderSimpleBase
+public sealed class DebugLog : SimpleBaseLog
 {
     #region Constructor
     /// <summary>
@@ -12,7 +12,7 @@ internal sealed class LogProviderDebug : LogProviderSimpleBase
     /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
     /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
     /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-    public LogProviderDebug(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+    public DebugLog(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
         : base(dateFormat, debugStringFormat, errorStringFormat)
     {
     }
@@ -46,24 +46,24 @@ internal sealed class LogProviderDebug : LogProviderSimpleBase
     #endregion
 }
 
-public static class LogProviderDebugExtension
+public static class DebugLogExtension
 {
-    private static LogProviderDebug? _instance;
+    private static ILog? _instance;
 
-    public static void AddDebug(this LogProviders logProviders)
+    public static void AddDebug(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new LogProviderDebug();
-            _ = logProviders.Add(_instance);
+            _instance = new DebugLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveDebug(this LogProviders logProviders)
+    public static void RemoveDebug(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }
