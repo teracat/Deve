@@ -9,21 +9,21 @@ namespace Deve.Logging;
 /// Use log4net as a log provider
 /// https://logging.apache.org/log4net/
 /// </summary>
-internal sealed class Log4NetLogProvider : ILogProvider
+public sealed class Log4NetLog : ILog
 {
     #region Fields
-    private readonly ILog _logger;
+    private readonly log4net.ILog _logger;
     #endregion
 
     #region Constructors
-    public Log4NetLogProvider()
+    public Log4NetLog()
     {
         var logRepository = LogManager.GetRepository(Assembly.GetCallingAssembly());
         _ = XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-        _logger = LogManager.GetLogger(typeof(Log4NetLogProvider));
+        _logger = LogManager.GetLogger(typeof(Log4NetLog));
     }
 
-    public Log4NetLogProvider(ILog logger)
+    public Log4NetLog(log4net.ILog logger)
     {
         _logger = logger;
     }
@@ -48,24 +48,24 @@ internal sealed class Log4NetLogProvider : ILogProvider
     #endregion
 }
 
-public static class Log4NetLogProviderExtension
+public static class Log4NetLogExtension
 {
-    private static Log4NetLogProvider? _instance;
+    private static ILog? _instance;
 
-    public static void AddLog4net(this LogProviders logProviders)
+    public static void AddLog4Net(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new Log4NetLogProvider();
-            _ = logProviders.Add(_instance);
+            _instance = new Log4NetLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveLog4net(this LogProviders logProviders)
+    public static void RemoveLog4Net(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

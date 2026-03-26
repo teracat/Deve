@@ -1,6 +1,4 @@
-﻿using Deve.Logging;
-
-namespace Deve.Tests.Logs;
+﻿namespace Deve.Tests.Logs;
 
 public class SentryLogTest : BaseLogTest
 {
@@ -9,5 +7,5 @@ public class SentryLogTest : BaseLogTest
     {
     }
 
-    private static SentryLogProvider CreateProvider() => new();
+    private static Logging.SentryLog CreateProvider() => new();
 }

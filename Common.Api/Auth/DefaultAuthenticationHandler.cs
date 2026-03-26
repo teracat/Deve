@@ -17,10 +17,11 @@ namespace Deve.Api.Auth;
 public class DefaultAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     #region Fields
-    // <summary>
+    /// <summary>
     /// Manages token validation and authentication.
     /// </summary>
     private readonly ITokenManager _tokenManager;
+    private readonly ILog _log;
     #endregion
 
     #region Constructor
@@ -31,10 +32,11 @@ public class DefaultAuthenticationHandler : AuthenticationHandler<Authentication
     /// <param name="logger">The logger factory used for logging.</param>
     /// <param name="encoder">The URL encoder.</param>
     /// <param name="tokenManager">The token manager used for token validation.</param>
-    public DefaultAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenManager tokenManager)
+    public DefaultAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenManager tokenManager, ILog log)
         : base(options, logger, encoder)
     {
         _tokenManager = tokenManager;
+        _log = log;
     }
     #endregion
 
@@ -87,7 +89,7 @@ public class DefaultAuthenticationHandler : AuthenticationHandler<Authentication
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                _log.Error(ex);
                 return AuthenticateResult.Fail(ex.Message);
             }
         });

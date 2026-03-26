@@ -6,17 +6,18 @@ using Deve.Clients.Wpf.ViewModels;
 using Deve.Clients.Wpf.Views;
 using Deve.Core;
 using Deve.Data;
+using Deve.Logging;
 
 namespace Deve.Clients.Wpf.Helpers;
 
 internal static class ServiceProviderHelper
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services) =>
+    public static IServiceCollection RegisterServices(this IServiceCollection services, ILog log) =>
         services.AddSingleton<INavigationService, NavigationService>()
                 .AddSingleton<IMessageHandler, MessageBoxMessageHandler>()
                 .AddConfigurationAppSettings()
                 .AddSingleton<ISchedulerProvider, SchedulerProvider>()
-                .AddCoreEmbedded(new DataOptions()
+                .AddCoreEmbedded(log, new DataOptions()
                 {
                     LangCode = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName,
                 });

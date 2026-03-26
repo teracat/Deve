@@ -15,6 +15,7 @@ internal sealed partial class App : Application
 {
     #region Fields
     private ServiceProvider _serviceProvider;
+    private readonly MultiLog _log;
     #endregion
 
     #region Constructor
@@ -26,9 +27,12 @@ internal sealed partial class App : Application
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
         }
-        _serviceProvider = CreateServiceProvider();
 
-        Log.Providers.AddTrace();
+        _log = new();
+
+        _serviceProvider = CreateServiceProvider(_log);
+
+        _log.AddTrace();
 
         // Diagnostics
         // Sentry - if you want to use Sentry, add the project Deve.Diagnostics.Sentry as a reference, uncomment the next lines and
@@ -40,7 +44,7 @@ internal sealed partial class App : Application
             // Enable Global Mode since this is a client app
             options.IsGlobalModeEnabled = true;
         });
-        Log.Providers.AddSentry();*/
+        _log.AddSentry();*/
 
         DispatcherUnhandledException += OnAppDispatcherUnhandledException;
     }
@@ -62,16 +66,16 @@ internal sealed partial class App : Application
     #endregion
 
     #region Methods
-    private static ServiceProvider CreateServiceProvider()
+    private static ServiceProvider CreateServiceProvider(ILog log)
     {
         var services = new ServiceCollection();
-        ConfigureServices(services);
+        ConfigureServices(services, log);
         return services.BuildServiceProvider();
     }
 
-    private static void ConfigureServices(ServiceCollection services)
+    private static void ConfigureServices(ServiceCollection services, ILog log)
     {
-        _ = services.RegisterServices()
+        _ = services.RegisterServices(log)
                     .RegisterViewModels()
                     .RegisterViews();
     }
@@ -81,7 +85,7 @@ internal sealed partial class App : Application
         Thread.CurrentThread.CurrentCulture = newCulture;
         Thread.CurrentThread.CurrentUICulture = newCulture;
 
-        _serviceProvider = CreateServiceProvider();
+        _serviceProvider = CreateServiceProvider(_log);
 
         var oldWindow = Current.MainWindow;
 
@@ -93,14 +97,14 @@ internal sealed partial class App : Application
 
         oldWindow.Close();
 
-        Log.Debug($"Changed culture to {newCulture}");
+        _log.Debug($"Changed culture to {newCulture}");
     }
     #endregion
 
     #region Events
-    private static void OnAppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void OnAppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        Log.Error(e.Exception);
+        _log.Error(e.Exception);
 
         // If you want to avoid the application from crashing, change it to true
         e.Handled = false;

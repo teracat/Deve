@@ -65,8 +65,8 @@ internal sealed partial class CountryViewModel : BaseEditViewModel, INavigationA
         // Only assign values if it's not a new country to avoid validation errors
         if (_country.Id != Guid.Empty)
         {
-            Name = _country!.Name;
-            IsoCode = _country!.IsoCode;
+            Name = _country.Name;
+            IsoCode = _country.IsoCode;
         }
 
         return Result.Ok();
@@ -89,8 +89,8 @@ internal sealed partial class CountryViewModel : BaseEditViewModel, INavigationA
         {
             var request = new CountryAddRequest
             {
-                Name = Name!.Trim(),
-                IsoCode = IsoCode!.Trim()
+                Name = Name.Trim(),
+                IsoCode = IsoCode.Trim()
             };
             res = await Data.Customers.Countries.AddAsync(request);
         }
@@ -98,8 +98,8 @@ internal sealed partial class CountryViewModel : BaseEditViewModel, INavigationA
         {
             var request = new CountryUpdateRequest
             {
-                Name = Name!.Trim(),
-                IsoCode = IsoCode!.Trim()
+                Name = Name.Trim(),
+                IsoCode = IsoCode.Trim()
             };
             res = await Data.Customers.Countries.UpdateAsync(_country.Id, request);
         }

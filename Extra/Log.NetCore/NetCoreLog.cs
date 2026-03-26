@@ -6,14 +6,14 @@ namespace Deve.Logging;
 /// Use ILogger from ASP.NET Core as a log provider.
 /// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0
 /// </summary>
-internal sealed class NetCoreLogProvider : ILogProvider
+public sealed class NetCoreLog : ILog
 {
     #region Fields
     private readonly ILogger _logger;
     #endregion
 
     #region Constructors
-    public NetCoreLogProvider(ILogger logger)
+    public NetCoreLog(ILogger logger)
     {
         _logger = logger;
     }
@@ -34,24 +34,24 @@ internal sealed class NetCoreLogProvider : ILogProvider
     #endregion
 }
 
-public static class NetCoreLogProviderExtension
+public static class NetCoreLogExtension
 {
-    private static NetCoreLogProvider? _instance;
+    private static ILog? _instance;
 
-    public static void AddNetCore(this LogProviders logProviders, ILogger logger)
+    public static void AddNetCore(this MultiLog log, ILogger logger)
     {
         if (_instance is null)
         {
-            _instance = new NetCoreLogProvider(logger);
-            _ = logProviders.Add(_instance);
+            _instance = new NetCoreLog(logger);
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveNetCore(this LogProviders logProviders)
+    public static void RemoveNetCore(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

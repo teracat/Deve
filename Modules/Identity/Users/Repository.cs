@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Deve.Api.Options;
+using Deve.Options;
 
 namespace Deve.Identity.Users;
 
