@@ -12,7 +12,7 @@ public class Log4netLogTest : BaseLogTest
     {
     }
 
-    private static Log4NetLogProvider CreateProvider()
+    private static Log4NetLog CreateProvider()
     {
         var memory = new MemoryAppender();
         memory.ActivateOptions();
@@ -25,6 +25,6 @@ public class Log4netLogTest : BaseLogTest
 
         var logger = LogManager.GetLogger(typeof(Log4netLogTest));
 
-        return new Log4NetLogProvider(logger);
+        return new Log4NetLog(logger);
     }
 }

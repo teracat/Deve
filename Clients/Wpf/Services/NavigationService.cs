@@ -5,20 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Deve.Clients.Wpf.Services;
 
-internal sealed class NavigationService : INavigationService
+internal sealed class NavigationService(IServiceProvider serviceProvider, ILog log) : INavigationService
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public NavigationService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-
     public void NavigateTo<TView>(object? parameter) where TView : BaseView
     {
         try
         {
-            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            BaseView view = serviceProvider.GetRequiredService<TView>();
             if (view.ViewModel is INavigationAware navAware)
             {
                 navAware.OnNavigatedTo(parameter);
@@ -27,7 +20,7 @@ internal sealed class NavigationService : INavigationService
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            log.Error(ex);
         }
     }
 
@@ -37,7 +30,7 @@ internal sealed class NavigationService : INavigationService
     {
         try
         {
-            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            BaseView view = serviceProvider.GetRequiredService<TView>();
             if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
             {
                 navAwareWithType.OnNavigatedToWithType(parameter);
@@ -50,7 +43,7 @@ internal sealed class NavigationService : INavigationService
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            log.Error(ex);
         }
     }
 
@@ -58,7 +51,7 @@ internal sealed class NavigationService : INavigationService
     {
         try
         {
-            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            BaseView view = serviceProvider.GetRequiredService<TView>();
             if (view.ViewModel is INavigationAware navAware)
             {
                 navAware.OnNavigatedTo(parameter);
@@ -67,7 +60,7 @@ internal sealed class NavigationService : INavigationService
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            log.Error(ex);
             return false;
         }
     }
@@ -78,7 +71,7 @@ internal sealed class NavigationService : INavigationService
     {
         try
         {
-            BaseView view = _serviceProvider.GetRequiredService<TView>();
+            BaseView view = serviceProvider.GetRequiredService<TView>();
             if (view.ViewModel is INavigationAwareWithType<TParamType> navAwareWithType)
             {
                 navAwareWithType.OnNavigatedToWithType(parameter);
@@ -91,7 +84,7 @@ internal sealed class NavigationService : INavigationService
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            log.Error(ex);
             return false;
         }
     }

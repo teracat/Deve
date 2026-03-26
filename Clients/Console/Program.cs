@@ -4,14 +4,16 @@ using Deve.Clients;
 using Deve.Data;
 using Deve.Logging;
 
-Log.Providers.AddConsole();
-//Log.Providers.AddLog4net();
-//Log.Providers.AddNLog();
-//Log.Providers.AddSerilog();
+var log = new MultiLog();
+log.AddConsole();
+//log.AddLog4Net();
+//log.AddNLog();
+//log.AddSerilog();
+//log.AddSentry();
 
 //-:cnd
 #if DEBUG
-Log.Providers.AddDebug();
+log.AddDebug();
 #endif
 //+:cnd
 
@@ -23,9 +25,9 @@ var options = new DataOptions()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Sdk (Api must be running)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-SampleBaseClient.LogTitle("Sdk...");
+SampleBaseClient.LogTitle(log, "Sdk...");
 
-await SampleExecutorsClient.Sdk(options);
+await SampleExecutorsClient.Sdk(options, log, CancellationToken.None);
 
 Console.WriteLine("Sdk done. Press a key to continue...");
 Console.ReadKey();
@@ -34,9 +36,9 @@ Console.ReadKey();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Embedded (uses Core, no other projects must be running)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-SampleBaseClient.LogTitle("Embedded...");
+SampleBaseClient.LogTitle(log, "Embedded...");
 
-await SampleExecutorsClient.Embedded(options);
+await SampleExecutorsClient.Embedded(options, log, CancellationToken.None);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Finish

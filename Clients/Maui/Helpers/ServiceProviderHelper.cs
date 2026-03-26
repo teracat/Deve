@@ -5,6 +5,7 @@ using Deve.Clients.Maui.ViewModels;
 using Deve.Clients.Maui.Views;
 using Deve.Data;
 using Deve.Diagnostics;
+using Deve.Logging;
 using Deve.Sdk;
 using Deve.Sdk.LoggingHandlers;
 
@@ -12,23 +13,24 @@ namespace Deve.Clients.Maui.Helpers;
 
 internal static class ServiceProviderHelper
 {
-    public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
+    public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder, ILog log)
     {
-        RegisterServices(mauiAppBuilder.Services);
+        RegisterServices(mauiAppBuilder.Services, log);
         return mauiAppBuilder;
     }
 
-    public static void RegisterServices(IServiceCollection services)
+    public static void RegisterServices(IServiceCollection services, ILog log)
     {
+        _ = services.AddSingleton(log);
         _ = services.AddSingleton<INavigationService, MauiNavigationService>();
 
         // Register the OpenTelemetry transaction handler for diagnostics
         _ = services.AddSingleton<IDiagnosticsTransactionHandler, OpenTelemetryTransactionHandler>();
-        _ = services.AddSingleton<IData>(_ => SdkBuilder.Create(EnvironmentType.Staging, new LogLoggingHandler()));
+        _ = services.AddSingleton<IData>(provider => SdkBuilder.Create(EnvironmentType.Staging, new LogLoggingHandler(provider.GetRequiredService<ILog>())));
 
         // If you want to use Sentry, comment the previous two lines and uncomment the next two lines. Use SentryHttpMessageHandler to capture HTTP requests in Sentry.
-        //services.AddSingleton<IDiagnosticsTransactionHandler, TransactionHandlerSentry>();
-        //services.AddSingleton<IData, SdkMain>(provider => new SdkMain(Sdk.EnvironmentType.Staging, new SentryHttpMessageHandler(new LoggingHandlerLog())));
+        //_ = services.AddSingleton<IDiagnosticsTransactionHandler, SentryTransactionHandler>();
+        //_ = services.AddSingleton<IData>(provider => SdkBuilder.Create(EnvironmentType.Staging, new SentryHttpMessageHandler(new LogLoggingHandler(provider.GetRequiredService<ILog>()))));
     }
 
     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)

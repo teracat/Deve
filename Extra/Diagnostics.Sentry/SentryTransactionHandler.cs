@@ -5,7 +5,7 @@ namespace Deve.Diagnostics;
 /// <summary>
 /// Manages the lifecycle of a Sentry transaction for tracking user sessions in a MAUI application.
 /// </summary>
-public sealed class SentryTransactionHandler : IDiagnosticsTransactionHandler
+public sealed class SentryTransactionHandler(ILog log) : IDiagnosticsTransactionHandler
 {
     private readonly List<ITransactionTracer> _transactions = [];
 
@@ -16,7 +16,7 @@ public sealed class SentryTransactionHandler : IDiagnosticsTransactionHandler
     /// <param name="operation">The operation name.</param>
     public void StartTransaction(string name, string operation)
     {
-        Log.Debug("TransactionHandlerSentry - Starting transaction: {Name}, Operation: {Operation}", name, operation);
+        log.Debug("TransactionHandlerSentry - Starting transaction: {Name}, Operation: {Operation}", name, operation);
 
         lock (_transactions)
         {
@@ -31,7 +31,7 @@ public sealed class SentryTransactionHandler : IDiagnosticsTransactionHandler
     /// </summary>
     public void StopTransaction()
     {
-        Log.Debug("TransactionHandlerSentry - Stopping transaction");
+        log.Debug("TransactionHandlerSentry - Stopping transaction");
 
         lock (_transactions)
         {
@@ -55,7 +55,7 @@ public sealed class SentryTransactionHandler : IDiagnosticsTransactionHandler
     /// </summary>
     private void StopAllTransactions()
     {
-        Log.Debug("TransactionHandlerSentry - Stopping all transactions");
+        log.Debug("TransactionHandlerSentry - Stopping all transactions");
 
         lock (_transactions)
         {

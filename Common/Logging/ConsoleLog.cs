@@ -3,7 +3,7 @@
 /// <summary>
 /// A logging provider that outputs log messages to the console.
 /// </summary>
-internal sealed class LogProviderConsole : LogProviderSimpleBase
+public sealed class ConsoleLog : SimpleBaseLog
 {
     #region Constructor
     /// <summary>
@@ -12,10 +12,28 @@ internal sealed class LogProviderConsole : LogProviderSimpleBase
     /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
     /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
     /// <param name="errorStringFormat">Format to be used when the text is written to the log using the Error method. If null, the default format will be used.</param>
-    public LogProviderConsole(string? dateFormat = null, string? debugStringFormat = null, string? errorStringFormat = null)
+    public ConsoleLog(string? dateFormat, string? debugStringFormat, string? errorStringFormat)
         : base(dateFormat, debugStringFormat, errorStringFormat)
     {
     }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    /// <param name="debugStringFormat">Format to be used when the text is written to the log using the Debug method. If null, the default format will be used.</param>
+    public ConsoleLog(string? dateFormat, string? debugStringFormat) : this(dateFormat, debugStringFormat, null) { }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    /// <param name="dateFormat">Format to be used when the date & time is written to the log. If null, the default format will be used.</param>
+    public ConsoleLog(string? dateFormat) : this(dateFormat, null, null) { }
+
+    /// <summary>
+    /// Used to write log messages to the Console.
+    /// </summary>
+    public ConsoleLog() : this(null, null, null) { }
     #endregion
 
     #region LogProviderSimpleBase
@@ -35,24 +53,24 @@ internal sealed class LogProviderConsole : LogProviderSimpleBase
     #endregion
 }
 
-public static class LogProviderConsoleExtension
+public static class ConsoleLogExtension
 {
-    private static LogProviderConsole? _instance;
+    private static ILog? _instance;
 
-    public static void AddConsole(this LogProviders logProviders)
+    public static void AddConsole(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new LogProviderConsole();
-            _ = logProviders.Add(_instance);
+            _instance = new ConsoleLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveConsole(this LogProviders logProviders)
+    public static void RemoveConsole(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

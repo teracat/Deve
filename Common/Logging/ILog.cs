@@ -1,9 +1,9 @@
 ﻿namespace Deve.Logging;
 
 /// <summary>
-/// It includes the methods to write to a log provider.
+/// It includes the methods to write to log
 /// </summary>
-public interface ILogProvider
+public interface ILog
 {
     /// <summary>
     /// Write some debug text to the log.

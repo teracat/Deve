@@ -8,14 +8,14 @@ namespace Deve.Logging;
 /// Use Serilog as a log provider
 /// https://github.com/serilog/serilog/
 /// </summary>
-internal sealed class SerilogLogProvider : ILogProvider
+public sealed class SerilogLog : ILog
 {
     #region Fields
     private readonly Logger _logger;
     #endregion
 
     #region Constructors
-    public SerilogLogProvider()
+    public SerilogLog()
     {
         var configuration = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
@@ -26,14 +26,14 @@ internal sealed class SerilogLogProvider : ILogProvider
                  .CreateLogger();
     }
 
-    public SerilogLogProvider(IConfiguration configuration)
+    public SerilogLog(IConfiguration configuration)
     {
         _logger = new LoggerConfiguration()
                  .ReadFrom.Configuration(configuration)
                  .CreateLogger();
     }
 
-    public SerilogLogProvider(Logger logger)
+    public SerilogLog(Logger logger)
     {
         _logger = logger;
     }
@@ -54,24 +54,24 @@ internal sealed class SerilogLogProvider : ILogProvider
     #endregion
 }
 
-public static class SerilogLogProviderExtension
+public static class SerilogLogExtension
 {
-    private static SerilogLogProvider? _instance;
+    private static ILog? _instance;
 
-    public static void AddSerilog(this LogProviders logProviders)
+    public static void AddSerilog(this MultiLog log)
     {
         if (_instance is null)
         {
-            _instance = new SerilogLogProvider();
-            _ = logProviders.Add(_instance);
+            _instance = new SerilogLog();
+            log.Add(_instance);
         }
     }
 
-    public static void RemoveSerilog(this LogProviders logProviders)
+    public static void RemoveSerilog(this MultiLog log)
     {
         if (_instance is not null)
         {
-            _ = logProviders.Remove(_instance);
+            _ = log.Remove(_instance);
             _instance = null;
         }
     }

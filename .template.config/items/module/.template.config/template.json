@@ -284,7 +284,7 @@
       "description": "Add property to ConnectionStringsOptions",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Common.Api/Options/ConnectionStringsOptions.cs \"<hooks:api-connectionstringsoptions-properties>\" \"    public string MODULE_NAMEConnection { get; set; } = string.Empty;\""
+        "args": "run InsertAfterHook.cs -- --extra-eol=start ./Common/Options/ConnectionStringsOptions.cs \"<hooks:common-connectionstringsoptions-properties>\" \"    public string MODULE_NAMEConnection { get; set; } = string.Empty;\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

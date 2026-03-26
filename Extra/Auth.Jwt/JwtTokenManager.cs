@@ -17,16 +17,26 @@ public sealed class JwtTokenManager : ITokenManager
 
     private readonly byte[] _signingKeyBytes;
     private readonly byte[] _encryptionKeyBytes;
+    private readonly ILog? _log;
 
     /// <summary>
     /// Creates a new instance of TokenManagerJwt.
     /// </summary>
     /// <param name="signingSecretKey">The signingSecretKey is used to ensure the integrity and authentiClient of the token (must be 32 bytes).</param>
     /// <param name="encryptionSecretKey">The encryptionSecretKey is used to protect the confidentiality of the token's data (must be 32 bytes).</param>
-    public JwtTokenManager(string signingSecretKey, string encryptionSecretKey)
+    public JwtTokenManager(string signingSecretKey, string encryptionSecretKey) : this(signingSecretKey, encryptionSecretKey, null) { }
+
+    /// <summary>
+    /// Creates a new instance of TokenManagerJwt.
+    /// </summary>
+    /// <param name="signingSecretKey">The signingSecretKey is used to ensure the integrity and authentiClient of the token (must be 32 bytes).</param>
+    /// <param name="encryptionSecretKey">The encryptionSecretKey is used to protect the confidentiality of the token's data (must be 32 bytes).</param>
+    /// <param name="log">The log instance to log errors during token validation.</param>
+    public JwtTokenManager(string signingSecretKey, string encryptionSecretKey, ILog? log)
     {
         _signingKeyBytes = Encoding.ASCII.GetBytes(signingSecretKey);
         _encryptionKeyBytes = Encoding.ASCII.GetBytes(encryptionSecretKey);
+        _log = log;
     }
 
     ///<inheritdoc/>
@@ -94,7 +104,7 @@ public sealed class JwtTokenManager : ITokenManager
         }
         catch (Exception ex)
         {
-            Log.Error(ex);
+            _log?.Error(ex);
             return false;
         }
     }

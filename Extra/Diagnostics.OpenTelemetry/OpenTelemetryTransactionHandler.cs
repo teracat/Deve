@@ -6,15 +6,9 @@ namespace Deve.Diagnostics;
 /// <summary>
 /// Handles OpenTelemetry transactions (spans).
 /// </summary>
-public sealed class OpenTelemetryTransactionHandler : IDiagnosticsTransactionHandler
+public sealed class OpenTelemetryTransactionHandler(TracerProvider tracerProvider, ILog log) : IDiagnosticsTransactionHandler
 {
-    private readonly TracerProvider _tracerProvider;
     private readonly List<TelemetrySpan> _spans = [];
-
-    public OpenTelemetryTransactionHandler(TracerProvider tracerProvider)
-    {
-        _tracerProvider = tracerProvider;
-    }
 
     /// <summary>
     /// Starts a new transaction.
@@ -23,11 +17,11 @@ public sealed class OpenTelemetryTransactionHandler : IDiagnosticsTransactionHan
     /// <param name="operation">The operation name</param>
     public void StartTransaction(string name, string operation)
     {
-        Log.Debug("TransactionHandlerOpenTelemetry - Starting span: {Name}, Operation: {Operation}", name, operation);
+        log.Debug("TransactionHandlerOpenTelemetry - Starting span: {Name}, Operation: {Operation}", name, operation);
 
         lock (_spans)
         {
-            var tracer = _tracerProvider.GetTracer(operation);
+            var tracer = tracerProvider.GetTracer(operation);
             var span = tracer?.StartSpan(name);
             if (span is not null)
             {
@@ -41,7 +35,7 @@ public sealed class OpenTelemetryTransactionHandler : IDiagnosticsTransactionHan
     /// </summary>
     public void StopTransaction()
     {
-        Log.Debug("TransactionHandlerOpenTelemetry - Stopping span");
+        log.Debug("TransactionHandlerOpenTelemetry - Stopping span");
 
         lock (_spans)
         {
@@ -62,7 +56,7 @@ public sealed class OpenTelemetryTransactionHandler : IDiagnosticsTransactionHan
     /// </summary>
     private void StopAllTransactions()
     {
-        Log.Debug("TransactionHandlerOpenTelemetry - Stopping all spans");
+        log.Debug("TransactionHandlerOpenTelemetry - Stopping all spans");
 
         lock (_spans)
         {

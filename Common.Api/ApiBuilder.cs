@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Net;
-using Azure;
 //using Sentry.OpenTelemetry;
 using Deve.Api.Auth;
 using Deve.Api.Helpers;
@@ -15,6 +14,7 @@ using Deve.Data;
 using Deve.Diagnostics;
 using Deve.Dto.Responses.Results;
 using Deve.Logging;
+using Deve.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +32,7 @@ public sealed class ApiBuilder
     private readonly List<ApiBuilderAppAction> _appActions = [];
     private readonly WebApplicationBuilder _builder;
     private readonly AppSettingsOptions _appSettings;
+    private readonly MultiLog _log;
 
     public IServiceCollection Services => _builder.Services;
 
@@ -70,7 +71,8 @@ public sealed class ApiBuilder
     private ApiBuilder(string[] args)
     {
         // We add the console logger for the logs generated before the WebApplication is built.
-        Log.Providers.AddConsole();
+        _log = new MultiLog();
+        _log.AddConsole();
 
         // Create a new WebApplication builder with the provided arguments.
         _builder = WebApplication.CreateBuilder(args);
@@ -81,6 +83,8 @@ public sealed class ApiBuilder
 
     public ApiBuilder Configure()
     {
+        AddLog();
+
         AddLocalization();
 
         AddRateLimiter();
@@ -120,8 +124,8 @@ public sealed class ApiBuilder
         }
 
         // Add NetCore Log Provider
-        Log.Providers.AddNetCore(app.Logger);
-        Log.Providers.RemoveConsole(); // We remove the console logger because it's already included in the NetCore provider.
+        _log.RemoveConsole();
+        _log.AddNetCore(app.Logger);
 
         return app;
     }
@@ -159,6 +163,11 @@ public sealed class ApiBuilder
 
         return appSettings;
     }
+
+    /// <summary>
+    /// Registers the application's log implementation as a singleton service in the dependency injection container.
+    /// </summary>
+    private void AddLog() => _ = _builder.Services.AddSingleton<ILog>(_log);
 
     /// <summary>
     /// Configures localization services for the application, including supported cultures and the default request culture.
@@ -330,12 +339,11 @@ public sealed class ApiBuilder
         }
 
         // Inject the TokenManager: used to generate and validate tokens.
-        _ = _builder.Services.AddSingleton<ITokenManager, JwtTokenManager>((_) => new JwtTokenManager(_appSettings.JwtKeys.SigningSecretKey, _appSettings.JwtKeys.EncryptionSecretKey));
+        _ = _builder.Services.AddSingleton<ITokenManager, JwtTokenManager>((_) => new JwtTokenManager(_appSettings.JwtKeys.SigningSecretKey, _appSettings.JwtKeys.EncryptionSecretKey, _log));
 
         // If you want to use TokenManagerCrypt with DataProtection, uncomment the following lines.
-        //var dataProtectionProvider = Microsoft.AspNetCore.DataProtection.DataProtectionProvider.Create(nameof(Program));
-        //var tokenManagerCrypt = new TokenManagerCrypt(new Crypt.CryptDataProtect(dataProtectionProvider), true);
-        //builder.Services.AddSingleton<ITokenManager>(tokenManagerCrypt);
+        //var dataProtectionProvider = Microsoft.AspNetCore.DataProtection.DataProtectionProvider.Create(nameof(ApiBuilder));
+        //_ = _builder.Services.AddSingleton<ITokenManager, TokenManagerCrypt>((_) => new TokenManagerCrypt(new Crypt.CryptDataProtect(dataProtectionProvider), true, _log));
     }
 
     /// <summary>
@@ -370,7 +378,7 @@ public sealed class ApiBuilder
         var redisConnection = _builder.Configuration.GetConnectionString("RedisCacheConnection") ?? string.Empty;
         if (string.IsNullOrWhiteSpace(redisConnection))
         {
-            Log.Debug("The RedisCacheConnection is empty. Using SimpleInMemoryCache as the ICache implementation.");
+            _log.Debug("The RedisCacheConnection is empty. Using SimpleInMemoryCache as the ICache implementation.");
 
             // Registers SimpleInMemoryCache as the implementation for ICache with singleton lifetime.
             // It will use the default expiration time and the default cleanup interval defined in the SimpleInMemoryCache class. Change these values as needed.
@@ -391,10 +399,10 @@ public sealed class ApiBuilder
         }
         else
         {
-            Log.Debug("The RedisCacheConnection is set. Using RedisCache as the ICache implementation.");
+            _log.Debug("The RedisCacheConnection is set. Using RedisCache as the ICache implementation.");
 
 #pragma warning disable CA2000 // Dispose objects before losing scope: it will be disposed by the DI container.
-            var redisCache = new RedisCache(redisConnection);
+            var redisCache = new RedisCache(redisConnection, _log);
 #pragma warning restore CA2000 // Dispose objects before losing scope
             _ = _builder.Services.AddSingleton<ICache>(redisCache);
 
@@ -413,7 +421,7 @@ public sealed class ApiBuilder
     {
         // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.AspNetCore as a reference and comment the next lines.
         // To use OpenTelemetry with Sentry, you need to add the Sentry.OpenTelemetry package and the line "options.UseOpenTelemetry();" in the SentryOptionsExtensions class in the Diagnostics.Sentry project.
-        _ = _builder.AddDiagnosticsOpenTelemetry(redisConnectionMultiplexer,
+        _ = _builder.AddDiagnosticsOpenTelemetry(redisConnectionMultiplexer, _log,
             funcConfigMetrics: (metrics) =>
             {
                 // Configure extra Metrics exporters here (if you want to use other exporters).
@@ -463,7 +471,7 @@ public sealed class ApiBuilder
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        Log.Error(contextFeature.Error);
+                        _log.Error(contextFeature.Error);
 
                         var response = Result.Fail(ResultErrorType.Unknown, null, contextFeature.Error.Message);
                         await context.Response.WriteAsJsonAsync(response);

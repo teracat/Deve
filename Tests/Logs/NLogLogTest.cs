@@ -12,7 +12,7 @@ public class NLogLogTest : BaseLogTest
     {
     }
 
-    private static NLogLogProvider CreateProvider()
+    private static NLogLog CreateProvider()
     {
         var config = new LoggingConfiguration();
 
@@ -23,6 +23,6 @@ public class NLogLogTest : BaseLogTest
 
         var logger = LogManager.GetLogger("test");
 
-        return new NLogLogProvider(logger);
+        return new NLogLog(logger);
     }
 }
