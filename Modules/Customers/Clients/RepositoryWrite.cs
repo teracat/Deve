@@ -1,21 +1,20 @@
 ﻿using Microsoft.Extensions.Options;
 using Deve.Options;
 
-namespace Deve.Customers.Cities;
+namespace Deve.Customers.Clients;
 
-internal sealed class Repository : IRepository<City>
+internal sealed class RepositoryWrite : IRepositoryWrite<Client>
 {
+    // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.CustomersConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnection);
+        // Open connection to database using options.Value.CustomersConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnectionWrite);
     }
 
-    public IQueryable<City> GetAsQueryable() => Data.Cities.AsQueryable();
-
-    public async Task<Guid> AddAsync(City entity, CancellationToken cancellationToken) =>
+    public async Task<Guid> AddAsync(Client entity, CancellationToken cancellationToken) =>
         await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
             var found = FindLocal(entity.Id);
@@ -24,11 +23,11 @@ internal sealed class Repository : IRepository<City>
                 return Guid.Empty;
             }
 
-            Data.Cities.Add(entity);
+            Data.Clients.Add(entity);
             return entity.Id;
         }, cancellationToken);
 
-    public async Task<bool> UpdateAsync(City entity, CancellationToken cancellationToken) =>
+    public async Task<bool> UpdateAsync(Client entity, CancellationToken cancellationToken) =>
         await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
             var found = FindLocal(entity.Id);
@@ -38,7 +37,7 @@ internal sealed class Repository : IRepository<City>
             }
 
             found.Name = entity.Name;
-            found.StateId = entity.StateId;
+            found.CityId = entity.CityId;
 
             return true;
         }, cancellationToken);
@@ -51,8 +50,8 @@ internal sealed class Repository : IRepository<City>
             {
                 return false;
             }
-            return Data.Cities.Remove(found);
+            return Data.Clients.Remove(found);
         }, cancellationToken);
 
-    private static City? FindLocal(Guid id) => Data.Cities.FirstOrDefault(x => x.Id == id);
+    private static Client? FindLocal(Guid id) => Data.Clients.FirstOrDefault(x => x.Id == id);
 }

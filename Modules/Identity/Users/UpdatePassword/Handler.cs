@@ -5,12 +5,13 @@ namespace Deve.Identity.Users.UpdatePassword;
 internal sealed class Handler(
     IDataOptions options,
     IHash hash,
-    IRepository<User> repositoryUser) : ICommandUpdateHandler<Command>
+    IRepositoryRead<User> repositoryUserRead,
+    IRepositoryWrite<User> repositoryUserWrite) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
-        var entity = repositoryUser.GetAsQueryable()
-                                   .FirstOrDefault(x => x.Id == command.Id);
+        var entity = repositoryUserRead.GetAsQueryable()
+                                       .FirstOrDefault(x => x.Id == command.Id);
         if (entity is null)
         {
             return Result.Fail(options.LangCode, ResultErrorType.NotFound);
@@ -18,7 +19,7 @@ internal sealed class Handler(
 
         entity.PasswordHash = hash.Calc(command.Password);
 
-        if (!await repositoryUser.UpdateAsync(entity, cancellationToken))
+        if (!await repositoryUserWrite.UpdateAsync(entity, cancellationToken))
         {
             return Result.Fail(options.LangCode, ResultErrorType.Unknown);
         }

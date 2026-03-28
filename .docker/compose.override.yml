@@ -9,7 +9,8 @@ services:
       - "8081:80"
       - "7245:443"
     environment:
-      ConnectionStrings__YourModuleConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__YourModuleConnectionRead: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__YourModuleConnectionWrite: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
       ConnectionStrings__RedisCacheConnection: "redis:6379"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"

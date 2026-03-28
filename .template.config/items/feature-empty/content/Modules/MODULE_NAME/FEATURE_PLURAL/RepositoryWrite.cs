@@ -1,26 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
-using Deve.Api.Options;
+using Deve.Options;
 
 namespace Deve.MODULE_NAME.FEATURE_PLURAL;
 
-internal sealed class Repository : IRepository<FEATURE_SINGULAR>
+internal sealed class RepositoryWrite : IRepositoryWrite<FEATURE_SINGULAR>
 {
     // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    private static readonly List<FEATURE_SINGULAR> _data =
-    [
-        new FEATURE_SINGULAR() { Id = Guid.NewGuid(), Name = "FEATURE_SINGULAR 1" },
-        new FEATURE_SINGULAR() { Id = Guid.NewGuid(), Name = "FEATURE_SINGULAR 2" },
-    ];
-
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.MODULE_NAMEConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.MODULE_NAMEConnection);
+        // Open connection to database using options.Value.MODULE_NAMEConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.MODULE_NAMEConnectionWrite);
     }
-
-    public IQueryable<FEATURE_SINGULAR> GetAsQueryable() => _data.AsQueryable();
 
     public async Task<Guid> AddAsync(FEATURE_SINGULAR entity, CancellationToken cancellationToken)
     {
@@ -32,7 +24,7 @@ internal sealed class Repository : IRepository<FEATURE_SINGULAR>
                 return Guid.Empty;
             }
 
-            _data.Add(entity);
+            Data.FEATURE_PLURAL.Add(entity);
             return entity.Id;
         }, cancellationToken);
     }
@@ -62,9 +54,9 @@ internal sealed class Repository : IRepository<FEATURE_SINGULAR>
             {
                 return false;
             }
-            return _data.Remove(found);
+            return Data.FEATURE_PLURAL.Remove(found);
         }, cancellationToken);
     }
 
-    private static FEATURE_SINGULAR? FindLocal(Guid id) => _data.FirstOrDefault(x => x.Id == id);
+    private static FEATURE_SINGULAR? FindLocal(Guid id) => Data.FEATURE_PLURAL.FirstOrDefault(x => x.Id == id);
 }

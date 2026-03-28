@@ -3,17 +3,16 @@ using Deve.Options;
 
 namespace Deve.Identity.Users;
 
-internal sealed class Repository : IRepository<User>
+internal sealed class RepositoryWrite : IRepositoryWrite<User>
 {
+    // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.IdentityConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.IdentityConnection);
+        // Open connection to database using options.Value.IdentityConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.IdentityConnectionWrite);
     }
-
-    public IQueryable<User> GetAsQueryable() => Data.Users.AsQueryable();
 
     public async Task<Guid> AddAsync(User entity, CancellationToken cancellationToken)
     {

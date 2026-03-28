@@ -10,9 +10,14 @@ public static class CommonTestsDependencyInjection
                 .AddSingleton(_ => TestsHelpers.CreateHash())
                 .AddSingleton(_ => TestsHelpers.CreateTokenManager())
                 // <hooks:tests-di-repository-mock>
-                .AddScoped(_ => new CountryRepositoryMock().Object)
-                .AddScoped(_ => new StateRepositoryMock().Object)
-                .AddScoped(_ => new CityRepositoryMock().Object)
-                .AddScoped(_ => new ClientRepositoryMock().Object)
-                .AddScoped(_ => new UserRepositoryMock().Object);
+                .AddScoped(_ => new CountryRepositoryReadMock().Object)
+                .AddScoped(_ => new CountryRepositoryWriteMock().Object)
+                .AddScoped(_ => new StateRepositoryReadMock().Object)
+                .AddScoped(_ => new StateRepositoryWriteMock().Object)
+                .AddScoped(_ => new CityRepositoryReadMock().Object)
+                .AddScoped(_ => new CityRepositoryWriteMock().Object)
+                .AddScoped(_ => new ClientRepositoryReadMock().Object)
+                .AddScoped(_ => new ClientRepositoryWriteMock().Object)
+                .AddScoped(_ => new UserRepositoryReadMock().Object)
+                .AddScoped(_ => new UserRepositoryWriteMock().Object);
 }
