@@ -3,7 +3,7 @@ using Deve.Options;
 
 namespace Deve.Identity.Users;
 
-internal sealed class RepositoryWrite : IRepositoryWrite<User>
+internal sealed class RepositoryWrite : IRepositoryWriteUser
 {
     // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
@@ -25,7 +25,7 @@ internal sealed class RepositoryWrite : IRepositoryWrite<User>
             else
             {
                 var found = FindLocal(entity.Id);
-                if (found is null)
+                if (found is not null)
                 {
                     return Guid.Empty;
                 }
@@ -51,9 +51,28 @@ internal sealed class RepositoryWrite : IRepositoryWrite<User>
             found.Role = entity.Role;
             found.Email = entity.Email;
             found.Birthday = entity.Birthday;
-            found.Joined = entity.Joined;
             found.Status = entity.Status;
-            found.PasswordHash = entity.PasswordHash;
+
+            if (!string.IsNullOrWhiteSpace(entity.PasswordHash))
+            {
+                found.PasswordHash = entity.PasswordHash;
+            }
+
+            return true;
+        }, cancellationToken);
+    }
+
+    public Task<bool> UpdatePasswordAsync(Guid id, string passwordHash, CancellationToken cancellationToken)
+    {
+        return Utils.RunProtectedAsync(Semaphore, (_) =>
+        {
+            var found = FindLocal(id);
+            if (found is null)
+            {
+                return false;
+            }
+
+            found.PasswordHash = passwordHash;
 
             return true;
         }, cancellationToken);
