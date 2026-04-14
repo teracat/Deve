@@ -33,6 +33,7 @@
     <File Path="Directory.Build.props" />
   </Folder>
   <Folder Name="/Tests/">
+    <File Path="Tests/Directory.Build.props" />
     <Project Path="Tests/Api/Deve.Tests.Api.csproj" />
     <Project Path="Tests/Auth/Deve.Tests.Auth.csproj" />
     <Project Path="Tests/Cache/Deve.Tests.Cache.csproj" />
