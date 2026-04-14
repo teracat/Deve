@@ -13,7 +13,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_RequestNull_ReturnNotNull()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res);
     }
@@ -21,7 +21,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_RequestNull_ReturnSuccess()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null, TestContext.Current.CancellationToken);
 
         Assert.True(res.Success);
     }
@@ -29,7 +29,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_RequestNull_ReturnDataType()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null, TestContext.Current.CancellationToken);
 
         _ = Assert.IsType<IReadOnlyList<FEATURE_SINGULARMETHOD_NAMEResponse>>(res.Data, exactMatch: false);
     }
@@ -37,7 +37,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_RequestNull_ReturnNotEmpty()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null, TestContext.Current.CancellationToken);
 
         Assert.NotEmpty(res.Data);
     }
@@ -45,7 +45,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     [Fact]
     public async Task METHOD_NAME_RequestNull_ReturnFirstItemNotNull()
     {
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(null, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Data[0]);
     }

@@ -18,7 +18,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task Login_CredentialsNull_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.Login(null);
+        var result = await Fixture.DataNoAuth.Auth.Login(null, TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -26,7 +26,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task Login_CredentialsEmpty_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(string.Empty, string.Empty));
+        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(string.Empty, string.Empty), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -34,7 +34,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task Login_CredentialsNotValid_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest("aa", "bb"));
+        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest("aa", "bb"), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -42,7 +42,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task Login_CredentialsInactive_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive));
+        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(TestsConstants.UserUsernameInactive, TestsConstants.UserPasswordInactive), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -50,7 +50,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task Login_CredentialsValid_ReturnTrue()
     {
-        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid));
+        var result = await Fixture.DataNoAuth.Auth.Login(new LoginRequest(TestsConstants.UserUsernameValid, TestsConstants.UserPasswordValid), TestContext.Current.CancellationToken);
 
         Assert.True(result.Success);
     }
@@ -58,7 +58,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task RefreshToken_Null_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(null);
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(null, TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -66,7 +66,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task RefreshToken_Empty_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(string.Empty));
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(string.Empty), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -74,7 +74,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task RefreshToken_NotValid_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest("aa"));
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest("aa"), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -82,7 +82,7 @@ public abstract class AuthTest : BaseTest<IData>
     [Fact]
     public async Task RefreshToken_Expired_ReturnFalse()
     {
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(TestsConstants.TokenExpired));
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(TestsConstants.TokenExpired), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -92,7 +92,7 @@ public abstract class AuthTest : BaseTest<IData>
     {
         var userToken = TestsHelpers.CreateTokenInactiveUser(Fixture.TokenManager, Role.User);
 
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(userToken.Token));
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(userToken.Token), TestContext.Current.CancellationToken);
 
         Assert.False(result.Success);
     }
@@ -102,7 +102,7 @@ public abstract class AuthTest : BaseTest<IData>
     {
         var userToken = TestsHelpers.CreateTokenValid(Fixture.TokenManager, Role.User);
 
-        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(userToken.Token));
+        var result = await Fixture.DataNoAuth.Auth.RefreshToken(new RefreshTokenRequest(userToken.Token), TestContext.Current.CancellationToken);
 
         Assert.True(result.Success);
     }

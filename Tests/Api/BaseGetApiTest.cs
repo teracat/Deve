@@ -23,7 +23,7 @@ public abstract class BaseGetApiTest : BaseApiTest
     [Fact]
     public async Task GetList_EmptyRequest_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path);
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }
@@ -31,7 +31,7 @@ public abstract class BaseGetApiTest : BaseApiTest
     [Fact]
     public async Task GetList_Parameter_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + $"?{ValidGetListRequestParameterName}=aa");
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + $"?{ValidGetListRequestParameterName}=aa", TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }
@@ -41,7 +41,7 @@ public abstract class BaseGetApiTest : BaseApiTest
     [Fact]
     public async Task Get_Empty_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + Guid.Empty);
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + Guid.Empty, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -49,7 +49,7 @@ public abstract class BaseGetApiTest : BaseApiTest
     [Fact]
     public async Task Get_ValidId_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + ValidId);
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + ValidId, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }

@@ -53,7 +53,7 @@ public abstract class CityTest : DataAllBaseTest<IData, CityResponse, CityRespon
     [Fact]
     public async Task Get_ValidId_ReturnDataIdMatch()
     {
-        var res = await Fixture.DataAuthAdmin.Customers.Cities.GetByIdAsync(ValidId);
+        var res = await Fixture.DataAuthAdmin.Customers.Cities.GetByIdAsync(ValidId, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Data);
         Assert.Equal(ValidId, res.Data.Id);
