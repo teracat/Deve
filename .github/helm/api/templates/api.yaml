@@ -55,8 +55,10 @@ spec:
               value: "redis:{{ .Values.redis.port }}"
             - name: PROMETHEUS_SCRAPE_ENDPOINT
               value: "/metrics"
-            - name: ZIPKIN_URL
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://zipkin.monitoring.svc.cluster.local:9411"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
             - name: OTEL_SERVICE_NAME
               value: "api"
             - name: OTEL_RESOURCE_ATTRIBUTES

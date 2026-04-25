@@ -18,9 +18,9 @@ services:
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
-      ZIPKIN_URL: "http://zipkin:9411"
-      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_TRACES_EXPORTER: "otlp"
       OTEL_SERVICE_NAME: "api"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
@@ -44,3 +44,6 @@ services:
 
   zipkin:
     container_name: dev-zipkin
+
+  otel-collector:
+    container_name: dev-otel-collector
