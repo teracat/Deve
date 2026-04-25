@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
-    <PackageReference Include="Sentry.Maui" Version="6.3.1" />
+    <PackageReference Include="Sentry.Maui" Version="6.4.1" />
   </ItemGroup>
 
   <ItemGroup>
