@@ -56,13 +56,17 @@ spec:
             - name: PROMETHEUS_SCRAPE_ENDPOINT
               value: "/metrics"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://zipkin.monitoring.svc.cluster.local:9411"
+              value: "http://otel-collector.monitoring.svc.cluster.local:4318"
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: "http/protobuf"
             - name: OTEL_SERVICE_NAME
               value: "api"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: "service.instance.id=$(uuidgen)"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
             - name: ConnectionStrings__YourModuleConnection
               valueFrom:
                 secretKeyRef:
