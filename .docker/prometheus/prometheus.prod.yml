@@ -37,5 +37,5 @@ otlp:
 scrape_configs:
   - job_name: 'api'
     static_configs:
-      - targets: ['api.api.svc.cluster.local:80']
+      - targets: ['api.api.svc.cluster.local:8080']
     metrics_path: '/metrics'

@@ -9,7 +9,8 @@ services:
       - "8081:80"
       - "7245:443"
     environment:
-      ConnectionStrings__YourModuleConnection: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__YourModuleConnectionRead: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
+      ConnectionStrings__YourModuleConnectionWrite: "Server=localhost;Database=dbname;User Id=user;Password=pwd;"
       ConnectionStrings__RedisCacheConnection: "redis:6379"
       AppSettings__JwtKeys__SigningSecretKey: "11223344556677889900AABBCCDDEEFF"
       AppSettings__JwtKeys__EncryptionSecretKey: "FFEEDDCCBBAA00998877665544332211"
@@ -17,9 +18,9 @@ services:
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "Devel-Cert-Only"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/dev_cert.pfx"
-      ZIPKIN_URL: "http://zipkin:9411"
-      #OTEL_EXPORTER_OTLP_ENDPOINT: "" # OTLP exporter will not be used
-      #OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+      OTEL_TRACES_EXPORTER: "otlp"
       OTEL_SERVICE_NAME: "api"
       OTEL_RESOURCE_ATTRIBUTES: "service.instance.id=$(uuidgen)"
       PROMETHEUS_SCRAPE_ENDPOINT: "/metrics"
@@ -43,3 +44,6 @@ services:
 
   zipkin:
     container_name: dev-zipkin
+
+  otel-collector:
+    container_name: dev-otel-collector

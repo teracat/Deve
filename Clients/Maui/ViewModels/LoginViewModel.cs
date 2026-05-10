@@ -27,8 +27,10 @@ internal sealed partial class LoginViewModel : BaseViewModel
     {
         //-:cnd
 #if DEBUG
+#pragma warning disable S2068 // Credentials should not be hard-coded
         Username = "teracat";
         Password = "teracat";
+#pragma warning restore S2068 // Credentials should not be hard-coded
 #endif
         //+:cnd
     }

@@ -21,3 +21,6 @@ services:
 
   zipkin:
     container_name: prod-zipkin
+
+  otel-collector:
+    container_name: prod-otel-collector

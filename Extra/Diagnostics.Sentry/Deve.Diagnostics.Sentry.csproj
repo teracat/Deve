@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sentry" Version="5.16.2" />
-    <PackageReference Include="Sentry.OpenTelemetry" Version="5.16.2" />
+    <PackageReference Include="Sentry" Version="6.4.1" />
+    <PackageReference Include="Sentry.OpenTelemetry" Version="6.4.1" />
+    <PackageReference Include="OpenTelemetry.Api" Version="1.15.3" />
+    <PackageReference Include="OpenTelemetry" Version="1.15.3" />
   </ItemGroup>
 
   <ItemGroup>

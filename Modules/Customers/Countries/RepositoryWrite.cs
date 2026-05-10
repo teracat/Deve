@@ -3,17 +3,16 @@ using Deve.Options;
 
 namespace Deve.Customers.Countries;
 
-internal sealed class Repository : IRepository<Country>
+internal sealed class RepositoryWrite : IRepositoryWrite<Country>
 {
+    // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.CustomersConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnection);
+        // Open connection to database using options.Value.CustomersConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnectionWrite);
     }
-
-    public IQueryable<Country> GetAsQueryable() => Data.Countries.AsQueryable();
 
     public async Task<Guid> AddAsync(Country entity, CancellationToken cancellationToken)
     {

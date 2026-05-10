@@ -55,7 +55,7 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new UserUpdatePasswordRequest(string.Empty);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + IdentityConstants.MethodPassword, httpContent);
+        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + IdentityConstants.MethodPassword, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -63,7 +63,7 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task UpdatePassword_NullRequest_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + IdentityConstants.MethodPassword, null);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + IdentityConstants.MethodPassword, null, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -74,7 +74,7 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new UserUpdatePasswordRequest("pwd");
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + IdentityConstants.MethodPassword, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + IdentityConstants.MethodPassword, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -85,7 +85,7 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new UserUpdatePasswordRequest("pwd");
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + IdentityConstants.MethodPassword, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + IdentityConstants.MethodPassword, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -96,7 +96,7 @@ public class UserApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new UserUpdatePasswordRequest("new-pwd-test");
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{TestsConstants.UpdateUserId}/" + IdentityConstants.MethodPassword, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{TestsConstants.UpdateUserId}/" + IdentityConstants.MethodPassword, httpContent, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }

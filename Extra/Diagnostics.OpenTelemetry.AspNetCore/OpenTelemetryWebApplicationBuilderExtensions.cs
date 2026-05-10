@@ -20,13 +20,11 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
 
         var tracingOtlpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
         var azureAppInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
-        var zipkinUrl = builder.Configuration["ZIPKIN_URL"];
         var prometheusScrapeEndpoint = builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"];
 
         log?.Debug($"RedisConnectionMultiplexer.Configuration={redisConnectionMultiplexer?.Configuration}");
         log?.Debug($"OTEL_EXPORTER_OTLP_ENDPOINT={tracingOtlpEndpoint}");
         log?.Debug($"APPLICATIONINSIGHTS_CONNECTION_STRING={azureAppInsightsConnectionString}");
-        log?.Debug($"ZIPKIN_URL={zipkinUrl}");
         log?.Debug($"PROMETHEUS_SCRAPE_ENDPOINT={prometheusScrapeEndpoint}");
 
         // Logs: record individual operations, such as an incoming request, a failure in a specific component, or an order being placed.
@@ -101,14 +99,6 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                     log?.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
 
                     _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer);
-                }
-
-                // Zipkin exporter (for distributed tracing)
-                if (!string.IsNullOrWhiteSpace(zipkinUrl))
-                {
-                    log?.Debug("{DiagnosticsProvider} - Enabling Zipkin exporter for tracing...", DiagnosticsProvider);
-
-                    _ = tracing.AddZipkinExporter(o => o.Endpoint = new Uri($"{zipkinUrl}/api/v2/spans"));
                 }
 
                 // Allow additional configuration for tracing

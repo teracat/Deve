@@ -3,7 +3,7 @@
 internal sealed class Handler(
     IDataOptions options,
     ICache cache,
-    IRepository<Client> repositoryClient) : IGetQueryHandler<Query, ClientStatsResponse>
+    IRepositoryRead<Client> repositoryClient) : IGetQueryHandler<Query, ClientStatsResponse>
 {
     public Task<ResultGet<ClientStatsResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

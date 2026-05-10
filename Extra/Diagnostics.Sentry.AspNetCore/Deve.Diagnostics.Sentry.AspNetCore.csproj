@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.0" />
-    <PackageReference Include="Sentry" Version="5.16.2" />
-    <PackageReference Include="Sentry.AspNetCore" Version="5.16.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.9" />
+    <PackageReference Include="Sentry" Version="6.4.1" />
+    <PackageReference Include="Sentry.AspNetCore" Version="6.4.1" />
   </ItemGroup>
 
   <ItemGroup>

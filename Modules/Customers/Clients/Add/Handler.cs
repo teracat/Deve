@@ -2,7 +2,7 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<Client> repository) : ICommandAddHandler<Command>
+    IRepositoryWrite<Client> repository) : ICommandAddHandler<Command>
 {
     public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken)
     {

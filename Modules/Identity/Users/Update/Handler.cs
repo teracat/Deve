@@ -2,24 +2,22 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<User> repositoryUser) : ICommandUpdateHandler<Command>
+    IRepositoryWriteUser repositoryUserWrite) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
-        var entity = repositoryUser.GetAsQueryable().FirstOrDefault(x => x.Id == command.Id);
-        if (entity is null)
+        var entity = new User
         {
-            return Result.Fail(options.LangCode, ResultErrorType.NotFound);
-        }
+            Id = command.Id,
+            Name = command.Name.Trim(),
+            Username = command.Username.Trim(),
+            Status = command.Status,
+            Role = command.Role,
+            Email = command.Email?.Trim(),
+            Birthday = command.Birthday
+        };
 
-        entity.Name = command.Name.Trim();
-        entity.Username = command.Username.Trim();
-        entity.Status = command.Status;
-        entity.Role = command.Role;
-        entity.Email = command.Email?.Trim();
-        entity.Birthday = command.Birthday;
-
-        if (!await repositoryUser.UpdateAsync(entity, cancellationToken))
+        if (!await repositoryUserWrite.UpdateAsync(entity, cancellationToken))
         {
             return Result.Fail(options.LangCode, ResultErrorType.Unknown);
         }

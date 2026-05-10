@@ -16,11 +16,12 @@ public class CoreFixture : CommonFixture, IDataFixture<IData>
         DataAuthAdmin = new MainTestsCore(Options, Role.Admin);
     }
 
-    public override Task DisposeAsync()
+    public override ValueTask DisposeAsync()
     {
         DataNoAuth.Dispose();
         DataAuthUser.Dispose();
         DataAuthAdmin.Dispose();
+        GC.SuppressFinalize(this);
         return base.DisposeAsync();
     }
 }

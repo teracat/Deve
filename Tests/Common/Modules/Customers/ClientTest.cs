@@ -68,7 +68,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request);
+        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request, TestContext.Current.CancellationToken);
 
         Assert.False(res.Success);
     }
@@ -78,7 +78,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request);
+        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Errors);
     }
@@ -88,7 +88,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request);
+        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request, TestContext.Current.CancellationToken);
 
         Assert.NotEmpty(res.Errors);
     }
@@ -98,7 +98,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request);
+        var res = await Fixture.DataNoAuth.Customers.Clients.UpdateStatusAsync(ValidId, request, TestContext.Current.CancellationToken);
 
         _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
     }
@@ -108,7 +108,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.False(res.Success);
     }
@@ -118,7 +118,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Errors);
     }
@@ -128,7 +128,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
     }
@@ -138,7 +138,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.NotEmpty(res.Errors);
     }
@@ -148,7 +148,7 @@ public abstract class ClientTest : DataAllBaseTest<IData, ClientListResponse, Cl
     {
         var request = new ClientUpdateStatusRequest(ClientStatus.Active);
 
-        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(ValidId, request);
+        var res = await Fixture.DataAuthAdmin.Customers.Clients.UpdateStatusAsync(ValidId, request, TestContext.Current.CancellationToken);
 
         Assert.True(res.Success);
     }
