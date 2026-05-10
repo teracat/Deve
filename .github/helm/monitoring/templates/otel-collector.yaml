@@ -60,9 +60,11 @@ spec:
             requests:
               memory: "128Mi"
               cpu: "250m"
+              ephemeral-storage: "1Gi"
             limits:
               memory: "512Mi"
               cpu: "500m"
+              ephemeral-storage: "2Gi"
           volumeMounts:
             - name: otel-config
               mountPath: /etc/otel
