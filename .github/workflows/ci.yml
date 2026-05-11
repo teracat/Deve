@@ -16,3 +16,8 @@ jobs:
     with:
       solution: "Deve.All.slnx"
       installAndroidWorkload: true
+  build-and-test-template:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      solution: "Deve.Test-Template.slnx"
+      installAndroidWorkload: false
