@@ -18,7 +18,7 @@
     <Project Path="Extra/Diagnostics.Sentry.AspNetCore/Deve.Diagnostics.Sentry.AspNetCore.csproj" />
     <Project Path="Extra/Diagnostics.Sentry.Maui/Deve.Diagnostics.Sentry.Maui.csproj" />
     <Project Path="Extra/Diagnostics.Sentry/Deve.Diagnostics.Sentry.csproj" />
-    <Project Path="Extra/Log.Log4net/Deve.Log.Log4Net.csproj" />
+    <Project Path="Extra/Log.Log4Net/Deve.Log.Log4Net.csproj" />
     <Project Path="Extra/Log.NetCore/Deve.Log.NetCore.csproj" />
     <Project Path="Extra/Log.NLog/Deve.Log.NLog.csproj" />
     <Project Path="Extra/Log.Serilog/Deve.Log.Serilog.csproj" />
