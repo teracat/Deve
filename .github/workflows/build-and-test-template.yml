@@ -5,7 +5,7 @@ on:
 
 jobs:
   template-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     env:
       TEST_PROJECT_NAME: MyProject
