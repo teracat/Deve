@@ -7,8 +7,8 @@ on:
         description: "The solution to build and test"
         type: string
         required: true
-      installAndroidWorkload:
-        description: "Install android workload"
+      installMauiWorkload:
+        description: "Install MAUI workload"
         type: boolean
         default: false
 
@@ -36,10 +36,9 @@ jobs:
     - name: Restore workloads
       run: dotnet workload restore ${{ inputs.solution }}
 
-
-    - name: Install Android & MAUI workloads (conditional)
-      if: ${{ inputs.installAndroidWorkload }}
-      run: dotnet workload install android
+    - name: Install MAUI workloads (conditional)
+      if: ${{ inputs.installMauiWorkload }}
+      run: dotnet workload install maui
 
     - name: Restore dependencies
       run: dotnet restore ${{ inputs.solution }}

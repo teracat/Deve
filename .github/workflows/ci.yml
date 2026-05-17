@@ -15,9 +15,9 @@ jobs:
     uses: ./.github/workflows/build-and-test.yml
     with:
       solution: "Deve.All.slnx"
-      installAndroidWorkload: true
+      installMauiWorkload: true
   build-and-test-template:
     uses: ./.github/workflows/build-and-test.yml
     with:
       solution: "Deve.Test-Template.slnx"
-      installAndroidWorkload: false
+      installMauiWorkload: true
