@@ -5,9 +5,9 @@ using Deve.Logging;
 
 namespace Deve.Tests.Logs;
 
-public class Log4netLogTest : BaseLogTest
+public class Log4NetLogTest : BaseLogTest
 {
-    public Log4netLogTest()
+    public Log4NetLogTest()
         : base(CreateProvider())
     {
     }
@@ -23,7 +23,7 @@ public class Log4netLogTest : BaseLogTest
         hierarchy.Root.Level = log4net.Core.Level.Debug;
         hierarchy.Configured = true;
 
-        var logger = LogManager.GetLogger(typeof(Log4netLogTest));
+        var logger = LogManager.GetLogger(typeof(Log4NetLogTest));
 
         return new Log4NetLog(logger);
     }
