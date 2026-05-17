@@ -1,0 +1,85 @@
+name: Template Validation
+
+on:
+  workflow_call:
+
+jobs:
+  template-test:
+    runs-on: ubuntu-latest
+
+    env:
+      TEST_PROJECT_NAME: MyProject
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 #v5.2.0
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Set up dependency caching for faster builds
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  #v5.0.5
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Create temp directory
+      run: mkdir -p ./temp
+
+    - name: Install template
+      run: dotnet new install "${{ github.workspace }}"
+
+    - name: Create project
+      working-directory: ./temp
+      run: dotnet new deve -n $TEST_PROJECT_NAME
+
+    - name: Create module
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-module -n Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Create CRUD feature
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Add query list method
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Add query method
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Add command method
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Create empty feature
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Add method to empty feature
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+
+    - name: Restore workloads
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet workload restore $TEST_PROJECT_NAME.All.slnx
+
+    - name: Install MAUI workloads
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet restore $TEST_PROJECT_NAME.All.slnx
+
+    - name: Build
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet build --no-restore $TEST_PROJECT_NAME.All.slnx
+
+    - name: Test
+      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet test --no-build --verbosity detailed $TEST_PROJECT_NAME.All.slnx
