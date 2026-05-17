@@ -35,51 +35,51 @@ jobs:
 
     - name: Create project
       working-directory: ./temp
-      run: dotnet new deve -n $TEST_PROJECT_NAME
+      run: dotnet new deve -n ${{ env.TEST_PROJECT_NAME }}
 
     - name: Create module
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-module -n Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-module -n Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create CRUD feature
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query list method
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query method
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add command method
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create empty feature
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add method to empty feature
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P $TEST_PROJECT_NAME --allow-scripts yes
+      run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Restore workloads
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet workload restore $TEST_PROJECT_NAME.All.slnx
+      run: dotnet workload restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Install MAUI workloads
       run: dotnet workload install maui
 
     - name: Restore dependencies
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet restore $TEST_PROJECT_NAME.All.slnx
+      run: dotnet restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Build
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet build --no-restore $TEST_PROJECT_NAME.All.slnx
+      run: dotnet build --no-restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Test
       working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
-      run: dotnet test --no-build --verbosity detailed $TEST_PROJECT_NAME.All.slnx
+      run: dotnet test --no-build --verbosity detailed ${{ env.TEST_PROJECT_NAME }}.All.slnx
