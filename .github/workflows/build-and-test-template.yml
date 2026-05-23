@@ -14,6 +14,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
 
+    - name: Setup Dev Drive
+      uses: samypr100/setup-dev-drive@30f0f98ae5636b2b6501e181dfb3631b9974818d #v4.0.0
+      with:
+        drive-letter: Z
+
+    - name: Move repo to Dev Drive
+      run: |
+        robocopy ${{ github.workspace }} Z:\repo /E /MOVE
+        echo "DEV_DRIVE_PATH=Z:\repo" >> $env:GITHUB_ENV
+
     - name: Setup .NET
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 #v5.2.0
       with:
@@ -28,41 +38,41 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Create temp directory
-      run: mkdir -p ./temp
+      run: mkdir -p Z:/temp
 
     - name: Install template
-      run: dotnet new install "${{ github.workspace }}"
+      run: dotnet new install "Z:\repo"
 
     - name: Create project
-      working-directory: ./temp
+      working-directory: Z:/temp
       run: dotnet new deve -n ${{ env.TEST_PROJECT_NAME }}
 
     - name: Create module
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-module -n Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create CRUD feature
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query list method
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query method
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add command method
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create empty feature
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add method to empty feature
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Restore workloads
