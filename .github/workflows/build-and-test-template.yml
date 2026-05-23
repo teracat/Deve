@@ -19,13 +19,14 @@ jobs:
 
     - name: Move repo to Dev Drive
       run: |
-        mkdir -p ${{ env.DEV_DRIVE }}/repo
-        robocopy ${{ github.workspace }} ${{ env.DEV_DRIVE }}/repo /E
-        if ($LASTEXITCODE -gt 7) {
-          exit $LASTEXITCODE
+        mkdir -p "${{ env.DEV_DRIVE }}/repo"
+        robocopy "${{ github.workspace }}" "${{ env.DEV_DRIVE }}/repo" /E
+        $rc = $LASTEXITCODE        
+        if ($rc -gt 7) {
+          exit $rc
         }
-        echo "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
-
+        "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
+        exit 0
     - name: Setup .NET
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 #v5.2.0
       with:
