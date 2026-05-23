@@ -16,13 +16,11 @@ jobs:
 
     - name: Setup Dev Drive
       uses: samypr100/setup-dev-drive@30f0f98ae5636b2b6501e181dfb3631b9974818d #v4.0.0
-      with:
-        drive-letter: Z
 
     - name: Move repo to Dev Drive
       run: |
         mkdir -p ${{ env.DEV_DRIVE }}/repo
-        robocopy ${{ github.workspace }} ${{ env.DEV_DRIVE }}/repo /E /MOVE
+        robocopy ${{ github.workspace }} ${{ env.DEV_DRIVE }}/repo /E
         echo "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
 
     - name: Setup .NET
