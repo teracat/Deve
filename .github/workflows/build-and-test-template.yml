@@ -21,6 +21,9 @@ jobs:
       run: |
         mkdir -p ${{ env.DEV_DRIVE }}/repo
         robocopy ${{ github.workspace }} ${{ env.DEV_DRIVE }}/repo /E
+        if ($LASTEXITCODE -gt 7) {
+          exit $LASTEXITCODE
+        }
         echo "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
 
     - name: Setup .NET
