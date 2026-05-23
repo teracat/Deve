@@ -21,8 +21,9 @@ jobs:
 
     - name: Move repo to Dev Drive
       run: |
-        robocopy ${{ github.workspace }} Z:\repo /E /MOVE
-        echo "DEV_DRIVE_PATH=Z:\repo" >> $env:GITHUB_ENV
+        mkdir -p ${{ env.DEV_DRIVE }}/repo
+        robocopy ${{ github.workspace }} ${{ env.DEV_DRIVE }}/repo /E /MOVE
+        echo "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
 
     - name: Setup .NET
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 #v5.2.0
@@ -38,56 +39,56 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Create temp directory
-      run: mkdir -p Z:/temp
+      run: mkdir -p ${{ env.DEV_DRIVE }}/temp
 
     - name: Install template
-      run: dotnet new install "Z:\repo"
+      run: dotnet new install "${{ env.DEV_DRIVE }}/repo"
 
     - name: Create project
-      working-directory: Z:/temp
+      working-directory: ${{ env.DEV_DRIVE }}/temp
       run: dotnet new deve -n ${{ env.TEST_PROJECT_NAME }}
 
     - name: Create module
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-module -n Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create CRUD feature
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query list method
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add query method
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add command method
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Create empty feature
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Add method to empty feature
-      working-directory: Z:/temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
 
     - name: Restore workloads
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet workload restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Install MAUI workloads
       run: dotnet workload install maui
 
     - name: Restore dependencies
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Build
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet build --no-restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Test
