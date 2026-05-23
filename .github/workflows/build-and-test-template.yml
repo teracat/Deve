@@ -94,5 +94,5 @@ jobs:
       run: dotnet build --no-restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
 
     - name: Test
-      working-directory: ./temp/${{ env.TEST_PROJECT_NAME }}
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
       run: dotnet test --no-build --verbosity detailed ${{ env.TEST_PROJECT_NAME }}.All.slnx
