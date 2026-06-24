@@ -14,10 +14,10 @@
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 		<RuntimeIdentifiers Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">iossimulator-x64</RuntimeIdentifiers>
-    <RuntimeIdentifiers Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    	<RuntimeIdentifiers Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
 
-    <OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
-		<UseMaui>true</UseMaui>
+    	<OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
+		<UseMaui Condition="'$(TargetFramework)' != 'net10.0'">true</UseMaui>
 		<MauiVersion>10.0.51</MauiVersion>
 		<SingleProject>true</SingleProject>
 
