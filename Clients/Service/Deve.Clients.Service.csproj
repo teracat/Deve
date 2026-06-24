@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Deve.Common.csproj" />
-    <ProjectReference Include="..\..\Extra\Log.Log4net\Deve.Log.Log4Net.csproj" />
+    <ProjectReference Include="..\..\Extra\Log.Log4Net\Deve.Log.Log4Net.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NetCore\Deve.Log.NetCore.csproj" />
     <ProjectReference Include="..\..\Extra\Log.NLog\Deve.Log.NLog.csproj" />
     <ProjectReference Include="..\Common\Deve.Clients.Common.csproj" />

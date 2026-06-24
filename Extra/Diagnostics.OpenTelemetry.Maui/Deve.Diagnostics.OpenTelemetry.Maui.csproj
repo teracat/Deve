@@ -4,12 +4,12 @@
     <RootNamespace>Deve.Diagnostics</RootNamespace>
 
     <UseMaui>true</UseMaui>
-    <MauiVersion>10.0.11</MauiVersion>
+    <MauiVersion>10.0.51</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.7.0" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.15.3" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.3" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
