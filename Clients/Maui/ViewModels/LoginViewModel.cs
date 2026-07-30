@@ -12,13 +12,13 @@ internal sealed class LoginViewModel : BaseViewModel
     {
         get;
         set => SetProperty(ref field, value);
-    } = string.Empty;
+    }
 
     public string Password
     {
         get;
         set => SetProperty(ref field, value);
-    } = string.Empty;
+    }
     #endregion
 
     #region Constructor
@@ -31,6 +31,9 @@ internal sealed class LoginViewModel : BaseViewModel
         Username = "teracat";
         Password = "teracat";
 #pragma warning restore S2068 // Credentials should not be hard-coded
+#else
+        Username = string.Empty;
+        Password = string.Empty;
 #endif
         //+:cnd
     }
