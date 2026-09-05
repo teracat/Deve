@@ -2,12 +2,9 @@
 
 namespace Deve.Tests.Template;
 
-public sealed class AlphabeticalOrderer : ITestCaseOrderer
+public sealed class AlphabeticalOrderer : ITestMethodOrderer
 {
-    public IReadOnlyCollection<TTestCase> OrderTestCases<TTestCase>(IReadOnlyCollection<TTestCase> testCases) where TTestCase : notnull, ITestCase
-    {
-        var result = testCases.Cast<IXunitTestCase>().ToList();
-        result.Sort((x, y) => StringComparer.OrdinalIgnoreCase.Compare(x.TestMethod.Method.Name, y.TestMethod.Method.Name));
-        return result.Cast<TTestCase>().ToArray();
-    }
+    public IReadOnlyCollection<TTestMethod?> OrderTestMethods<TTestMethod>(IReadOnlyCollection<TTestMethod?> testMethods) where TTestMethod : notnull, ITestMethod =>
+        testMethods.OrderBy(m => m?.MethodName, StringComparer.OrdinalIgnoreCase)
+                   .ToArray();
 }
