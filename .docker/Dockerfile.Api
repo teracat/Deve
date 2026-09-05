@@ -14,6 +14,7 @@ COPY ./README.md /src/README.md
 COPY ./VERSION /src/VERSION
 COPY ./.editorconfig /src
 COPY ./Directory.Build.props /src
+COPY ./Directory.Packages.props /src
 COPY ./Deve.Api.slnx /src
 
 RUN dotnet restore /src/Deve.Api.slnx
