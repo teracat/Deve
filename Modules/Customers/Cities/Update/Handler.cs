@@ -2,7 +2,7 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<City> repositoryCity) : ICommandUpdateHandler<Command>
+    IRepositoryWrite<City> repositoryCity) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {

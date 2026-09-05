@@ -1,11 +1,11 @@
 ﻿using Moq;
-using Deve.Repositories;
 using Deve.Identity.Entities;
 using Deve.Identity.Enums;
+using Deve.Repositories;
 
 namespace Deve.Tests.Mocks.Repository;
 
-internal class UserRepositoryMock : Mock<IRepository<User>>
+internal class UserRepositoryReadMock : Mock<IRepositoryRead<User>>
 {
     // User with Username "tests" will be used as the user to perform valid logins (it must have the Admin role to pass the permissions checks and it also must be active).
     // User with Username "tests2" will be used for inactive user tests.
@@ -17,11 +17,8 @@ internal class UserRepositoryMock : Mock<IRepository<User>>
         new User() { Id = TestsConstants.UpdateUserId, Role = Role.User, Name = "Fake User 2", Username = "fake2",  Status = UserStatus.Inactive, Joined = new DateTimeOffset(2026, 1, 9, 8, 0, 0, TimeSpan.Zero), PasswordHash = "9jn9NVRbBwRdo0/+5c63F6pO77Jzc8Der3nH8vyDiHjunLrFefqlkbf55TF7SS+LhCrDj20bt77LxPetqLaYWA==" },
     ];
 
-    public UserRepositoryMock()
+    public UserRepositoryReadMock()
     {
         _ = Setup(d => d.GetAsQueryable()).Returns(() => _data.AsQueryable());
-        _ = Setup(d => d.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>())).Returns<User, CancellationToken>((_, _) => Task.FromResult(Guid.NewGuid()));
-        _ = Setup(d => d.UpdateAsync(It.IsAny<User>(), It.IsAny<CancellationToken>())).Returns<User, CancellationToken>((user, _) => Task.FromResult(user.Id != Guid.Empty));
-        _ = Setup(d => d.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns<Guid, CancellationToken>((id, _) => Task.FromResult(id != Guid.Empty));
     }
 }

@@ -1,0 +1,98 @@
+name: Template Validation
+
+on:
+  workflow_call:
+
+jobs:
+  template-test:
+    runs-on: windows-latest
+
+    env:
+      TEST_PROJECT_NAME: MyProject
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+
+    - name: Setup Dev Drive
+      uses: samypr100/setup-dev-drive@30f0f98ae5636b2b6501e181dfb3631b9974818d #v4.0.0
+
+    - name: Move repo to Dev Drive
+      run: |
+        mkdir -p "${{ env.DEV_DRIVE }}/repo"
+        robocopy "${{ github.workspace }}" "${{ env.DEV_DRIVE }}/repo" /E
+        $rc = $LASTEXITCODE        
+        if ($rc -gt 7) {
+          exit $rc
+        }
+        "DEV_DRIVE_PATH=${{ env.DEV_DRIVE }}/repo" >> $env:GITHUB_ENV
+        exit 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 #v5.2.0
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Set up dependency caching for faster builds
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  #v5.0.5
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Create temp directory
+      run: mkdir -p ${{ env.DEV_DRIVE }}/temp
+
+    - name: Install template
+      run: dotnet new install "${{ env.DEV_DRIVE }}/repo"
+
+    - name: Create project
+      working-directory: ${{ env.DEV_DRIVE }}/temp
+      run: dotnet new deve -n ${{ env.TEST_PROJECT_NAME }}
+
+    - name: Create module
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-module -n Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Create CRUD feature
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-feature-crud -n Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Add query list method
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-query-list -n GetPending -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Add query method
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-query -n GetLast -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Add command method
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-command -n UpdateStatus -PL Orders -S Order -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Create empty feature
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-feature-empty -n Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Add method to empty feature
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet new deve-method-command -n SetDelivered -PL Deliveries -S Delivery -M Sales -P ${{ env.TEST_PROJECT_NAME }} --allow-scripts yes
+
+    - name: Restore workloads
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet workload restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
+
+    - name: Install MAUI workloads
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
+
+    - name: Build
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet build --no-restore ${{ env.TEST_PROJECT_NAME }}.All.slnx
+
+    - name: Test
+      working-directory: ${{ env.DEV_DRIVE }}/temp/${{ env.TEST_PROJECT_NAME }}
+      run: dotnet test --no-build --verbosity detailed ${{ env.TEST_PROJECT_NAME }}.All.slnx

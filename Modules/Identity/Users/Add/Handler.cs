@@ -5,7 +5,7 @@ namespace Deve.Identity.Users.Add;
 internal sealed class Handler(
     IDataOptions options,
     IHash hash,
-    IRepository<User> repositoryUser) : ICommandAddHandler<Command>
+    IRepositoryWriteUser repositoryUser) : ICommandAddHandler<Command>
 {
     public async Task<ResultGet<ResponseId>> HandleAsync(Command command, CancellationToken cancellationToken)
     {

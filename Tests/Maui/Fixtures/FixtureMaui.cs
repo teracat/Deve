@@ -22,11 +22,12 @@ public class FixtureMaui : CommonFixture
         NavigationService = new Mock<INavigationService>();
     }
 
-    public override Task DisposeAsync()
+    public override ValueTask DisposeAsync()
     {
         DataNoAuth.Dispose();
         DataAuthUser.Dispose();
         DataAuthAdmin.Dispose();
-        return Task.CompletedTask;
+        GC.SuppressFinalize(this);
+        return base.DisposeAsync();
     }
 }

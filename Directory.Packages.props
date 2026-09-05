@@ -1,0 +1,90 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <MicrosoftExtensionsVersion>10.0.11</MicrosoftExtensionsVersion>
+    <MauiVersion>10.0.100</MauiVersion>
+    <OpenTelemetryVersion>1.18.0</OpenTelemetryVersion>
+    <SentryVersion>6.10.0</SentryVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Analyzers  -->
+    <PackageVersion Include="Roslynator.Analyzers" Version="5.0.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.33.0.1635" />
+
+    <!-- Microsoft -->
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.WindowsServices" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.12" />
+
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+
+    <!-- Swashbuckle -->
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+
+    <!-- MAUI -->
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+
+    <!-- FontAwesome -->
+    <PackageVersion Include="FontAwesome6.Svg" Version="2.5.1" />
+
+    <!-- Extra: Auth.Jwt -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
+
+    <!-- Extra: Cache.Memory -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftExtensionsVersion)" />
+
+    <!-- Extra: Cache.Redis -->
+    <PackageVersion Include="StackExchange.Redis" Version="3.1.31" />
+
+    <!-- Extra: Diagnostics.OpenTelemetry -->
+    <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Api" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Zipkin" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.18.0-beta.1" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Process" Version="1.18.0-rc.1" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.18.0-beta.1" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.6.0" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.9.0" />
+
+    <!-- Extra: Diagnostics.Sentry -->
+    <PackageVersion Include="Sentry" Version="$(SentryVersion)" />
+    <PackageVersion Include="Sentry.OpenTelemetry" Version="$(SentryVersion)" />
+    <PackageVersion Include="Sentry.AspNetCore" Version="$(SentryVersion)" />
+    <PackageVersion Include="Sentry.Maui" Version="$(SentryVersion)" />
+
+    <!-- Extra: Log.Log4Net -->
+    <PackageVersion Include="log4net" Version="3.4.0" />
+
+    <!-- Extra: Log.NLog -->
+    <PackageVersion Include="NLog" Version="6.2.0" />
+
+    <!-- Extra: Log.Serilog -->
+    <PackageVersion Include="Serilog" Version="4.4.0" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.1" />
+    <PackageVersion Include="Serilog.Sinks.InMemory" Version="2.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+</Project>

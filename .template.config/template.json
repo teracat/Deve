@@ -17,7 +17,7 @@
     {
       "source": "./",
       "modifiers": [
-        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**", ".vs/**" ] }
+        { "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**", ".vs/**", "Tests/Template/**", "Deve.Test-Template.slnx", ".github/workflows/*-template.yml" ] }
       ]
     }
   ]

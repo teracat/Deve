@@ -1,0 +1,14 @@
+# This workflow will test the template commands
+
+name: Template
+
+on:
+  push:
+    branches: ["main", "v2.0", "v2.1"]
+  pull_request:
+    branches: ["main", "v2.0", "v2.1", "production/**"]
+  workflow_dispatch:
+
+jobs:
+  build-and-test-template:
+    uses: ./.github/workflows/build-and-test-template.yml

@@ -1,9 +1,9 @@
 ﻿namespace Deve.Customers.Cities.GetList;
 
 internal sealed class Handler(
-    IRepository<City> repositoryCity,
-    IRepository<State> repositoryState,
-    IRepository<Country> repositoryCountry) : IGetListQueryHandler<Query, CityResponse>
+    IRepositoryRead<City> repositoryCity,
+    IRepositoryRead<State> repositoryState,
+    IRepositoryRead<Country> repositoryCountry) : IGetListQueryHandler<Query, CityResponse>
 {
     public Task<ResultGetList<CityResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

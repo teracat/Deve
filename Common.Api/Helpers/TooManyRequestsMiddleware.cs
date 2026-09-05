@@ -26,7 +26,7 @@ public class TooManyRequestsMiddleware
 
             var response = Result.Fail(langCode, ResultErrorType.TooManyAttempts);
 
-            await context.Response.WriteAsJsonAsync(response);
+            await context.Response.WriteAsJsonAsync(response, context.RequestAborted);
         }
     }
 }

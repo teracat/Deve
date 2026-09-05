@@ -2,7 +2,7 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : IGetQueryHandler<Query, FEATURE_SINGULARResponse>
+    IRepositoryRead<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : IGetQueryHandler<Query, FEATURE_SINGULARResponse>
 {
     public Task<ResultGet<FEATURE_SINGULARResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

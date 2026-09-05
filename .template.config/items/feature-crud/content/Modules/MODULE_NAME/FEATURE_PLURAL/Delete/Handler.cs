@@ -2,7 +2,7 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : ICommandDeleteHandler<Command>
+    IRepositoryWrite<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : ICommandDeleteHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
