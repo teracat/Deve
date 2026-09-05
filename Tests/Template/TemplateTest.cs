@@ -3,7 +3,7 @@ using Deve.Tests.Template.Fixtures;
 
 namespace Deve.Tests.Template;
 
-[TestCaseOrderer(typeof(AlphabeticalOrderer))]
+[TestMethodOrderer(typeof(AlphabeticalOrderer))]
 public class TemplateTest : IClassFixture<TemplateTestFixture>
 {
     private readonly TemplateTestFixture _fixture;
