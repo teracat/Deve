@@ -1,10 +1,7 @@
 name: deve-dev
 services:
   api:
-    container_name: dev-api
-    expose:
-      - "80"
-      - "443"
+    container_name: api
     ports:
       - "8081:80"
       - "7245:443"
@@ -29,21 +26,21 @@ services:
       - ./https:/https:ro
 
   redis:
-    container_name: dev-redis
+    container_name: redis
 
   prometheus:
-    container_name: dev-prometheus
+    container_name: prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.dev.yml'
       - '--web.enable-otlp-receiver'
 
   grafana:
-    container_name: dev-grafana
+    container_name: grafana
     environment:
       GF_SECURITY_ADMIN_PASSWORD: "grafana"
 
   zipkin:
-    container_name: dev-zipkin
+    container_name: zipkin
 
   otel-collector:
-    container_name: dev-otel-collector
+    container_name: otel-collector

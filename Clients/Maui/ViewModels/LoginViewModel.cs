@@ -13,12 +13,12 @@ internal sealed partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingUsername))]
-    private string _username = string.Empty;
+    private string _username;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessageResourceType = typeof(AppResources), ErrorMessageResourceName = nameof(AppResources.MissingPassword))]
-    private string _password = string.Empty;
+    private string _password;
     #endregion
 
     #region Constructor
@@ -31,6 +31,9 @@ internal sealed partial class LoginViewModel : BaseViewModel
         Username = "teracat";
         Password = "teracat";
 #pragma warning restore S2068 // Credentials should not be hard-coded
+#else
+        Username = string.Empty;
+        Password = string.Empty;
 #endif
         //+:cnd
     }

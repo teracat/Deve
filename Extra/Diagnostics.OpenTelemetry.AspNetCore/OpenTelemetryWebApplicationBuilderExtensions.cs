@@ -98,7 +98,10 @@ public static class OpenTelemetryWebApplicationBuilderExtensions
                 {
                     log?.Debug("{DiagnosticsProvider} - Enabling Redis instrumentation for tracing...", DiagnosticsProvider);
 
-                    _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer);
+                    _ = tracing.AddRedisInstrumentation(redisConnectionMultiplexer, options =>
+                    {
+                        options.Enrich = (activity, _) => activity.SetTag("peer.service", "redis");
+                    });
                 }
 
                 // Allow additional configuration for tracing
