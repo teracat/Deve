@@ -1,7 +1,7 @@
 ﻿namespace Deve.Customers.Countries.GetList;
 
 internal sealed class Handler(
-    IRepository<Country> repositoryCountry) : IGetListQueryHandler<Query, CountryResponse>
+    IRepositoryRead<Country> repositoryCountry) : IGetListQueryHandler<Query, CountryResponse>
 {
     public Task<ResultGetList<CountryResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

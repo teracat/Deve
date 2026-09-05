@@ -7,7 +7,7 @@ internal sealed class Handler(
     IDataOptions options,
     IHash hash,
     IShield shield,
-    IRepository<User> repositoryUser) : IGetQueryHandler<Query, UserResponse>
+    IRepositoryRead<User> repositoryUser) : IGetQueryHandler<Query, UserResponse>
 {
     private static readonly ShieldItemConfig shieldItemConfig = new(3);
 

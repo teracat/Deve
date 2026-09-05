@@ -1,7 +1,7 @@
 ﻿namespace Deve.MODULE_NAME.FEATURE_PLURAL.GetList;
 
 internal sealed class Handler(
-    IRepository<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : IGetListQueryHandler<Query, FEATURE_SINGULARResponse>
+    IRepositoryRead<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : IGetListQueryHandler<Query, FEATURE_SINGULARResponse>
 {
     public Task<ResultGetList<FEATURE_SINGULARResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

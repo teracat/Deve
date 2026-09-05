@@ -57,7 +57,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientNoAuth.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -65,7 +65,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task UpdateStatus_NullRequest_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, null);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, null, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -76,7 +76,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{Guid.Empty}/" + CustomersConstants.MethodUpdateStatus, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -87,7 +87,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + CustomersConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PutAsync(Path + $"{InvalidId}/" + CustomersConstants.MethodUpdateStatus, httpContent, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -98,7 +98,7 @@ public class ClientApiTest : BaseAllApiTest, IClassFixture<FixtureApiClients>
         var request = new ClientUpdateStatusRequest(ClientStatus.Inactive);
 
         using var httpContent = ToHttpContent(request);
-        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, httpContent);
+        var response = await Fixture.ClientAuthAdmin.PatchAsync(Path + $"{ValidId}/" + CustomersConstants.MethodUpdateStatus, httpContent, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }
