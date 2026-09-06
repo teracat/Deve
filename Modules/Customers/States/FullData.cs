@@ -10,7 +10,7 @@ internal sealed record FullData(State State, Country? Country)
         CountryName = Country?.Name
     };
 
-    public static IQueryable<FullData> CreateQuery(IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>
+    public static IQueryable<FullData> CreateQuery(IRepositoryRead<State> repositoryState, IRepositoryRead<Country> repositoryCountry) =>
         repositoryState.GetAsQueryable()
                        .LeftJoin(repositoryCountry.GetAsQueryable(),
                                  state => state.CountryId,

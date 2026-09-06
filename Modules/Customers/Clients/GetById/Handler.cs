@@ -2,10 +2,10 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<Client> repositoryClient,
-    IRepository<City> repositoryCity,
-    IRepository<State> repositoryState,
-    IRepository<Country> repositoryCountry,
+    IRepositoryRead<Client> repositoryClient,
+    IRepositoryRead<City> repositoryCity,
+    IRepositoryRead<State> repositoryState,
+    IRepositoryRead<Country> repositoryCountry,
     ICache cache) : IGetQueryHandler<Query, ClientResponse>
 {
     public Task<ResultGet<ClientResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>

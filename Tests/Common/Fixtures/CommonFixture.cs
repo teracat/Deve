@@ -25,14 +25,15 @@ public class CommonFixture : IAsyncLifetime
     #endregion
 
     #region IAsyncLifetime
-    public virtual Task InitializeAsync() => Task.CompletedTask;
+    public virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
-    public virtual Task DisposeAsync()
+    public virtual ValueTask DisposeAsync()
     {
         TokenManager.Dispose();
         Crypt.Dispose();
         Hash.Dispose();
-        return Task.CompletedTask;
+        GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
     }
     #endregion
 }

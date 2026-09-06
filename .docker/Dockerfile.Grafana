@@ -1,4 +1,4 @@
-FROM grafana/grafana:12.3
+FROM grafana/grafana:13.0
 
 USER root
 COPY ./.docker/grafana/provisioning /etc/grafana/provisioning

@@ -4,7 +4,7 @@ namespace Deve.Customers.Clients.Delete;
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<Client> repositoryClient,
+    IRepositoryWrite<Client> repositoryClient,
     IPublisher publisher) : ICommandDeleteHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
-﻿// Uncomment the following line if you want to use OpenTelemetry integration with Sentry.
-using Sentry.Infrastructure;
+﻿using Sentry.Infrastructure;
 using Sentry.OpenTelemetry;
 
 namespace Deve.Diagnostics;
@@ -9,9 +8,7 @@ public static class SentryOptionsExtensions
     public static void ConfigureSentry(this SentryOptions options)
     {
         // Enable logs to be sent to Sentry
-#pragma warning disable SENTRY0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        options.Experimental.EnableLogs = true;
-#pragma warning restore SENTRY0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        options.EnableLogs = true;
 
 #if DEBUG
         // When configuring for the first time, to see what the SDK is doing:

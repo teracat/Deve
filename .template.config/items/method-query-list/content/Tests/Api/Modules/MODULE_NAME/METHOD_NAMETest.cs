@@ -17,7 +17,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_EmptyRequest_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + MODULE_NAMEConstants.MethodMETHOD_NAME);
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + MODULE_NAMEConstants.MethodMETHOD_NAME, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }
@@ -25,7 +25,7 @@ public class METHOD_NAMETest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task METHOD_NAME_Parameter_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + MODULE_NAMEConstants.MethodMETHOD_NAME + $"?{nameof(FEATURE_SINGULARMETHOD_NAMERequest.Name)}=aa");
+        var response = await Fixture.ClientAuthAdmin.GetAsync(Path + MODULE_NAMEConstants.MethodMETHOD_NAME + $"?{nameof(FEATURE_SINGULARMETHOD_NAMERequest.Name)}=aa", TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }

@@ -13,7 +13,7 @@ public class StatsApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task GetClientStats_Unauthorized_NotSuccessStatusCode()
     {
-        var response = await Fixture.ClientNoAuth.GetAsync(CustomersConstants.PathStatsV1 + CustomersConstants.MethodGetClientStats);
+        var response = await Fixture.ClientNoAuth.GetAsync(CustomersConstants.PathStatsV1 + CustomersConstants.MethodGetClientStats, TestContext.Current.CancellationToken);
 
         Assert.False(response.IsSuccessStatusCode);
     }
@@ -21,7 +21,7 @@ public class StatsApiTest : BaseApiTest, IClassFixture<FixtureApiClients>
     [Fact]
     public async Task GetClientStats_Valid_SuccessStatusCode()
     {
-        var response = await Fixture.ClientAuthAdmin.GetAsync(CustomersConstants.PathStatsV1 + CustomersConstants.MethodGetClientStats);
+        var response = await Fixture.ClientAuthAdmin.GetAsync(CustomersConstants.PathStatsV1 + CustomersConstants.MethodGetClientStats, TestContext.Current.CancellationToken);
 
         Assert.True(response.IsSuccessStatusCode);
     }

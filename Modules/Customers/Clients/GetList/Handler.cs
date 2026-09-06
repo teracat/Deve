@@ -3,10 +3,10 @@
 namespace Deve.Customers.Clients.GetList;
 
 internal sealed class Handler(
-    IRepository<Client> repositoryClient,
-    IRepository<City> repositoryCity,
-    IRepository<State> repositoryState,
-    IRepository<Country> repositoryCountry) : IGetListQueryHandler<Query, ClientListResponse>
+    IRepositoryRead<Client> repositoryClient,
+    IRepositoryRead<City> repositoryCity,
+    IRepositoryRead<State> repositoryState,
+    IRepositoryRead<Country> repositoryCountry) : IGetListQueryHandler<Query, ClientListResponse>
 {
     public Task<ResultGetList<ClientListResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

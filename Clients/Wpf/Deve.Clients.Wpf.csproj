@@ -32,14 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FontAwesome6.Svg" Version="2.5.1" />
-    <PackageReference Include="ReactiveUI.SourceGenerators" Version="2.5.1">
+    <PackageReference Include="FontAwesome6.Svg" />
+    <PackageReference Include="ReactiveUI.SourceGenerators">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ReactiveUI.Validation" Version="6.0.5" />
-    <PackageReference Include="ReactiveUI.WPF" Version="22.3.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="ReactiveUI.Validation" />
+    <PackageReference Include="ReactiveUI.WPF" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <ItemGroup>
