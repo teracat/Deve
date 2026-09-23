@@ -26,11 +26,12 @@ public class FixtureWpf : CommonFixture
     }
 
     #region IAsyncLifetime
-    public override Task DisposeAsync()
+    public override ValueTask DisposeAsync()
     {
         DataNoAuth.Dispose();
         DataAuthUser.Dispose();
         DataAuthAdmin.Dispose();
+        GC.SuppressFinalize(this);
         return base.DisposeAsync();
     }
     #endregion

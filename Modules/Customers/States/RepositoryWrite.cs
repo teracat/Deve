@@ -1,28 +1,20 @@
 ﻿using Microsoft.Extensions.Options;
-using Deve.Api.Options;
+using Deve.Options;
 
-namespace Deve.MODULE_NAME.FEATURE_PLURAL;
+namespace Deve.Customers.States;
 
-internal sealed class Repository : IRepository<FEATURE_SINGULAR>
+internal sealed class RepositoryWrite : IRepositoryWrite<State>
 {
     // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    private static readonly List<FEATURE_SINGULAR> _data =
-    [
-        new FEATURE_SINGULAR() { Id = Guid.NewGuid(), Name = "FEATURE_SINGULAR 1" },
-        new FEATURE_SINGULAR() { Id = Guid.NewGuid(), Name = "FEATURE_SINGULAR 2" },
-    ];
-
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.MODULE_NAMEConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.MODULE_NAMEConnection);
+        // Open connection to database using options.Value.CustomersConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.CustomersConnectionWrite);
     }
 
-    public IQueryable<FEATURE_SINGULAR> GetAsQueryable() => _data.AsQueryable();
-
-    public async Task<Guid> AddAsync(FEATURE_SINGULAR entity, CancellationToken cancellationToken)
+    public async Task<Guid> AddAsync(State entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -32,12 +24,12 @@ internal sealed class Repository : IRepository<FEATURE_SINGULAR>
                 return Guid.Empty;
             }
 
-            _data.Add(entity);
+            Data.States.Add(entity);
             return entity.Id;
         }, cancellationToken);
     }
 
-    public async Task<bool> UpdateAsync(FEATURE_SINGULAR entity, CancellationToken cancellationToken)
+    public async Task<bool> UpdateAsync(State entity, CancellationToken cancellationToken)
     {
         return await Utils.RunProtectedAsync(Semaphore, (_) =>
         {
@@ -48,6 +40,7 @@ internal sealed class Repository : IRepository<FEATURE_SINGULAR>
             }
 
             found.Name = entity.Name;
+            found.CountryId = entity.CountryId;
 
             return true;
         }, cancellationToken);
@@ -62,9 +55,9 @@ internal sealed class Repository : IRepository<FEATURE_SINGULAR>
             {
                 return false;
             }
-            return _data.Remove(found);
+            return Data.States.Remove(found);
         }, cancellationToken);
     }
 
-    private static FEATURE_SINGULAR? FindLocal(Guid id) => _data.FirstOrDefault(x => x.Id == id);
+    private static State? FindLocal(Guid id) => Data.States.FirstOrDefault(x => x.Id == id);
 }

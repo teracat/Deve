@@ -38,8 +38,8 @@ internal static class MauiProgram
             .RegisterViews()
             // Diagnostics
             // OpenTelemetry - if you don't want to use OpenTelemetry, remove the project Deve.Diagnostics.OpenTelemetry.Maui as a reference and comment the next line.
-            // You can configure the Azure Application Insights connection string and the Zipkin URL here.
-            .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", zipkinUrl: null, log, funcConfigTracing: (tracing) =>
+            // You can configure the Azure Application Insights connection string here.
+            .AddDiagnosticsOpenTelemetry(azureAppInsightsConnectionString: "", log, funcConfigTracing: (tracing) =>
             {
                 // Configure Tracing exporters here (if you want to use other exporters).
 

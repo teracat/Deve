@@ -11,7 +11,7 @@ public class FixtureWpfWithMainViewModel : FixtureWpf
     #endregion
 
     #region IAsyncLifetime
-    public override async Task InitializeAsync()
+    public override async ValueTask InitializeAsync()
     {
         await base.InitializeAsync();
 
@@ -19,6 +19,10 @@ public class FixtureWpfWithMainViewModel : FixtureWpf
         await MainViewModel.Initialization;
     }
 
-    public override async Task DisposeAsync() => await base.DisposeAsync();
+    public override async ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        await base.DisposeAsync();
+    }
     #endregion
 }

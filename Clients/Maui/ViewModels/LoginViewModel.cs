@@ -14,10 +14,10 @@ internal partial class LoginViewModel : BaseViewModel
 {
     #region Fields
     [Reactive]
-    private string _username = string.Empty;
+    private string _username;
 
     [Reactive]
-    private string _password = string.Empty;
+    private string _password;
     #endregion
 
     #region Properties
@@ -77,8 +77,13 @@ internal partial class LoginViewModel : BaseViewModel
 
         //-:cnd
 #if DEBUG
+#pragma warning disable S2068 // Credentials should not be hard-coded
         Username = "teracat";
         Password = "teracat";
+#pragma warning restore S2068 // Credentials should not be hard-coded
+#else
+        Username = string.Empty;
+        Password = string.Empty;
 #endif
         //+:cnd
     }

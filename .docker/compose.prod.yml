@@ -3,8 +3,6 @@ services:
   api:
     image: ${ACR_LOGIN_SERVER}/api:${IMAGE_TAG}
     container_name: prod-api
-    expose:
-      - "8080"
     ports:
       - "8080:8080"
   
@@ -21,3 +19,6 @@ services:
 
   zipkin:
     container_name: prod-zipkin
+
+  otel-collector:
+    container_name: prod-otel-collector
