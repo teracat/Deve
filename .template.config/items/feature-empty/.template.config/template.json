@@ -152,7 +152,7 @@
       "description": "Add repository mock to module IData",
       "args": {
         "executable": "dotnet",
-        "args": "run InsertAfterHook.cs -- ./Tests/Common/CommonTestsDependencyInjection.cs \"<hooks:tests-di-repository-mock>\" \"                .AddScoped(_ => new FEATURE_SINGULARRepositoryMock().Object)\""
+        "args": "run InsertAfterHook.cs -- ./Tests/Common/CommonTestsDependencyInjection.cs \"<hooks:tests-di-repository-mock>\" \"                .AddScoped(_ => new FEATURE_SINGULARRepositoryReadMock().Object)\n                .AddScoped(_ => new FEATURE_SINGULARRepositoryWriteMock().Object)\""
       },
       "applyFileRenamesToArgs": [ "args" ],
       "continueOnError": true,

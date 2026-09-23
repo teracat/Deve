@@ -2,11 +2,12 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<FEATURE_SINGULAR> repositoryFEATURE_SINGULAR) : ICommandUpdateHandler<Command>
+    IRepositoryRead<FEATURE_SINGULAR> repositoryFEATURE_SINGULARRead,
+    IRepositoryWrite<FEATURE_SINGULAR> repositoryFEATURE_SINGULARWrite) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
-        var entity = repositoryFEATURE_SINGULAR.GetAsQueryable()
+        var entity = repositoryFEATURE_SINGULARRead.GetAsQueryable()
                                    .FirstOrDefault(x => x.Id == command.Id);
         if (entity is null)
         {
@@ -15,7 +16,7 @@ internal sealed class Handler(
 
         entity.Name = command.Name;
 
-        if (!await repositoryFEATURE_SINGULAR.UpdateAsync(entity, cancellationToken))
+        if (!await repositoryFEATURE_SINGULARWrite.UpdateAsync(entity, cancellationToken))
         {
             return Result.Fail(options.LangCode, ResultErrorType.Unknown);
         }

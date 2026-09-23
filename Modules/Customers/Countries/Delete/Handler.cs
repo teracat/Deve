@@ -2,8 +2,8 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<Country> repositoryCountry,
-    IRepository<State> repositoryState) : ICommandDeleteHandler<Command>
+    IRepositoryWrite<Country> repositoryCountry,
+    IRepositoryRead<State> repositoryState) : ICommandDeleteHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {

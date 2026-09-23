@@ -4,13 +4,14 @@ namespace Deve.Customers.Clients.UpdateStatus;
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<Client> repository,
+    IRepositoryRead<Client> repositoryRead,
+    IRepositoryWrite<Client> repositoryWrite,
     IPublisher publisher) : ICommandUpdateHandler<Command>
 {
     public async Task<Result> HandleAsync(Command command, CancellationToken cancellationToken)
     {
-        var entity = repository.GetAsQueryable()
-                               .FirstOrDefault(x => x.Id == command.Id);
+        var entity = repositoryRead.GetAsQueryable()
+                                   .FirstOrDefault(x => x.Id == command.Id);
 
         if (entity is null)
         {
@@ -19,7 +20,7 @@ internal sealed class Handler(
 
         entity.Status = command.Status;
 
-        if (!await repository.UpdateAsync(entity, cancellationToken))
+        if (!await repositoryWrite.UpdateAsync(entity, cancellationToken))
         {
             return Result.Fail(options.LangCode, ResultErrorType.Unknown);
         }

@@ -5,7 +5,7 @@ using Deve.Customers.Enums;
 
 namespace Deve.Tests.Mocks.Repository;
 
-internal class ClientRepositoryMock : Mock<IRepository<Client>>
+internal class ClientRepositoryReadMock : Mock<IRepositoryRead<Client>>
 {
     internal readonly IList<Client> _data =
     [
@@ -14,11 +14,8 @@ internal class ClientRepositoryMock : Mock<IRepository<Client>>
         new Client() { Id = TestsConstants.FakeCompanyClientId, Name = "Fake Company", TradeName = "Fake", Balance = 500, Status = ClientStatus.Active, TaxName = "Fake Corporation", CityId = TestsConstants.SantpedorCityId },
     ];
 
-    public ClientRepositoryMock()
+    public ClientRepositoryReadMock()
     {
         _ = Setup(d => d.GetAsQueryable()).Returns(() => _data.AsQueryable());
-        _ = Setup(d => d.AddAsync(It.IsAny<Client>(), It.IsAny<CancellationToken>())).Returns<Client, CancellationToken>((_, _) => Task.FromResult(Guid.NewGuid()));
-        _ = Setup(d => d.UpdateAsync(It.IsAny<Client>(), It.IsAny<CancellationToken>())).Returns<Client, CancellationToken>((client, _) => Task.FromResult(client.Id != Guid.Empty));
-        _ = Setup(d => d.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns<Guid, CancellationToken>((id, _) => Task.FromResult(id != Guid.Empty));
     }
 }

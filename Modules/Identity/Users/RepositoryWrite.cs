@@ -3,17 +3,16 @@ using Deve.Options;
 
 namespace Deve.Identity.Users;
 
-internal sealed class Repository : IRepository<User>
+internal sealed class RepositoryWrite : IRepositoryWriteUser
 {
+    // You should implement real repository logic here
     private static SemaphoreSlim Semaphore { get; } = new SemaphoreSlim(1);
 
-    public Repository(IOptions<ConnectionStringsOptions> options)
+    public RepositoryWrite(IOptions<ConnectionStringsOptions> options)
     {
-        // Open connection to database using options.Value.IdentityConnection
-        System.Diagnostics.Debug.WriteLine(options.Value.IdentityConnection);
+        // Open connection to database using options.Value.IdentityConnectionWrite
+        System.Diagnostics.Debug.WriteLine(options.Value.IdentityConnectionWrite);
     }
-
-    public IQueryable<User> GetAsQueryable() => Data.Users.AsQueryable();
 
     public async Task<Guid> AddAsync(User entity, CancellationToken cancellationToken)
     {
@@ -26,7 +25,7 @@ internal sealed class Repository : IRepository<User>
             else
             {
                 var found = FindLocal(entity.Id);
-                if (found is null)
+                if (found is not null)
                 {
                     return Guid.Empty;
                 }
@@ -52,9 +51,28 @@ internal sealed class Repository : IRepository<User>
             found.Role = entity.Role;
             found.Email = entity.Email;
             found.Birthday = entity.Birthday;
-            found.Joined = entity.Joined;
             found.Status = entity.Status;
-            found.PasswordHash = entity.PasswordHash;
+
+            if (!string.IsNullOrWhiteSpace(entity.PasswordHash))
+            {
+                found.PasswordHash = entity.PasswordHash;
+            }
+
+            return true;
+        }, cancellationToken);
+    }
+
+    public Task<bool> UpdatePasswordAsync(Guid id, string passwordHash, CancellationToken cancellationToken)
+    {
+        return Utils.RunProtectedAsync(Semaphore, (_) =>
+        {
+            var found = FindLocal(id);
+            if (found is null)
+            {
+                return false;
+            }
+
+            found.PasswordHash = passwordHash;
 
             return true;
         }, cancellationToken);
