@@ -46,3 +46,6 @@ zipkin:
   host: ''
   clientId: zipkin
   clientSecret: ''
+otelCollector:
+  portGrpc: 4317
+  portHttp: 4318

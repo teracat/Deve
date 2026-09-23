@@ -32,7 +32,7 @@ internal sealed record FullData(Client Client, City? City, State? State, Country
         Balance = Client.Balance
     };
 
-    public static IQueryable<FullData> CreateQuery(IRepository<Client> repositoryClient, IRepository<City> repositoryCity, IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>
+    public static IQueryable<FullData> CreateQuery(IRepositoryRead<Client> repositoryClient, IRepositoryRead<City> repositoryCity, IRepositoryRead<State> repositoryState, IRepositoryRead<Country> repositoryCountry) =>
         repositoryClient.GetAsQueryable()
                         .LeftJoin(repositoryCity.GetAsQueryable(),
                                     client => client.CityId,

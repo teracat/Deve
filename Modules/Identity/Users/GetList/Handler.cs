@@ -1,7 +1,7 @@
 ﻿namespace Deve.Identity.Users.GetList;
 
 internal sealed class Handler(
-    IRepository<User> repositoryUser) : IGetListQueryHandler<Query, UserResponse>
+    IRepositoryRead<User> repositoryUser) : IGetListQueryHandler<Query, UserResponse>
 {
     public Task<ResultGetList<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>
         Task.Run(() =>

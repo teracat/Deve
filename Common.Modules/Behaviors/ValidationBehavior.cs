@@ -8,7 +8,7 @@ public class ValidationBehavior<TRequest, TResponse>(
         ArgumentNullException.ThrowIfNull(nextStep);
 
         IResult[] validationResults = await Task.WhenAll(
-            validators.Select(validator => validator.ValidateAsync(request)));
+            validators.Select(validator => validator.ValidateAsync(request, cancellationToken)));
 
         var failure = validationResults.FirstOrDefault(result => !result.Success);
         if (failure?.Errors is not null)

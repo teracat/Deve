@@ -4,7 +4,7 @@ using Deve.Customers.Entities;
 
 namespace Deve.Tests.Mocks.Repository;
 
-internal class StateRepositoryMock : Mock<IRepository<State>>
+internal class StateRepositoryReadMock : Mock<IRepositoryRead<State>>
 {
     internal readonly IList<State> _data =
     [
@@ -13,11 +13,8 @@ internal class StateRepositoryMock : Mock<IRepository<State>>
         new State() { Id = TestsConstants.MadridStateId, Name = "Madrid", CountryId = TestsConstants.SpainCountryId },
     ];
 
-    public StateRepositoryMock()
+    public StateRepositoryReadMock()
     {
         _ = Setup(d => d.GetAsQueryable()).Returns(() => _data.AsQueryable());
-        _ = Setup(d => d.AddAsync(It.IsAny<State>(), It.IsAny<CancellationToken>())).Returns<State, CancellationToken>((_, _) => Task.FromResult(Guid.NewGuid()));
-        _ = Setup(d => d.UpdateAsync(It.IsAny<State>(), It.IsAny<CancellationToken>())).Returns<State, CancellationToken>((state, _) => Task.FromResult(state.Id != Guid.Empty));
-        _ = Setup(d => d.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns<Guid, CancellationToken>((id, _) => Task.FromResult(id != Guid.Empty));
     }
 }

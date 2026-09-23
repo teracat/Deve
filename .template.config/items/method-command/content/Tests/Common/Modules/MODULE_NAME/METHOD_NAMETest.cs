@@ -16,7 +16,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
-        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request);
+        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request, TestContext.Current.CancellationToken);
 
         Assert.False(res.Success);
     }
@@ -26,7 +26,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
-        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request);
+        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Errors);
     }
@@ -36,7 +36,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
-        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request);
+        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request, TestContext.Current.CancellationToken);
 
         Assert.NotEmpty(res.Errors);
     }
@@ -46,7 +46,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
-        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request);
+        var res = await Fixture.DataNoAuth.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request, TestContext.Current.CancellationToken);
 
         _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
     }
@@ -56,7 +56,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "" };
 
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.False(res.Success);
     }
@@ -66,7 +66,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "" };
 
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.NotNull(res.Errors);
     }
@@ -76,7 +76,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "" };
 
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         _ = Assert.IsAssignableFrom<IList<ResultError>>(res.Errors);
     }
@@ -86,7 +86,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "" };
 
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(Guid.Empty, request, TestContext.Current.CancellationToken);
 
         Assert.NotEmpty(res.Errors);
     }
@@ -96,7 +96,7 @@ public abstract class METHOD_NAMETest : BaseTest<IData>
     {
         var request = new FEATURE_SINGULARMETHOD_NAMERequest { Name = "Test" };
 
-        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request);
+        var res = await Fixture.DataAuthAdmin.MODULE_NAME.FEATURE_PLURAL.METHOD_NAMEAsync(TestsConstants.DefaultValidId, request, TestContext.Current.CancellationToken);
 
         Assert.True(res.Success);
     }

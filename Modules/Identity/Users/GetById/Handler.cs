@@ -2,7 +2,7 @@
 
 internal sealed class Handler(
     IDataOptions options,
-    IRepository<User> repositoryUser,
+    IRepositoryRead<User> repositoryUser,
     IUserIdentityService identityService) : IGetQueryHandler<Query, UserResponse>
 {
     public Task<ResultGet<UserResponse>> HandleAsync(Query request, CancellationToken cancellationToken) =>

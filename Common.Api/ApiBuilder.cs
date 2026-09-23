@@ -275,7 +275,7 @@ public sealed class ApiBuilder
             options.CustomSchemaIds(i => i.FullName);
 
             // Condition to include controllers in the corresponding Swagger document.
-            options.DocInclusionPredicate((version, apiDesc) => apiDesc.RelativePath!.Contains($"{version}/", StringComparison.OrdinalIgnoreCase));
+            options.DocInclusionPredicate((version, apiDesc) => apiDesc.RelativePath?.Contains($"{version}/", StringComparison.OrdinalIgnoreCase) == true);
         });
 
         AddAppAction(app =>
@@ -442,9 +442,10 @@ public sealed class ApiBuilder
         AddAppAction(app =>
         {
             // Prometheus: adds the Prometheus scraping endpoint at /metrics (to be used with OpenTelemetry).
-            if (!string.IsNullOrWhiteSpace(_builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"]))
+            var prometheusEndpoint = _builder.Configuration["PROMETHEUS_SCRAPE_ENDPOINT"];
+            if (!string.IsNullOrWhiteSpace(prometheusEndpoint))
             {
-                _ = app.MapPrometheusScrapingEndpoint()
+                _ = app.MapPrometheusScrapingEndpoint(prometheusEndpoint)
                        .DisableHttpMetrics();   // We don't want metrics about the /metrics endpoint (https://github.com/dotnet/aspnetcore/issues/50654).
             }
         });

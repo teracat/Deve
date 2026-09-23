@@ -11,7 +11,7 @@ internal sealed record FullData(City City, State? State, Country? Country)
         CountryName = Country?.Name
     };
 
-    public static IQueryable<FullData> CreateQuery(IRepository<City> repositoryCity, IRepository<State> repositoryState, IRepository<Country> repositoryCountry) =>
+    public static IQueryable<FullData> CreateQuery(IRepositoryRead<City> repositoryCity, IRepositoryRead<State> repositoryState, IRepositoryRead<Country> repositoryCountry) =>
         repositoryCity.GetAsQueryable()
                       .LeftJoin(repositoryState.GetAsQueryable(),
                                 city => city.StateId,
