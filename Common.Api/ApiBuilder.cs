@@ -275,7 +275,7 @@ public sealed class ApiBuilder
             options.CustomSchemaIds(i => i.FullName);
 
             // Condition to include controllers in the corresponding Swagger document.
-            options.DocInclusionPredicate((version, apiDesc) => apiDesc.RelativePath!.Contains($"{version}/", StringComparison.OrdinalIgnoreCase));
+            options.DocInclusionPredicate((version, apiDesc) => apiDesc.RelativePath?.Contains($"{version}/", StringComparison.OrdinalIgnoreCase) == true);
         });
 
         AddAppAction(app =>
